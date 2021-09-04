@@ -29,3 +29,9 @@ test {
 application {
     mainClass.set("gui.GUI")
 }
+
+sourceSets {
+    main {
+        output.setResourcesDir(java.outputDir)
+    }
+}
