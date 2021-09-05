@@ -9,10 +9,10 @@ public class FENReader {
         ChessBoard board = new ChessBoard();
         int toBeSkipped = 0;
         int pos = 0;
+        int index = 0;
         loop:
-        for(int i = 0; i<FEN.length(); i++){
-            System.out.println(i);
-            switch (FEN.charAt(i)){
+        for(; index<FEN.length(); index++){
+            switch (FEN.charAt(index)){
                 case '/':
                     toBeSkipped++;
                     break;
@@ -53,13 +53,38 @@ public class FENReader {
                     board.getBoard()[pos++].setPiece(new Pawn("white"));
                     break;
                 case ' ':
+                    index++;
                     break loop;
                 default:
-                    int step = Character.getNumericValue(FEN.charAt(i));
+                    int step = Character.getNumericValue(FEN.charAt(index));
                     pos = pos + step;
                     break;
             }
         }
+
+        board.setWhiteMove(FEN.charAt(index++) == 'w');
+        index++;
+        loop:
+        for(; index<FEN.length();index++){
+            switch (FEN.charAt(index)){
+                case 'K':
+                    board.setWhiteKingCastling(true);
+                    break;
+                case 'Q':
+                    board.setWhiteQueenCastling(true);
+                    break;
+                case 'k':
+                    board.setBlackKingCastling(true);
+                    break;
+                case 'q':
+                    board.setBlackQueenCastling(true);
+                    break;
+                case ' ':
+                    index++;
+                    break loop;
+            }
+        }
+
         return board;
     }
 }
