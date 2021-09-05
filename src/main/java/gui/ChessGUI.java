@@ -15,6 +15,11 @@ public class ChessGUI extends Application {
     public void start(Stage stage) {
         FENReader f = new FENReader();
         ChessBoard board = f.readInFEN(initialFEN);
+        System.out.println("white move "+board.isWhiteMove());
+        System.out.println("black king "+board.isBlackKingCastling());
+        System.out.println("black queen "+board.isBlackQueenCastling());
+        System.out.println("white king "+board.isWhiteKingCastling());
+        System.out.println("white queen "+board.isWhiteQueenCastling());
 
         Scene scene = new Scene(board, 800, 800);
 
