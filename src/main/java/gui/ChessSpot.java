@@ -1,10 +1,11 @@
 package gui;
 
+import gui.Pieces.Piece;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.paint.Color;
 
 public class ChessSpot extends Label {
+    private Piece piece;
     private int x;
     private int y;
     private ChessBoard board;
@@ -30,5 +31,19 @@ public class ChessSpot extends Label {
         else{
             setStyle(color2);
         }
+    }
+
+    public void setPiece(Piece piece){
+        this.piece=piece;
+        if(piece==null){
+            setGraphic(null);
+        }
+        else{
+            setGraphic(piece.getImage());
+        }
+    }
+
+    public Piece getPiece() {
+        return piece;
     }
 }
