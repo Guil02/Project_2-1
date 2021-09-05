@@ -15,4 +15,8 @@ public class ChessBoard extends GridPane {
         }
 
     }
+
+    public ChessSpot[] getBoard() {
+        return board;
+    }
 }

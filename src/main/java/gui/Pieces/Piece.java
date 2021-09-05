@@ -11,7 +11,6 @@ public class Piece {
         x=-1;
         y=-1;
         String url = "gui/"+color + "_" + name + ".png";
-        System.out.println(url);
         image = new Image(url);
     }
 
