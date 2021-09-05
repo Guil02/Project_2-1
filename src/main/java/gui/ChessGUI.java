@@ -1,6 +1,5 @@
 package gui;
 
-import gui.Pieces.King;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
