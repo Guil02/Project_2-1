@@ -18,8 +18,8 @@ public class ChessSpot extends Label {
         this.board = board;
         this.x = x;
         this.y = y;
-        setMinSize(100,100);
-        setMaxSize(100,100);
+        setMinSize(ChessGUI.width/8,ChessGUI.height/8);
+        setMaxSize(ChessGUI.width/8,ChessGUI.height/8);
         setAlignment(Pos.CENTER);
         setBackgroundColor();
 
