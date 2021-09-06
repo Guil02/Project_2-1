@@ -3,6 +3,7 @@ package gui;
 import gui.Pieces.Piece;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 
 public class ChessSpot extends Label {
     private Piece piece;
@@ -45,5 +46,11 @@ public class ChessSpot extends Label {
 
     public Piece getPiece() {
         return piece;
+    }
+
+    public void onDragDetected(MouseEvent e){
+        if(piece!= null && piece.canMove()){
+
+        }
     }
 }

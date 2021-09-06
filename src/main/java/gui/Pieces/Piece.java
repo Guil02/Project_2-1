@@ -41,4 +41,9 @@ public class Piece {
         this.x = x;
         this.y = y;
     }
+
+    public boolean canMove(){
+        //TODO implement the ability to move
+        return true;
+    }
 }
