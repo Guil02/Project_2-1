@@ -3,7 +3,7 @@ package gui.Pieces;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class Piece {
+public abstract class Piece {
     private int x;
     private int y;
     private Image image;
