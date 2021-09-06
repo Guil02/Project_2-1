@@ -1,5 +1,6 @@
 package gui.Pieces;
 
+import gui.ChessGUI;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -16,8 +17,8 @@ public abstract class Piece {
 
     public ImageView getImage(){
         ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(100);
-        imageView.setFitHeight(100);
+        imageView.setFitWidth(ChessGUI.width/8);
+        imageView.setFitHeight(ChessGUI.height/8);
         return imageView;
     }
 

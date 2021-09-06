@@ -6,13 +6,15 @@ import javafx.stage.Stage;
 
 public class ChessGUI extends Application {
     private static final String initialFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-
+    public static final int width = 800;
+    public static final int height = 800;
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
     public void start(Stage stage) {
+
         FENReader f = new FENReader();
         ChessBoard board = f.readInFEN(initialFEN);
         System.out.println("white move "+board.isWhiteMove());
@@ -21,9 +23,11 @@ public class ChessGUI extends Application {
         System.out.println("white king "+board.isWhiteKingCastling());
         System.out.println("white queen "+board.isWhiteQueenCastling());
 
-        Scene scene = new Scene(board, 800, 800);
+
+        Scene scene = new Scene(board, width, height);
 
         stage.setResizable(false);
+        stage.setFullScreen(true);
         stage.setScene(scene);
         stage.show();
     }
