@@ -17,40 +17,52 @@ public class FENReader {
                     toBeSkipped++;
                     break;
                 case 'k':
-                    board.getBoard()[pos++].setPiece(new King("black"));
+                    board.getBoard()[pos].setPiece(new King("black", calcXCoordinate(pos), calcYCoordinate(pos)));
+                    pos++;
                     break;
                 case 'q':
-                    board.getBoard()[pos++].setPiece(new Queen("black"));
+                    board.getBoard()[pos].setPiece(new Queen("black", calcXCoordinate(pos), calcYCoordinate(pos)));
+                    pos++;
                     break;
                 case 'r':
-                    board.getBoard()[pos++].setPiece(new Rook("black"));
+                    board.getBoard()[pos].setPiece(new Rook("black", calcXCoordinate(pos), calcYCoordinate(pos)));
+                    pos++;
                     break;
                 case 'b':
-                    board.getBoard()[pos++].setPiece(new Bishop("black"));
+                    board.getBoard()[pos].setPiece(new Bishop("black", calcXCoordinate(pos), calcYCoordinate(pos)));
+                    pos++;
                     break;
                 case 'n':
-                    board.getBoard()[pos++].setPiece(new Knight("black"));
+                    board.getBoard()[pos].setPiece(new Knight("black", calcXCoordinate(pos), calcYCoordinate(pos)));
+                    pos++;
                     break;
                 case 'p':
-                    board.getBoard()[pos++].setPiece(new Pawn("black"));
+                    board.getBoard()[pos].setPiece(new Pawn("black", calcXCoordinate(pos), calcYCoordinate(pos)));
+                    pos++;
                     break;
                 case 'K':
-                    board.getBoard()[pos++].setPiece(new King("white"));
+                    board.getBoard()[pos].setPiece(new King("white", calcXCoordinate(pos), calcYCoordinate(pos)));
+                    pos++;
                     break;
                 case 'Q':
-                    board.getBoard()[pos++].setPiece(new Queen("white"));
+                    board.getBoard()[pos].setPiece(new Queen("white", calcXCoordinate(pos), calcYCoordinate(pos)));
+                    pos++;
                     break;
                 case 'R':
-                    board.getBoard()[pos++].setPiece(new Rook("white"));
+                    board.getBoard()[pos].setPiece(new Rook("white", calcXCoordinate(pos), calcYCoordinate(pos)));
+                    pos++;
                     break;
                 case 'B':
-                    board.getBoard()[pos++].setPiece(new Bishop("white"));
+                    board.getBoard()[pos].setPiece(new Bishop("white", calcXCoordinate(pos), calcYCoordinate(pos)));
+                    pos++;
                     break;
                 case 'N':
-                    board.getBoard()[pos++].setPiece(new Knight("white"));
+                    board.getBoard()[pos].setPiece(new Knight("white", calcXCoordinate(pos), calcYCoordinate(pos)));
+                    pos++;
                     break;
                 case 'P':
-                    board.getBoard()[pos++].setPiece(new Pawn("white"));
+                    board.getBoard()[pos].setPiece(new Pawn("white", calcXCoordinate(pos), calcYCoordinate(pos)));
+                    pos++;
                     break;
                 case ' ':
                     index++;
@@ -86,5 +98,15 @@ public class FENReader {
         }
 
         return board;
+    }
+
+    public int calcXCoordinate(int index){
+        int x = index%8;
+        return x;
+    }
+
+    public int calcYCoordinate(int index){
+        int y = (index-calcXCoordinate(index))/8;
+        return y;
     }
 }

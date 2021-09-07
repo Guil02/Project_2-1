@@ -27,7 +27,6 @@ public class ChessGUI extends Application {
         Scene scene = new Scene(board, width, height);
 
         stage.setResizable(false);
-        stage.setFullScreen(true);
         stage.setScene(scene);
         stage.show();
     }
