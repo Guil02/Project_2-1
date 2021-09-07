@@ -1,25 +1,37 @@
 package gui.Pieces;
 
 import gui.ChessGUI;
+import gui.ChessSpot;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.DataFormat;
 
-public abstract class Piece {
+import java.io.Serializable;
+
+public abstract class Piece implements Serializable {
+    public static final DataFormat dataFormatPiece = new DataFormat("gui.Pieces");
     private int x;
     private int y;
-    private Image image;
-    public Piece(String color, String name) {
-        x=-1;
-        y=-1;
-        String url = "gui/"+color + "_" + name + ".png";
-        image = new Image(url);
+    private final String name;
+    private final String color;
+    public Piece(String color, String name, int x, int y) {
+        this.name = name;
+        this.color = color;
+        this.x = x;
+        this.y = y;
     }
 
-    public ImageView getImage(){
-        ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(ChessGUI.width/8);
-        imageView.setFitHeight(ChessGUI.height/8);
+    public ImageView getImageView(){
+        ImageView imageView = new ImageView(getImage());
+        imageView.setFitWidth(ChessGUI.width/8.0);
+        imageView.setFitHeight(ChessGUI.height/8.0);
         return imageView;
+    }
+
+    public Image getImage(){
+        String url = "gui/"+color + "_" + name + ".png";
+        Image image = new Image(url, ChessGUI.width/8.0,ChessGUI.height/8.0, false, false);
+        return image;
     }
 
     public int getX() {
@@ -46,5 +58,10 @@ public abstract class Piece {
     public boolean canMove(){
         //TODO implement the ability to move
         return true;
+    }
+
+    public void move(ChessSpot chessSpot){
+        chessSpot.setPiece(this);
+
     }
 }

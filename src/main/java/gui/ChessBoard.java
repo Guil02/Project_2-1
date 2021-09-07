@@ -64,4 +64,9 @@ public class ChessBoard extends GridPane {
     public void setWhiteMove(boolean whiteMove) {
         isWhiteMove = whiteMove;
     }
+
+    public ChessSpot getChessSpot(int x, int y){
+        int index = y*8+x;
+        return getBoard()[index];
+    }
 }
