@@ -23,14 +23,14 @@ public abstract class Piece implements Serializable {
 
     public ImageView getImageView(){
         ImageView imageView = new ImageView(getImage());
-        imageView.setFitWidth(ChessGUI.width/8.0);
-        imageView.setFitHeight(ChessGUI.height/8.0);
+        imageView.setFitWidth(ChessGUI.WIDTH /8.0);
+        imageView.setFitHeight(ChessGUI.HEIGHT /8.0);
         return imageView;
     }
 
     public Image getImage(){
         String url = "gui/"+color + "_" + name + ".png";
-        Image image = new Image(url, ChessGUI.width/8.0,ChessGUI.height/8.0, false, false);
+        Image image = new Image(url, ChessGUI.WIDTH /8.0,ChessGUI.HEIGHT /8.0, false, false);
         return image;
     }
 

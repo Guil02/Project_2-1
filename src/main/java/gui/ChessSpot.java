@@ -20,8 +20,8 @@ public class ChessSpot extends Label {
         this.board = board;
         this.x = x;
         this.y = y;
-        setMinSize(ChessGUI.width/8.0,ChessGUI.height/8.0);
-        setMaxSize(ChessGUI.width/8.0,ChessGUI.height/8.0);
+        setMinSize(ChessGUI.WIDTH /8.0,ChessGUI.HEIGHT /8.0);
+        setMaxSize(ChessGUI.WIDTH /8.0,ChessGUI.HEIGHT /8.0);
         setAlignment(Pos.CENTER);
         setBackgroundColor();
         setOnDragDetected(this::onDragDetected);
