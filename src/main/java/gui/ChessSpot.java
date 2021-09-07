@@ -76,7 +76,6 @@ public class ChessSpot extends Label {
         Dragboard dragboard = e.getDragboard();
         if(dragboard.hasContent(Piece.dataFormatPiece)){
             Piece piece = (Piece) dragboard.getContent(Piece.dataFormatPiece);
-            System.out.println(piece.getX()+" "+piece.getY());
             ChessSpot originalSpot = board.getChessSpot(piece.getX(),piece.getY());
             Piece actualPiece = originalSpot.getPiece();
             originalSpot.setPiece(null);
