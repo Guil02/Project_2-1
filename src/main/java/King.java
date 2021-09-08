@@ -1,7 +1,11 @@
 // TODO check if king doesn't put himself in danger
 
 public class King extends ChessPieces {
-
+	
+	public King(boolean color, int index_h, int index_v) {
+		super(color, index_h, index_v);
+	}
+	
 	public boolean[][] validMoves() {
 		
 		boolean[][] valid_moves = new boolean[Board.BOARDSIZE][Board.BOARDSIZE];
