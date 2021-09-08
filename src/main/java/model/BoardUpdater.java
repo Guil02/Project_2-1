@@ -54,20 +54,26 @@ public class BoardUpdater {
      * @param piece
      */
     public void addPiece(int x, int y, Piece piece) {
-        boardModel.getBoardModel()[x][y] = piece;
+        boardModel.getField()[x][y] = piece;
     }
 
     /**
      * Removes a piece from the board.
      */
     public void removePiece(int x, int y) {
-        boardModel.getBoardModel()[x][y] = null;
+        boardModel.getField()[x][y] = null;
     }
 
     /**
-     * Moves a piece from one place to another.
+     *
+     * @param xFrom
+     * @param yFrom
+     * @param xTo
+     * @param yTo
      */
-    public void movePiece() {
-
+    public void movePiece(int xFrom, int yFrom, int xTo, int yTo) {
+        Piece targetPiece = boardModel.getField()[xFrom][yFrom];
+        boardModel.getField()[xTo][yTo] = targetPiece;
+        boardModel.getField()[xFrom][yFrom] = null;
     }
 }

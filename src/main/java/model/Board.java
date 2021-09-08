@@ -12,7 +12,7 @@ public class Board {
         boardModel = new Piece[8][8];
     }
 
-    public Piece[][] getBoardModel() {
+    public Piece[][] getField() {
         return boardModel;
     }
 
