@@ -17,6 +17,10 @@ public class ChessGUI extends Application {
     @Override
     public void start(Stage stage) {
 
+
+
+        Scene startMenu;
+
         FENReader f = new FENReader();
         ChessBoard board = f.readInFEN(initialFEN);
 

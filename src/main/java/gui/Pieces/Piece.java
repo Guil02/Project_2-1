@@ -9,7 +9,7 @@ import javafx.scene.input.DataFormat;
 import java.io.Serializable;
 
 public abstract class Piece implements Serializable {
-    public static final DataFormat dataFormatPiece = new DataFormat("gui.Pieces");
+    public static final DataFormat dataFormatPiece = new DataFormat("Pieces");
     private int x;
     private int y;
     private final String name;

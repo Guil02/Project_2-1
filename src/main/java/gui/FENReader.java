@@ -6,6 +6,7 @@ public class FENReader {
     public FENReader() {
     }
     public ChessBoard readInFEN(String FEN){
+        //TODO IMPLEMENT THE REST OF THE FEN READER, IT ONLY IMPLEMENTS THE POSITIONS ITSELF RIGHT NOW AND NOT THE CASTLING ETC.
         ChessBoard board = new ChessBoard();
         int toBeSkipped = 0;
         int pos = 0;
@@ -71,29 +72,6 @@ public class FENReader {
                     int step = Character.getNumericValue(FEN.charAt(index));
                     pos = pos + step;
                     break;
-            }
-        }
-
-        board.setWhiteMove(FEN.charAt(index++) == 'w');
-        index++;
-        loop:
-        for(; index<FEN.length();index++){
-            switch (FEN.charAt(index)){
-                case 'K':
-                    board.setWhiteKingCastling(true);
-                    break;
-                case 'Q':
-                    board.setWhiteQueenCastling(true);
-                    break;
-                case 'k':
-                    board.setBlackKingCastling(true);
-                    break;
-                case 'q':
-                    board.setBlackQueenCastling(true);
-                    break;
-                case ' ':
-                    index++;
-                    break loop;
             }
         }
 
