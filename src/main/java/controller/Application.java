@@ -13,9 +13,15 @@ public class Application {
      * @param args
      */
     public static void main(String[] args) {
-        Board board = new Board();
-        BoardUpdater boardU = new BoardUpdater(board);
-        boardU.fillGameStart();
-        board.printBoard();
+        GameRunner gameRunner = new GameRunner();
+        Dice dice = new Dice();
+        System.out.println(dice.rollTheDice());
+        System.out.println(dice.rollTheDice());
+        System.out.println(dice.rollTheDice());
+        System.out.println(dice.rollTheDice());
+        System.out.println(dice.rollTheDice());
+        System.out.println(dice.rollTheDice());
+        System.out.println(dice.rollTheDice());
+
     }
 }
