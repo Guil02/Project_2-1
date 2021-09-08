@@ -1,6 +1,11 @@
 package model.pieces;
 
-import model.pieces.Piece;
-
 public class RookPiece extends Piece {
+
+    public RookPiece(boolean white) {
+        if (white)
+            setPieceChar('R');
+        else
+            setPieceChar('r');
+    }
 }
