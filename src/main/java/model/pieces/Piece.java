@@ -18,6 +18,11 @@ public abstract class Piece {
         return pieceChar;
     }
 
+    /**
+     * Assigns a letter to a piece
+     * No public use
+     * @param pieceChar
+     */
     protected void setPieceChar(char pieceChar) {
         this.pieceChar = pieceChar;
     }
