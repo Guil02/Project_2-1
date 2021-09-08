@@ -2,14 +2,25 @@ package model;
 
 import model.pieces.*;
 
+/**
+ * Class responsible for updating the current state of the board.
+ */
 public class BoardUpdater {
 
     private Board boardModel;
 
+    /**
+     * Constructor
+     * @param boardModel
+     */
     public BoardUpdater(Board boardModel) {
         this.boardModel = boardModel;
     }
 
+    /**
+     * Fills the board for a default start of the game.
+     * Can also be used to reset a game.
+     */
     public void fillGameStart() {
         // Black side
         addPiece(0, 0, new RookPiece(false));
@@ -36,14 +47,26 @@ public class BoardUpdater {
             addPiece(6, i, new PawnPiece(true));
     }
 
+    /**
+     * Adds a piece to a board.
+     * @param x
+     * @param y
+     * @param piece
+     */
     public void addPiece(int x, int y, Piece piece) {
         boardModel.getBoardModel()[x][y] = piece;
     }
 
-    public void removePiece() {
-
+    /**
+     * Removes a piece from the board.
+     */
+    public void removePiece(int x, int y) {
+        boardModel.getBoardModel()[x][y] = null;
     }
 
+    /**
+     * Moves a piece from one place to another.
+     */
     public void movePiece() {
 
     }
