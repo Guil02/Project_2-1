@@ -1,10 +1,9 @@
 package gui;
 
-import gui.Pieces.Piece;
+import controller.GraphicsConnector;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.input.*;
-import controller.GraphicsConnector;
 
 import java.util.ArrayList;
 
@@ -54,13 +53,7 @@ public class ChessSpot extends Label {
     }
 
     public void setPiece(Piece piece){
-        this.piece=piece;
-        if(piece==null){
-            setGraphic(null);
-        }
-        else{
-            setGraphic(piece.getImageView());
-        }
+        this.piece = piece;
     }
 
     public Piece getPiece() {
@@ -68,12 +61,12 @@ public class ChessSpot extends Label {
     }
 
     public void onDragDetected(MouseEvent e){
-        if(piece!= null && piece.canMove()){
+        if(piece!=null){
             Dragboard dragboard = startDragAndDrop(TransferMode.MOVE);
             dragboard.setDragView(piece.getImage());
 
             ClipboardContent clipboardContent = new ClipboardContent();
-            clipboardContent.put(Piece.dataFormatPiece,piece);
+            clipboardContent.put(Piece.getDataFormat(),piece);
             dragboard.setContent(clipboardContent);
             ArrayList<ChessSpot> moveAbleFields = GraphicsConnector.getMoveAbleSpots(x,y); //TODO NEEDS TO BE ADAPTED TO A BACK END METHOD THAT RETURNS ALL AVAILABLE POSITIONS TO WHICH THE PIECE CAN MOVE.
             for(ChessSpot chessSpot : moveAbleFields){
@@ -89,7 +82,7 @@ public class ChessSpot extends Label {
     }
 
     public void onDragOver(DragEvent e){
-        if (e.getDragboard().hasContent(Piece.dataFormatPiece)) {
+        if (e.getDragboard().hasContent(Piece.getDataFormat())) {
             e.acceptTransferModes(TransferMode.MOVE);
         }
         e.consume();
@@ -97,8 +90,8 @@ public class ChessSpot extends Label {
 
     public void onDragDropped(DragEvent e){ //TODO update to the new UML version
         Dragboard dragboard = e.getDragboard();
-        if(dragboard.hasContent(Piece.dataFormatPiece)){
-            Piece piece = (Piece) dragboard.getContent(Piece.dataFormatPiece);
+        if(dragboard.hasContent(Piece.getDataFormat())){
+            Piece piece = (Piece) dragboard.getContent(Piece.getDataFormat());
             ChessSpot originalSpot = board.getChessSpot(piece.getX(),piece.getY());
             Piece actualPiece = originalSpot.getPiece();
             originalSpot.setPiece(null);
@@ -110,8 +103,8 @@ public class ChessSpot extends Label {
 
     public void onDragDone(DragEvent e){
         Dragboard dragboard = e.getDragboard();
-        if(dragboard.hasContent(Piece.dataFormatPiece)){
-            Piece piece = (Piece) dragboard.getContent(Piece.dataFormatPiece);
+        if(dragboard.hasContent(Piece.getDataFormat())){
+            Piece piece = (Piece) dragboard.getContent(Piece.getDataFormat());
             ArrayList<ChessSpot> moveAbleFields = GraphicsConnector.getMoveAbleSpots(x,y); //TODO NEEDS TO BE ADAPTED TO A BACK END METHOD THAT RETURNS ALL AVAILABLE POSITIONS TO WHICH THE PIECE CAN MOVE.
             for(ChessSpot chessSpot : moveAbleFields){
                 chessSpot.setBackgroundColor();
