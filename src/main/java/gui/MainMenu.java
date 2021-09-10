@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -23,11 +24,31 @@ public class MainMenu extends BorderPane {
         vBox.setAlignment(Pos.CENTER);
         setCenter(vBox);
 
-        HBox hBox = new HBox();
-        hBox.setPadding(new Insets(15, 12, 15, 12));
-        hBox.setAlignment(Pos.CENTER);
+        HBox hBoxLabels = new HBox();
+        hBoxLabels.setPadding(new Insets(15,12,15,12));
+        hBoxLabels.setAlignment(Pos.CENTER);
+
+        Label labelPlayerOne = new Label("Player 1");
+        labelPlayerOne.setAlignment(Pos.CENTER);
+        labelPlayerOne.setFont(new Font("Verdana", 30));
+        labelPlayerOne.setMinSize(188,58);
+        labelPlayerOne.setMaxSize(188,58);
+
+        Label labelPlayerTwo = new Label("Player 2");
+        labelPlayerTwo.setAlignment(Pos.CENTER);
+        labelPlayerTwo.setFont(new Font("Verdana", 30));
+        labelPlayerTwo.setMinSize(188,58);
+        labelPlayerTwo.setMaxSize(188,58);
+
+        hBoxLabels.getChildren().addAll(labelPlayerOne,labelPlayerTwo);
+
+        HBox hBoxChoiceBox = new HBox();
+        hBoxChoiceBox.setPadding(new Insets(15, 12, 15, 12));
+        hBoxChoiceBox.setAlignment(Pos.CENTER);
 
         ChoiceBox<String> playerOneChoiceBox = new ChoiceBox<>();
+        playerOneChoiceBox.setMinSize(188,58);
+        playerOneChoiceBox.setMaxSize(188,58);
         playerOneChoiceBox.setStyle("-fx-font: 30px \"Verdana\";");
         playerOneChoiceBox.getItems().add("Human");
         playerOneChoiceBox.getItems().add("AI");
@@ -37,6 +58,8 @@ public class MainMenu extends BorderPane {
         });
 
         ChoiceBox<String> playerTwoChoiceBox = new ChoiceBox<>();
+        playerTwoChoiceBox.setMinSize(188,58);
+        playerTwoChoiceBox.setMaxSize(188,58);
         playerTwoChoiceBox.setStyle("-fx-font: 30px \"Verdana\";");
         playerTwoChoiceBox.getItems().add("Human");
         playerTwoChoiceBox.getItems().add("AI");
@@ -45,7 +68,7 @@ public class MainMenu extends BorderPane {
             System.out.println(playerTwoChoiceBox.getSelectionModel().getSelectedItem());
         });
 
-        hBox.getChildren().addAll(playerOneChoiceBox, playerTwoChoiceBox);
+        hBoxChoiceBox.getChildren().addAll(playerOneChoiceBox, playerTwoChoiceBox);
 
         Button confirmationButton = new Button("confirm");
         confirmationButton.setFont(new Font("Verdana", 30));
@@ -56,6 +79,6 @@ public class MainMenu extends BorderPane {
             }
         });
 
-        vBox.getChildren().addAll(hBox, confirmationButton);
+        vBox.getChildren().addAll(hBoxLabels, hBoxChoiceBox, confirmationButton);
     }
 }
