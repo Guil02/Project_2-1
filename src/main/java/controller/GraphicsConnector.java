@@ -79,4 +79,16 @@ public class GraphicsConnector {
     public boolean canMove(int initialX, int initialY, int finalX, int finalY){
         return true;
     }
+
+
+    /**
+     * checks whether there is a piece locate on the field with the provided coordinates.
+     *
+     * @param x x coordinate of a field
+     * @param y y coordinate of a field
+     * @return whether there is a piece on that field
+     */
+    public boolean hasPiece(int x, int y){
+        return false;
+    }
 }
