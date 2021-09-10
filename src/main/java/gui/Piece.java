@@ -8,48 +8,29 @@ import java.io.Serializable;
 
 public class Piece implements Serializable {
     private static final DataFormat dataFormat = new DataFormat("Piece");
-    private Image image;
     private int x;
     private int y;
 
 
-    public Piece() {
-    }
-
-    public void setXY(int x, int y) {
-        this.x = this.x;
-        this.y = this.y;
+    public Piece(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 
     public static DataFormat getDataFormat() {
         return dataFormat;
     }
 
-    public Image getImage() {
-        return image;
-    }
-
-    public void setImage(Image image) {
-        this.image = image;
-    }
-
-    public ImageView getImageView() {
-        return new ImageView(image);
+    public void setXY(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 
     public int getY() {
         return y;
     }
 
-    public void setY(int y) {
-        this.y = y;
-    }
-
     public int getX() {
         return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
     }
 }

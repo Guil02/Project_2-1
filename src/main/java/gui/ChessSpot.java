@@ -3,6 +3,8 @@ package gui;
 import controller.GraphicsConnector;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 
 import java.util.ArrayList;
@@ -65,8 +67,22 @@ public class ChessSpot extends Label {
         setStyle(moveColor);
     }
 
-    public void setPiece(Piece piece){
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setPiece(Piece piece) {
         this.piece = piece;
+        if (piece == null) {
+            setGraphic(null);
+        } else {
+            Image image = new Image(graphicsConnector.getImage(x, y), 100, 100, false, false);
+            setGraphic(new ImageView(image));
+        }
     }
 
     public Piece getPiece() {
@@ -81,19 +97,19 @@ public class ChessSpot extends Label {
      * @param e a mouse event
      */
     public void onDragDetected(MouseEvent e){
-        if(piece!=null){
+        if(piece!=null) {
             Dragboard dragboard = startDragAndDrop(TransferMode.MOVE);
-            dragboard.setDragView(piece.getImage());
+            Image image = new Image(graphicsConnector.getImage(piece.getX(), piece.getY()), 100, 100, false, false);
+            dragboard.setDragView(image);
 
             ClipboardContent clipboardContent = new ClipboardContent();
-            clipboardContent.put(Piece.getDataFormat(),piece);
+            clipboardContent.put(Piece.getDataFormat(), piece);
             dragboard.setContent(clipboardContent);
             ArrayList<ChessSpot> moveAbleFields = getMoveAbleSpotsArrayList();
-            for(ChessSpot chessSpot : moveAbleFields){
-                if(chessSpot.getPiece()!=null){
+            for (ChessSpot chessSpot : moveAbleFields) {
+                if (chessSpot.getPiece() != null) {
                     chessSpot.setAttackColor();
-                }
-                else{
+                } else {
                     chessSpot.setMoveColor();
                 }
             }
@@ -120,15 +136,25 @@ public class ChessSpot extends Label {
      *
      * @param e a mouse event
      */
-    public void onDragDropped(DragEvent e){ //TODO update to the new UML version
+    public void onDragDropped(DragEvent e) {
         Dragboard dragboard = e.getDragboard();
-        if(dragboard.hasContent(Piece.getDataFormat())){
+
+        // check if the drag board was actually dragging a piece
+        if (dragboard.hasContent(Piece.getDataFormat())) {
+
             Piece piece = (Piece) dragboard.getContent(Piece.getDataFormat());
-            ChessSpot originalSpot = board.getChessSpot(piece.getX(),piece.getY());
+            ChessSpot originalSpot = board.getChessSpot(piece.getX(), piece.getY());
             Piece actualPiece = originalSpot.getPiece();
-            originalSpot.setPiece(null);
-            actualPiece.setXY(x,y);
-            setPiece(actualPiece);
+
+            if (graphicsConnector.canMove(piece.getX(), piece.getY(), x, y)) {
+
+                originalSpot.setPiece(null);
+                actualPiece.setXY(x, y);
+                setPiece(actualPiece);
+                graphicsConnector.doMove(piece.getX(), piece.getY(), x, y);
+
+            }
+
             e.consume();
         }
     }
@@ -142,15 +168,18 @@ public class ChessSpot extends Label {
     public void onDragDone(DragEvent e){
         Dragboard dragboard = e.getDragboard();
         if(dragboard.hasContent(Piece.getDataFormat())){
-            Piece piece = (Piece) dragboard.getContent(Piece.getDataFormat());
-            ArrayList<ChessSpot> moveAbleFields = getMoveAbleSpotsArrayList();
-            for(ChessSpot chessSpot : moveAbleFields){
+            for (ChessSpot chessSpot : board.getBoard()) {
                 chessSpot.setBackgroundColor();
             }
             e.consume();
         }
     }
 
+
+    /**
+     * @return returns an arraylist of all the possible moves for the piece that is located
+     * on the spot represented by this object.
+     */
     public ArrayList<ChessSpot> getMoveAbleSpotsArrayList(){
         ArrayList<Integer> availableMovements = graphicsConnector.getMoveAbleSpots(x,y);
         ArrayList<ChessSpot> spots = new ArrayList<>();
