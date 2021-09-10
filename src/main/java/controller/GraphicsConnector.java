@@ -64,4 +64,19 @@ public class GraphicsConnector {
     public String getImage(int x, int y){
         return null;
     }
+
+    /**
+     * I want this method to check for me if the move attempted is legal.
+     * the piece will start in the position (initialX, initialY) with this the piece
+     * can be identified. Then it tries to move to (finalX, finalY).
+     *
+     * @param initialX initial x coordinate of piece
+     * @param initialY initial y coordinate of piece
+     * @param finalX final x coordinate of piece
+     * @param finalY final y coordinate of piece
+     * @return returns whether the move that is attempted is legal.
+     */
+    public boolean canMove(int initialX, int initialY, int finalX, int finalY){
+        return true;
+    }
 }
