@@ -1,5 +1,6 @@
 package gui;
 
+import controller.GraphicsConnector;
 import javafx.scene.layout.GridPane;
 
 /**
@@ -7,15 +8,17 @@ import javafx.scene.layout.GridPane;
  */
 public class ChessBoard extends GridPane {
     ChessSpot[] board = new ChessSpot[64];
+    GraphicsConnector graphicsConnector;
 
     /**
      * a constructor that will create a 8x8 board for the chess game to take place on
      */
-    public ChessBoard() {
+    public ChessBoard(GraphicsConnector graphicsConnector) {
+        this.graphicsConnector = graphicsConnector;
         for(int i = 0; i<64; i++){
             int x = i%8;
             int y = (i-x)/8;
-            ChessSpot spot = new ChessSpot(this,x,y);
+            ChessSpot spot = new ChessSpot(graphicsConnector,this,x,y);
             add(spot,x,y);
             board[i]=spot;
         }
@@ -39,5 +42,9 @@ public class ChessBoard extends GridPane {
     public ChessSpot getChessSpot(int x, int y){
         int index = y*8+x;
         return getBoard()[index];
+    }
+
+    public ChessSpot getChessSpot(int oneDimension){
+        return getBoard()[oneDimension];
     }
 }
