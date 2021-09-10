@@ -7,6 +7,9 @@ import javafx.scene.input.*;
 
 import java.util.ArrayList;
 
+/**
+ * the class that represents every single square on the chess board.
+ */
 public class ChessSpot extends Label {
     private Piece piece;
     private int x;
@@ -18,8 +21,11 @@ public class ChessSpot extends Label {
     private static final String moveColor = "-fx-background-color: #23a94d;";
 
 
-
-
+    /**
+     * @param board the board that represents the chessboard on which this spot is located
+     * @param x the x coordinate at which it is located on the chess board.
+     * @param y the y coordinate at which it is located on the chess board.
+     */
     public ChessSpot(ChessBoard board, int x, int y) {
         this.board = board;
         this.x = x;
@@ -35,6 +41,11 @@ public class ChessSpot extends Label {
 
     }
 
+    /**
+     * method that sets the colors of the chessboard, the color can be changed
+     * by changing the 'color1' and 'color2' variables this will then change
+     * the color of the squares of the chessboard
+     */
     public void setBackgroundColor(){
         if((x+y)%2==0){
             setStyle(color1);
@@ -60,6 +71,13 @@ public class ChessSpot extends Label {
         return piece;
     }
 
+    /**
+     * the method that dictates what happens when a click and drag behaviour is detected
+     * will color all the spots the piece can move to either an attacking color or a simple
+     * moveable color.
+     *
+     * @param e a mouse event
+     */
     public void onDragDetected(MouseEvent e){
         if(piece!=null){
             Dragboard dragboard = startDragAndDrop(TransferMode.MOVE);
@@ -81,6 +99,12 @@ public class ChessSpot extends Label {
         }
     }
 
+    /**
+     * a method that dictates what happens when a piece is dragged over a chessSpot,
+     * specifically it says that it is possible to drag a piece over it.
+     *
+     * @param e a mouse event
+     */
     public void onDragOver(DragEvent e){
         if (e.getDragboard().hasContent(Piece.getDataFormat())) {
             e.acceptTransferModes(TransferMode.MOVE);
@@ -88,6 +112,12 @@ public class ChessSpot extends Label {
         e.consume();
     }
 
+    /**
+     * a method that dictates what happens when a drag is released above a chessSpot,
+     * and then decides how everything should be handled.
+     *
+     * @param e a mouse event
+     */
     public void onDragDropped(DragEvent e){ //TODO update to the new UML version
         Dragboard dragboard = e.getDragboard();
         if(dragboard.hasContent(Piece.getDataFormat())){
@@ -101,6 +131,12 @@ public class ChessSpot extends Label {
         }
     }
 
+    /**
+     * a method what dictates what happens when there is not dragging going on anymore.
+     * it will recolor all the spots to their original color.
+     *
+     * @param e a mouse event
+     */
     public void onDragDone(DragEvent e){
         Dragboard dragboard = e.getDragboard();
         if(dragboard.hasContent(Piece.getDataFormat())){
