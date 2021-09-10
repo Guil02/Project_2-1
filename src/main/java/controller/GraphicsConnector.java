@@ -47,4 +47,21 @@ public class GraphicsConnector {
     public void doMove(int initialX, int initialY, int finalX, int finalY){
 
     }
+
+
+    /**
+     * I want this method to return the url of the image of the piece located at that spot
+     * so say it is a white king, you return "gui/white_king.png".
+     * this String can easily automatically be build by using string concatenation.
+     * e.g.: String URL = "gui/"+color+"_"+pieceName+".png";
+     * where color would be "white" or "black".
+     * and pieceName "king", "queen" etc.
+     *
+     * @param x x coordinate of the piece
+     * @param y y coordinate of the piece
+     * @return the URL of the image.
+     */
+    public String getImage(int x, int y){
+        return null;
+    }
 }
