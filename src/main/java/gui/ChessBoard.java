@@ -47,4 +47,13 @@ public class ChessBoard extends GridPane {
     public ChessSpot getChessSpot(int oneDimension){
         return getBoard()[oneDimension];
     }
+
+    public void initializeBoard(){
+        for(ChessSpot chessSpot : getBoard()){
+            if(graphicsConnector.hasPiece(chessSpot.getX(), chessSpot.getY())){
+                Piece piece = new Piece(chessSpot.getX(), chessSpot.getY());
+                chessSpot.setPiece(piece);
+            }
+        }
+    }
 }

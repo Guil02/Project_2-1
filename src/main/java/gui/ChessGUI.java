@@ -13,18 +13,23 @@ public class ChessGUI extends Application {
     public static final int HEIGHT = 800;
     private Stage stage;
     private Scene gameScene;
-    public static void main(String[] args) {
+    private static GraphicsConnector graphicsConnector;
+
+
+    public void launchGUI(GraphicsConnector graphicsConnector) {
+        ChessGUI.graphicsConnector = graphicsConnector;
+        String[] args = new String[0];
         launch(args);
     }
 
     @Override
     public void start(Stage stage) {
-        GraphicsConnector graphicsConnector = new GraphicsConnector();
         this.stage=stage;
         MainMenu mainMenu = new MainMenu(this);
         Scene startMenu = new Scene(mainMenu,WIDTH,HEIGHT);
 
         ChessBoard board = new ChessBoard(graphicsConnector);
+        board.initializeBoard();
 
         GridPane gridPane = new GridPane();
         gridPane.add(board,1,1,8,8);
@@ -41,6 +46,7 @@ public class ChessGUI extends Application {
     }
 
     public void startGame(int playerOne, int PlayerTwo){
+        graphicsConnector.setPlayers(playerOne, PlayerTwo);
         stage.setScene(gameScene);
     }
 }
