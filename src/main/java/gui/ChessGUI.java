@@ -1,5 +1,6 @@
 package gui;
 
+import controller.GraphicsConnector;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -18,14 +19,12 @@ public class ChessGUI extends Application {
 
     @Override
     public void start(Stage stage) {
-
+        GraphicsConnector graphicsConnector = new GraphicsConnector();
         this.stage=stage;
         MainMenu mainMenu = new MainMenu(this);
         Scene startMenu = new Scene(mainMenu,WIDTH,HEIGHT);
 
-//        FENReader f = new FENReader();
-//        ChessBoard board = f.readInFEN(initialFEN);
-        ChessBoard board = new ChessBoard();
+        ChessBoard board = new ChessBoard(graphicsConnector);
 
         GridPane gridPane = new GridPane();
         gridPane.add(board,1,1,8,8);

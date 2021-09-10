@@ -15,6 +15,7 @@ public class ChessSpot extends Label {
     private int x;
     private int y;
     private ChessBoard board;
+    private GraphicsConnector graphicsConnector;
     private static final String color1 = "-fx-background-color: #4a4b3e;";
     private static final String color2 = "-fx-background-color: #2f7244;";
     private static final String attackColor = "-fx-background-color: #bd2b2b;";
@@ -26,7 +27,8 @@ public class ChessSpot extends Label {
      * @param x the x coordinate at which it is located on the chess board.
      * @param y the y coordinate at which it is located on the chess board.
      */
-    public ChessSpot(ChessBoard board, int x, int y) {
+    public ChessSpot(GraphicsConnector graphicsConnector, ChessBoard board, int x, int y) {
+        this.graphicsConnector=graphicsConnector;
         this.board = board;
         this.x = x;
         this.y = y;
@@ -86,7 +88,7 @@ public class ChessSpot extends Label {
             ClipboardContent clipboardContent = new ClipboardContent();
             clipboardContent.put(Piece.getDataFormat(),piece);
             dragboard.setContent(clipboardContent);
-            ArrayList<ChessSpot> moveAbleFields = GraphicsConnector.getMoveAbleSpots(x,y); //TODO NEEDS TO BE ADAPTED TO A BACK END METHOD THAT RETURNS ALL AVAILABLE POSITIONS TO WHICH THE PIECE CAN MOVE.
+            ArrayList<ChessSpot> moveAbleFields = getMoveAbleSpotsArrayList();
             for(ChessSpot chessSpot : moveAbleFields){
                 if(chessSpot.getPiece()!=null){
                     chessSpot.setAttackColor();
@@ -141,11 +143,20 @@ public class ChessSpot extends Label {
         Dragboard dragboard = e.getDragboard();
         if(dragboard.hasContent(Piece.getDataFormat())){
             Piece piece = (Piece) dragboard.getContent(Piece.getDataFormat());
-            ArrayList<ChessSpot> moveAbleFields = GraphicsConnector.getMoveAbleSpots(x,y); //TODO NEEDS TO BE ADAPTED TO A BACK END METHOD THAT RETURNS ALL AVAILABLE POSITIONS TO WHICH THE PIECE CAN MOVE.
+            ArrayList<ChessSpot> moveAbleFields = getMoveAbleSpotsArrayList();
             for(ChessSpot chessSpot : moveAbleFields){
                 chessSpot.setBackgroundColor();
             }
             e.consume();
         }
+    }
+
+    public ArrayList<ChessSpot> getMoveAbleSpotsArrayList(){
+        ArrayList<Integer> availableMovements = graphicsConnector.getMoveAbleSpots(x,y);
+        ArrayList<ChessSpot> spots = new ArrayList<>();
+        for(int pos : availableMovements){
+            spots.add(board.getChessSpot(pos));
+        }
+        return spots;
     }
 }
