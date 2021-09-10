@@ -59,7 +59,7 @@ public class GraphicsConnector {
      *
      * @param x x coordinate of the piece
      * @param y y coordinate of the piece
-     * @return the URL of the image.
+     * @return the URL of the image. return null if the spot is empty
      */
     public String getImage(int x, int y){
         return null;
