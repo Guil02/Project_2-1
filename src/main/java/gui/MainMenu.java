@@ -14,6 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
 public class MainMenu extends BorderPane {
+    public static final double EMPTY_SPACE_PERCENTAGE = 0.35;
     private ChessGUI chessGUI;
     private int playerOne = 1;
     private int playerTwo = 1;
@@ -23,7 +24,8 @@ public class MainMenu extends BorderPane {
         setStyle("-fx-background-color: #336699;");
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.CENTER);
-        setCenter(vBox);
+        VBox topLayerVbox = new VBox();
+
 
         HBox hBoxLabels = new HBox();
         hBoxLabels.setPadding(new Insets(15,12,15,12));
@@ -83,9 +85,16 @@ public class MainMenu extends BorderPane {
         //TODO adapt to make everything change size correctly.
         MenuBar menuBar = new MenuBar();
         DisplayMenu displayMenu = new DisplayMenu(chessGUI);
-        menuBar.getMenus().add(displayMenu);
+        MusicMenu musicMenu = new MusicMenu(chessGUI);
+        menuBar.getMenus().addAll(displayMenu, musicMenu);
 
-        vBox.getChildren().addAll(menuBar, hBoxLabels, hBoxChoiceBox, confirmationButton);
+        Label emptySpace = new Label();
+        emptySpace.setMinSize(chessGUI.getWidth()* EMPTY_SPACE_PERCENTAGE, chessGUI.getHeight()* EMPTY_SPACE_PERCENTAGE);
+        emptySpace.setMaxSize(chessGUI.getWidth()* EMPTY_SPACE_PERCENTAGE, chessGUI.getHeight()* EMPTY_SPACE_PERCENTAGE);
 
+
+        vBox.getChildren().addAll(hBoxLabels, hBoxChoiceBox, confirmationButton);
+        topLayerVbox.getChildren().addAll(menuBar, emptySpace,vBox);
+        setCenter(topLayerVbox);
     }
 }
