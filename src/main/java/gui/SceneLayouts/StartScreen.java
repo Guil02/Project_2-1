@@ -1,5 +1,8 @@
-package gui;
+package gui.SceneLayouts;
 
+import gui.ChessGUI;
+import gui.Menus.DisplayMenu;
+import gui.Menus.MusicMenu;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -13,13 +16,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
-public class MainMenu extends BorderPane {
+public class StartScreen extends BorderPane {
     public static final double EMPTY_SPACE_PERCENTAGE = 0.35;
     private ChessGUI chessGUI;
     private int playerOne = 1;
     private int playerTwo = 1;
 
-    public MainMenu(ChessGUI chessGUI) {
+    public StartScreen(ChessGUI chessGUI) {
         this.chessGUI = chessGUI;
         setStyle("-fx-background-color: #336699;");
         VBox vBox = new VBox();

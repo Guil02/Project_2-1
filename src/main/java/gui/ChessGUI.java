@@ -1,6 +1,8 @@
 package gui;
 
 import controller.GraphicsConnector;
+import gui.SceneLayouts.GameScreen;
+import gui.SceneLayouts.StartScreen;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -31,7 +33,7 @@ public class ChessGUI extends Application {
     public void start(Stage stage) {
         music();
         this.stage=stage;
-        MainMenu mainMenu = new MainMenu(this);
+        StartScreen mainMenu = new StartScreen(this);
         Scene startMenu = new Scene(mainMenu, width, height);
 
         ChessBoard board = new ChessBoard(graphicsConnector, this);
