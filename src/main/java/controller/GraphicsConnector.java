@@ -1,7 +1,5 @@
 package controller;
 
-import gui.ChessSpot;
-
 import java.util.ArrayList;
 
 public class GraphicsConnector {

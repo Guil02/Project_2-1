@@ -13,6 +13,10 @@ import java.util.ArrayList;
  * the class that represents every single square on the chess board.
  */
 public class ChessSpot extends Label {
+    private static final double DIVIDER = 8.0;
+    public static final double PERCENTAGE_FILLED = 0.7;
+    private double width;
+    private double height;
     private Piece piece;
     private int x;
     private int y;
@@ -32,10 +36,12 @@ public class ChessSpot extends Label {
     public ChessSpot(GraphicsConnector graphicsConnector, ChessBoard board, int x, int y) {
         this.graphicsConnector=graphicsConnector;
         this.board = board;
+        width = board.getWidthFromChessGUI()* PERCENTAGE_FILLED;
+        height = board.getHeightFromChessGUI()* PERCENTAGE_FILLED;
         this.x = x;
         this.y = y;
-        setMinSize(ChessGUI.WIDTH /8.0,ChessGUI.HEIGHT /8.0);
-        setMaxSize(ChessGUI.WIDTH /8.0,ChessGUI.HEIGHT /8.0);
+        setMinSize(width / DIVIDER, height / DIVIDER);
+        setMaxSize(width / DIVIDER, height / DIVIDER);
         setAlignment(Pos.CENTER);
         setBackgroundColor();
         setOnDragDetected(this::onDragDetected);
@@ -80,7 +86,23 @@ public class ChessSpot extends Label {
         if (piece == null) {
             setGraphic(null);
         } else {
-            Image image = new Image(graphicsConnector.getImage(x, y), 100, 100, false, false);
+            Image image = new Image(graphicsConnector.getImage(x, y), width /DIVIDER, height /DIVIDER, false, false);
+            setGraphic(new ImageView(image));
+        }
+    }
+
+    /**
+     * updates the size of everything when the display size has changed
+     */
+    public void updateGraphic(){
+        width = board.getWidthFromChessGUI()* PERCENTAGE_FILLED;
+        height = board.getHeightFromChessGUI()* PERCENTAGE_FILLED;
+        setMinSize(width / DIVIDER, height / DIVIDER);
+        setMaxSize(width / DIVIDER, height / DIVIDER);
+        if (piece == null) {
+            setGraphic(null);
+        } else {
+            Image image = new Image(graphicsConnector.getImage(x, y), width /DIVIDER, height /DIVIDER, false, false);
             setGraphic(new ImageView(image));
         }
     }
