@@ -7,6 +7,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -79,6 +80,12 @@ public class MainMenu extends BorderPane {
             }
         });
 
-        vBox.getChildren().addAll(hBoxLabels, hBoxChoiceBox, confirmationButton);
+        //TODO adapt to make everything change size correctly.
+        MenuBar menuBar = new MenuBar();
+        DisplayMenu displayMenu = new DisplayMenu(chessGUI);
+        menuBar.getMenus().add(displayMenu);
+
+        vBox.getChildren().addAll(menuBar, hBoxLabels, hBoxChoiceBox, confirmationButton);
+
     }
 }

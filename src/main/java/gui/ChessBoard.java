@@ -7,14 +7,16 @@ import javafx.scene.layout.GridPane;
  * is the layout manager for the chess game itself
  */
 public class ChessBoard extends GridPane {
-    ChessSpot[] board = new ChessSpot[64];
-    GraphicsConnector graphicsConnector;
+    private ChessSpot[] board = new ChessSpot[64];
+    private GraphicsConnector graphicsConnector;
+    private ChessGUI chessGUI;
 
     /**
      * a constructor that will create a 8x8 board for the chess game to take place on
      */
-    public ChessBoard(GraphicsConnector graphicsConnector) {
+    public ChessBoard(GraphicsConnector graphicsConnector, ChessGUI chessGUI) {
         this.graphicsConnector = graphicsConnector;
+        this.chessGUI = chessGUI;
         for(int i = 0; i<64; i++){
             int x = i%8;
             int y = (i-x)/8;
@@ -55,5 +57,19 @@ public class ChessBoard extends GridPane {
                 chessSpot.setPiece(piece);
             }
         }
+    }
+
+    public void updateGraphic(){
+        for(ChessSpot chessSpot : getBoard()){
+            chessSpot.updateGraphic();
+        }
+    }
+
+    public double getWidthFromChessGUI(){
+        return chessGUI.getWidth();
+    }
+
+    public double getHeightFromChessGUI(){
+        return chessGUI.getHeight();
     }
 }
