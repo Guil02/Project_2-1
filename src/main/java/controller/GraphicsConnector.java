@@ -1,6 +1,7 @@
 package controller;
 
 import model.Board;
+import model.BoardUpdater;
 import model.pieces.Piece;
 
 import java.util.ArrayList;
@@ -9,13 +10,17 @@ public class GraphicsConnector {
     public GraphicsConnector(GameRunner gr) {
         this.gr = gr;
         board = gr.getBoard();
+        this.boardUpdater = new BoardUpdater(board);
     }
 
 
     private final GameRunner gr;
     private Board board;
+    private BoardUpdater boardUpdater;
 
     private final char EMPTY_FIELD_CHAR = '-';
+
+    //pls test this not sure it's correct
     /**
      * I want this method to return me an arraylist (can be another data structure)
      * of the 1 dimensional coordinates of all the fields to which the piece that is
@@ -25,8 +30,23 @@ public class GraphicsConnector {
      * @param y y coordinate of a piece
      * @return an arraylist that contains all the 1 dimensional coordinates of the spots a piece can move to.
      */
-    public ArrayList<Integer> getMoveAbleSpots(int x, int y){
-        return new ArrayList<>();
+    public boolean[] getMoveAbleSpots(int x, int y){
+        Piece[][] piecesArray = board.getField();
+        Piece piece = piecesArray[x][y];
+        boolean[][] validMoves = piece.validMoves();
+        boolean[] validMoves1D = new boolean[64];
+
+        int xBoard = 0;
+        int yBoard = 0;
+        for(int i=0; i<validMoves1D.length; i++){
+
+            validMoves1D [i] = validMoves[xBoard][yBoard];
+            xBoard++;
+            if((i+1)%8==0){
+                yBoard++;
+            }
+        }
+        return validMoves1D;
     }
 
     /**
@@ -53,7 +73,7 @@ public class GraphicsConnector {
      * @param finalY the final y coordinate of the piece that is moved
      */
     public void doMove(int initialX, int initialY, int finalX, int finalY){
-        board.
+        boardUpdater.movePiece(initialX, initialY, finalX, finalY);
     }
 
 
