@@ -2,8 +2,6 @@ package model;
 
 import model.pieces.Piece;
 
-import java.util.Arrays;
-
 public class Board {
 
 

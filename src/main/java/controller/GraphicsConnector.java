@@ -1,7 +1,7 @@
 package controller;
 
-import javafx.scene.image.Image;
 import model.Board;
+import model.pieces.Piece;
 
 import java.util.ArrayList;
 
@@ -72,24 +72,34 @@ public class GraphicsConnector {
     public String getImage(int x, int y){
         char field = board.getCharOfField(x,y);
         switch(field){
-            case ""
+            case 'b':
+                return "gui/black_bishop.png";
+            case 'k':
+                return "gui/black_king.png";
+            case 'n':
+                return "gui/black_knight.png";
+            case 'p':
+                return "gui/black_pawn.png";
+            case 'q':
+                return "gui/black_queen.png";
+            case 'r':
+                return "gui/black_rook.png";
+            case 'B':
+                return "gui/white_bishop.png";
+            case 'K':
+                return "gui/white_king.png";
+            case 'N':
+                return "gui/white_knight.png";
+            case 'P':
+                return "gui/white_pawn.png";
+            case 'Q':
+                return "gui/white_queen.png";
+            case 'R':
+                return "gui/white_rook.png";
         }
-
+        return "NO PIECE FOUND";
     }
 
-    Image blackBishop = new Image("gui/black_bishop.png");
-    Image blackKing = new Image("gui/black_king.png");
-    Image blackKnight = new Image("gui/black_knight.png");
-    Image blackPawn = new Image("gui/black_pawn.png");
-    Image blackQueen = new Image("gui/black_queen.png");
-    Image blackRook = new Image("gui/black_rook.png");
-
-    Image whiteBishop = new Image("gui/white_bishop.png");
-    Image whiteKing = new Image("gui/white_king.png");
-    Image whiteKnight = new Image("gui/white_knight.png");
-    Image whitePawn = new Image("gui/white_pawn.png");
-    Image whiteQueen = new Image("gui/white_queen.png");
-    Image whiteRook = new Image("gui/white_rook.png");
 
     /**
      * I want this method to check for me if the move attempted is legal.
@@ -103,7 +113,11 @@ public class GraphicsConnector {
      * @return returns whether the move that is attempted is legal.
      */
     public boolean canMove(int initialX, int initialY, int finalX, int finalY){
-        return true;
+        Piece[][] piecesArray = board.getField();
+        Piece piece = piecesArray[initialX][initialY];
+        boolean[][] validMoves = piece.validMoves();
+
+        return validMoves[finalX][finalY];
     }
 
 

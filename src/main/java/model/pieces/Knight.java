@@ -1,6 +1,8 @@
+package model.pieces;
+
 import model.Board;
 
-public class Knight extends ChessPieces {
+public class Knight extends Piece {
 	
 	public boolean[][] validMoves() {
 		

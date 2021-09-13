@@ -1,7 +1,9 @@
+package model.pieces;
+
 import model.Board;
 
 //TODO when board created (all positions of all pieces known) --> move 1 in diagonal to eat the opponent piece
-public class Pawn extends ChessPieces{
+public class Pawn extends Piece {
 	
 	public boolean[][] validMoves() {
 		
