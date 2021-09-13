@@ -6,7 +6,10 @@ import java.util.Arrays;
 
 public class Board {
 
+
     private Piece[][] boardModel;
+
+    public final static int BOARDSIZE = 8;
 
     public Board() {
         boardModel = new Piece[8][8];

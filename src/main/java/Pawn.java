@@ -1,3 +1,5 @@
+import model.Board;
+
 //TODO when board created (all positions of all pieces known) --> move 1 in diagonal to eat the opponent piece
 public class Pawn extends ChessPieces{
 	

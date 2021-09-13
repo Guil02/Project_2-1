@@ -1,3 +1,4 @@
+import model.Board;
 
 public class Rock extends ChessPieces {
 	

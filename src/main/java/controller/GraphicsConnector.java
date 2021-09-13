@@ -69,7 +69,9 @@ public class GraphicsConnector {
      * @return the URL of the image. return null if the spot is empty
      */
     public String getImage(int x, int y){
-        return null;
+        char field = board.getCharOfField(x,y);
+
+
     }
 
     /**

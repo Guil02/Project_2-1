@@ -26,4 +26,5 @@ public abstract class Piece {
     protected void setPieceChar(char pieceChar) {
         this.pieceChar = pieceChar;
     }
+
 }

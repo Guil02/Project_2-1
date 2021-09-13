@@ -1,3 +1,4 @@
+import model.Board;
 
 public class Bishop extends ChessPieces {
 	public boolean[][] validMoves() {

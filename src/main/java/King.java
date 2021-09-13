@@ -1,5 +1,7 @@
 // TODO check if king doesn't put himself in danger
 
+import model.Board;
+
 public class King extends ChessPieces {
 	
 	public King(boolean color, int index_h, int index_v) {
