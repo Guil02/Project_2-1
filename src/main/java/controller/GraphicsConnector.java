@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.scene.image.Image;
 import model.Board;
 
 import java.util.ArrayList;
@@ -70,9 +71,25 @@ public class GraphicsConnector {
      */
     public String getImage(int x, int y){
         char field = board.getCharOfField(x,y);
-
+        switch(field){
+            case ""
+        }
 
     }
+
+    Image blackBishop = new Image("gui/black_bishop.png");
+    Image blackKing = new Image("gui/black_king.png");
+    Image blackKnight = new Image("gui/black_knight.png");
+    Image blackPawn = new Image("gui/black_pawn.png");
+    Image blackQueen = new Image("gui/black_queen.png");
+    Image blackRook = new Image("gui/black_rook.png");
+
+    Image whiteBishop = new Image("gui/white_bishop.png");
+    Image whiteKing = new Image("gui/white_king.png");
+    Image whiteKnight = new Image("gui/white_knight.png");
+    Image whitePawn = new Image("gui/white_pawn.png");
+    Image whiteQueen = new Image("gui/white_queen.png");
+    Image whiteRook = new Image("gui/white_rook.png");
 
     /**
      * I want this method to check for me if the move attempted is legal.
@@ -100,10 +117,7 @@ public class GraphicsConnector {
     public boolean hasPiece(int x, int y){
         char field = board.getCharOfField(x,y);
 
-        if(Character.compare(field, EMPTY_FIELD_CHAR)==0){
-            return false;
-        }
-        else return true;
+        return Character.compare(field, EMPTY_FIELD_CHAR) != 0;
     }
 }
 
