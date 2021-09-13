@@ -53,7 +53,7 @@ public class GraphicsConnector {
      * @param finalY the final y coordinate of the piece that is moved
      */
     public void doMove(int initialX, int initialY, int finalX, int finalY){
-
+        board.
     }
 
 

@@ -2,8 +2,16 @@ package model.pieces;
 
 import model.Board;
 
-public class Rock extends Piece {
-	
+public class Rook extends Piece {
+
+	public Rook(boolean white, int index_h, int index_v) {
+		super(white, index_h, index_v);
+		if(white){
+			setPieceChar('R');
+		}
+		else setPieceChar('r');
+	}
+
 	public boolean[][] validMoves() {
 		
 		boolean[][] valid_moves = new boolean[Board.BOARDSIZE][Board.BOARDSIZE];

@@ -4,6 +4,14 @@ import model.Board;
 
 public class Bishop extends Piece {
 
+	public Bishop(boolean white, int index_h, int index_v) {
+		super(white, index_h, index_v);
+		if(white){
+			setPieceChar('B');
+		}
+		else setPieceChar('b');
+	}
+
 	public boolean[][] validMoves() {
 			
 		boolean[][] valid_moves = new boolean[Board.BOARDSIZE][Board.BOARDSIZE];
@@ -27,8 +35,5 @@ public class Bishop extends Piece {
 			return valid_moves;
 	}
 
-	@Override
-	public char getPieceChar() {
-		return ;
-	}
+
 }

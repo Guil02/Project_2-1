@@ -4,10 +4,14 @@ import model.Board;
 
 public class King extends Piece {
 	
-	public King(boolean color, int index_h, int index_v) {
-		super(color, index_h, index_v);
+	public King(boolean white, int index_h, int index_v) {
+		super(white, index_h, index_v);
+		if(white){
+			setPieceChar('K');
+		}
+		else setPieceChar('k');
 	}
-	
+
 	public boolean[][] validMoves() {
 		
 		boolean[][] valid_moves = new boolean[Board.BOARDSIZE][Board.BOARDSIZE];

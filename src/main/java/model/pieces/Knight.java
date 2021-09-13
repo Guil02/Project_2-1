@@ -3,6 +3,14 @@ package model.pieces;
 import model.Board;
 
 public class Knight extends Piece {
+
+	public Knight(boolean white, int index_h, int index_v) {
+		super(white, index_h, index_v);
+		if(white){
+			setPieceChar('N');
+		}
+		else setPieceChar('n');
+	}
 	
 	public boolean[][] validMoves() {
 		

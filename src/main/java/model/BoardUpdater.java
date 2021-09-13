@@ -23,28 +23,28 @@ public class BoardUpdater {
      */
     public void fillGameStart() {
         // Black side
-        addPiece(0, 0, new RookPiece(false));
-        addPiece(0, 1, new KnightPiece(false));
-        addPiece(0, 2, new BishopPiece(false));
-        addPiece(0, 3, new QueenPiece(false));
-        addPiece(0, 4, new KingPiece(false));
-        addPiece(0, 5, new BishopPiece(false));
-        addPiece(0, 6, new KnightPiece(false));
-        addPiece(0, 7, new RookPiece(false));
+        addPiece(0, 0, new Rook(false));
+        addPiece(0, 1, new Knight(false));
+        addPiece(0, 2, new Bishop(false));
+        addPiece(0, 3, new Queen(false));
+        addPiece(0, 4, new King(false));
+        addPiece(0, 5, new Bishop(false));
+        addPiece(0, 6, new Knight(false));
+        addPiece(0, 7, new Rook(false));
         for (int i = 0; i < 8; i++)
-            addPiece(1, i, new PawnPiece(false));
+            addPiece(1, i, new Pawn(false));
 
         // White side
-        addPiece(7, 0, new RookPiece(true));
-        addPiece(7, 1, new KnightPiece(true));
-        addPiece(7, 2, new BishopPiece(true));
-        addPiece(7, 3, new KingPiece(true));
-        addPiece(7, 4, new QueenPiece(true));
-        addPiece(7, 5, new BishopPiece(true));
-        addPiece(7, 6, new KnightPiece(true));
-        addPiece(7, 7, new RookPiece(true));
+        addPiece(7, 0, new Rook(true));
+        addPiece(7, 1, new Knight(true));
+        addPiece(7, 2, new Bishop(true));
+        addPiece(7, 3, new King(true));
+        addPiece(7, 4, new Queen(true));
+        addPiece(7, 5, new Bishop(true));
+        addPiece(7, 6, new Knight(true));
+        addPiece(7, 7, new Rook(true));
         for (int i = 0; i < 8; i++)
-            addPiece(6, i, new PawnPiece(true));
+            addPiece(6, i, new Pawn(true));
     }
 
     /**
