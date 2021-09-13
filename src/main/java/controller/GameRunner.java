@@ -18,6 +18,8 @@ public class GameRunner {
         init();
     }
 
+
+
     public void init() {
         board = new Board();
         boardUpdater = new BoardUpdater(board);
@@ -41,5 +43,9 @@ public class GameRunner {
 
         // If check is okay, move piece to requested position
         boardUpdater.movePiece(xFrom, yFrom, xTo, yTo);
+    }
+
+    public Board getBoard() {
+        return board;
     }
 }
