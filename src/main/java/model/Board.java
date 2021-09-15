@@ -1,24 +1,17 @@
 package model;
 
-import model.pieces.Piece;
-
-import java.util.Arrays;
+import model.pieces.ChessPiece;
 
 public class Board {
 
-    /*
-    Indexes:
-
-
-    [0,0]
-     */
-    private Piece[][] boardModel;
+    private ChessPiece[][] boardModel;
+    private BoardUpdater boardUpdater;
 
     public Board() {
-        boardModel = new Piece[8][8];
+        boardModel = new ChessPiece[8][8];
     }
 
-    public Piece[][] getField() {
+    public ChessPiece[][] getField() {
         return boardModel;
     }
 
@@ -33,6 +26,14 @@ public class Board {
         }
 
 
+    }
+
+    public void setBoardUpdater(BoardUpdater boardUpdater) {
+        this.boardUpdater = boardUpdater;
+    }
+
+    public BoardUpdater getBoardUpdater() {
+        return boardUpdater;
     }
 
     public char getCharOfField(int x, int y) {

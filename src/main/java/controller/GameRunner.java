@@ -26,6 +26,7 @@ public class GameRunner {
 
         board = new Board();
         boardUpdater = new BoardUpdater(board);
+        board.setBoardUpdater(boardUpdater);
         boardUpdater.fillGameStart();
         board.printBoard();
 

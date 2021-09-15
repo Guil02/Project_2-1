@@ -23,12 +23,12 @@ public class BoardUpdater {
      */
     public void fillGameStart() {
         // White side
-        addPiece(0, 0, new RookPiece(false));
+        addPiece(new RookPiece(false, boardModel, 0, 0));
         addPiece(1, 0, new KnightPiece(false));
         addPiece(2, 0, new BishopPiece(false));
         addPiece(3, 0, new QueenPiece(false));
         addPiece(4, 0, new KingPiece(false));
-        addPiece(5, 0, new BishopPiece(false));
+        addPiece(new BishopPiece(false, boardModel, 5, 0));
         addPiece(6, 0, new KnightPiece(false));
         addPiece(7, 0, new RookPiece(false));
         for (int i = 0; i < 8; i++)
@@ -49,12 +49,10 @@ public class BoardUpdater {
 
     /**
      * Adds a piece to a board.
-     * @param x
-     * @param y
      * @param piece
      */
-    public void addPiece(int x, int y, Piece piece) {
-        boardModel.getField()[x][y] = piece;
+    public void addPiece(ChessPiece piece) {
+        boardModel.getField()[piece.getIndex_x()][piece.getIndex_y()] = piece;
     }
 
     /**
@@ -72,7 +70,7 @@ public class BoardUpdater {
      * @param yTo
      */
     public void movePiece(int xFrom, int yFrom, int xTo, int yTo) {
-        Piece targetPiece = boardModel.getField()[xFrom][yFrom];
+        ChessPiece targetPiece = boardModel.getField()[xFrom][yFrom];
         boardModel.getField()[xTo][yTo] = targetPiece;
         boardModel.getField()[xFrom][yFrom] = null;
     }
