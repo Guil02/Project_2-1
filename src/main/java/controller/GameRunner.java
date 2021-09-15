@@ -1,5 +1,6 @@
 package controller;
 
+import gui.ChessGUI;
 import model.Board;
 import model.BoardUpdater;
 
@@ -13,6 +14,8 @@ public class GameRunner {
     private boolean whiteMove;
     private Board board;
     private BoardUpdater boardUpdater;
+    ChessGUI chessGUI;
+    GraphicsConnector graphicsConnector;
 
     public GameRunner() {
         init();
@@ -26,8 +29,13 @@ public class GameRunner {
         boardUpdater.fillGameStart();
         board.printBoard();
 
-        //boardUpdater.movePiece(1, 0, 3, 0);
-        //board.printBoard();
+
+        // boardUpdater.movePiece(2, 1, 2, 3);
+        // board.printBoard();
+
+        chessGUI = new ChessGUI();
+        graphicsConnector = new GraphicsConnector();
+        chessGUI.launchGUI(graphicsConnector);
     }
 
     /**
