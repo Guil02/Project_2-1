@@ -24,9 +24,10 @@ public class Board {
 
     public void printBoard() {
         System.out.println("--- Board State ---\n");
-        for (int i = boardModel.length - 1; i >=  0; i--) {
-            for (int j = 0; j < boardModel[0].length; j++) {
-                System.out.print("[ " + getCharOfField(i, j) + " ] ");
+        for (int i = 0; i < boardModel[0].length; i++) {
+            for (int j = 0; j < boardModel.length; j++) {
+                System.out.print("[ " + getCharOfField(j, i) + " ] ");
+                // System.out.print("[ " + j + " " + i + " ] ");
             }
             System.out.println();
         }
