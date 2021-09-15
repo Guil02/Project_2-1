@@ -23,28 +23,28 @@ public class BoardUpdater {
      */
     public void fillGameStart() {
         // White side
-        addPiece(new RookPiece(false, boardModel, 0, 0));
-        addPiece(1, 0, new KnightPiece(false));
-        addPiece(2, 0, new BishopPiece(false));
-        addPiece(3, 0, new QueenPiece(false));
-        addPiece(4, 0, new KingPiece(false));
+        // addPiece(new RookPiece(false, boardModel, 0, 0));
+        // addPiece(1, 0, new KnightPiece(false));
+        addPiece(new BishopPiece(false, boardModel, 2, 0));
+        // addPiece(3, 0, new QueenPiece(false));
+        // addPiece(4, 0, new KingPiece(false));
         addPiece(new BishopPiece(false, boardModel, 5, 0));
-        addPiece(6, 0, new KnightPiece(false));
-        addPiece(7, 0, new RookPiece(false));
-        for (int i = 0; i < 8; i++)
-            addPiece(i, 1, new PawnPiece(false));
+        // addPiece(6, 0, new KnightPiece(false));
+        // addPiece(7, 0, new RookPiece(false));
+        // for (int i = 0; i < 8; i++)
+            // addPiece(i, 1, new PawnPiece(false));
 
         // Black side
-        addPiece(0, 7, new RookPiece(true));
-        addPiece(1, 7, new KnightPiece(true));
-        addPiece(2, 7, new BishopPiece(true));
-        addPiece(3, 7, new QueenPiece(true));
-        addPiece(4, 7, new KingPiece(true));
-        addPiece(5, 7, new BishopPiece(true));
-        addPiece(6, 7, new KnightPiece(true));
-        addPiece(7, 7, new RookPiece(true));
-        for (int i = 0; i < 8; i++)
-            addPiece(i, 6, new PawnPiece(true));
+        // addPiece(0, 7, new RookPiece(true));
+        // addPiece(1, 7, new KnightPiece(true));
+        addPiece(new BishopPiece(true, boardModel, 2, 7));
+        // addPiece(3, 7, new QueenPiece(true));
+        // addPiece(4, 7, new KingPiece(true));
+        addPiece(new BishopPiece(true, boardModel, 5, 7));
+        // addPiece(6, 7, new KnightPiece(true));
+        // addPiece(7, 7, new RookPiece(true));
+        // for (int i = 0; i < 8; i++)
+        //    addPiece(i, 6, new PawnPiece(true));
     }
 
     /**

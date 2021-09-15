@@ -30,6 +30,10 @@ public abstract class ChessPiece {
         return this.index_y;
     }
 
+    public boolean isWhite() {
+        return this.isWhite;
+    }
+
     public void move(int index_x, int index_y) {
 
         currentBoard.getBoardUpdater().movePiece(this.index_x, this.index_y, index_x, index_y); // Sets position on the board
@@ -39,6 +43,13 @@ public abstract class ChessPiece {
 
 
         //TODO show new piece position
+    }
+
+    public boolean checkForOwnPiece(int index_x, int index_y) {
+        if (currentBoard.getField()[index_x][index_y].isWhite == this.isWhite)
+            return true;
+        else
+            return false;
     }
 
     public abstract boolean[][] validMoves(ChessPiece[][] chessPieces);

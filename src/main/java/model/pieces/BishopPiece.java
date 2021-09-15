@@ -23,23 +23,24 @@ public class BishopPiece extends ChessPiece {
      * this method returns a 2x2 boolean matrix where each value 'true' represent a possible position for the bishop to move to
      */
     public boolean[][] validMoves(ChessPiece[][] chessPieces) {
-
         boolean[][] valid_moves = new boolean[8][8];
 
         // first diagonal
-        for(int i = -8; i <= 8; i++) {
+        for(int i = -7; i <= 7; i++) {
             if( !(i==0) ) { // no move
-                if( (0 <= (this.index_x + i )) && ((this.index_x + i) < 8) && (0 <= (this.index_y + i )) && ((this.index_y + i) < 8) ) {
-                    valid_moves[this.index_x + i][this.index_y + i] = true;
+                if( (0 <= (this.index_x + i )) && ((this.index_x + i) < 7) && (0 <= (this.index_y + i )) && ((this.index_y + i) < 7)) {
+                    if (this.checkForOwnPiece(index_x, index_y) == false)
+                        valid_moves[this.index_x + i][this.index_y + i] = true;
                 }
             }
         }
 
         // second diagonal
-        for(int i = -8; i <= 8; i++) {
+        for(int i = -7; i <= 7; i++) {
             if( !(i==0) ) { // no move
-                if( (0 <= (this.index_x + i)) && ((this.index_x - i) < 8) && (0 <= (this.index_y + i )) && ((this.index_y + i) < 8) ) {
-                    valid_moves[this.index_x + i][this.index_y - i] = true;
+                if( (0 <= (this.index_x + i)) && ((this.index_x - i) < 7) && (0 <= (this.index_y + i )) && ((this.index_y + i) < 7)) {
+                    if (this.checkForOwnPiece(index_x, index_y) == false)
+                        valid_moves[this.index_x + i][this.index_y - i] = true;
                 }
             }
         }

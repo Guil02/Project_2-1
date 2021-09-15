@@ -3,16 +3,16 @@ package model.pieces;
 /**
  * King piece
  */
-public class KingPiece extends Piece {
+public class KingPiece extends ChessPiece {
 
-    /**
-     * Constructor
-     * @param white
-     */
-    public KingPiece(boolean white) {
-        if (white)
-            setPieceChar('K');
-        else
-            setPieceChar('k');
+
+    @Override
+    public boolean[][] validMoves(ChessPiece[][] chessPieces) {
+        return new boolean[0][];
+    }
+
+    @Override
+    public char getPieceChar() {
+        return 0;
     }
 }
