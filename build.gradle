@@ -15,6 +15,7 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.testng:testng:7.1.0'
     testImplementation('org.junit.jupiter:junit-jupiter:5.6.0')
 }
 
