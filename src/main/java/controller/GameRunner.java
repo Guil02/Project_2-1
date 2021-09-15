@@ -9,7 +9,7 @@ import model.BoardUpdater;
 public class GameRunner {
 
     // Variables
-    private int totalMoves = 0;
+    private int totalMoves;
     private boolean whiteMove;
     private Board board;
     private BoardUpdater boardUpdater;
@@ -19,13 +19,15 @@ public class GameRunner {
     }
 
     public void init() {
+        totalMoves = 0;
+
         board = new Board();
         boardUpdater = new BoardUpdater(board);
         boardUpdater.fillGameStart();
         board.printBoard();
 
-        boardUpdater.movePiece(1, 0, 3, 0);
-        board.printBoard();
+        //boardUpdater.movePiece(1, 0, 3, 0);
+        //board.printBoard();
     }
 
     /**
@@ -41,5 +43,6 @@ public class GameRunner {
 
         // If check is okay, move piece to requested position
         boardUpdater.movePiece(xFrom, yFrom, xTo, yTo);
+        totalMoves++;
     }
 }

@@ -6,6 +6,12 @@ import java.util.Arrays;
 
 public class Board {
 
+    /*
+    Indexes:
+
+
+    [0,0]
+     */
     private Piece[][] boardModel;
 
     public Board() {
@@ -18,12 +24,14 @@ public class Board {
 
     public void printBoard() {
         System.out.println("--- Board State ---\n");
-        for (int i = 0; i < boardModel.length; i++) {
+        for (int i = boardModel.length - 1; i >=  0; i--) {
             for (int j = 0; j < boardModel[0].length; j++) {
                 System.out.print("[ " + getCharOfField(i, j) + " ] ");
             }
             System.out.println();
         }
+
+
     }
 
     public char getCharOfField(int x, int y) {

@@ -27,7 +27,7 @@ test {
 }
 
 application {
-    mainClass.set("gui.ChessGUI")
+    mainClass.set("Application")
 }
 
 sourceSets {

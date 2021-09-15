@@ -1,7 +1,6 @@
-package controller;
+import controller.Dice;
+import controller.GameRunner;
 
-import model.Board;
-import model.BoardUpdater;
 
 /**
  * Application class which contains the executable method to start the game.
