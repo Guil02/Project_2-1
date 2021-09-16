@@ -21,6 +21,7 @@ public class ChessGUI extends Application {
     private ChessBoard chessBoard;
     private static GraphicsConnector graphicsConnector;
     private MediaPlayer mediaPlayer;
+    private GameScreen gameScreen;
 
 
     public void launchGUI(GraphicsConnector graphicsConnector) {
@@ -40,7 +41,7 @@ public class ChessGUI extends Application {
         this.chessBoard = board;
         board.initializeBoard();
 
-        GameScreen gameScreen = new GameScreen(board, this);
+        gameScreen = new GameScreen(board, this);
 
         this.gameScene = new Scene(gameScreen, width, height);
 
@@ -63,6 +64,7 @@ public class ChessGUI extends Application {
         stage.setWidth(size);
         setWidth(size);
         setHeight(size);
+        gameScreen.updateGraphics();
         chessBoard.updateGraphic();
     }
 

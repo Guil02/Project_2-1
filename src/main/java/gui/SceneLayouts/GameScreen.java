@@ -3,23 +3,53 @@ package gui.SceneLayouts;
 import gui.ChessBoard;
 import gui.ChessGUI;
 import gui.Menus.DisplayMenu;
+import gui.Menus.MusicMenu;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
 public class GameScreen extends BorderPane {
+    public static final double DIVIDER = 0.15;
+    private ChessGUI chessGUI;
+    private Label leftEmptySpace;
+    private Label rightEmptySpace;
+    private Label topEmptySpace;
     public GameScreen(ChessBoard chessBoard, ChessGUI chessGUI) {
+        this.chessGUI = chessGUI;
+        leftEmptySpace = new Label();
+        rightEmptySpace = new Label();
+        topEmptySpace = new Label();
+
+        leftEmptySpace.setMinSize(chessGUI.getWidth()* DIVIDER, chessGUI.getHeight()* DIVIDER);
+        leftEmptySpace.setMaxSize(chessGUI.getWidth()* DIVIDER, chessGUI.getHeight()* DIVIDER);
+        rightEmptySpace.setMinSize(chessGUI.getWidth()* DIVIDER, chessGUI.getHeight()* DIVIDER);
+        rightEmptySpace.setMaxSize(chessGUI.getWidth()* DIVIDER, chessGUI.getHeight()* DIVIDER);
+        topEmptySpace.setMinSize(chessGUI.getWidth()* DIVIDER, chessGUI.getHeight()* (DIVIDER-0.10));
+        topEmptySpace.setMaxSize(chessGUI.getWidth()* DIVIDER, chessGUI.getHeight()* (DIVIDER-0.10));
+
+        setLeft(leftEmptySpace);
+        setRight(rightEmptySpace);
         setCenter(chessBoard);
         setStyle("-fx-background-color: #59913a;");
-        Label label = new Label("hi");
-        label.setAlignment(Pos.CENTER);
-        label.setFont(new Font("Verdana",30));
-        setTop(label);
         MenuBar menuBar = new MenuBar();
+        MusicMenu musicMenu = new MusicMenu(chessGUI);
         DisplayMenu displayMenu = new DisplayMenu(chessGUI);
-        menuBar.getMenus().add(displayMenu);
-        setTop(menuBar);
+        menuBar.getMenus().addAll(displayMenu, musicMenu);
+
+        VBox vBox = new VBox();
+        vBox.getChildren().addAll(menuBar,topEmptySpace);
+        setTop(vBox);
+    }
+
+    public void updateGraphics(){
+        leftEmptySpace.setMinSize(chessGUI.getWidth()* DIVIDER, chessGUI.getHeight()* DIVIDER);
+        leftEmptySpace.setMaxSize(chessGUI.getWidth()* DIVIDER, chessGUI.getHeight()* DIVIDER);
+        rightEmptySpace.setMinSize(chessGUI.getWidth()* DIVIDER, chessGUI.getHeight()* DIVIDER);
+        rightEmptySpace.setMaxSize(chessGUI.getWidth()* DIVIDER, chessGUI.getHeight()* DIVIDER);
+        topEmptySpace.setMinSize(chessGUI.getWidth()* DIVIDER, chessGUI.getHeight()* (DIVIDER-0.10));
+        topEmptySpace.setMaxSize(chessGUI.getWidth()* DIVIDER, chessGUI.getHeight()* (DIVIDER-0.10));
     }
 }

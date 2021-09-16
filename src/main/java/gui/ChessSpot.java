@@ -203,10 +203,12 @@ public class ChessSpot extends Label {
      * on the spot represented by this object.
      */
     public ArrayList<ChessSpot> getMoveAbleSpotsArrayList(){
-        ArrayList<Integer> availableMovements = graphicsConnector.getMoveAbleSpots(x,y);
+        boolean[] availableMovements = graphicsConnector.getMoveAbleSpots(x,y);
         ArrayList<ChessSpot> spots = new ArrayList<>();
-        for(int pos : availableMovements){
-            spots.add(board.getChessSpot(pos));
+        for(int i = 0; i<availableMovements.length; i++){
+            if(availableMovements[i]){
+                spots.add(board.getChessSpot(i));
+            }
         }
         return spots;
     }

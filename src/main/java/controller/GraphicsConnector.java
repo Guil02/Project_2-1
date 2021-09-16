@@ -15,8 +15,8 @@ public class GraphicsConnector {
      * @param y y coordinate of a piece
      * @return an arraylist that contains all the 1 dimensional coordinates of the spots a piece can move to.
      */
-    public ArrayList<Integer> getMoveAbleSpots(int x, int y){
-        return new ArrayList<>();
+    public boolean[] getMoveAbleSpots(int x, int y){
+        return new boolean[0];
     }
 
     /**
