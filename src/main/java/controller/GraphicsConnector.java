@@ -3,6 +3,7 @@ package controller;
 import model.Board;
 import model.BoardUpdater;
 import model.pieces.Piece;
+import utils.Transform;
 
 import java.util.ArrayList;
 
@@ -15,10 +16,8 @@ public class GraphicsConnector {
 
 
     private final GameRunner gr;
-    private Board board;
-    private BoardUpdater boardUpdater;
-
-    private final char EMPTY_FIELD_CHAR = '-';
+    private final Board board;
+    private final BoardUpdater boardUpdater;
 
     //pls test this not sure it's correct
     /**
@@ -34,19 +33,8 @@ public class GraphicsConnector {
         Piece[][] piecesArray = board.getField();
         Piece piece = piecesArray[x][y];
         boolean[][] validMoves = piece.validMoves();
-        boolean[] validMoves1D = new boolean[64];
 
-        int xBoard = 0;
-        int yBoard = 0;
-        for(int i=0; i<validMoves1D.length; i++){
-
-            validMoves1D [i] = validMoves[xBoard][yBoard];
-            xBoard++;
-            if((i+1)%8==0){
-                yBoard++;
-            }
-        }
-        return validMoves1D;
+        return Transform.transform(validMoves);
     }
 
     /**
@@ -151,7 +139,7 @@ public class GraphicsConnector {
     public boolean hasPiece(int x, int y){
         char field = board.getCharOfField(x,y);
 
-        return Character.compare(field, EMPTY_FIELD_CHAR) != 0;
+        return Character.compare(field, '-') != 0;
     }
 }
 
