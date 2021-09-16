@@ -46,13 +46,24 @@ public abstract class ChessPiece {
     }
 
     public boolean checkForOwnPiece(int index_x, int index_y) {
+        if (currentBoard.getPiece(index_x, index_y) == null)
+            return false;
         if (currentBoard.getField()[index_x][index_y].isWhite == this.isWhite)
             return true;
         else
             return false;
     }
 
-    public abstract boolean[][] validMoves(ChessPiece[][] chessPieces);
+    public boolean checkForEnemyPiece(int index_x, int index_y) {
+        if (currentBoard.getPiece(index_x, index_y) == null)
+            return false;
+        if (currentBoard.getField()[index_x][index_y].isWhite != this.isWhite)
+            return true;
+        else
+            return false;
+    }
+
+    public abstract boolean[][] validMoves();
 
     public abstract char getPieceChar();
 }

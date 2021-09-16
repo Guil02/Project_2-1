@@ -5,9 +5,8 @@ package model.pieces;
  */
 public class RookPiece extends ChessPiece {
 
-
     @Override
-    public boolean[][] validMoves(ChessPiece[][] chessPieces) {
+    public boolean[][] validMoves() {
         return new boolean[0][];
     }
 

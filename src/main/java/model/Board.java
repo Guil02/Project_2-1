@@ -15,6 +15,10 @@ public class Board {
         return boardModel;
     }
 
+    public ChessPiece getPiece(int index_x, int index_y) {
+        return boardModel[index_x][index_y];
+    }
+
     public void printBoard() {
         System.out.println("--- Board State ---\n");
         for (int i = 0; i < boardModel[0].length; i++) {
