@@ -6,21 +6,17 @@ import gui.SceneLayouts.StartScreen;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
-import java.nio.file.Paths;
+
 
 public class ChessGUI extends Application {
-    private static final String initialFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
     private double width = 900;
     private double height = 900;
     private Stage stage;
     private Scene gameScene;
     private ChessBoard chessBoard;
     private static GraphicsConnector graphicsConnector;
-    private MediaPlayer mediaPlayer;
     private GameScreen gameScreen;
 
 
@@ -32,7 +28,6 @@ public class ChessGUI extends Application {
 
     @Override
     public void start(Stage stage) {
-        music();
         this.stage=stage;
         StartScreen mainMenu = new StartScreen(this);
         Scene startMenu = new Scene(mainMenu, width, height);
@@ -84,14 +79,4 @@ public class ChessGUI extends Application {
         height = size;
     }
 
-    public void music(){
-        String s = "build/classes/java/main/gui/music.mp3";
-        Media media = new Media(Paths.get(s).toUri().toString());
-        mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.play();
-    }
-
-    public MediaPlayer getMediaPlayer() {
-        return mediaPlayer;
-    }
 }

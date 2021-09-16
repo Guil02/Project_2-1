@@ -2,7 +2,6 @@ package gui.SceneLayouts;
 
 import gui.ChessGUI;
 import gui.Menus.DisplayMenu;
-import gui.Menus.MusicMenu;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -88,8 +87,7 @@ public class StartScreen extends BorderPane {
         //TODO adapt to make everything change size correctly.
         MenuBar menuBar = new MenuBar();
         DisplayMenu displayMenu = new DisplayMenu(chessGUI);
-        MusicMenu musicMenu = new MusicMenu(chessGUI);
-        menuBar.getMenus().addAll(displayMenu, musicMenu);
+        menuBar.getMenus().addAll(displayMenu);
 
         Label emptySpace = new Label();
         emptySpace.setMinSize(chessGUI.getWidth()* EMPTY_SPACE_PERCENTAGE, chessGUI.getHeight()* EMPTY_SPACE_PERCENTAGE);

@@ -3,13 +3,10 @@ package gui.SceneLayouts;
 import gui.ChessBoard;
 import gui.ChessGUI;
 import gui.Menus.DisplayMenu;
-import gui.Menus.MusicMenu;
-import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 
 public class GameScreen extends BorderPane {
     public static final double DIVIDER = 0.15;
@@ -35,9 +32,8 @@ public class GameScreen extends BorderPane {
         setCenter(chessBoard);
         setStyle("-fx-background-color: #59913a;");
         MenuBar menuBar = new MenuBar();
-        MusicMenu musicMenu = new MusicMenu(chessGUI);
         DisplayMenu displayMenu = new DisplayMenu(chessGUI);
-        menuBar.getMenus().addAll(displayMenu, musicMenu);
+        menuBar.getMenus().addAll(displayMenu);
 
         VBox vBox = new VBox();
         vBox.getChildren().addAll(menuBar,topEmptySpace);
