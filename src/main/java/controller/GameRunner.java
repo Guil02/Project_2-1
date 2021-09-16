@@ -48,4 +48,8 @@ public class GameRunner {
     public Board getBoard() {
         return board;
     }
+
+    public BoardUpdater getBoardUpdater() {
+        return boardUpdater;
+    }
 }

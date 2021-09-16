@@ -11,7 +11,7 @@ public class GraphicsConnector {
     public GraphicsConnector(GameRunner gr) {
         this.gr = gr;
         board = gr.getBoard();
-        this.boardUpdater = new BoardUpdater(board);
+        boardUpdater = gr.getBoardUpdater();
     }
 
 
@@ -34,7 +34,7 @@ public class GraphicsConnector {
         Piece piece = piecesArray[x][y];
         boolean[][] validMoves = piece.validMoves();
 
-        return Transform.transform(validMoves);
+        return Transform.transformBooleanToOneDimension(validMoves);
     }
 
     /**
@@ -140,6 +140,17 @@ public class GraphicsConnector {
         char field = board.getCharOfField(x,y);
 
         return Character.compare(field, '-') != 0;
+    }
+
+    public char[] getStartingPositions(){
+        char[][] arrayOfPositions = new char[8][8];
+        for (int i = 0; i < arrayOfPositions.length; i++) {
+            for (int j = 0; j < arrayOfPositions.length; j++) {
+                arrayOfPositions[i][j] = board.getCharOfField(i, j);
+            }
+        }
+
+        return Transform.transformCharToOneDimension(arrayOfPositions);
     }
 }
 

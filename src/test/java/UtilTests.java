@@ -1,3 +1,6 @@
+import model.Board;
+import model.BoardUpdater;
+import model.pieces.Piece;
 import org.junit.jupiter.api.Test;
 import utils.Transform;
 
@@ -29,9 +32,11 @@ public class UtilTests {
         oneDimension[63] = true;
 
 
-        boolean[] transformed = Transform.transform(twoDimension);
+        boolean[] transformed = Transform.transformBooleanToOneDimension(twoDimension);
 
         assertArrayEquals(transformed, oneDimension);
     }
 
 }
+
+
