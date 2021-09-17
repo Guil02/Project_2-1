@@ -18,6 +18,7 @@ public class ChessGUI extends Application {
     private ChessBoard chessBoard;
     private static GraphicsConnector graphicsConnector;
     private GameScreen gameScreen;
+    private StartScreen mainMenu;
 
 
     public void launchGUI(GraphicsConnector graphicsConnector) {
@@ -29,7 +30,7 @@ public class ChessGUI extends Application {
     @Override
     public void start(Stage stage) {
         this.stage=stage;
-        StartScreen mainMenu = new StartScreen(this);
+        this.mainMenu = new StartScreen(this);
         Scene startMenu = new Scene(mainMenu, width, height);
 
         ChessBoard board = new ChessBoard(graphicsConnector, this);
@@ -59,8 +60,10 @@ public class ChessGUI extends Application {
         stage.setWidth(size);
         setWidth(size);
         setHeight(size);
+
         gameScreen.updateGraphics();
         chessBoard.updateGraphic();
+        mainMenu.updateGraphics();
     }
 
     public double getWidth(){

@@ -6,13 +6,16 @@ import javafx.scene.layout.VBox;
 
 public class PlayerSelection extends VBox {
     private StartScreen startScreen;
+    private PlayerSelectionLabel playerSelectionLabel;
+    private PlayerSelectionChoiceBox playerSelectionChoiceBox;
+    private StartButton startButton;
     public PlayerSelection(StartScreen startScreen){
         this.startScreen = startScreen;
         setAlignment(Pos.CENTER);
 
-        PlayerSelectionLabel playerSelectionLabel = new PlayerSelectionLabel();
-        PlayerSelectionChoiceBox playerSelectionChoiceBox = new PlayerSelectionChoiceBox(this);
-        StartButton startButton = new StartButton(this);
+        this.playerSelectionLabel = new PlayerSelectionLabel();
+        this.playerSelectionChoiceBox = new PlayerSelectionChoiceBox(this);
+        this.startButton = new StartButton(this);
 
         getChildren().addAll(playerSelectionLabel,playerSelectionChoiceBox,startButton);
     }
@@ -23,5 +26,40 @@ public class PlayerSelection extends VBox {
 
     public void startGame(){
         startScreen.startGame();
+    }
+
+    public void updateGraphics(double width, double height) {
+        setMinSize(width,height);
+        setMaxSize(width,height);
+        int size = getSize(width);
+        playerSelectionLabel.updateGraphics(size);
+        playerSelectionChoiceBox.updateGraphics(size);
+        startButton.updateGraphics(size);
+
+    }
+
+    private int getSize(double width){
+        int size;
+        switch((int) width){
+            case 200:
+                size = 1;
+                break;
+            case 400:
+                size = 2;
+                break;
+            case 600:
+                size = 3;
+                break;
+            case 800:
+                size = 4;
+                break;
+            case 1000:
+                size = 5;
+                break;
+            default:
+                size = 4;
+                break;
+        }
+        return size;
     }
 }

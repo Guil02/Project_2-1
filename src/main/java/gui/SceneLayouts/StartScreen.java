@@ -20,12 +20,13 @@ public class StartScreen extends BorderPane {
     private ChessGUI chessGUI;
     private int playerOne = 1;
     private int playerTwo = 1;
+    private PlayerSelection playerSelection;
 
     public StartScreen(ChessGUI chessGUI) {
         this.chessGUI = chessGUI;
         setStyle("-fx-background-color: #336699;");
 
-        PlayerSelection playerSelection = new PlayerSelection(this);
+        this.playerSelection = new PlayerSelection(this);
 
         Button confirmationButton = new Button("confirm");
         confirmationButton.setFont(new Font("Verdana", 30));
@@ -56,5 +57,11 @@ public class StartScreen extends BorderPane {
 
     public void startGame() {
         chessGUI.startGame(playerOne,playerTwo);
+    }
+
+    public void updateGraphics(){
+        setMinSize(chessGUI.getWidth(),chessGUI.getHeight());
+        setMaxSize(chessGUI.getWidth(),chessGUI.getHeight());
+        playerSelection.updateGraphics(chessGUI.getWidth(), chessGUI.getHeight());
     }
 }
