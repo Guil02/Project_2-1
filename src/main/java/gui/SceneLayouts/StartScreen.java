@@ -98,4 +98,9 @@ public class StartScreen extends BorderPane {
         topLayerVbox.getChildren().addAll(menuBar, emptySpace,vBox);
         setCenter(topLayerVbox);
     }
+
+    public void setPlayer(int playerOne, int playerTwo){
+        this.playerOne = playerOne;
+        this.playerTwo = playerTwo;
+    }
 }
