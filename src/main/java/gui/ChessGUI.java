@@ -52,6 +52,7 @@ public class ChessGUI extends Application {
 
     public void startGame(int playerOne, int PlayerTwo){
         graphicsConnector.setPlayers(playerOne, PlayerTwo);
+        graphicsConnector.init();
         stage.setScene(gameScene);
     }
 
