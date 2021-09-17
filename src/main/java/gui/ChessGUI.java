@@ -10,6 +10,9 @@ import javafx.stage.Stage;
 
 import java.nio.file.Paths;
 
+/**
+ * Chess GUI
+ */
 public class ChessGUI extends Application {
     private static final String initialFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
     private double width = 900;
