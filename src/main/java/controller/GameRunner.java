@@ -18,7 +18,9 @@ public class GameRunner {
     GraphicsConnector graphicsConnector;
 
     public GameRunner() {
-        init();
+        chessGUI = new ChessGUI();
+        graphicsConnector = new GraphicsConnector(this);
+        chessGUI.launchGUI(graphicsConnector);
     }
 
     public void init() {
@@ -48,9 +50,7 @@ public class GameRunner {
         // boardUpdater.movePiece(2, 1, 2, 3);
         // board.printBoard();
 
-        chessGUI = new ChessGUI();
-        graphicsConnector = new GraphicsConnector();
-        chessGUI.launchGUI(graphicsConnector);
+
     }
 
     /**

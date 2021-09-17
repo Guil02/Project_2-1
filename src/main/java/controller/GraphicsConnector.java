@@ -1,9 +1,11 @@
 package controller;
 
-import java.util.ArrayList;
+
 
 public class GraphicsConnector {
-    public GraphicsConnector() {
+    private GameRunner gameRunner;
+    public GraphicsConnector(GameRunner gameRunner) {
+        this.gameRunner = gameRunner;
     }
 
     /**
@@ -88,5 +90,9 @@ public class GraphicsConnector {
      */
     public boolean hasPiece(int x, int y){
         return false;
+    }
+
+    public void init(){
+        gameRunner.init();
     }
 }
