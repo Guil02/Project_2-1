@@ -1,27 +1,24 @@
 package gui;
 
 import controller.GraphicsConnector;
+import gui.SceneLayouts.GameScreen;
+import gui.SceneLayouts.StartScreen;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
-import java.nio.file.Paths;
 
-/**
- * Chess GUI
- */
+
 public class ChessGUI extends Application {
-    private static final String initialFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
     private double width = 900;
     private double height = 900;
     private Stage stage;
     private Scene gameScene;
     private ChessBoard chessBoard;
     private static GraphicsConnector graphicsConnector;
-    private MediaPlayer mediaPlayer;
+    private GameScreen gameScreen;
+    private StartScreen mainMenu;
 
 
     public void launchGUI(GraphicsConnector graphicsConnector) {
@@ -32,16 +29,15 @@ public class ChessGUI extends Application {
 
     @Override
     public void start(Stage stage) {
-        music();
         this.stage=stage;
-        MainMenu mainMenu = new MainMenu(this);
+        this.mainMenu = new StartScreen(this);
         Scene startMenu = new Scene(mainMenu, width, height);
 
         ChessBoard board = new ChessBoard(graphicsConnector, this);
         this.chessBoard = board;
         board.initializeBoard();
 
-        GameScreen gameScreen = new GameScreen(board, this);
+        gameScreen = new GameScreen(board, this);
 
         this.gameScene = new Scene(gameScreen, width, height);
 
@@ -56,7 +52,6 @@ public class ChessGUI extends Application {
 
     public void startGame(int playerOne, int PlayerTwo){
         graphicsConnector.setPlayers(playerOne, PlayerTwo);
-        graphicsConnector.init();
         stage.setScene(gameScene);
     }
 
@@ -65,7 +60,10 @@ public class ChessGUI extends Application {
         stage.setWidth(size);
         setWidth(size);
         setHeight(size);
+
+        gameScreen.updateGraphics();
         chessBoard.updateGraphic();
+        mainMenu.updateGraphics();
     }
 
     public double getWidth(){
@@ -84,14 +82,4 @@ public class ChessGUI extends Application {
         height = size;
     }
 
-    public void music(){
-        String s = "build/classes/java/main/gui/music.mp3";
-        Media media = new Media(Paths.get(s).toUri().toString());
-        mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.play();
-    }
-
-    public MediaPlayer getMediaPlayer() {
-        return mediaPlayer;
-    }
 }
