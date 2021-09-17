@@ -22,29 +22,29 @@ public class BoardUpdater {
      * Can also be used to reset a game.
      */
     public void fillGameStart() {
-        // White side
-        // addPiece(new RookPiece(false, boardModel, 0, 0));
-        // addPiece(1, 0, new KnightPiece(false));
-        addPiece(new BishopPiece(false, boardModel, 2, 0));
-        // addPiece(3, 0, new QueenPiece(false));
-        // addPiece(4, 0, new KingPiece(false));
-        addPiece(new BishopPiece(false, boardModel, 5, 0));
-        // addPiece(6, 0, new KnightPiece(false));
-        // addPiece(7, 0, new RookPiece(false));
-        // for (int i = 0; i < 8; i++)
-            // addPiece(i, 1, new PawnPiece(false));
-
         // Black side
-        // addPiece(0, 7, new RookPiece(true));
-        // addPiece(1, 7, new KnightPiece(true));
+        addPiece(new RookPiece(false, boardModel, 0, 0));
+        addPiece(new KnightPiece(false, boardModel, 1, 0));
+        addPiece(new BishopPiece(false, boardModel, 2, 0));
+        addPiece(new QueenPiece(false, boardModel, 3, 0));
+        addPiece(new KingPiece(false, boardModel, 4, 0));
+        addPiece(new BishopPiece(false, boardModel, 5, 0));
+        addPiece(new KnightPiece(false, boardModel, 6, 0));
+        addPiece(new RookPiece(false, boardModel, 7, 0));
+        for (int i = 0; i < 8; i++)
+            addPiece(new PawnPiece(false, boardModel, i, 1));
+
+        // White side
+        addPiece(new RookPiece(true, boardModel, 0, 7));
+        addPiece(new KnightPiece(true, boardModel, 1, 7));
         addPiece(new BishopPiece(true, boardModel, 2, 7));
-        // addPiece(3, 7, new QueenPiece(true));
-        // addPiece(4, 7, new KingPiece(true));
+        addPiece(new QueenPiece(true, boardModel, 3, 7));
+        addPiece(new KingPiece(true, boardModel, 4, 7));
         addPiece(new BishopPiece(true, boardModel, 5, 7));
-        // addPiece(6, 7, new KnightPiece(true));
-        // addPiece(7, 7, new RookPiece(true));
-        // for (int i = 0; i < 8; i++)
-        //    addPiece(i, 6, new PawnPiece(true));
+        addPiece(new KnightPiece(true, boardModel, 6, 7));
+        addPiece(new RookPiece(true, boardModel, 7, 7));
+        for (int i = 0; i < 8; i++)
+            addPiece(new PawnPiece(true, boardModel, i, 6));
     }
 
     /**

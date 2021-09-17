@@ -8,7 +8,6 @@ import model.Board;
 public class BishopPiece extends ChessPiece {
 
     public BishopPiece(boolean isWhite, Board board, int index_x, int index_y) {
-
         super(isWhite, index_x, index_y);
     }
 
@@ -23,8 +22,8 @@ public class BishopPiece extends ChessPiece {
      * this method returns a 2x2 boolean matrix where each value 'true' represent a possible position for the bishop to move to
      */
     public boolean[][] validMoves() {
-        boolean[][] valid_moves = new boolean[8][8];
 
+        boolean[][] valid_moves = new boolean[8][8];
         valid_moves[2][0] = true;
         /*
 

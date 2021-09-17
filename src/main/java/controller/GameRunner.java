@@ -32,6 +32,7 @@ public class GameRunner {
 
         boolean[][] testValidMoves = board.getPiece(2,0).validMoves();
 
+        /* --> Print valid moves
         System.out.println();
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -42,6 +43,8 @@ public class GameRunner {
             }
             System.out.println();
         }
+
+         */
         // boardUpdater.movePiece(2, 1, 2, 3);
         // board.printBoard();
 
