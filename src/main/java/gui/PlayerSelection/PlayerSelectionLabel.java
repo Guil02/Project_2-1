@@ -13,6 +13,11 @@ public class PlayerSelectionLabel extends HBox {
         labelPlayerOne.setFont(new Font("Verdana", 30));
         labelPlayerTwo.setFont(new Font("Verdana", 30));
 
+        labelPlayerOne.setMinSize(188,58);
+        labelPlayerOne.setMaxSize(188,58);
+        labelPlayerTwo.setMinSize(188,58);
+        labelPlayerTwo.setMaxSize(188,58);
+
         labelPlayerOne.setAlignment(Pos.CENTER);
         labelPlayerTwo.setAlignment(Pos.CENTER);
         setAlignment(Pos.CENTER);
