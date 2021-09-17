@@ -68,4 +68,12 @@ public class GameRunner {
         boardUpdater.movePiece(xFrom, yFrom, xTo, yTo);
         totalMoves++;
     }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public BoardUpdater getBoardUpdater() {
+        return boardUpdater;
+    }
 }

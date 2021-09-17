@@ -1,13 +1,26 @@
 package controller;
 
+import model.Board;
+import model.BoardUpdater;
+import model.pieces.ChessPiece;
+import model.pieces.ChessPiece;
+import utils.Transform;
+
 import java.util.ArrayList;
 
 public class GraphicsConnector {
-    private GameRunner gameRunner;
-    public GraphicsConnector(GameRunner gameRunner) {
-        this.gameRunner=gameRunner;
+    public GraphicsConnector(GameRunner gr) {
+        this.gr = gr;
+        board = gr.getBoard();
+        boardUpdater = gr.getBoardUpdater();
     }
 
+
+    private final GameRunner gr;
+    private final Board board;
+    private final BoardUpdater boardUpdater;
+
+    //pls test this not sure it's correct
     /**
      * I want this method to return me an arraylist (can be another data structure)
      * of the 1 dimensional coordinates of all the fields to which the piece that is
@@ -18,7 +31,11 @@ public class GraphicsConnector {
      * @return an arraylist that contains all the 1 dimensional coordinates of the spots a piece can move to.
      */
     public boolean[] getMoveAbleSpots(int x, int y){
-        return new boolean[0];
+        ChessPiece[][] piecesArray = board.getField();
+        ChessPiece piece = piecesArray[x][y];
+        boolean[][] validMoves = piece.validMoves();
+
+        return Transform.transformBooleanToOneDimension(validMoves);
     }
 
     /**
@@ -45,7 +62,7 @@ public class GraphicsConnector {
      * @param finalY the final y coordinate of the piece that is moved
      */
     public void doMove(int initialX, int initialY, int finalX, int finalY){
-
+        boardUpdater.movePiece(initialX, initialY, finalX, finalY);
     }
 
 
@@ -62,8 +79,36 @@ public class GraphicsConnector {
      * @return the URL of the image. return null if the spot is empty
      */
     public String getImage(int x, int y){
-        return null;
+        char field = board.getCharOfField(x,y);
+        switch(field){
+            case 'b':
+                return "gui/black_bishop.png";
+            case 'k':
+                return "gui/black_king.png";
+            case 'n':
+                return "gui/black_knight.png";
+            case 'p':
+                return "gui/black_pawn.png";
+            case 'q':
+                return "gui/black_queen.png";
+            case 'r':
+                return "gui/black_rook.png";
+            case 'B':
+                return "gui/white_bishop.png";
+            case 'K':
+                return "gui/white_king.png";
+            case 'N':
+                return "gui/white_knight.png";
+            case 'P':
+                return "gui/white_pawn.png";
+            case 'Q':
+                return "gui/white_queen.png";
+            case 'R':
+                return "gui/white_rook.png";
+        }
+        return "NO PIECE FOUND";
     }
+
 
     /**
      * I want this method to check for me if the move attempted is legal.
@@ -77,7 +122,11 @@ public class GraphicsConnector {
      * @return returns whether the move that is attempted is legal.
      */
     public boolean canMove(int initialX, int initialY, int finalX, int finalY){
-        return true;
+        ChessPiece[][] piecesArray = board.getField();
+        ChessPiece piece = piecesArray[initialX][initialY];
+        boolean[][] validMoves = piece.validMoves();
+
+        return validMoves[finalX][finalY];
     }
 
 
@@ -89,10 +138,20 @@ public class GraphicsConnector {
      * @return whether there is a piece on that field
      */
     public boolean hasPiece(int x, int y){
-        return false;
+        char field = board.getCharOfField(x,y);
+
+        return Character.compare(field, '-') != 0;
     }
 
-    public void init(){
-        gameRunner.init();
+    public char[] getStartingPositions(){
+        char[][] arrayOfPositions = new char[8][8];
+        for (int i = 0; i < arrayOfPositions.length; i++) {
+            for (int j = 0; j < arrayOfPositions.length; j++) {
+                arrayOfPositions[i][j] = board.getCharOfField(i, j);
+            }
+        }
+
+        return Transform.transformCharToOneDimension(arrayOfPositions);
     }
 }
+
