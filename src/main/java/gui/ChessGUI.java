@@ -62,9 +62,10 @@ public class ChessGUI extends Application {
         stage.setWidth(size);
         setWidth(size);
         setHeight(size);
-
-        gameScreen.updateGraphics();
-        chessBoard.updateGraphic();
+        if(gameScreen!=null){
+            gameScreen.updateGraphics();
+            chessBoard.updateGraphic();
+        }
         mainMenu.updateGraphics();
     }
 

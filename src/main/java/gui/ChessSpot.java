@@ -122,7 +122,7 @@ public class ChessSpot extends Label {
     public void onDragDetected(MouseEvent e){
         if(piece!=null) {
             Dragboard dragboard = startDragAndDrop(TransferMode.MOVE);
-            Image image = new Image(graphicsConnector.getImage(piece.getX(), piece.getY()), 100, 100, false, false);
+            Image image = new Image(graphicsConnector.getImage(piece.getX(), piece.getY()), width /DIVIDER, height /DIVIDER, false, false);
             dragboard.setDragView(image);
 
             ClipboardContent clipboardContent = new ClipboardContent();
