@@ -9,13 +9,11 @@ import model.pieces.ChessPiece;
 public class GraphicsConnector {
 
     private final GameRunner gameRunner;
-    private final Board board;
-    private final BoardUpdater boardUpdater;
+    private Board board;
+    private BoardUpdater boardUpdater;
 
     public GraphicsConnector(GameRunner gameRunner) {
         this.gameRunner = gameRunner;
-        board = gameRunner.getBoard();
-        boardUpdater = gameRunner.getBoardUpdater();
     }
 
     /**
@@ -152,5 +150,10 @@ public class GraphicsConnector {
 
     public void init(){
         gameRunner.init();
+    }
+
+    public void initConnector(){
+        board = gameRunner.getBoard();
+        boardUpdater = gameRunner.getBoardUpdater();
     }
 }

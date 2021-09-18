@@ -33,15 +33,6 @@ public class ChessGUI extends Application {
         this.mainMenu = new StartScreen(this);
         Scene startMenu = new Scene(mainMenu, width, height);
 
-        ChessBoard board = new ChessBoard(graphicsConnector, this);
-        this.chessBoard = board;
-        board.initializeBoard();
-
-        gameScreen = new GameScreen(board, this);
-
-        this.gameScene = new Scene(gameScreen, width, height);
-
-
         stage.setResizable(false);
         stage.setTitle("dice chess");
         Image icon = new Image("gui/white_pawn.png");
@@ -53,6 +44,16 @@ public class ChessGUI extends Application {
     public void startGame(int playerOne, int PlayerTwo){
         graphicsConnector.setPlayers(playerOne, PlayerTwo);
         graphicsConnector.init();
+
+        ChessBoard board = new ChessBoard(graphicsConnector, this);
+        this.chessBoard = board;
+        board.initializeBoard();
+
+        gameScreen = new GameScreen(board, this);
+
+        this.gameScene = new Scene(gameScreen, width, height);
+
+
         stage.setScene(gameScene);
     }
 

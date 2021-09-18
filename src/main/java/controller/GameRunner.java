@@ -33,6 +33,7 @@ public class GameRunner {
         board.printBoard();
 
         boolean[][] testValidMoves = board.getPiece(2,0).validMoves();
+        graphicsConnector.initConnector();
 
         /* --> Print valid moves
         System.out.println();
