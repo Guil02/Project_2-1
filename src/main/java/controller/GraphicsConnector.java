@@ -1,26 +1,29 @@
 package controller;
 
+
+
+
+
 import model.Board;
 import model.BoardUpdater;
 import model.pieces.ChessPiece;
 import model.pieces.ChessPiece;
-import utils.Transform;
+import Utils.Transform;
 
 import java.util.ArrayList;
 
 public class GraphicsConnector {
-    public GraphicsConnector(GameRunner gr) {
-        this.gr = gr;
-        board = gr.getBoard();
-        boardUpdater = gr.getBoardUpdater();
-    }
 
-
-    private final GameRunner gr;
+    private final GameRunner gameRunner;
     private final Board board;
     private final BoardUpdater boardUpdater;
 
-    //pls test this not sure it's correct
+    public GraphicsConnector(GameRunner gameRunner) {
+        this.gameRunner = gameRunner;
+        board = gameRunner.getBoard();
+        boardUpdater = gameRunner.getBoardUpdater();
+    }
+
     /**
      * I want this method to return me an arraylist (can be another data structure)
      * of the 1 dimensional coordinates of all the fields to which the piece that is
@@ -109,7 +112,6 @@ public class GraphicsConnector {
         return "NO PIECE FOUND";
     }
 
-
     /**
      * I want this method to check for me if the move attempted is legal.
      * the piece will start in the position (initialX, initialY) with this the piece
@@ -153,5 +155,8 @@ public class GraphicsConnector {
 
         return Transform.transformCharToOneDimension(arrayOfPositions);
     }
-}
 
+    public void init(){
+        gameRunner.init();
+    }
+}
