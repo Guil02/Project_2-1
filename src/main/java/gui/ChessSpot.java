@@ -8,6 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * the class that represents every single square on the chess board.
@@ -172,8 +173,8 @@ public class ChessSpot extends Label {
 
                 originalSpot.setPiece(null);
                 actualPiece.setXY(x, y);
-                setPiece(actualPiece);
                 graphicsConnector.doMove(piece.getX(), piece.getY(), x, y);
+                setPiece(actualPiece);
 
             }
 
