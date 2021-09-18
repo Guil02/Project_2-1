@@ -1,4 +1,4 @@
-package Utils;
+package utils;
 
 //transforms a 2d notation of the chess board into a 1d notation
 public class Transform {
@@ -31,4 +31,3 @@ public class Transform {
         return array;
     }
 }
-

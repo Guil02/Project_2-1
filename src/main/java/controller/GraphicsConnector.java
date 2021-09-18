@@ -1,16 +1,10 @@
 package controller;
 
 
-
-
-
+import utils.Transform;
 import model.Board;
 import model.BoardUpdater;
 import model.pieces.ChessPiece;
-import model.pieces.ChessPiece;
-import Utils.Transform;
-
-import java.util.ArrayList;
 
 public class GraphicsConnector {
 
