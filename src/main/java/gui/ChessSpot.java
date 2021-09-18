@@ -169,7 +169,7 @@ public class ChessSpot extends Label {
             ChessSpot originalSpot = board.getChessSpot(piece.getX(), piece.getY());
             Piece actualPiece = originalSpot.getPiece();
 
-            if (graphicsConnector.canMove(piece.getX(), piece.getY(), x, y)) {
+            if (graphicsConnector.canMove(piece.getX(), piece.getY(), x, y)&& !isOriginalSpot(actualPiece)) {
 
                 originalSpot.setPiece(null);
                 actualPiece.setXY(x, y);
@@ -212,5 +212,9 @@ public class ChessSpot extends Label {
             }
         }
         return spots;
+    }
+
+    public boolean isOriginalSpot(Piece piece){
+        return piece.getX()==x&&piece.getY()==y;
     }
 }
