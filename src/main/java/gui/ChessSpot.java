@@ -13,7 +13,6 @@ import java.util.ArrayList;
  * the class that represents every single square on the chess board.
  */
 public class ChessSpot extends Label {
-    private static final boolean COLOR = true;
     private static final double DIVIDER = 8.0;
     public static final double PERCENTAGE_FILLED = 0.7;
     private double width;
@@ -67,13 +66,13 @@ public class ChessSpot extends Label {
     }
 
     public void setAttackColor(){
-        if(COLOR){
+        if(ChessGUI.COLOR){
             setStyle(attackColor);
         }
     }
 
     public void setMoveColor(){
-        if(COLOR){
+        if(ChessGUI.COLOR){
             setStyle(moveColor);
         }
     }

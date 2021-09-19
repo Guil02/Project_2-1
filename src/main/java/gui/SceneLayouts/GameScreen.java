@@ -3,6 +3,7 @@ package gui.SceneLayouts;
 import gui.ChessBoard;
 import gui.ChessGUI;
 import gui.Menus.DisplayMenu;
+import gui.Menus.HighlightMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
@@ -33,7 +34,8 @@ public class GameScreen extends BorderPane {
         setStyle("-fx-background-color: #59913a;");
         MenuBar menuBar = new MenuBar();
         DisplayMenu displayMenu = new DisplayMenu(chessGUI);
-        menuBar.getMenus().addAll(displayMenu);
+        HighlightMenu highlightMenu = new HighlightMenu();
+        menuBar.getMenus().addAll(displayMenu, highlightMenu);
 
         VBox vBox = new VBox();
         vBox.getChildren().addAll(menuBar,topEmptySpace);

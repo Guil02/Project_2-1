@@ -2,18 +2,13 @@ package gui.SceneLayouts;
 
 import gui.ChessGUI;
 import gui.Menus.DisplayMenu;
+import gui.Menus.HighlightMenu;
 import gui.PlayerSelection.PlayerSelection;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
 public class StartScreen extends BorderPane {
@@ -39,7 +34,8 @@ public class StartScreen extends BorderPane {
 
         MenuBar menuBar = new MenuBar();
         DisplayMenu displayMenu = new DisplayMenu(chessGUI);
-        menuBar.getMenus().addAll(displayMenu);
+        HighlightMenu highlightMenu = new HighlightMenu();
+        menuBar.getMenus().addAll(displayMenu, highlightMenu);
 
         setTop(menuBar);
 
