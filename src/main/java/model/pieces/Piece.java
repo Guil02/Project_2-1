@@ -48,6 +48,8 @@ public abstract class Piece {
 	public char getPieceChar() {
 		return pieceChar;
 	}
+
+
 }
 
 

@@ -103,4 +103,11 @@ public abstract class ChessPiece {
     public abstract boolean[][] validMoves();
 
     public abstract char getPieceChar();
+
+    public boolean isOnOppositeRow(int x,int y){
+        if(isWhite){
+            return y == 0;
+        }
+        else return y == 7;
+    }
 }

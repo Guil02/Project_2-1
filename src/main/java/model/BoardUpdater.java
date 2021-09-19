@@ -74,5 +74,9 @@ public class BoardUpdater {
         targetPiece.move(xTo,yTo);
         boardModel.getField()[xTo][yTo] = targetPiece;
         boardModel.getField()[xFrom][yFrom] = null;
+        if((targetPiece.getPieceChar()=='p' || targetPiece.getPieceChar()=='P') && targetPiece.isOnOppositeRow(xTo, yTo)){
+            removePiece(xTo,yTo);
+            addPiece(new QueenPiece(targetPiece.isWhite(), boardModel, xTo, yTo));
+        }
     }
 }
