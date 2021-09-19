@@ -6,6 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
+import javafx.scene.shape.Circle;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,6 +15,7 @@ import java.util.Arrays;
  * the class that represents every single square on the chess board.
  */
 public class ChessSpot extends Label {
+    private static final boolean COLOR = true;
     private static final double DIVIDER = 8.0;
     public static final double PERCENTAGE_FILLED = 0.7;
     private double width;
@@ -23,10 +25,10 @@ public class ChessSpot extends Label {
     private int y;
     private ChessBoard board;
     private GraphicsConnector graphicsConnector;
-    private static final String color1 = "-fx-background-color: #4a4b3e;";
-    private static final String color2 = "-fx-background-color: #2f7244;";
-    private static final String attackColor = "-fx-background-color: #bd2b2b;";
-    private static final String moveColor = "-fx-background-color: #23a94d;";
+    private static final String color1 = "-fx-background-color: #4a4b3e; -fx-border-color: #000000;";
+    private static final String color2 = "-fx-background-color: #2f7244; -fx-border-color: #000000;";
+    private static final String attackColor = "-fx-background-color: #bd2b2b; -fx-border-color: #000000;";
+    private static final String moveColor = "-fx-background-color: #23a94d; -fx-border-color: #000000;";
 
 
     /**
@@ -67,11 +69,15 @@ public class ChessSpot extends Label {
     }
 
     public void setAttackColor(){
-        setStyle(attackColor);
+        if(COLOR){
+            setStyle(attackColor);
+        }
     }
 
     public void setMoveColor(){
-        setStyle(moveColor);
+        if(COLOR){
+            setStyle(moveColor);
+        }
     }
 
     public int getX() {
