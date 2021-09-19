@@ -8,7 +8,7 @@ import model.Board;
 public class RookPiece extends ChessPiece {
 
     public RookPiece(boolean white, Board board, int index_x, int index_y) {
-        super(white, index_x, index_y);
+        super(white, index_x, index_y, board);
     }
 
     public char getPieceChar() {
@@ -21,24 +21,105 @@ public class RookPiece extends ChessPiece {
     public boolean[][] validMoves() {
 
         boolean[][] valid_moves = new boolean[8][8];
-        valid_moves[2][0] = true;
-        /*
-        for(int i = -Board.BOARDSIZE; i<= Board.BOARDSIZE; i++) {
-            if(!(i==0)) {
-                if((0 <= (this.index_h + i )) && ((this.index_h + i) < Board.BOARDSIZE)){
-                    valid_moves[this.index_h + i][this.index_v] = true;
+
+        //horizontal rank
+        int temp = 1;
+        while(true){
+            if(withinBounds(index_x,temp)){
+                if(isOpenSpot(index_x+temp,index_y)){
+                    if(checkForEnemyPiece(index_x+temp,index_y)){
+                        valid_moves[index_x+temp][index_y]=true;
+                        break;
+                    }
+                    else{
+                        valid_moves[index_x+temp][index_y]=true;
+                    }
+                    temp++;
+                }
+                else{
+                    break;
                 }
             }
-        }
-        for(int i = -Board.BOARDSIZE; i<= Board.BOARDSIZE; i++) {
-            if(!(i==0)) {
-                if((0 <= (this.index_v + i )) && ((this.index_v + i) < Board.BOARDSIZE)){
-                    valid_moves[this.index_h][this.index_v + i] = true;
-                }
+            else{
+                break;
             }
         }
 
-         */
+        temp = -1;
+        while(true){
+            if(withinBounds(index_x,temp)){
+                if(isOpenSpot(index_x+temp,index_y)){
+                    if(checkForEnemyPiece(index_x+temp,index_y)){
+                        valid_moves[index_x+temp][index_y]=true;
+                        break;
+                    }
+                    else{
+                        valid_moves[index_x+temp][index_y]=true;
+                    }
+                    temp--;
+                }
+                else{
+                    break;
+                }
+            }
+            else{
+                break;
+            }
+        }
+
+        //vertical rank
+        temp = 1;
+        while(true){
+            if(withinBounds(index_y,temp)){
+                if(isOpenSpot(index_x,index_y+temp)){
+                    if(checkForEnemyPiece(index_x,index_y+temp)){
+                        valid_moves[index_x][index_y+temp]=true;
+                        break;
+                    }
+                    else{
+                        valid_moves[index_x][index_y+temp]=true;
+                    }
+                    temp++;
+                }
+                else{
+                    break;
+                }
+            }
+            else{
+                break;
+            }
+        }
+
+        temp = -1;
+        while(true){
+            if(withinBounds(index_y,temp)){
+                if(isOpenSpot(index_x,index_y+temp)){
+                    if(checkForEnemyPiece(index_x,index_y+temp)){
+                        valid_moves[index_x][index_y+temp]=true;
+                        break;
+                    }
+                    else{
+                        valid_moves[index_x][index_y+temp]=true;
+                    }
+                    temp--;
+                }
+                else{
+                    break;
+                }
+            }
+            else{
+                break;
+            }
+        }
+
+        for (int i = 0; i < valid_moves[0].length; i++) {
+            for (int j = 0; j < valid_moves.length; j++) {
+                System.out.print("[ " + valid_moves[j][i] + " ] ");
+                // System.out.print("[ " + j + " " + i + " ] ");
+            }
+            System.out.println();
+        }
+        System.out.println("--");
         return valid_moves;
     }
 }
