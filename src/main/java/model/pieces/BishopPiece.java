@@ -24,30 +24,107 @@ public class BishopPiece extends ChessPiece {
     public boolean[][] validMoves() {
 
         boolean[][] valid_moves = new boolean[8][8];
-        valid_moves[2][0] = true;
-        /*
 
-        // first diagonal
-        for(int i = -7; i <= 7; i++) {
-            if( !(i==0) ) { // no move
-                if( (0 <= (this.index_x + i )) && ((this.index_x + i) < 7) && (0 <= (this.index_y + i )) && ((this.index_y + i) < 7)) {
-                    //if (this.checkForOwnPiece(index_x, index_y) == false)
-                        valid_moves[this.index_x + i][this.index_y + i] = true;
+
+        //north west
+        int incr = 1;
+
+        while(true){
+            int x = index_x + incr;
+            int y = index_y + incr;
+            if(withinBoundsOneVariable(x) && withinBoundsOneVariable(y)){
+                if(isOpenSpot(x, y)){
+                    if(checkForEnemyPiece(x,y)){
+                        valid_moves[x][y] = true;
+                        break;
+                    }
+                    else{
+                        valid_moves[x][y] = true;
+                    }
+                    incr++;
+                }
+                else{
+                    break;
                 }
             }
+            else break;
         }
 
-        // second diagonal
-        for(int i = -7; i <= 7; i++) {
-            if( !(i==0) ) { // no move
-                if( (0 <= (this.index_x + i)) && ((this.index_x - i) < 7) && (0 <= (this.index_y + i )) && ((this.index_y + i) < 7)) {
-                    // if (this.checkForOwnPiece(index_x, index_y) == false)
-                        valid_moves[this.index_x + i][this.index_y - i] = true;
+        //north east
+        int incr_x = -1;
+        int incr_y = 1;
+        while(true){
+            int x = index_x + incr_x;
+            int y = index_y + incr_y;
+            if(withinBoundsOneVariable(x) && withinBoundsOneVariable(y)){
+                if(isOpenSpot(x, y)){
+                    if(checkForEnemyPiece(x,y)){
+                        valid_moves[x][y] = true;
+                        break;
+                    }
+                    else{
+                        valid_moves[x][y] = true;
+                    }
+                    incr_x--;
+                    incr_y++;
+                }
+                else{
+                    break;
                 }
             }
+            else break;
         }
 
-        */
+        //south east
+        incr_x = -1;
+        incr_y = -1;
+        while(true){
+            int x = index_x + incr_x;
+            int y = index_y + incr_y;
+            if(withinBoundsOneVariable(x) && withinBoundsOneVariable(y)){
+                if(isOpenSpot(x, y)){
+                    if(checkForEnemyPiece(x,y)){
+                        valid_moves[x][y] = true;
+                        break;
+                    }
+                    else{
+                        valid_moves[x][y] = true;
+                    }
+                    incr_x--;
+                    incr_y--;
+                }
+                else{
+                    break;
+                }
+            }
+            else break;
+        }
+
+        //south west
+        incr_x = 1;
+        incr_y = -1;
+        while(true){
+            int x = index_x + incr_x;
+            int y = index_y + incr_y;
+            if(withinBoundsOneVariable(x) && withinBoundsOneVariable(y)){
+                if(isOpenSpot(x, y)){
+                    if(checkForEnemyPiece(x,y)){
+                        valid_moves[x][y] = true;
+                        break;
+                    }
+                    else{
+                        valid_moves[x][y] = true;
+                    }
+                    incr_x++;
+                    incr_y--;
+                }
+                else{
+                    break;
+                }
+            }
+            else break;
+        }
+
         return valid_moves;
     }
 }

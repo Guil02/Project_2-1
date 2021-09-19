@@ -82,9 +82,13 @@ public abstract class ChessPiece {
             return false;
     }
 
-    private int BOARDSIZE =8; //TODO MAKE THIS A CONSTANT IN THE BOARD CLASS
+    private int BOARDSIZE = Board.getBoardSize();
     public boolean withinBounds(int variable, int increment){
         return variable + increment < BOARDSIZE && variable + increment >= 0;
+    }
+
+    public boolean withinBoundsOneVariable(int value){
+        return value < BOARDSIZE && value >= 0;
     }
 
     public boolean isOpenSpot(int x, int y){

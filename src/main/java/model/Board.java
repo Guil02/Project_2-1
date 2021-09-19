@@ -4,11 +4,16 @@ import model.pieces.ChessPiece;
 
 public class Board {
 
+    private static final int BOARDSIZE = 8;
     private ChessPiece[][] boardModel;
     private BoardUpdater boardUpdater;
 
     public Board() {
         boardModel = new ChessPiece[8][8];
+    }
+
+    public static int getBoardSize() {
+        return BOARDSIZE;
     }
 
     public ChessPiece[][] getField() {
