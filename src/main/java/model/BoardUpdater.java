@@ -74,6 +74,11 @@ public class BoardUpdater {
         targetPiece.move(xTo,yTo);
         boardModel.getField()[xTo][yTo] = targetPiece;
         boardModel.getField()[xFrom][yFrom] = null;
+
+        promotion(targetPiece, xTo, yTo);
+    }
+
+    private void promotion(ChessPiece targetPiece, int xTo, int yTo) {
         if((targetPiece.getPieceChar()=='p' || targetPiece.getPieceChar()=='P') && targetPiece.isOnOppositeRow(xTo, yTo)){
             removePiece(xTo,yTo);
             addPiece(new QueenPiece(targetPiece.isWhite(), boardModel, xTo, yTo));
