@@ -71,6 +71,7 @@ public class BoardUpdater {
      */
     public void movePiece(int xFrom, int yFrom, int xTo, int yTo) {
         ChessPiece targetPiece = boardModel.getField()[xFrom][yFrom];
+        targetPiece.move(xTo,yTo);
         boardModel.getField()[xTo][yTo] = targetPiece;
         boardModel.getField()[xFrom][yFrom] = null;
     }
