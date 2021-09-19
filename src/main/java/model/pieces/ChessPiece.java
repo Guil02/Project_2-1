@@ -23,11 +23,12 @@ public abstract class ChessPiece {
      * @param index_x
      * @param index_y
      */
-    public ChessPiece(boolean isWhite, int index_x, int index_y) {
+    public ChessPiece(boolean isWhite, int index_x, int index_y, Board board) {
 
         this.isWhite = isWhite;
         this.index_x = index_x;
         this.index_y = index_y;
+        this.currentBoard = board;
 
     }
 
@@ -45,13 +46,10 @@ public abstract class ChessPiece {
 
     public void move(int index_x, int index_y) {
 
-        currentBoard.getBoardUpdater().movePiece(this.index_x, this.index_y, index_x, index_y); // Sets position on the board
         // Updates internal position
         this.index_x = index_x;
         this.index_y = index_y;
 
-
-        //TODO show new piece position
     }
 
     /**
@@ -82,6 +80,24 @@ public abstract class ChessPiece {
             return true;
         else
             return false;
+    }
+
+    private int BOARDSIZE = Board.getBoardSize();
+    public boolean withinBounds(int variable, int increment){
+        return variable + increment < BOARDSIZE && variable + increment >= 0;
+    }
+
+    public boolean withinBoundsOneVariable(int value){
+        return value < BOARDSIZE && value >= 0;
+    }
+
+    public boolean isOpenSpot(int x, int y){
+        if(!checkForOwnPiece(x,y)){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     public abstract boolean[][] validMoves();

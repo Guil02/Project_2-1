@@ -8,7 +8,7 @@ import model.Board;
 public class QueenPiece extends ChessPiece {
 
     public QueenPiece(boolean isWhite, Board board, int index_x, int index_y) {
-        super(isWhite, index_x, index_y);
+        super(isWhite, index_x, index_y, board);
     }
 
     public char getPieceChar() {

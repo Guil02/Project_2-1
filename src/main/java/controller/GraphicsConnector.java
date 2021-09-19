@@ -30,7 +30,15 @@ public class GraphicsConnector {
         ChessPiece piece = piecesArray[x][y];
         boolean[][] validMoves = piece.validMoves();
 
-        return Transform.transformBooleanToOneDimension(validMoves);
+        boolean[] temp = new boolean[64];
+        int tempInt = 0;
+        for (int i = 0; i < validMoves[0].length; i++) {
+            for (int j = 0; j < validMoves.length; j++) {
+                temp[tempInt++] = validMoves[j][i];
+            }
+        }
+        return temp;
+//        return Transform.transformBooleanToOneDimension(validMoves);
     }
 
     /**
