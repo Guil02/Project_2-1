@@ -8,7 +8,7 @@ import model.Board;
 public class KingPiece extends ChessPiece {
 
     public KingPiece(boolean white, Board board, int index_x, int index_y) {
-        super(white, index_x, index_y);
+        super(white, index_x, index_y, board);
     }
 
     public char getPieceChar() {
@@ -22,22 +22,34 @@ public class KingPiece extends ChessPiece {
 
         boolean[][] valid_moves = new boolean[8][8];
 
-        valid_moves[2][0] = true;
-        /*
-        for(int i = -1; i<= 1; i++) {
-            for(int j = -1; j<=1; j++) {
-
-                if(!(i==0 && j==0)) {
-                    if((0 <= (this.index_h+i)) && ((this.index_h+i) < Board.BOARDSIZE)) {
-                        if((0 <= (this.index_v+i)) && ((this.index_v+i) < Board.BOARDSIZE)) {
-                            valid_moves[this.index_h + i][this.index_v + j] = true;
-                        }
-                    }
-                }
+        if (withinBounds(index_x, 1)){
+            if(withinBounds(index_y,1)&&isOpenSpot(index_x+1,index_y+1)){
+                valid_moves[index_x+1][index_y+1]=true;
+            }
+            if(withinBounds(index_y,-1)&&isOpenSpot(index_x+1,index_y-1)){
+                valid_moves[index_x+1][index_y-1]=true;
+            }
+            if(isOpenSpot(index_x+1,index_y)){
+                valid_moves[index_x+1][index_y]=true;
             }
         }
-
-         */
-        return valid_moves;
+        if(withinBounds(index_x,-1)){
+            if(withinBounds(index_y,1)&&isOpenSpot(index_x-1,index_y+1)){
+                valid_moves[index_x-1][index_y+1]=true;
+            }
+            if(withinBounds(index_y,-1)&&isOpenSpot(index_x-1,index_y-1)){
+                valid_moves[index_x-1][index_y-1]=true;
+            }
+            if(isOpenSpot(index_x-1,index_y)){
+                valid_moves[index_x-1][index_y]=true;
+            }
+        }
+        if(withinBounds(index_y,1)&&isOpenSpot(index_x,index_y+1)){
+            valid_moves[index_x][index_y+1]=true;
+        }
+        if(withinBounds(index_y,-1)&&isOpenSpot(index_x,index_y-1)){
+            valid_moves[index_x][index_y-1]=true;
+        }
+            return valid_moves;
     }
 }
