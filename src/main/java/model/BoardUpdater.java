@@ -75,6 +75,8 @@ public class BoardUpdater {
         boardModel.getField()[xTo][yTo] = targetPiece;
         boardModel.getField()[xFrom][yFrom] = null;
 
+
+        //TODO: make this a prompt
         promotion(targetPiece, xTo, yTo);
     }
 
