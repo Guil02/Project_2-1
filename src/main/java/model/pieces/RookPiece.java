@@ -2,6 +2,8 @@ package model.pieces;
 
 import model.Board;
 
+//TODO add castling
+
 /**
  * Rook piece
  */
@@ -112,14 +114,7 @@ public class RookPiece extends ChessPiece {
             }
         }
 
-        for (int i = 0; i < valid_moves[0].length; i++) {
-            for (int j = 0; j < valid_moves.length; j++) {
-                System.out.print("[ " + valid_moves[j][i] + " ] ");
-                // System.out.print("[ " + j + " " + i + " ] ");
-            }
-            System.out.println();
-        }
-        System.out.println("--");
+
         return valid_moves;
     }
 }

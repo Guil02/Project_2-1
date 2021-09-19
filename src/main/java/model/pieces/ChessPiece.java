@@ -50,8 +50,6 @@ public abstract class ChessPiece {
         this.index_x = index_x;
         this.index_y = index_y;
 
-
-        //TODO show new piece position
     }
 
     /**
@@ -84,9 +82,9 @@ public abstract class ChessPiece {
             return false;
     }
 
-    private int BOARDSIZE =7; //TODO MAKE THIS A CONSTANT IN THE BOARD CLASS
+    private int BOARDSIZE =8; //TODO MAKE THIS A CONSTANT IN THE BOARD CLASS
     public boolean withinBounds(int variable, int increment){
-        return variable + increment <= BOARDSIZE && variable + increment >= 0;
+        return variable + increment < BOARDSIZE && variable + increment >= 0;
     }
 
     public boolean isOpenSpot(int x, int y){
