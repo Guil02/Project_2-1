@@ -178,6 +178,7 @@ public class ChessSpot extends Label {
                 actualPiece.setXY(x, y);
                 graphicsConnector.doMove(piece.getX(), piece.getY(), x, y);
                 setPiece(actualPiece);
+                board.turnBoard();
 
             }
 

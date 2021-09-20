@@ -3,6 +3,7 @@ package gui.SceneLayouts;
 import gui.ChessGUI;
 import gui.Menus.DisplayMenu;
 import gui.Menus.HighlightMenu;
+import gui.Menus.TurnMenu;
 import gui.PlayerSelection.PlayerSelection;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -26,7 +27,8 @@ public class StartScreen extends BorderPane {
         MenuBar menuBar = new MenuBar();
         DisplayMenu displayMenu = new DisplayMenu(chessGUI);
         HighlightMenu highlightMenu = new HighlightMenu();
-        menuBar.getMenus().addAll(displayMenu, highlightMenu);
+        TurnMenu turnMenu = new TurnMenu();
+        menuBar.getMenus().addAll(displayMenu, highlightMenu, turnMenu);
 
         setTop(menuBar);
 

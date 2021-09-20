@@ -4,6 +4,7 @@ import gui.ChessBoard;
 import gui.ChessGUI;
 import gui.Menus.DisplayMenu;
 import gui.Menus.HighlightMenu;
+import gui.Menus.TurnMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
@@ -35,7 +36,8 @@ public class GameScreen extends BorderPane {
         MenuBar menuBar = new MenuBar();
         DisplayMenu displayMenu = new DisplayMenu(chessGUI);
         HighlightMenu highlightMenu = new HighlightMenu();
-        menuBar.getMenus().addAll(displayMenu, highlightMenu);
+        TurnMenu turnMenu = new TurnMenu();
+        menuBar.getMenus().addAll(displayMenu, highlightMenu, turnMenu);
 
         VBox vBox = new VBox();
         vBox.getChildren().addAll(menuBar,topEmptySpace);
