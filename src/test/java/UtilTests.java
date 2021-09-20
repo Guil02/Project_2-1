@@ -1,6 +1,3 @@
-import model.Board;
-import model.BoardUpdater;
-import model.pieces.Piece;
 import org.junit.jupiter.api.Test;
 import utils.Transform;
 

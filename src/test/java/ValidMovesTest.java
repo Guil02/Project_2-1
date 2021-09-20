@@ -1,7 +1,7 @@
+import controller.GameRunner;
 import model.Board;
 import model.BoardUpdater;
 import model.pieces.ChessPiece;
-import model.pieces.Piece;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -53,7 +53,8 @@ public class ValidMovesTest {
 
     @Test
     public void validMovesWhiteBishopStartingPosLeftPawnRemoved() {
-        Board board = new Board();
+        GameRunner gameRunner = new GameRunner();
+        Board board = new Board(gameRunner);
         BoardUpdater boardUpdater = new BoardUpdater(board);
         boardUpdater.fillGameStart();
         ChessPiece piece = board.getField()[2][7];
@@ -72,7 +73,8 @@ public class ValidMovesTest {
 
     @Test
     public void validMovesWhiteBishopStartingPos() {
-        Board board = new Board();
+        GameRunner gameRunner = new GameRunner();
+        Board board = new Board(gameRunner);
         BoardUpdater boardUpdater = new BoardUpdater(board);
         boardUpdater.fillGameStart();
         ChessPiece piece = board.getField()[2][7];

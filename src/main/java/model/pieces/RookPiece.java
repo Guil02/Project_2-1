@@ -24,96 +24,99 @@ public class RookPiece extends ChessPiece {
 
         boolean[][] valid_moves = new boolean[8][8];
 
-        //horizontal rank
-        int temp = 1;
-        while(true){
-            if(withinBounds(index_x,temp)){
-                if(isOpenSpot(index_x+temp,index_y)){
-                    if(checkForEnemyPiece(index_x+temp,index_y)){
-                        valid_moves[index_x+temp][index_y]=true;
-                        break;
+        if(isTurn()){
+
+            //horizontal rank
+            int temp = 1;
+            while(true){
+                if(withinBounds(index_x,temp)){
+                    if(isOpenSpot(index_x+temp,index_y)){
+                        if(checkForEnemyPiece(index_x+temp,index_y)){
+                            valid_moves[index_x+temp][index_y]=true;
+                            break;
+                        }
+                        else{
+                            valid_moves[index_x+temp][index_y]=true;
+                        }
+                        temp++;
                     }
                     else{
-                        valid_moves[index_x+temp][index_y]=true;
+                        break;
                     }
-                    temp++;
                 }
                 else{
                     break;
                 }
             }
-            else{
-                break;
-            }
-        }
 
-        temp = -1;
-        while(true){
-            if(withinBounds(index_x,temp)){
-                if(isOpenSpot(index_x+temp,index_y)){
-                    if(checkForEnemyPiece(index_x+temp,index_y)){
-                        valid_moves[index_x+temp][index_y]=true;
-                        break;
+            temp = -1;
+            while(true){
+                if(withinBounds(index_x,temp)){
+                    if(isOpenSpot(index_x+temp,index_y)){
+                        if(checkForEnemyPiece(index_x+temp,index_y)){
+                            valid_moves[index_x+temp][index_y]=true;
+                            break;
+                        }
+                        else{
+                            valid_moves[index_x+temp][index_y]=true;
+                        }
+                        temp--;
                     }
                     else{
-                        valid_moves[index_x+temp][index_y]=true;
+                        break;
                     }
-                    temp--;
                 }
                 else{
                     break;
                 }
             }
-            else{
-                break;
-            }
-        }
 
-        //vertical rank
-        temp = 1;
-        while(true){
-            if(withinBounds(index_y,temp)){
-                if(isOpenSpot(index_x,index_y+temp)){
-                    if(checkForEnemyPiece(index_x,index_y+temp)){
-                        valid_moves[index_x][index_y+temp]=true;
-                        break;
+            //vertical rank
+            temp = 1;
+            while(true){
+                if(withinBounds(index_y,temp)){
+                    if(isOpenSpot(index_x,index_y+temp)){
+                        if(checkForEnemyPiece(index_x,index_y+temp)){
+                            valid_moves[index_x][index_y+temp]=true;
+                            break;
+                        }
+                        else{
+                            valid_moves[index_x][index_y+temp]=true;
+                        }
+                        temp++;
                     }
                     else{
-                        valid_moves[index_x][index_y+temp]=true;
+                        break;
                     }
-                    temp++;
                 }
                 else{
                     break;
                 }
             }
-            else{
-                break;
-            }
-        }
 
-        temp = -1;
-        while(true){
-            if(withinBounds(index_y,temp)){
-                if(isOpenSpot(index_x,index_y+temp)){
-                    if(checkForEnemyPiece(index_x,index_y+temp)){
-                        valid_moves[index_x][index_y+temp]=true;
-                        break;
+            temp = -1;
+            while(true){
+                if(withinBounds(index_y,temp)){
+                    if(isOpenSpot(index_x,index_y+temp)){
+                        if(checkForEnemyPiece(index_x,index_y+temp)){
+                            valid_moves[index_x][index_y+temp]=true;
+                            break;
+                        }
+                        else{
+                            valid_moves[index_x][index_y+temp]=true;
+                        }
+                        temp--;
                     }
                     else{
-                        valid_moves[index_x][index_y+temp]=true;
+                        break;
                     }
-                    temp--;
                 }
                 else{
                     break;
                 }
             }
-            else{
-                break;
-            }
-        }
 
+        }
 
         return valid_moves;
     }

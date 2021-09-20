@@ -25,8 +25,8 @@ public class GameRunner {
 
     public void init() {
         totalMoves = 0;
-
-        board = new Board();
+        whiteMove = true;
+        board = new Board(this);
         boardUpdater = new BoardUpdater(board);
         board.setBoardUpdater(boardUpdater);
         boardUpdater.fillGameStart();
@@ -76,5 +76,13 @@ public class GameRunner {
 
     public BoardUpdater getBoardUpdater() {
         return boardUpdater;
+    }
+
+    public boolean getWhiteMove(){
+        return whiteMove;
+    }
+
+    public void doMove(){
+        whiteMove = !whiteMove;
     }
 }

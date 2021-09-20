@@ -164,4 +164,10 @@ public class GraphicsConnector {
         board = gameRunner.getBoard();
         boardUpdater = gameRunner.getBoardUpdater();
     }
+
+    public boolean isTurn(int x, int y){
+        ChessPiece[][] piecesArray = board.getField();
+        ChessPiece piece = piecesArray[x][y];
+        return piece.isTurn();
+    }
 }

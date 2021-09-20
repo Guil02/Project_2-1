@@ -110,4 +110,11 @@ public abstract class ChessPiece {
         }
         else return y == 7;
     }
+
+    public boolean isTurn(){
+        if(isWhite){
+            return currentBoard.getWhiteMove();
+        }
+        else return !currentBoard.getWhiteMove();
+    }
 }

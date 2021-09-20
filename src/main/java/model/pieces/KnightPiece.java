@@ -21,30 +21,31 @@ public class KnightPiece extends ChessPiece {
     public boolean[][] validMoves() {
 
         boolean[][] valid_moves = new boolean[8][8];
-
-        if(withinBounds(index_x,2)&&withinBounds(index_y,1)&&isOpenSpot(index_x+2,index_y+1)){
-            valid_moves[index_x+2][index_y+1]=true;
-        }
-        if(withinBounds(index_x,2)&&withinBounds(index_y,-1)&&isOpenSpot(index_x+2,index_y-1)){
-            valid_moves[index_x+2][index_y-1]=true;
-        }
-        if(withinBounds(index_x,-2)&&withinBounds(index_y,1)&&isOpenSpot(index_x-2,index_y+1)){
-            valid_moves[index_x-2][index_y+1]=true;
-        }
-        if(withinBounds(index_x,-2)&&withinBounds(index_y,-1)&&isOpenSpot(index_x-2,index_y-1)){
-            valid_moves[index_x-2][index_y-1]=true;
-        }
-        if(withinBounds(index_x,1)&&withinBounds(index_y,2)&&isOpenSpot(index_x+1,index_y+2)){
-            valid_moves[index_x+1][index_y+2]=true;
-        }
-        if(withinBounds(index_x,1)&&withinBounds(index_y,-2)&&isOpenSpot(index_x+1,index_y-2)){
-            valid_moves[index_x+1][index_y-2]=true;
-        }
-        if(withinBounds(index_x,-1)&&withinBounds(index_y,2)&&isOpenSpot(index_x-1,index_y+2)){
-            valid_moves[index_x-1][index_y+2]=true;
-        }
-        if(withinBounds(index_x,-1)&&withinBounds(index_y,-2)&&isOpenSpot(index_x-1,index_y-2)){
-            valid_moves[index_x-1][index_y-2]=true;
+        if(isTurn()){
+            if(withinBounds(index_x,2)&&withinBounds(index_y,1)&&isOpenSpot(index_x+2,index_y+1)){
+                valid_moves[index_x+2][index_y+1]=true;
+            }
+            if(withinBounds(index_x,2)&&withinBounds(index_y,-1)&&isOpenSpot(index_x+2,index_y-1)){
+                valid_moves[index_x+2][index_y-1]=true;
+            }
+            if(withinBounds(index_x,-2)&&withinBounds(index_y,1)&&isOpenSpot(index_x-2,index_y+1)){
+                valid_moves[index_x-2][index_y+1]=true;
+            }
+            if(withinBounds(index_x,-2)&&withinBounds(index_y,-1)&&isOpenSpot(index_x-2,index_y-1)){
+                valid_moves[index_x-2][index_y-1]=true;
+            }
+            if(withinBounds(index_x,1)&&withinBounds(index_y,2)&&isOpenSpot(index_x+1,index_y+2)){
+                valid_moves[index_x+1][index_y+2]=true;
+            }
+            if(withinBounds(index_x,1)&&withinBounds(index_y,-2)&&isOpenSpot(index_x+1,index_y-2)){
+                valid_moves[index_x+1][index_y-2]=true;
+            }
+            if(withinBounds(index_x,-1)&&withinBounds(index_y,2)&&isOpenSpot(index_x-1,index_y+2)){
+                valid_moves[index_x-1][index_y+2]=true;
+            }
+            if(withinBounds(index_x,-1)&&withinBounds(index_y,-2)&&isOpenSpot(index_x-1,index_y-2)){
+                valid_moves[index_x-1][index_y-2]=true;
+            }
         }
 
         return valid_moves;

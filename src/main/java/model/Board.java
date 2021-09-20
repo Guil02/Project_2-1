@@ -1,5 +1,6 @@
 package model;
 
+import controller.GameRunner;
 import model.pieces.ChessPiece;
 
 public class Board {
@@ -7,8 +8,10 @@ public class Board {
     private static final int BOARDSIZE = 8;
     private ChessPiece[][] boardModel;
     private BoardUpdater boardUpdater;
+    private GameRunner gameRunner;
 
-    public Board() {
+    public Board(GameRunner gameRunner) {
+        this.gameRunner=gameRunner;
         boardModel = new ChessPiece[8][8];
     }
 
@@ -52,6 +55,14 @@ public class Board {
         else {
             return boardModel[x][y].getPieceChar();
         }
+    }
+
+    public boolean getWhiteMove(){
+        return gameRunner.getWhiteMove();
+    }
+
+    public void doMove(){
+        gameRunner.doMove();
     }
 
 }
