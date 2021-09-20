@@ -23,15 +23,6 @@ public class StartScreen extends BorderPane {
 
         this.playerSelection = new PlayerSelection(this);
 
-        Button confirmationButton = new Button("confirm");
-        confirmationButton.setFont(new Font("Verdana", 30));
-        confirmationButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                chessGUI.startGame(playerOne, playerTwo);
-            }
-        });
-
         MenuBar menuBar = new MenuBar();
         DisplayMenu displayMenu = new DisplayMenu(chessGUI);
         HighlightMenu highlightMenu = new HighlightMenu();
