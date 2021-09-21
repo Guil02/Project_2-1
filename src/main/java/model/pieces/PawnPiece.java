@@ -64,9 +64,21 @@ public class PawnPiece extends ChessPiece {
                 }
             }
         }
-
+        
+        
+        
+        // prise en passant
+        // update prise en passant value --> move(this.index_y + 2?)
+        if(Board.priseEnPassantAuthorized > -1) {
+        	if(this.index_x + 1 == Board.priseEnPassantAuthorized || this.index_x - 1 == Board.priseEnPassantAuthorized) {
+        		if(isWhite = true) {
+        			valid_moves[2][Board.priseEnPassantAuthorized] = true;
+        		}
+        		else {
+        			valid_moves[6][Board.priseEnPassantAuthorized] = true;
+        		}
+        	}
+        }
         return valid_moves;
     }
-
-
 }
