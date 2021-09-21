@@ -22,9 +22,13 @@ public class Board {
         return BOARDSIZE;
     }
     
+    
     private ArrayList<ChessPiece> whitePieces = new ArrayList<ChessPiece>;
     private ArrayList<ChessPiece> blackPieces = new ArrayList<ChessPiece>;
     
+    /*
+     * new method adding all the pieces to the respective ArrayLists --> to know the postions of all the pieces 
+     */
     public void addPiece(ChessPiece piece) {
     	if(piece.isWhite() == true) {
     		whitePieces.add(piece);
@@ -42,6 +46,7 @@ public class Board {
     	return blackPieces;
     }
 
+    
     public ChessPiece[][] getField() {
         return boardModel;
     }
@@ -87,5 +92,4 @@ public class Board {
     public void doMove(){
         gameRunner.doMove();
     }
-
 }
