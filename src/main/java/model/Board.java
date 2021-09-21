@@ -2,6 +2,7 @@ package model;
 
 import controller.GameRunner;
 import model.pieces.ChessPiece;
+import java.util.*;
 
 public class Board {
 
@@ -9,6 +10,8 @@ public class Board {
     private ChessPiece[][] boardModel;
     private BoardUpdater boardUpdater;
     private GameRunner gameRunner;
+    private int priseEnPassantAuthorized = -1;
+    
 
     public Board(GameRunner gameRunner) {
         this.gameRunner=gameRunner;
@@ -17,6 +20,26 @@ public class Board {
 
     public static int getBoardSize() {
         return BOARDSIZE;
+    }
+    
+    private ArrayList<ChessPiece> whitePieces = new ArrayList<ChessPiece>;
+    private ArrayList<ChessPiece> blackPieces = new ArrayList<ChessPiece>;
+    
+    public void addPiece(ChessPiece piece) {
+    	if(piece.isWhite() == true) {
+    		whitePieces.add(piece);
+    	}
+    	else {
+    		blackPieces.add(piece);
+    	}
+    }
+    
+    public ArrayList<ChessPiece> getWhitePieces(){
+    	return whitePieces;
+    }
+    
+    public ArrayList<ChessPiece> getBlackPieces(){
+    	return blackPieces;
     }
 
     public ChessPiece[][] getField() {
