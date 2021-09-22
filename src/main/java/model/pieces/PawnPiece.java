@@ -2,6 +2,9 @@ package model.pieces;
 
 import model.Board;
 
+//TODO add en passant rule
+//TODO add promotion
+
 /**
  * Pawn piece
  */
@@ -61,23 +64,9 @@ public class PawnPiece extends ChessPiece {
                 }
             }
         }
-        
-        
-        
-        // prise en passant
-        // TODO update prise en passant value --> move(this.index_y + 2?)
-        if(Board.priseEnPassantAuthorized > -1) { //checking valid column
-        	if(this.index_x + 1 == Board.priseEnPassantAuthorized || this.index_x - 1 == Board.priseEnPassantAuthorized) {
-        		if(isWhite = true) {
-        			valid_moves[2][Board.priseEnPassantAuthorized] = true;
-        		}
-        		else {
-        			valid_moves[6][Board.priseEnPassantAuthorized] = true;
-        		}
-        	}
-        }
-        
-        
+
         return valid_moves;
     }
+
+
 }
