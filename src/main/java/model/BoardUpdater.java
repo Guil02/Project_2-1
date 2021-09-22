@@ -53,7 +53,6 @@ public class BoardUpdater {
      */
     public void addPiece(ChessPiece piece) {
         boardModel.getField()[piece.getIndex_x()][piece.getIndex_y()] = piece;
-        boardModel.addPiece(piece);
     }
 
     /**
