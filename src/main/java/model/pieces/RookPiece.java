@@ -1,8 +1,7 @@
+// TODO Rook moves
 package model.pieces;
 
 import model.Board;
-
-//TODO add castling
 
 /**
  * Rook piece
@@ -121,3 +120,5 @@ public class RookPiece extends ChessPiece {
         return valid_moves;
     }
 }
+
+
