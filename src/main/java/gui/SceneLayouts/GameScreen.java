@@ -1,6 +1,6 @@
 package gui.SceneLayouts;
 
-import gui.ChessBoard;
+import gui.GameScreenObjects.ChessBoard;
 import gui.ChessGUI;
 import gui.Menus.DisplayMenu;
 import gui.Menus.HighlightMenu;

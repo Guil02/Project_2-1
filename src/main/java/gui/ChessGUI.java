@@ -1,6 +1,7 @@
 package gui;
 
 import controller.GraphicsConnector;
+import gui.GameScreenObjects.ChessBoard;
 import gui.SceneLayouts.GameScreen;
 import gui.SceneLayouts.StartScreen;
 import javafx.application.Application;

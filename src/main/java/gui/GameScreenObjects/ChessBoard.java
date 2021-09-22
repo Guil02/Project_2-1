@@ -1,6 +1,7 @@
-package gui;
+package gui.GameScreenObjects;
 
 import controller.GraphicsConnector;
+import gui.ChessGUI;
 import javafx.scene.layout.GridPane;
 
 /**
