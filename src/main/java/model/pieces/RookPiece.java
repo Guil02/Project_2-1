@@ -1,7 +1,8 @@
-// TODO Rook moves
 package model.pieces;
 
 import controller.Board;
+
+//TODO add castling
 
 /**
  * class that determines every valid moves for a rook
@@ -88,5 +89,3 @@ public class RookPiece extends ChessPiece {
         return rookPiece;
     }
 }
-
-
