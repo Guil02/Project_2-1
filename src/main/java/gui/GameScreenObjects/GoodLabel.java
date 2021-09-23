@@ -1,5 +1,6 @@
 package gui.GameScreenObjects;
 
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.text.Font;
 
@@ -9,6 +10,7 @@ public class GoodLabel extends Label {
        setFont(new Font("Verdana", 20));
        setMinSize(leftSide.getWidthFromChessGUI() * 0.15, leftSide.getHeightFromChessGUI() * 0.7 / 5);
         setMaxSize(leftSide.getWidthFromChessGUI() * 0.15, leftSide.getHeightFromChessGUI() * 0.7 / 5);
+        setAlignment(Pos.CENTER);
 
     }
 }

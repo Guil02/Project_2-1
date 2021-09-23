@@ -6,6 +6,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
@@ -26,9 +27,9 @@ public class LeftSide extends VBox {
     public LeftSide(GameScreen gameScreen) {
         this.gameScreen = gameScreen;
         labelOne = new GoodLabel(this);
-        labelOne.setText(String.valueOf(blackTime));
+        labelOne.setText("10:00");
         labelTwo = new GoodLabel(this);
-        labelTwo.setText(String.valueOf(whiteTime));
+        labelTwo.setText("10:00");
         labelFirst = new GoodLabel(this);
         labelSecond = new GoodLabel(this);
         labelThird = new GoodLabel(this);
@@ -49,15 +50,24 @@ public class LeftSide extends VBox {
     public void doTimeMagic() {
         if (isWhiteTurn) {
             whiteTime--;
-            labelTwo.setText(String.valueOf(whiteTime));
+            labelTwo.setText(timeClean(whiteTime));
             labelFirst.setText("");
             labelThird.setText("White's turn!");
         } else {
             blackTime--;
-            labelOne.setText(String.valueOf(blackTime));
+            labelOne.setText(timeClean(blackTime));
             labelThird.setText("");
             labelFirst.setText("Black's turn!");
         }
+    }
+    public String timeClean(int a){
+        StringBuilder string = new StringBuilder();
+        int minutes = (int)(a/60);
+        int seconds = a%60;
+        string.append(minutes);
+        string.append(":");
+        string.append(seconds);
+        return string.toString();
     }
 
     public double getWidthFromChessGUI() {
