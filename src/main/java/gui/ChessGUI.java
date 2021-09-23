@@ -52,7 +52,7 @@ public class ChessGUI extends Application {
         this.chessBoard = board;
         board.initializeBoard();
 
-        gameScreen = new GameScreen(board, this);
+        gameScreen = new GameScreen(board, this, graphicsConnector);
 
         this.gameScene = new Scene(gameScreen, width, height);
 
@@ -66,7 +66,7 @@ public class ChessGUI extends Application {
         setWidth(size);
         setHeight(size);
         if(gameScreen!=null){
-            gameScreen.updateGraphics();
+            gameScreen.updateGraphics(width,height);
             chessBoard.updateGraphic();
         }
         mainMenu.updateGraphics();
