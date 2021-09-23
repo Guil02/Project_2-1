@@ -4,6 +4,7 @@ import controller.GraphicsConnector;
 import gui.ChessGUI;
 import gui.GameScreenObjects.ChessBoard;
 import gui.GameScreenObjects.DiceDisplay;
+import gui.GameScreenObjects.LeftSide;
 import gui.Menus.DisplayMenu;
 import gui.Menus.HighlightMenu;
 import gui.Menus.TurnMenu;
@@ -25,16 +26,16 @@ public class GameScreen extends BorderPane {
         rightEmptySpace = new Label();
         topEmptySpace = new Label();
 
-        leftEmptySpace.setMinSize(chessGUI.getWidth() * DIVIDER, chessGUI.getHeight() * DIVIDER);
-        leftEmptySpace.setMaxSize(chessGUI.getWidth() * DIVIDER, chessGUI.getHeight() * DIVIDER);
+       // leftEmptySpace.setMinSize(chessGUI.getWidth() * DIVIDER, chessGUI.getHeight() * DIVIDER);
+       // leftEmptySpace.setMaxSize(chessGUI.getWidth() * DIVIDER, chessGUI.getHeight() * DIVIDER);
 //        rightEmptySpace.setMinSize(chessGUI.getWidth() * DIVIDER, chessGUI.getHeight() * DIVIDER);
 //        rightEmptySpace.setMaxSize(chessGUI.getWidth() * DIVIDER, chessGUI.getHeight() * DIVIDER);
         topEmptySpace.setMinSize(chessGUI.getWidth() * DIVIDER, chessGUI.getHeight() * (DIVIDER - 0.10));
         topEmptySpace.setMaxSize(chessGUI.getWidth() * DIVIDER, chessGUI.getHeight() * (DIVIDER - 0.10));
 
         diceDisplay = new DiceDisplay(this, graphicsConnector);
-
-        setLeft(leftEmptySpace);
+        LeftSide leftSide = new LeftSide(this);
+        setLeft(leftSide);
         setRight(diceDisplay);
         setCenter(chessBoard);
         setStyle("-fx-background-color: #59913a;");
