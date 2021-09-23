@@ -15,6 +15,7 @@ import javafx.scene.layout.VBox;
 
 public class GameScreen extends BorderPane {
     public static final double DIVIDER = 0.15;
+    private final LeftSide leftSide;
     private ChessGUI chessGUI;
     private Label leftEmptySpace;
     private Label rightEmptySpace;
@@ -34,7 +35,7 @@ public class GameScreen extends BorderPane {
         topEmptySpace.setMaxSize(chessGUI.getWidth() * DIVIDER, chessGUI.getHeight() * (DIVIDER - 0.10));
 
         diceDisplay = new DiceDisplay(this, graphicsConnector);
-        LeftSide leftSide = new LeftSide(this);
+        leftSide = new LeftSide(this);
         setLeft(leftSide);
         setRight(diceDisplay);
         setCenter(chessBoard);
@@ -94,5 +95,8 @@ public class GameScreen extends BorderPane {
                 break;
         }
         return size;
+    }
+    public void changeTimer(){
+        leftSide.changeTimer();
     }
 }

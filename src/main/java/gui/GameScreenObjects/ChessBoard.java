@@ -2,6 +2,7 @@ package gui.GameScreenObjects;
 
 import controller.GraphicsConnector;
 import gui.ChessGUI;
+import gui.SceneLayouts.GameScreen;
 import javafx.scene.layout.GridPane;
 
 /**
@@ -12,6 +13,7 @@ public class ChessBoard extends GridPane {
     private ChessSpot[] board = new ChessSpot[64];
     private GraphicsConnector graphicsConnector;
     private ChessGUI chessGUI;
+    private GameScreen gameScreen;
 
     /**
      * a constructor that will create a 8x8 board for the chess game to take place on
@@ -94,5 +96,13 @@ public class ChessBoard extends GridPane {
             isTurned = !isTurned;
             board = temp;
         }
+    }
+
+    public void setGameScreen(GameScreen gameScreen) {
+        this.gameScreen = gameScreen;
+    }
+
+    public void changeTimer(){
+        gameScreen.changeTimer();
     }
 }
