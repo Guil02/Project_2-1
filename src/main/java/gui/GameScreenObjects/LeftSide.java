@@ -31,6 +31,8 @@ public class LeftSide extends VBox {
         labelFirst = new Label();
         labelSecond = new Label();
         labelThird = new Label();
+        labelFirst.setFont(new Font("Verdana", 20));
+        labelThird.setFont(new Font("Verdana", 20));
         labelFirst.setMinSize(gameScreen.getWidthFromChessGUI() * 0.15, gameScreen.getHeightFromChessGUI() * 0.7 / 5);
         labelFirst.setMaxSize(gameScreen.getWidthFromChessGUI() * 0.15, gameScreen.getHeightFromChessGUI() * 0.7 / 5);
         labelSecond.setMinSize(gameScreen.getWidthFromChessGUI() * 0.15, gameScreen.getHeightFromChessGUI() * 0.7 / 5);
@@ -59,9 +61,13 @@ public class LeftSide extends VBox {
         if (isWhiteTurn) {
             whiteTime--;
             labelTwo.setText(String.valueOf(whiteTime));
+            labelFirst.setText("");
+            labelThird.setText("White's turn!");
         } else {
             blackTime--;
             labelOne.setText(String.valueOf(blackTime));
+            labelThird.setText("");
+            labelFirst.setText("Black's turn!");
         }
     }
 
