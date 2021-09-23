@@ -65,7 +65,7 @@ public class LeftSide extends VBox {
         }
     }
 
-    public void changeTimer(boolean x) {
-        isWhiteTurn = x;
+    public void changeTimer() {
+        isWhiteTurn = !isWhiteTurn;
     }
 }
