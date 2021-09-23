@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 
 public class ChessGUI extends Application {
     public static boolean COLOR = true;
-    public static boolean TURN = true;
+    public static boolean TURN = false;
     private double width = 900;
     private double height = 900;
     private Stage stage;
@@ -53,6 +53,7 @@ public class ChessGUI extends Application {
         board.initializeBoard();
 
         gameScreen = new GameScreen(board, this, graphicsConnector);
+        board.setGameScreen(gameScreen);
 
         this.gameScene = new Scene(gameScreen, width, height);
 
