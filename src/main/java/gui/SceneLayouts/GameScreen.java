@@ -64,4 +64,8 @@ public class GameScreen extends BorderPane {
     public void changeTimer(){
         leftSide.changeTimer();
     }
+
+    public void updateDice(){
+        diceDisplay.updateGraphics();
+    }
 }

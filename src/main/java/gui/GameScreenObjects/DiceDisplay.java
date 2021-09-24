@@ -35,5 +35,6 @@ public class DiceDisplay extends VBox {
         setMinSize(getWidthFromTop()/ DIVIDER_WIDTH, getHeightFromTop()* DIVIDER_HEIGHT);
         setMaxSize(getWidthFromTop()/ DIVIDER_WIDTH, getHeightFromTop()* DIVIDER_HEIGHT);
         diceImageLabelOne.updateGraphics();
+        diceImageLabelTwo.updateGraphics();
     }
 }

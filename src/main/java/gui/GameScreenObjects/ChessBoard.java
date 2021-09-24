@@ -105,4 +105,8 @@ public class ChessBoard extends GridPane {
     public void changeTimer(){
         gameScreen.changeTimer();
     }
+
+    public void updateDice(){
+        gameScreen.updateDice();
+    }
 }
