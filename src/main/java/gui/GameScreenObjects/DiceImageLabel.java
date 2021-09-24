@@ -25,7 +25,7 @@ public class DiceImageLabel extends Label {
         setGraphic(imageView);
     }
 
-    public void updateGraphics(int size){
+    public void updateGraphics(){
         setImage(graphicsConnector.getDiceImage(type));
     }
 }

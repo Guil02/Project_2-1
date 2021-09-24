@@ -62,7 +62,7 @@ public class LeftSide extends VBox {
     }
     public String timeClean(int a){
         StringBuilder string = new StringBuilder();
-        int minutes = (int)(a/60);
+        int minutes = (a/60);
         int seconds = a%60;
         string.append(minutes);
         string.append(":");

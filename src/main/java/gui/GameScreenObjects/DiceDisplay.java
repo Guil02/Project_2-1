@@ -6,17 +6,18 @@ import javafx.geometry.Pos;
 import javafx.scene.layout.VBox;
 
 public class DiceDisplay extends VBox {
+    public static final double DIVIDER_HEIGHT = 0.7;
     private GameScreen gameScreen;
     private DiceImageLabel diceImageLabelOne;
     private DiceImageLabel diceImageLabelTwo;
-    private static final double DIVIDER  = 0.15;
+    private static final double DIVIDER_WIDTH = 0.15;
 
     public DiceDisplay(GameScreen gameScreen, GraphicsConnector graphicsConnector) {
         this.gameScreen = gameScreen;
         diceImageLabelOne = new DiceImageLabel(this, graphicsConnector,1);
         diceImageLabelTwo = new DiceImageLabel(this, graphicsConnector,2);
-        setMinSize(getWidthFromTop()*DIVIDER, getHeightFromTop());
-        setMaxSize(getWidthFromTop()*DIVIDER, getHeightFromTop());
+        setMinSize(getWidthFromTop()* DIVIDER_WIDTH, getHeightFromTop()* DIVIDER_HEIGHT);
+        setMaxSize(getWidthFromTop()* DIVIDER_WIDTH, getHeightFromTop()* DIVIDER_HEIGHT);
         setAlignment(Pos.CENTER);
         getChildren().addAll(diceImageLabelOne, diceImageLabelTwo);
 
@@ -30,9 +31,9 @@ public class DiceDisplay extends VBox {
         return gameScreen.getHeightFromChessGUI();
     }
 
-    public void updateGraphics(int size){
-        setMinSize(getWidthFromTop()/DIVIDER, getHeightFromTop());
-        setMaxSize(getWidthFromTop()/DIVIDER, getHeightFromTop() );
-        diceImageLabelOne.updateGraphics(size);
+    public void updateGraphics(){
+        setMinSize(getWidthFromTop()/ DIVIDER_WIDTH, getHeightFromTop()* DIVIDER_HEIGHT);
+        setMaxSize(getWidthFromTop()/ DIVIDER_WIDTH, getHeightFromTop()* DIVIDER_HEIGHT);
+        diceImageLabelOne.updateGraphics();
     }
 }
