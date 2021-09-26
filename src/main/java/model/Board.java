@@ -9,6 +9,7 @@ public class Board {
     private ChessPiece[][] boardModel;
     private BoardUpdater boardUpdater;
     private GameRunner gameRunner;
+    private int priseEnPassantAuthorized = -1;
 
     public Board(GameRunner gameRunner) {
         this.gameRunner=gameRunner;
@@ -63,6 +64,13 @@ public class Board {
 
     public void doMove(){
         gameRunner.doMove();
+    }
+
+    public int getPriseEnPassantAuthorized(){
+        return priseEnPassantAuthorized;
+    }
+    public void setPriseEnPassantAuthorized(int priseEnPassantAuthorized){
+        this.priseEnPassantAuthorized = priseEnPassantAuthorized;
     }
 
 }
