@@ -46,10 +46,17 @@ public abstract class ChessPiece {
 
     public void move(int index_x, int index_y) {
 
+        this.currentBoard.setPriseEnPassantAuthorized(-1);
+        if( (this.getPieceChar() == 'P') || (this.getPieceChar() == 'p') ){
+            if(Math.abs(this.index_y - index_y) == 2){
+
+                this.currentBoard.setPriseEnPassantAuthorized(this.index_x);
+            }
+        }
+
         // Updates internal position
         this.index_x = index_x;
         this.index_y = index_y;
-
     }
 
     /**

@@ -65,8 +65,22 @@ public class PawnPiece extends ChessPiece {
             }
         }
 
+        // prise en passant
+        // TODO update prise en passant value --> move(this.index_y + 2?)
+        if(this.currentBoard.getPriseEnPassantAuthorized() > -1) { //checking valid column
+            System.out.println("first check");
+            if( (this.index_x + 1 == this.currentBoard.getPriseEnPassantAuthorized()) || (this.index_x - 1 == this.currentBoard.getPriseEnPassantAuthorized()) ) {
+                System.out.println("second check");
+                if( (this.isWhite) && (this.index_y == 3) ) {
+                    valid_moves[this.currentBoard.getPriseEnPassantAuthorized()][2] = true;
+                }
+                else if( (!this.isWhite) && (this.index_y == 4) ) {
+                    valid_moves[this.currentBoard.getPriseEnPassantAuthorized()][5] = true;
+                }
+            }
+        }
+
+
         return valid_moves;
     }
-
-
 }
