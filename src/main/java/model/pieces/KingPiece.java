@@ -52,6 +52,28 @@ public class KingPiece extends ChessPiece {
 				valid_moves[index_x][index_y-1]=true;
 			}
 		}
+
+		//small rook
+		if(this.isWhite) {
+			if(this.index_x == 4 && this.index_y == 7) { //checking if the king is at his initial position
+				if( (this.currentBoard.getBoardModel()[7][7] != null) && (this.currentBoard.getBoardModel()[7][7].getPieceChar() == 'R') ) { //checking if the right rook is at his initial position
+					//if(this.isSafe(this.index_x, this.index_y)) { //checking if the king not in a position of danger before doing the rook
+						if(isOpenSpot(this.index_x + 1, this.index_y)) { //checking if no pieces on the way between the king and the rook + if the king doesn't put himself in danger while passing
+							//if(this.isSafe(this.index_x + 1, this.index_y)) {
+								if(isOpenSpot(this.index_x + 2, this.index_y)) {
+									//if(this.isSafe(this.index_x + 2, this.index_y)) {
+										//if(this.isSafe(this.index_x + 3, this.index_y)) { //checking that king doesn't put himself in danger after doing the rook
+											valid_moves[7][7] = true;
+										}
+									}
+								}
+							}
+						//}
+					//}
+				//}
+			//}
+		}
+
 		return valid_moves;
 	}
 }

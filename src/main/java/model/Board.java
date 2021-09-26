@@ -69,8 +69,12 @@ public class Board {
     public int getPriseEnPassantAuthorized(){
         return priseEnPassantAuthorized;
     }
+
     public void setPriseEnPassantAuthorized(int priseEnPassantAuthorized){
         this.priseEnPassantAuthorized = priseEnPassantAuthorized;
     }
 
+    public ChessPiece[][] getBoardModel() {
+        return boardModel;
+    }
 }
