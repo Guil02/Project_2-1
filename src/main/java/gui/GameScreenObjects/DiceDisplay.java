@@ -37,4 +37,9 @@ public class DiceDisplay extends VBox {
         diceImageLabelOne.updateGraphics();
         diceImageLabelTwo.updateGraphics();
     }
+
+    public void updateDice(){
+        diceImageLabelOne.updateDice();
+        diceImageLabelTwo.updateDice();
+    }
 }

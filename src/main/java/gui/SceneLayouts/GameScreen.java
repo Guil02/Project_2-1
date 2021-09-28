@@ -66,6 +66,6 @@ public class GameScreen extends BorderPane {
     }
 
     public void updateDice(){
-        diceDisplay.updateGraphics();
+        diceDisplay.updateDice();
     }
 }
