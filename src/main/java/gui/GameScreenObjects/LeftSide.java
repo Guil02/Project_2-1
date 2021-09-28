@@ -66,6 +66,9 @@ public class LeftSide extends VBox {
         int seconds = a%60;
         string.append(minutes);
         string.append(":");
+        if(seconds<10){
+            string.append("0");
+        }
         string.append(seconds);
         return string.toString();
     }
