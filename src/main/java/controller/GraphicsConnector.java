@@ -37,7 +37,12 @@ public class GraphicsConnector {
                 temp[tempInt++] = validMoves[j][i];
             }
         }
-        return temp;
+        char movablePiece = gameRunner.getMovablePiece();
+        boolean movable = board.getCharOfField(x, y)==movablePiece;
+        if(!movable){
+            return new boolean[64];
+        }
+        else return temp;
 //        return Transform.transformBooleanToOneDimension(validMoves);
     }
 
