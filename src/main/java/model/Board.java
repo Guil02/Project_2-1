@@ -2,6 +2,7 @@ package model;
 
 import controller.GameRunner;
 import model.pieces.ChessPiece;
+import java.util.*;
 
 public class Board {
 
@@ -19,6 +20,30 @@ public class Board {
     public static int getBoardSize() {
         return BOARDSIZE;
     }
+
+    private ArrayList<ChessPiece> whitePieces = new ArrayList<ChessPiece>();
+    private ArrayList<ChessPiece> blackPieces = new ArrayList<ChessPiece>();
+
+    /*
+     * new method adding all the pieces to the respective ArrayLists --> to know the postions of all the pieces
+     */
+    public void addPiece(ChessPiece piece) {
+        if(piece.isWhite()) {
+            whitePieces.add(piece);
+        }
+        else {
+            blackPieces.add(piece);
+        }
+    }
+
+    public ArrayList<ChessPiece> getWhitePieces(){
+        return whitePieces;
+    }
+
+    public ArrayList<ChessPiece> getBlackPieces(){
+        return blackPieces;
+    }
+
 
     public ChessPiece[][] getField() {
         return boardModel;
