@@ -9,6 +9,12 @@ public abstract class ChessPiece {
 
     // Variables
     protected boolean isWhite;
+    protected boolean hasValidMove;
+
+    public boolean hasValidMove() {
+        return hasValidMove;
+    }
+
     protected int index_x;
     protected int index_y;
     protected Board currentBoard;

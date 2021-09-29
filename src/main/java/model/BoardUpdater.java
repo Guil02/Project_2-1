@@ -1,5 +1,6 @@
 package model;
 
+import controller.GameRunner;
 import model.pieces.*;
 
 /**
@@ -8,7 +9,7 @@ import model.pieces.*;
 public class BoardUpdater {
 
     private Board boardModel;
-
+    private char currentMove;
     /**
      * Constructor
      * @param boardModel
