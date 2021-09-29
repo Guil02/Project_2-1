@@ -66,7 +66,10 @@ public class GraphicsConnector {
      */
     public void doMove(int initialX, int initialY, int finalX, int finalY){
         boardUpdater.movePiece(initialX, initialY, finalX, finalY);
+        System.out.println(gameRunner.getMovablePiece());
     }
+
+
 
 
     /**
@@ -128,6 +131,11 @@ public class GraphicsConnector {
         ChessPiece piece = piecesArray[initialX][initialY];
         boolean[][] validMoves = piece.validMoves();
 
+        char movablePiece = gameRunner.getMovablePiece();
+        boolean movable = board.getCharOfField(initialX, initialY)==movablePiece;
+        if(!movable){
+            return false;
+        }
         return validMoves[finalX][finalY];
     }
 
