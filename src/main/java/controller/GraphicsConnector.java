@@ -112,7 +112,7 @@ public class GraphicsConnector {
             case 'R':
                 return "gui/white_rook.png";
         }
-        return "NO PIECE FOUND";
+        return "gui/error_cross.png";
     }
 
     /**
@@ -230,6 +230,6 @@ public class GraphicsConnector {
                     return "gui/dice_one.png";
             }
         }
-        return null;
+        return "gui/error_cross.png";
     }
 }
