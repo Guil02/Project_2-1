@@ -23,10 +23,10 @@ public class ChessSpot extends Label {
     private int y;
     private ChessBoard board;
     private GraphicsConnector graphicsConnector;
-    private static final String color1 = "-fx-background-color: #4a4b3e; -fx-border-color: #000000;";
-    private static final String color2 = "-fx-background-color: #2f7244; -fx-border-color: #000000;";
-    private static final String attackColor = "-fx-background-color: #bd2b2b; -fx-border-color: #000000;";
-    private static final String moveColor = "-fx-background-color: #23a94d; -fx-border-color: #000000;";
+    private static final String color1 = "-fx-background-color: #dfe3e6; -fx-border-color: rgba(0,0,0,0.03);";
+    private static final String color2 = "-fx-background-color: #90a1ab; -fx-border-color: rgba(0,0,0,0.03);";
+    private static final String attackColor = "-fx-background-color: #99af6f; -fx-border-color: rgba(0,0,0,0.03);";
+    private static final String moveColor = "-fx-background-color: #c6d590; -fx-border-color: rgba(0,0,0,0.03);";
 
 
     /**
