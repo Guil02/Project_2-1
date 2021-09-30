@@ -37,7 +37,12 @@ public class GraphicsConnector {
                 temp[tempInt++] = validMoves[j][i];
             }
         }
-        return temp;
+        char movablePiece = gameRunner.getMovablePiece();
+        boolean movable = board.getCharOfField(x, y)==movablePiece;
+        if(!movable){
+            return new boolean[64];
+        }
+        else return temp;
 //        return Transform.transformBooleanToOneDimension(validMoves);
     }
 
@@ -112,7 +117,7 @@ public class GraphicsConnector {
             case 'R':
                 return "gui/white_rook.png";
         }
-        return "NO PIECE FOUND";
+        return "gui/error_cross.png";
     }
 
     /**
@@ -180,11 +185,56 @@ public class GraphicsConnector {
     }
     //TODO add correct method that gets the correct image for the correct dice throw
     public String getDiceImage(int type){
-        if(type ==1){
-            return "gui/white_king.png";
+        if(type == 1) {
+            switch (gameRunner.getMovablePiece()) {
+                case 'K':
+                    return "gui/white_king.png";
+                case 'Q':
+                    return "gui/white_queen.png";
+                case 'R':
+                    return "gui/white_rook.png";
+                case 'B':
+                    return "gui/white_bishop.png";
+                case 'N':
+                    return "gui/white_knight.png";
+                case 'P':
+                    return "gui/white_pawn.png";
+                case 'k':
+                    return "gui/black_king.png";
+                case 'q':
+                    return "gui/black_queen.png";
+                case 'r':
+                    return "gui/black_rook.png";
+                case 'b':
+                    return "gui/black_bishop.png";
+                case 'n':
+                    return "gui/black_knight.png";
+                case 'p':
+                    return "gui/black_pawn.png";
+            }
         }
-        else{
-            return "gui/dice_six.png";
+        else {
+            switch (gameRunner.getMovablePiece()) {
+                case 'K':
+                case 'k':
+                    return "gui/dice_six.png";
+                case 'Q':
+                case 'q':
+                    return "gui/dice_five.png";
+                case 'R':
+                case 'r':
+                    return "gui/dice_four.png";
+                case 'B':
+                case 'b':
+                    return "gui/dice_three.png";
+                case 'N':
+                case 'n':
+                    return "gui/dice_two.png";
+                case 'P':
+                case 'p':
+                    return "gui/dice_one.png";
+            }
         }
+        return "gui/error_cross.png";
     }
 }

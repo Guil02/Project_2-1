@@ -38,6 +38,19 @@ public abstract class ChessPiece {
 
     }
 
+    public boolean checkAllFalse(boolean[][] validMoves){
+
+
+        for (boolean[] validMove : validMoves) {
+            for (int j = 0; j < validMoves[0].length; j++) {
+                if (validMove[j]) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
     public int getIndex_x() {
         return this.index_x;
     }
