@@ -24,39 +24,39 @@ public class KnightPiece extends ChessPiece {
         if(isTurn()){
             if(withinBounds(index_x,2)&&withinBounds(index_y,1)&&isOpenSpot(index_x+2,index_y+1)){
                 valid_moves[index_x+2][index_y+1]=true;
-                hasValidMove = true;
+                setHasValidMove(true);
             }
             if(withinBounds(index_x,2)&&withinBounds(index_y,-1)&&isOpenSpot(index_x+2,index_y-1)){
                 valid_moves[index_x+2][index_y-1]=true;
-                hasValidMove = true;
+                setHasValidMove(true);
             }
             if(withinBounds(index_x,-2)&&withinBounds(index_y,1)&&isOpenSpot(index_x-2,index_y+1)){
                 valid_moves[index_x-2][index_y+1]=true;
-                hasValidMove = true;
+                setHasValidMove(true);
             }
             if(withinBounds(index_x,-2)&&withinBounds(index_y,-1)&&isOpenSpot(index_x-2,index_y-1)){
                 valid_moves[index_x-2][index_y-1]=true;
-                hasValidMove = true;
+                setHasValidMove(true);
             }
             if(withinBounds(index_x,1)&&withinBounds(index_y,2)&&isOpenSpot(index_x+1,index_y+2)){
                 valid_moves[index_x+1][index_y+2]=true;
-                hasValidMove = true;
+                setHasValidMove(true);
             }
             if(withinBounds(index_x,1)&&withinBounds(index_y,-2)&&isOpenSpot(index_x+1,index_y-2)){
                 valid_moves[index_x+1][index_y-2]=true;
-                hasValidMove = true;
+                setHasValidMove(true);
             }
             if(withinBounds(index_x,-1)&&withinBounds(index_y,2)&&isOpenSpot(index_x-1,index_y+2)){
                 valid_moves[index_x-1][index_y+2]=true;
-                hasValidMove = true;
+                setHasValidMove(true);
             }
             if(withinBounds(index_x,-1)&&withinBounds(index_y,-2)&&isOpenSpot(index_x-1,index_y-2)){
                 valid_moves[index_x-1][index_y-2]=true;
-                hasValidMove = true;
+                setHasValidMove(true);
             }
         }
         if(checkAllFalse(valid_moves)){
-            hasValidMove = false;
+            setHasValidMove(false);
         }
         return valid_moves;
     }

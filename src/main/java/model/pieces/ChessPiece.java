@@ -63,6 +63,12 @@ public abstract class ChessPiece {
         return this.isWhite;
     }
 
+
+
+    public void setHasValidMove(boolean hasValidMove) {
+        this.hasValidMove = hasValidMove;
+    }
+
     public void move(int index_x, int index_y) {
 
         // Updates internal position
