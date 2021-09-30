@@ -1,6 +1,7 @@
 package model.pieces;
 
 import model.Board;
+import model.BoardUpdater;
 
 //TODO add promotion
 
@@ -68,9 +69,41 @@ public class PawnPiece extends ChessPiece {
             if( (this.index_x + 1 == this.currentBoard.getEnPassantAuthorized()) || (this.index_x - 1 == this.currentBoard.getEnPassantAuthorized()) ) {
                 if( (this.isWhite) && (this.index_y == 3) ) {
                     valid_moves[this.currentBoard.getEnPassantAuthorized()][2] = true;
+
+                    ChessPiece leftNeighbor = this.currentBoard.getPiece(this.index_x-1, this.index_y);
+                    ChessPiece rightNeighbor = this.currentBoard.getPiece(this.index_x+1, this.index_y);
+
+                    if(this.currentBoard.getPiece(this.index_x+1, this.index_y-1).getPieceChar() == 'P') {
+                        if(rightNeighbor.getPieceChar() == 'p') {
+                            BoardUpdater board = new BoardUpdater(this.currentBoard);
+                            board.removePiece(rightNeighbor.index_x, rightNeighbor.index_y);
+                        }
+                    }
+                    else if(this.currentBoard.getPiece(this.index_x-1, this.index_y-1).getPieceChar() == 'P'){
+                        if(leftNeighbor.getPieceChar() == 'p') {
+                            BoardUpdater board = new BoardUpdater(this.currentBoard);
+                            board.removePiece(leftNeighbor.index_x, leftNeighbor.index_y);
+                        }
+                    }
                 }
                 else if( (!this.isWhite) && (this.index_y == 4) ) {
                     valid_moves[this.currentBoard.getEnPassantAuthorized()][5] = true;
+
+                    ChessPiece leftNeighbor = this.currentBoard.getPiece(this.index_x-1, this.index_y);
+                    ChessPiece rightNeighbor = this.currentBoard.getPiece(this.index_x+1, this.index_y);
+
+                    if(this.currentBoard.getPiece(this.index_x-1, this.index_y+1).getPieceChar() == 'p') {
+                        if(rightNeighbor.getPieceChar() == 'P') {
+                            BoardUpdater board = new BoardUpdater(this.currentBoard);
+                            board.removePiece(rightNeighbor.index_x, rightNeighbor.index_y);
+                        }
+                    }
+                    else if(this.currentBoard.getPiece(this.index_x+1, this.index_y+1).getPieceChar() == 'p'){
+                        if(leftNeighbor.getPieceChar() == 'P') {
+                            BoardUpdater board = new BoardUpdater(this.currentBoard);
+                            board.removePiece(leftNeighbor.index_x, leftNeighbor.index_y);
+                        }
+                    }
                 }
             }
         }
