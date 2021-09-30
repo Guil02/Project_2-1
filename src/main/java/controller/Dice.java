@@ -1,6 +1,7 @@
 package controller;
 
 import model.pieces.ChessPiece;
+
 import java.util.ArrayList;
 
 /**
@@ -23,9 +24,11 @@ public class Dice {
      * @return  char - the character value representing the piece that will have to be moved in the next play
      */
     public char choosePiece(ArrayList<Character> usablePieces) {
+        if(usablePieces.size()!=0){
         int numberOfPieces = usablePieces.size();
-        int randomRoll = (int)(Math.random()*numberOfPieces);
-        return usablePieces.get(randomRoll);
+        int random = (int)(Math.random()*numberOfPieces);
+        return usablePieces.get(random);}
+        else return '.';
     }
 
     /**

@@ -90,33 +90,21 @@ public class GraphicsConnector {
      */
     public String getImage(int x, int y){
         char field = board.getCharOfField(x,y);
-        switch(field){
-            case 'b':
-                return "gui/black_bishop.png";
-            case 'k':
-                return "gui/black_king.png";
-            case 'n':
-                return "gui/black_knight.png";
-            case 'p':
-                return "gui/black_pawn.png";
-            case 'q':
-                return "gui/black_queen.png";
-            case 'r':
-                return "gui/black_rook.png";
-            case 'B':
-                return "gui/white_bishop.png";
-            case 'K':
-                return "gui/white_king.png";
-            case 'N':
-                return "gui/white_knight.png";
-            case 'P':
-                return "gui/white_pawn.png";
-            case 'Q':
-                return "gui/white_queen.png";
-            case 'R':
-                return "gui/white_rook.png";
-        }
-        return "gui/error_cross.png";
+        return switch (field) {
+            case 'b' -> "gui/b_Bishop.png";
+            case 'k' -> "gui/b_King.png";
+            case 'n' -> "gui/b_Knight.png";
+            case 'p' -> "gui/b_Pawn.png";
+            case 'q' -> "gui/b_Queen.png";
+            case 'r' -> "gui/b_Rook.png";
+            case 'B' -> "gui/w_Bishop.png";
+            case 'K' -> "gui/w_King.png";
+            case 'N' -> "gui/w_Knight.png";
+            case 'P' -> "gui/w_Pawn.png";
+            case 'Q' -> "gui/w_Queen.png";
+            case 'R' -> "gui/w_Rook.png";
+            default -> "gui/error_cross.png";
+        };
     }
 
     /**
@@ -187,29 +175,29 @@ public class GraphicsConnector {
         if(type == 1) {
             switch (gameRunner.getMovablePiece()) {
                 case 'K':
-                    return "gui/white_king.png";
+                    return "gui/w_King.png";
                 case 'Q':
-                    return "gui/white_queen.png";
+                    return "gui/w_Queen.png";
                 case 'R':
-                    return "gui/white_rook.png";
+                    return "gui/w_Rook.png";
                 case 'B':
-                    return "gui/white_bishop.png";
+                    return "gui/w_Bishop.png";
                 case 'N':
-                    return "gui/white_knight.png";
+                    return "gui/w_Knight.png";
                 case 'P':
-                    return "gui/white_pawn.png";
+                    return "gui/w_Pawn.png";
                 case 'k':
-                    return "gui/black_king.png";
+                    return "gui/b_King.png";
                 case 'q':
-                    return "gui/black_queen.png";
+                    return "gui/b_Queen.png";
                 case 'r':
-                    return "gui/black_rook.png";
+                    return "gui/b_Rook.png";
                 case 'b':
-                    return "gui/black_bishop.png";
+                    return "gui/b_Bishop.png";
                 case 'n':
-                    return "gui/black_knight.png";
+                    return "gui/b_Knight.png";
                 case 'p':
-                    return "gui/black_pawn.png";
+                    return "gui/P_pawn.png";
             }
         }
         else {
@@ -236,4 +224,6 @@ public class GraphicsConnector {
         }
         return "gui/error_cross.png";
     }
+
+
 }
