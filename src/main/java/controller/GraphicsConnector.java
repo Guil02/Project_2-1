@@ -91,18 +91,18 @@ public class GraphicsConnector {
     public String getImage(int x, int y){
         char field = board.getCharOfField(x,y);
         return switch (field) {
-            case 'b' -> "gui/b_Bishop.png";
-            case 'k' -> "gui/b_King.png";
-            case 'n' -> "gui/b_Knight.png";
-            case 'p' -> "gui/b_Pawn.png";
-            case 'q' -> "gui/b_Queen.png";
-            case 'r' -> "gui/b_Rook.png";
-            case 'B' -> "gui/w_Bishop.png";
-            case 'K' -> "gui/w_King.png";
-            case 'N' -> "gui/w_Knight.png";
-            case 'P' -> "gui/w_Pawn.png";
-            case 'Q' -> "gui/w_Queen.png";
-            case 'R' -> "gui/w_Rook.png";
+            case 'b' -> "gui/bB.png";
+            case 'k' -> "gui/bK.png";
+            case 'n' -> "gui/bN.png";
+            case 'p' -> "gui/bP.png";
+            case 'q' -> "gui/bQ.png";
+            case 'r' -> "gui/bR.png";
+            case 'B' -> "gui/wB.png";
+            case 'K' -> "gui/wK.png";
+            case 'N' -> "gui/wN.png";
+            case 'P' -> "gui/wP.png";
+            case 'Q' -> "gui/wQ.png";
+            case 'R' -> "gui/wR.png";
             default -> "gui/error_cross.png";
         };
     }
