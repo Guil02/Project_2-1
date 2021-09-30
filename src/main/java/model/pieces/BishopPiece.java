@@ -134,7 +134,9 @@ public class BishopPiece extends ChessPiece {
                 else break;
             }
         }
-
+        if(checkAllFalse(valid_moves)){
+            hasValidMove = false;
+        }
         return valid_moves;
     }
 }

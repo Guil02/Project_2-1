@@ -74,7 +74,9 @@ public class PawnPiece extends ChessPiece {
                 }
             }
         }
-
+        if(checkAllFalse(valid_moves)){
+            hasValidMove = false;
+        }
         return valid_moves;
     }
 

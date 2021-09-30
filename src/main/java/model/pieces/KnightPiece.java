@@ -55,7 +55,9 @@ public class KnightPiece extends ChessPiece {
                 hasValidMove = true;
             }
         }
-
+        if(checkAllFalse(valid_moves)){
+            hasValidMove = false;
+        }
         return valid_moves;
     }
 }
