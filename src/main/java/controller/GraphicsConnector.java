@@ -71,7 +71,6 @@ public class GraphicsConnector {
      */
     public void doMove(int initialX, int initialY, int finalX, int finalY){
         boardUpdater.movePiece(initialX, initialY, finalX, finalY);
-        System.out.println(gameRunner.getMovablePiece());
     }
 
 

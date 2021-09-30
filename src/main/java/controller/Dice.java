@@ -32,7 +32,6 @@ public class Dice {
                 }
             }
         }
-        System.out.println(movablePieces);
         return choosePiece(movablePieces);
     }
 
