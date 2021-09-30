@@ -1,6 +1,4 @@
-import controller.Dice;
 import controller.GameRunner;
-
 
 /**
  * Application class which contains the executable method to start the game.
