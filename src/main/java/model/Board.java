@@ -10,23 +10,15 @@ public class Board {
     private ChessPiece[][] boardModel;
     private BoardUpdater boardUpdater;
     private GameRunner gameRunner;
-    private int priseEnPassantAuthorized = -1;
+    private int enPassantAuthorized = -1;
 
     public Board(GameRunner gameRunner) {
         this.gameRunner=gameRunner;
-        boardModel = new ChessPiece[8][8];
-    }
-
-    public static int getBoardSize() {
-        return BOARDSIZE;
+        boardModel = new ChessPiece[BOARDSIZE][BOARDSIZE];
     }
 
     private ArrayList<ChessPiece> whitePieces = new ArrayList<ChessPiece>();
     private ArrayList<ChessPiece> blackPieces = new ArrayList<ChessPiece>();
-
-    /*
-     * new method adding all the pieces to the respective ArrayLists --> to know the postions of all the pieces
-     */
     public void addPiece(ChessPiece piece) {
         if(piece.isWhite()) {
             whitePieces.add(piece);
@@ -35,43 +27,30 @@ public class Board {
             blackPieces.add(piece);
         }
     }
+    public ArrayList<ChessPiece> getWhitePieces(){ return whitePieces; }
+    public ArrayList<ChessPiece> getBlackPieces(){ return blackPieces; }
 
-    public ArrayList<ChessPiece> getWhitePieces(){
-        return whitePieces;
+    public static int getBoardSize() {
+        return BOARDSIZE;
     }
 
-    public ArrayList<ChessPiece> getBlackPieces(){
-        return blackPieces;
-    }
-
-
+    public ChessPiece[][] getBoardModel() {
+        return boardModel;
+    } //TODO: same methods ?
     public ChessPiece[][] getField() {
         return boardModel;
     }
 
+    public int getEnPassantAuthorized(){
+        return enPassantAuthorized;
+    }
+
+    public void setEnPassantAuthorized(int enPassantAuthorized) {
+        this.enPassantAuthorized = enPassantAuthorized;
+    }
+
     public ChessPiece getPiece(int index_x, int index_y) {
         return boardModel[index_x][index_y];
-    }
-
-    public void printBoard() {
-        System.out.println("--- Board State ---\n");
-        for (int i = 0; i < boardModel[0].length; i++) {
-            for (int j = 0; j < boardModel.length; j++) {
-                System.out.print("[ " + getCharOfField(j, i) + " ] ");
-                // System.out.print("[ " + j + " " + i + " ] ");
-            }
-            System.out.println();
-        }
-
-
-    }
-
-    public void setBoardUpdater(BoardUpdater boardUpdater) {
-        this.boardUpdater = boardUpdater;
-    }
-
-    public BoardUpdater getBoardUpdater() {
-        return boardUpdater;
     }
 
     public char getCharOfField(int x, int y) {
@@ -83,23 +62,30 @@ public class Board {
         }
     }
 
+    public void printBoard() {
+        System.out.println("--- Board State ---\n");
+        for(int i = 0; i < boardModel[0].length; i++) {
+            for (int j = 0; j < boardModel.length; j++) {
+                System.out.print("[ " + getCharOfField(j, i) + " ] ");
+                // System.out.print("[ " + j + " " + i + " ] ");
+            }
+            System.out.println();
+        }
+    }
+
+    public BoardUpdater getBoardUpdater() {
+        return boardUpdater;
+    }
+
+    public void setBoardUpdater(BoardUpdater boardUpdater) {
+        this.boardUpdater = boardUpdater;
+    }
+
     public boolean getWhiteMove(){
         return gameRunner.getWhiteMove();
     }
 
     public void doMove(){
         gameRunner.doMove();
-    }
-
-    public int getPriseEnPassantAuthorized(){
-        return priseEnPassantAuthorized;
-    }
-
-    public void setPriseEnPassantAuthorized(int priseEnPassantAuthorized){
-        this.priseEnPassantAuthorized = priseEnPassantAuthorized;
-    }
-
-    public ChessPiece[][] getBoardModel() {
-        return boardModel;
     }
 }
