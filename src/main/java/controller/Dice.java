@@ -25,9 +25,10 @@ public class Dice {
      */
     public char choosePiece(ArrayList<Character> usablePieces) {
         if(usablePieces.size()!=0){
-        int numberOfPieces = usablePieces.size();
-        int random = (int)(Math.random()*numberOfPieces);
-        return usablePieces.get(random);}
+            int numberOfPieces = usablePieces.size();
+            int random = (int)(Math.random()*numberOfPieces);
+            return usablePieces.get(random);
+        }
         else return '.';
     }
 
