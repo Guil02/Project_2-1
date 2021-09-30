@@ -50,8 +50,6 @@ public class GameRunner {
          */
         // boardUpdater.movePiece(2, 1, 2, 3);
         // board.printBoard();
-
-
     }
 
     /**

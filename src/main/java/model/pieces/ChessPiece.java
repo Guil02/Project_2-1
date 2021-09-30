@@ -3,19 +3,16 @@ package model.pieces;
 import model.Board;
 
 /**
- * Abstract class to represent a chess piece
+ * Abstract class representing a chess piece
  */
 public abstract class ChessPiece {
 
-    // Variables
     protected boolean isWhite;
     protected int index_x;
     protected int index_y;
     protected Board currentBoard;
 
-    public ChessPiece() {
-
-    }
+    public ChessPiece() { }
 
     /**
      * Constructor
@@ -46,11 +43,11 @@ public abstract class ChessPiece {
 
     public void move(int index_x, int index_y) {
 
-        this.currentBoard.setPriseEnPassantAuthorized(-1);
-        if( (this.getPieceChar() == 'P') || (this.getPieceChar() == 'p') ){
-            if(Math.abs(this.index_y - index_y) == 2){
+        this.currentBoard.setEnPassantAuthorized(-1);
+        if( (this.getPieceChar() == 'P') || (this.getPieceChar() == 'p') ) {
+            if(Math.abs(this.index_y - index_y) == 2) {
 
-                this.currentBoard.setPriseEnPassantAuthorized(this.index_x);
+                this.currentBoard.setEnPassantAuthorized(this.index_x);
             }
         }
 
@@ -90,7 +87,7 @@ public abstract class ChessPiece {
     }
 
     private int BOARDSIZE = Board.getBoardSize();
-    public boolean withinBounds(int variable, int increment){
+    public boolean withinBounds(int variable, int increment) {
         return variable + increment < BOARDSIZE && variable + increment >= 0;
     }
 
@@ -98,8 +95,8 @@ public abstract class ChessPiece {
         return value < BOARDSIZE && value >= 0;
     }
 
-    public boolean isOpenSpot(int x, int y){
-        if(!checkForOwnPiece(x,y)){
+    public boolean isOpenSpot(int x, int y) {
+        if(!checkForOwnPiece(x,y)) {
             return true;
         }
         else{
@@ -111,15 +108,15 @@ public abstract class ChessPiece {
 
     public abstract char getPieceChar();
 
-    public boolean isOnOppositeRow(int x,int y){
+    public boolean isOnOppositeRow(int x,int y) {
         if(isWhite){
             return y == 0;
         }
         else return y == 7;
     }
 
-    public boolean isTurn(){
-        if(isWhite){
+    public boolean isTurn() {
+        if(isWhite) {
             return currentBoard.getWhiteMove();
         }
         else return !currentBoard.getWhiteMove();
