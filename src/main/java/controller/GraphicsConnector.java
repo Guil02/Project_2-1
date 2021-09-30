@@ -170,34 +170,33 @@ public class GraphicsConnector {
         ChessPiece piece = piecesArray[x][y];
         return piece.isTurn();
     }
-    //TODO add correct method that gets the correct image for the correct dice throw
     public String getDiceImage(int type){
         if(type == 1) {
             switch (gameRunner.getMovablePiece()) {
                 case 'K':
-                    return "gui/w_King.png";
+                    return "gui/wK.png";
                 case 'Q':
-                    return "gui/w_Queen.png";
+                    return "gui/wQ.png";
                 case 'R':
-                    return "gui/w_Rook.png";
+                    return "gui/wR.png";
                 case 'B':
-                    return "gui/w_Bishop.png";
+                    return "gui/wB.png";
                 case 'N':
-                    return "gui/w_Knight.png";
+                    return "gui/wN.png";
                 case 'P':
-                    return "gui/w_Pawn.png";
+                    return "gui/wP.png";
                 case 'k':
-                    return "gui/b_King.png";
+                    return "gui/bK.png";
                 case 'q':
-                    return "gui/b_Queen.png";
+                    return "gui/bQ.png";
                 case 'r':
-                    return "gui/b_Rook.png";
+                    return "gui/bR.png";
                 case 'b':
-                    return "gui/b_Bishop.png";
+                    return "gui/bB.png";
                 case 'n':
-                    return "gui/b_Knight.png";
+                    return "gui/bN.png";
                 case 'p':
-                    return "gui/P_pawn.png";
+                    return "gui/bP.png";
             }
         }
         else {
