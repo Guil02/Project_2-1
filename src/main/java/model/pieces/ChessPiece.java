@@ -41,19 +41,57 @@ public abstract class ChessPiece {
         return this.isWhite;
     }
 
-    public void move(int index_x, int index_y) {
+    public void move(int new_index_x, int new_index_y) {
 
         this.currentBoard.setEnPassantAuthorized(-1);
         if( (this.getPieceChar() == 'P') || (this.getPieceChar() == 'p') ) {
-            if(Math.abs(this.index_y - index_y) == 2) {
+            if(Math.abs(this.index_y - new_index_y) == 2) {
 
                 this.currentBoard.setEnPassantAuthorized(this.index_x);
+
             }
         }
 
+        if( (this.getPieceChar() == 'P') || (this.getPieceChar() == 'p') ) {
+            if( (Math.abs(this.index_x - new_index_x) == 1) && (Math.abs(this.index_y - new_index_y) == 1) ) {
+                if(isOpenSpot(new_index_x, new_index_y)){
+
+                    this.currentBoard.getBoardUpdater().removePiece(new_index_x, this.index_y);
+                }
+            }
+        }
+
+        if(this.getPieceChar() == 'K') {
+            if(Math.abs(this.index_x - new_index_x) == 2) {
+
+                currentBoard.getBoardUpdater().movePiece(7, 7, 5, 7);
+                this.currentBoard.getGameRunner().setWhiteMove(true);
+            }
+            else if(Math.abs(this.index_x - new_index_x) == 3) {
+
+                currentBoard.getBoardUpdater().movePiece(0, 7, 3, 7);
+                this.currentBoard.getGameRunner().setWhiteMove(true);
+            }
+        }
+        if(this.getPieceChar() == 'k') {
+            if(Math.abs(this.index_x - new_index_x) == 2){
+
+                currentBoard.getBoardUpdater().movePiece(7, 0, 5, 0);
+                this.currentBoard.getGameRunner().setWhiteMove(false);
+
+
+            }
+            else if(Math.abs(this.index_x - new_index_x) == 3) {
+
+                currentBoard.getBoardUpdater().movePiece(0, 0, 3, 0);
+                this.currentBoard.getGameRunner().setWhiteMove(false);
+            }
+
+        }
+
         // Updates internal position
-        this.index_x = index_x;
-        this.index_y = index_y;
+        this.index_x = new_index_x;
+        this.index_y = new_index_y;
     }
 
     /**
