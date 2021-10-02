@@ -19,7 +19,7 @@ public class Board {
 
     private ArrayList<ChessPiece> whitePieces = new ArrayList<ChessPiece>();
     private ArrayList<ChessPiece> blackPieces = new ArrayList<ChessPiece>();
-    public void addPiece(ChessPiece piece) {
+    public void addBlackOrWhite(ChessPiece piece) {
         if(piece.isWhite()) {
             whitePieces.add(piece);
         }
@@ -83,6 +83,10 @@ public class Board {
 
     public boolean getWhiteMove(){
         return gameRunner.getWhiteMove();
+    }
+
+    public GameRunner getGameRunner() {
+        return this.gameRunner;
     }
 
     public void doMove(){
