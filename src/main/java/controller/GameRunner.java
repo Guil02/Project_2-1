@@ -80,6 +80,10 @@ public class GameRunner {
         return whiteMove;
     }
 
+    public void setWhiteMove(boolean whiteMove) {
+        this.whiteMove = whiteMove;
+    }
+
     public void doMove(){
         whiteMove = !whiteMove;
     }

@@ -114,66 +114,6 @@ public class RookPiece extends ChessPiece {
                 }
             }
         }
-
-        //small castling
-        //whites
-        if(this.isWhite) {
-            if(this.index_x == 7 && this.index_y == 7) { //checking if the rook is at his initial position
-                if( (this.currentBoard.getBoardModel()[4][7] != null) && (this.currentBoard.getBoardModel()[4][7].getPieceChar() == 'K') ) { //checking if the king is at his initial position
-                    if(isOpenSpot(this.index_x-1, this.index_y)) { //checking if no pieces on the way between the rook and the king
-                        if(isOpenSpot(this.index_x-2, this.index_y)) {
-                            if(isOpenSpot(this.index_x-3, this.index_y)) {
-                                valid_moves[5][7] = true;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        //blacks
-        else {
-            if(this.index_x == 7 && this.index_y == 0) { //checking if the rook is at his initial position
-                if(this.currentBoard.getBoardModel()[4][0] != null && this.currentBoard.getBoardModel()[4][0].getPieceChar() == 'k') { //checking if the king is at his initial position
-                    if(isOpenSpot(this.index_x-1, this.index_y)) { //checking if no pieces on the way between the rook and the king
-                        if(isOpenSpot(this.index_x-2, this.index_y)) {
-                            if(isOpenSpot(this.index_x-3, this.index_y)) {
-                                valid_moves[6][0] = true;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        //great castling
-        //whites
-        if(this.isWhite) {
-            if(this.index_x == 0 && this.index_y == 7) { //checking if the rook is at his initial position
-                if( (this.currentBoard.getBoardModel()[4][7]) != null && (this.currentBoard.getBoardModel()[4][7].getPieceChar() == 'K') ) { //checking if the king is at his initial position
-                    if(isOpenSpot(this.index_x+1, this.index_y)) { //checking if no pieces on the way between the rook and the king
-                        if(isOpenSpot(this.index_x+2, this.index_y)) {
-                            if(isOpenSpot(this.index_x+3, this.index_y)) {
-                                valid_moves[3][7] = true;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        //blacks
-        else {
-            if(this.index_x == 0 && this.index_y == 0) { //checking if the rook is at his initial position
-                if(this.currentBoard.getBoardModel()[4][0] != null && this.currentBoard.getBoardModel()[4][0].getPieceChar() == 'k') { //checking if the king is at his initial position
-                    if(isOpenSpot(this.index_x+1, this.index_y)) { //checking if no pieces on the way between the rook and the king
-                        if(isOpenSpot(this.index_x+2, this.index_y)) {
-                            if(isOpenSpot(this.index_x+3, this.index_y)) {
-                                valid_moves[3][0] = true;
-                            }
-                        }
-                    }
-                }
-            }
-        }
         return valid_moves;
     }
 }
