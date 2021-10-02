@@ -181,7 +181,7 @@ public class ChessSpot extends Label {
                 setPiece(actualPiece);
                 board.turnBoard();
                 board.changeTimer();
-
+                board.initializeBoard();
             }
 
             e.consume();

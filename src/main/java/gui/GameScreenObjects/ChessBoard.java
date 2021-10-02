@@ -59,6 +59,9 @@ public class ChessBoard extends GridPane {
                 Piece piece = new Piece(chessSpot.getX(), chessSpot.getY());
                 chessSpot.setPiece(piece);
             }
+            else{
+                chessSpot.setPiece(null);
+            }
         }
     }
 
