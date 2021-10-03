@@ -6,6 +6,7 @@ import model.Board;
  * Rook piece
  */
 public class RookPiece extends ChessPiece {
+    private boolean hasNotMoved = true;
 
     public RookPiece(boolean white, Board board, int index_x, int index_y) {
         super(white, index_x, index_y, board);
@@ -16,6 +17,16 @@ public class RookPiece extends ChessPiece {
             return 'R';
         else
             return 'r';
+    }
+
+    @Override
+    public void move(int new_index_x, int new_index_y) {
+        this.hasNotMoved=false;
+        super.move(new_index_x, new_index_y);
+    }
+
+    public boolean isHasNotMoved() {
+        return hasNotMoved;
     }
 
     public boolean[][] validMoves() {

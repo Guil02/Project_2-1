@@ -62,26 +62,26 @@ public abstract class ChessPiece {
         }
 
         if(this.getPieceChar() == 'K') {
-            if(Math.abs(this.index_x - new_index_x) == 2) {
+            if(this.index_x - new_index_x == -2) {
 
                 currentBoard.getBoardUpdater().movePiece(7, 7, 5, 7);
                 this.currentBoard.getGameRunner().setWhiteMove(true);
             }
-            else if(Math.abs(this.index_x - new_index_x) == 3) {
+            else if(this.index_x - new_index_x == 2) {
 
                 currentBoard.getBoardUpdater().movePiece(0, 7, 3, 7);
                 this.currentBoard.getGameRunner().setWhiteMove(true);
             }
         }
         if(this.getPieceChar() == 'k') {
-            if(Math.abs(this.index_x - new_index_x) == 2){
+            if(this.index_x - new_index_x == -2){
 
                 currentBoard.getBoardUpdater().movePiece(7, 0, 5, 0);
                 this.currentBoard.getGameRunner().setWhiteMove(false);
 
 
             }
-            else if(Math.abs(this.index_x - new_index_x) == 3) {
+            else if(this.index_x - new_index_x == 2) {
 
                 currentBoard.getBoardUpdater().movePiece(0, 0, 3, 0);
                 this.currentBoard.getGameRunner().setWhiteMove(false);
