@@ -59,6 +59,11 @@ public abstract class ChessPiece {
     public boolean isWhite() {
         return this.isWhite;
     }
+
+    public void setHasValidMove(boolean hasValidMove) {
+        this.hasValidMove = hasValidMove;
+    }
+
     public void move(int new_index_x, int new_index_y) {
 
 

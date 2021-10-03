@@ -42,10 +42,12 @@ public class RookPiece extends ChessPiece {
                     if(isOpenSpot(index_x+temp,index_y)) {
                         if(checkForEnemyPiece(index_x+temp,index_y)) {
                             valid_moves[index_x+temp][index_y] = true;
+                            setHasValidMove(true);
                             break;
                         }
                         else {
                             valid_moves[index_x+temp][index_y] = true;
+                            setHasValidMove(true);
                         }
                         temp++;
                     }
@@ -64,10 +66,12 @@ public class RookPiece extends ChessPiece {
                     if(isOpenSpot(index_x+temp,index_y)) {
                         if(checkForEnemyPiece(index_x+temp,index_y)) {
                             valid_moves[index_x+temp][index_y] = true;
+                            setHasValidMove(true);
                             break;
                         }
                         else {
                             valid_moves[index_x+temp][index_y] = true;
+                            setHasValidMove(true);
                         }
                         temp--;
                     }
@@ -87,10 +91,12 @@ public class RookPiece extends ChessPiece {
                     if(isOpenSpot(index_x,index_y+temp)) {
                         if(checkForEnemyPiece(index_x,index_y+temp)) {
                             valid_moves[index_x][index_y+temp] = true;
+                            setHasValidMove(true);
                             break;
                         }
                         else {
                             valid_moves[index_x][index_y+temp] = true;
+                            setHasValidMove(true);
                         }
                         temp++;
                     }
@@ -109,10 +115,12 @@ public class RookPiece extends ChessPiece {
                     if(isOpenSpot(index_x,index_y+temp)) {
                         if(checkForEnemyPiece(index_x,index_y+temp)) {
                             valid_moves[index_x][index_y+temp] = true;
+                            setHasValidMove(true);
                             break;
                         }
                         else {
                             valid_moves[index_x][index_y+temp] = true;
+                            setHasValidMove(true);
                         }
                         temp--;
                     }

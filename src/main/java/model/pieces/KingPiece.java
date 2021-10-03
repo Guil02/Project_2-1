@@ -154,6 +154,7 @@ public class KingPiece extends ChessPiece {
 										if (isOpenSpot(this.index_x + 2, this.index_y)) {
 											if (this.isSafe(this.index_x + 2, this.index_y)[this.index_x + 2][this.index_y]) { //checking that king doesn't put himself in danger after doing the castling
 												valid_moves[6][7] = true;
+												setHasValidMove(true);
 											}
 										}
 									}
@@ -174,6 +175,7 @@ public class KingPiece extends ChessPiece {
 										if (isOpenSpot(this.index_x + 2, this.index_y)) {
 											if (this.isSafe(this.index_x, this.index_y)[this.index_x + 2][this.index_y]) { //checking that king doesn't put himself in danger after doing the castling
 												valid_moves[6][0] = true;
+												setHasValidMove(true);
 											}
 										}
 									}
@@ -198,6 +200,7 @@ public class KingPiece extends ChessPiece {
 												if(isOpenSpot(this.index_x - 3, this.index_y)){
 													if(this.isSafe(this.index_x-3, this.index_y)[this.index_x - 3][this.index_y]){
 														valid_moves[2][7] = true;
+														setHasValidMove(true);
 													}
 												}
 											}
@@ -222,6 +225,7 @@ public class KingPiece extends ChessPiece {
 												if(isOpenSpot(this.index_x - 3, this.index_y)){
 													if(this.isSafe(this.index_x-3, this.index_y)[this.index_x - 3][this.index_y]){
 														valid_moves[2][0] = true;
+														setHasValidMove(true);
 													}
 												}
 											}
