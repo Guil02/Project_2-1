@@ -147,14 +147,17 @@ public class KingPiece extends ChessPiece {
 		else {
 			if(this.index_x == 4 && this.index_y == 0) { //checking if the king is at his initial position
 				if(this.currentBoard.getBoardModel()[7][0] != null && this.currentBoard.getBoardModel()[7][0].getPieceChar() == 'r') { //checking if the left rook is at his initial position
-					//if(this.isSafe(this.index_x, this.index_y)) { //checking if the king not in a position of danger before doing the castling
-						if(isOpenSpot(this.index_x+1, this.index_y)) { //checking if no pieces on the way between the king and the rook + if the king doesn't put himself in danger while passing
-							//if(this.isSafe(this.index_x + 1, this.index_y)) {
-								if(isOpenSpot(this.index_x+2, this.index_y)) {
-									//if(this.isSafe(this.index_x + 2, this.index_y)) { //checking that king doesn't put himself in danger after doing the castling
-											valid_moves[6][0] = true;
+					if(this.isSafe(this.index_x, this.index_y)[this.index_x][this.index_y]) { //checking if the king not in a position of danger before doing the castling
+						if (isOpenSpot(this.index_x + 1, this.index_y)) { //checking if no pieces on the way between the king and the rook + if the king doesn't put himself in danger while passing
+							if(this.isSafe(this.index_x, this.index_y)[this.index_x+1][this.index_y]) {
+								if (isOpenSpot(this.index_x + 2, this.index_y)) {
+									if(this.isSafe(this.index_x, this.index_y)[this.index_x+2][this.index_y]) { //checking that king doesn't put himself in danger after doing the castling
+										valid_moves[6][0] = true;
+									}
 								}
+							}
 						}
+					}
 				}
 			}
 		}
@@ -164,14 +167,17 @@ public class KingPiece extends ChessPiece {
 		if(this.isWhite) {
 			if(this.index_x == 4 && this.index_y == 7) { //checking if the king is at his initial position
 				if( (this.currentBoard.getBoardModel()[0][7]) != null && (this.currentBoard.getBoardModel()[0][7].getPieceChar() == 'R') ) { //checking if the right rook is at his initial position
-					//if(this.isSafe(this.index_x, this.index_y)) { //checking if the king not in a position of danger before doing the castling
+					if(this.isSafe(this.index_x, this.index_y)[this.index_x][this.index_y]) { //checking if the king not in a position of danger before doing the castling
 						if(isOpenSpot(this.index_x-1, this.index_y)) { //checking if no pieces on the way between the king and the rook + if the king doesn't put himself in danger while passing
-							//if(this.isSafe(this.index_x - 1, this.index_y)) {
-								if(isOpenSpot(this.index_x-2, this.index_y)) {
-									//if(this.isSafe(this.index_x - 2, this.index_y)) { //checking that king doesn't put himself in danger after doing the castling
-									valid_moves[2][7] = true;
+							if (this.isSafe(this.index_x, this.index_y)[this.index_x-1][this.index_y]) {
+								if (isOpenSpot(this.index_x - 2, this.index_y)) {
+									if (this.isSafe(this.index_x, this.index_y)[this.index_x-2][this.index_y]) { //checking that king doesn't put himself in danger after doing the castling
+										valid_moves[2][7] = true;
+									}
 								}
+							}
 						}
+					}
 				}
 			}
 		}
@@ -179,14 +185,17 @@ public class KingPiece extends ChessPiece {
 		else {
 			if(this.index_x == 4 && this.index_y == 0) { //checking if the king is at his initial position
 				if(this.currentBoard.getBoardModel()[0][0] != null && this.currentBoard.getBoardModel()[0][0].getPieceChar() == 'r') { //checking if the right rook is at his initial position
-					//if(this.isSafe(this.index_x, this.index_y)) { //checking if the king not in a position of danger before doing the castling
+					if(this.isSafe(this.index_x, this.index_y)[this.index_x][this.index_y]) { //checking if the king not in a position of danger before doing the castling
 						if(isOpenSpot(this.index_x-1, this.index_y)) { //checking if no pieces on the way between the king and the rook + if the king doesn't put himself in danger while passing
-							//if(this.isSafe(this.index_x - 1, this.index_y)) {
-								if(isOpenSpot(this.index_x-2, this.index_y)) {
-									//if(this.isSafe(this.index_x - 2, this.index_y)) { //checking that king doesn't put himself in danger after doing the castling
-									valid_moves[2][0] = true;
+							if (this.isSafe(this.index_x, this.index_y)[this.index_x - 1][this.index_y]) {
+								if (isOpenSpot(this.index_x - 2, this.index_y)) {
+									if (this.isSafe(this.index_x, this.index_y)[this.index_x - 2][this.index_y]) { //checking that king doesn't put himself in danger after doing the castling
+										valid_moves[2][0] = true;
+									}
 								}
+							}
 						}
+					}
 				}
 			}
 		}
