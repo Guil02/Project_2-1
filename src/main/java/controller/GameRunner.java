@@ -42,8 +42,6 @@ public class GameRunner {
         movablePiece = dice.firstMoveDiceRoll();
         boolean[][] testValidMoves = board.getPiece(2,0).validMoves();
         graphicsConnector.initConnector();
-        System.out.println(getMovablePiece());
-
     }
 
     /**
@@ -72,6 +70,10 @@ public class GameRunner {
 
     public boolean getWhiteMove(){
         return whiteMove;
+    }
+
+    public void setWhiteMove(boolean whiteMove) {
+        this.whiteMove = whiteMove;
     }
 
     public void doMove(){

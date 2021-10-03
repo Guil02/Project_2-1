@@ -1,8 +1,8 @@
 package model.pieces;
 
 import model.Board;
+import model.BoardUpdater;
 
-//TODO add en passant rule
 //TODO add promotion
 
 /**
@@ -23,62 +23,59 @@ public class PawnPiece extends ChessPiece {
 
     public boolean[][] validMoves() {
 
-        boolean[][] valid_moves = new boolean[8][8];
+        boolean[][] valid_moves = new boolean[Board.getBoardSize()][Board.getBoardSize()];
 
-        if(isTurn()){
 
-            if(isWhite){
-                if(withinBounds(index_y,-1)&&isOpenSpot(index_x,index_y-1)&&!checkForEnemyPiece(index_x,index_y-1)){
-                    if(index_y==6&&isOpenSpot(index_x,index_y-2)&&!checkForEnemyPiece(index_x,index_y-2)){
-                        valid_moves[index_x][index_y-1]=true;
-                        setHasValidMove(true);
-                        valid_moves[index_x][index_y-2]=true;
-                        setHasValidMove(true);
+        if(isTurn()) {
+            if(isWhite) {
+                //first move --> 2 options if conditions reunited
+                if( (withinBounds(index_y,-1)) && (isOpenSpot(index_x,index_y-1)) && !(checkForEnemyPiece(index_x,index_y-1)) ) {
+                    if( (index_y==6) && (isOpenSpot(index_x,index_y-2)) && !(checkForEnemyPiece(index_x,index_y-2)) ) {
+                        valid_moves[index_x][index_y-1] = true;
+                        valid_moves[index_x][index_y-2] = true;
                     }
-                    else{
-                        valid_moves[index_x][index_y-1]=true;
-                        setHasValidMove(true);
+                    else {
+                        valid_moves[index_x][index_y-1] = true;
                     }
                 }
 
-                if(withinBounds(index_x,-1)&&withinBounds(index_y,-1)&&isOpenSpot(index_x-1,index_y-1)&&checkForEnemyPiece(index_x-1,index_y-1)){
-                    valid_moves[index_x-1][index_y-1]=true;
-                    setHasValidMove(true);
+                if( (withinBounds(index_x,-1)) && (withinBounds(index_y,-1)) && (isOpenSpot(index_x-1,index_y-1)) && (checkForEnemyPiece(index_x-1,index_y-1)) ) {
+                    valid_moves[index_x-1][index_y-1] = true;
                 }
-                if(withinBounds(index_x,1)&&withinBounds(index_y,-1)&&isOpenSpot(index_x+1,index_y-1)&&checkForEnemyPiece(index_x+1,index_y-1)){
-                    valid_moves[index_x+1][index_y-1]=true;
-                    setHasValidMove(true);
+                if( (withinBounds(index_x,1)) && (withinBounds(index_y,-1)) && (isOpenSpot(index_x+1,index_y-1)) && (checkForEnemyPiece(index_x+1,index_y-1)) ) {
+                    valid_moves[index_x+1][index_y-1] = true;
                 }
             }
             else{
-                if(withinBounds(index_y, 1)&&isOpenSpot(index_x,index_y+1)&&!checkForEnemyPiece(index_x,index_y+1)){
-                    if(index_y==1&&isOpenSpot(index_x,index_y+2)&&!checkForEnemyPiece(index_x,index_y+2)){
-                        valid_moves[index_x][index_y+1]=true;
-                        setHasValidMove(true);
-                        valid_moves[index_x][index_y+2]=true;
-                        setHasValidMove(true);
+                if( (withinBounds(index_y, 1)) && (isOpenSpot(index_x,index_y+1)) && (!checkForEnemyPiece(index_x,index_y+1)) ) {
+                    if( (index_y==1) && (isOpenSpot(index_x,index_y+2)) && (!checkForEnemyPiece(index_x,index_y+2)) ) {
+                        valid_moves[index_x][index_y+1] = true;
+                        valid_moves[index_x][index_y+2] = true;
                     }
-                    else{
-
-                        valid_moves[index_x][index_y+1]=true;
-                        setHasValidMove(true);
+                    else {
+                        valid_moves[index_x][index_y+1] = true;
                     }
                 }
-                if(withinBounds(index_x,-1)&&withinBounds(index_y,1)&&isOpenSpot(index_x-1,index_y+1)&&checkForEnemyPiece(index_x-1,index_y+1)){
-                    valid_moves[index_x-1][index_y+1]=true;
-                    setHasValidMove(true);
+                if( (withinBounds(index_x,-1)) && (withinBounds(index_y,1)) && (isOpenSpot(index_x-1,index_y+1)) && (checkForEnemyPiece(index_x-1,index_y+1)) ) {
+                    valid_moves[index_x-1][index_y+1] = true;
                 }
-                if(withinBounds(index_x,1)&&withinBounds(index_y,1)&&isOpenSpot(index_x+1,index_y+1)&&checkForEnemyPiece(index_x+1,index_y+1)){
-                    valid_moves[index_x+1][index_y+1]=true;
-                    setHasValidMove(true);
+                if( (withinBounds(index_x,1)) && (withinBounds(index_y,1)) && (isOpenSpot(index_x+1,index_y+1)) && (checkForEnemyPiece(index_x+1,index_y+1)) ) {
+                    valid_moves[index_x+1][index_y+1] = true;
                 }
             }
         }
-        if(checkAllFalse(valid_moves)){
-            setHasValidMove(false);
+
+        //en passant
+        if(this.currentBoard.getEnPassantAuthorized() > -1) {
+            if( (this.index_x + 1 == this.currentBoard.getEnPassantAuthorized()) || (this.index_x - 1 == this.currentBoard.getEnPassantAuthorized()) ) {
+                if( (this.isWhite) && (this.index_y == 3) ) {
+                    valid_moves[this.currentBoard.getEnPassantAuthorized()][2] = true;
+                }
+                else if( (!this.isWhite) && (this.index_y == 4) ) {
+                    valid_moves[this.currentBoard.getEnPassantAuthorized()][5] = true;
+                }
+            }
         }
         return valid_moves;
     }
-
-
 }
