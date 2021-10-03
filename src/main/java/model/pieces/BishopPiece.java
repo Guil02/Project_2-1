@@ -37,12 +37,12 @@ public class BishopPiece extends ChessPiece {
                     if(isOpenSpot(x, y)){
                         if(checkForEnemyPiece(x,y)){
                             valid_moves[x][y] = true;
-                            hasValidMove = true;
+                            setHasValidMove(true);
                             break;
                         }
                         else{
                             valid_moves[x][y] = true;
-                            hasValidMove = true;
+                            setHasValidMove(true);
                         }
                         incr++;
                     }
@@ -63,12 +63,12 @@ public class BishopPiece extends ChessPiece {
                     if(isOpenSpot(x, y)){
                         if(checkForEnemyPiece(x,y)){
                             valid_moves[x][y] = true;
-                            hasValidMove = true;
+                            setHasValidMove(true);
                             break;
                         }
                         else{
                             valid_moves[x][y] = true;
-                            hasValidMove = true;
+                            setHasValidMove(true);
                         }
                         incr_x--;
                         incr_y++;
@@ -90,12 +90,12 @@ public class BishopPiece extends ChessPiece {
                     if(isOpenSpot(x, y)){
                         if(checkForEnemyPiece(x,y)){
                             valid_moves[x][y] = true;
-                            hasValidMove = true;
+                            setHasValidMove(true);
                             break;
                         }
                         else{
                             valid_moves[x][y] = true;
-                            hasValidMove = true;
+                            setHasValidMove(true);
                         }
                         incr_x--;
                         incr_y--;
@@ -117,12 +117,12 @@ public class BishopPiece extends ChessPiece {
                     if(isOpenSpot(x, y)){
                         if(checkForEnemyPiece(x,y)){
                             valid_moves[x][y] = true;
-                            hasValidMove = true;
+                            setHasValidMove(true);
                             break;
                         }
                         else{
                             valid_moves[x][y] = true;
-                            hasValidMove = true;
+                            setHasValidMove(true);
                         }
                         incr_x++;
                         incr_y--;
@@ -135,7 +135,7 @@ public class BishopPiece extends ChessPiece {
             }
         }
         if(checkAllFalse(valid_moves)){
-            hasValidMove = false;
+            setHasValidMove(false);
         }
         return valid_moves;
     }

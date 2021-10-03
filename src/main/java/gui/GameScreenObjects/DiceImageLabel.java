@@ -20,7 +20,6 @@ public class DiceImageLabel extends Label {
     }
 
     public void setImage(String URL){
-        System.out.println(URL);
         Image image = new Image(URL,diceDisplay.getWidthFromTop()/DIVIDER, diceDisplay.getHeightFromTop()/DIVIDER, false, false);
         ImageView imageView = new ImageView(image);
         setGraphic(imageView);

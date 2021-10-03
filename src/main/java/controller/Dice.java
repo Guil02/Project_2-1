@@ -15,9 +15,12 @@ public class Dice {
      * @return char - the character value representing the piece that will have to be moved in the next play
      */
     public char choosePiece(ArrayList<Character> usablePieces) {
-        int numberOfPieces = usablePieces.size();
-        int random = (int)(Math.random()*numberOfPieces);
-        return usablePieces.get(random);
+        if(usablePieces.size()!=0){
+            int numberOfPieces = usablePieces.size();
+            int random = (int)(Math.random()*numberOfPieces);
+            return usablePieces.get(random);
+        }
+        else return '.';
     }
 
     public char rollTheDice(){
@@ -32,7 +35,6 @@ public class Dice {
                 }
             }
         }
-        System.out.println(movablePieces);
         return choosePiece(movablePieces);
     }
 

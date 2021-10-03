@@ -59,8 +59,8 @@ public abstract class ChessPiece {
     public boolean isWhite() {
         return this.isWhite;
     }
-
     public void move(int new_index_x, int new_index_y) {
+
 
         this.currentBoard.setEnPassantAuthorized(-1);
         if( (this.getPieceChar() == 'P') || (this.getPieceChar() == 'p') ) {

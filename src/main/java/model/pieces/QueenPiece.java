@@ -32,12 +32,12 @@ public class QueenPiece extends ChessPiece {
                     if(isOpenSpot(index_x+temp,index_y)){
                         if(checkForEnemyPiece(index_x+temp,index_y)){
                             valid_moves[index_x+temp][index_y]=true;
-                            hasValidMove = true;
+                            setHasValidMove(true);
                             break;
                         }
                         else{
                             valid_moves[index_x+temp][index_y]=true;
-                            hasValidMove = true;
+                            setHasValidMove(true);
                         }
                         temp++;
                     }
@@ -56,12 +56,12 @@ public class QueenPiece extends ChessPiece {
                     if(isOpenSpot(index_x+temp,index_y)){
                         if(checkForEnemyPiece(index_x+temp,index_y)){
                             valid_moves[index_x+temp][index_y]=true;
-                            hasValidMove = true;
+                            setHasValidMove(true);
                             break;
                         }
                         else{
                             valid_moves[index_x+temp][index_y]=true;
-                            hasValidMove = true;
+                            setHasValidMove(true);
                         }
                         temp--;
                     }
@@ -81,12 +81,12 @@ public class QueenPiece extends ChessPiece {
                     if(isOpenSpot(index_x,index_y+temp)){
                         if(checkForEnemyPiece(index_x,index_y+temp)){
                             valid_moves[index_x][index_y+temp]=true;
-                            hasValidMove = true;
+                            setHasValidMove(true);
                             break;
                         }
                         else{
                             valid_moves[index_x][index_y+temp]=true;
-                            hasValidMove = true;
+                            setHasValidMove(true);
                         }
                         temp++;
                     }
@@ -105,12 +105,12 @@ public class QueenPiece extends ChessPiece {
                     if(isOpenSpot(index_x,index_y+temp)){
                         if(checkForEnemyPiece(index_x,index_y+temp)){
                             valid_moves[index_x][index_y+temp]=true;
-                            hasValidMove = true;
+                            setHasValidMove(true);
                             break;
                         }
                         else{
                             valid_moves[index_x][index_y+temp]=true;
-                            hasValidMove = true;
+                            setHasValidMove(true);
                         }
                         temp--;
                     }
@@ -133,12 +133,12 @@ public class QueenPiece extends ChessPiece {
                     if(isOpenSpot(x, y)){
                         if(checkForEnemyPiece(x,y)){
                             valid_moves[x][y] = true;
-                            hasValidMove = true;
+                            setHasValidMove(true);
                             break;
                         }
                         else{
                             valid_moves[x][y] = true;
-                            hasValidMove = true;
+                            setHasValidMove(true);
                         }
                         incr++;
                     }
@@ -159,12 +159,12 @@ public class QueenPiece extends ChessPiece {
                     if(isOpenSpot(x, y)){
                         if(checkForEnemyPiece(x,y)){
                             valid_moves[x][y] = true;
-                            hasValidMove = true;
+                            setHasValidMove(true);
                             break;
                         }
                         else{
                             valid_moves[x][y] = true;
-                            hasValidMove = true;
+                            setHasValidMove(true);
                         }
                         incr_x--;
                         incr_y++;
@@ -186,12 +186,12 @@ public class QueenPiece extends ChessPiece {
                     if(isOpenSpot(x, y)){
                         if(checkForEnemyPiece(x,y)){
                             valid_moves[x][y] = true;
-                            hasValidMove = true;
+                            setHasValidMove(true);
                             break;
                         }
                         else{
                             valid_moves[x][y] = true;
-                            hasValidMove = true;
+                            setHasValidMove(true);
                         }
                         incr_x--;
                         incr_y--;
@@ -213,12 +213,12 @@ public class QueenPiece extends ChessPiece {
                     if(isOpenSpot(x, y)){
                         if(checkForEnemyPiece(x,y)){
                             valid_moves[x][y] = true;
-                            hasValidMove = true;
+                            setHasValidMove(true);
                             break;
                         }
                         else{
                             valid_moves[x][y] = true;
-                            hasValidMove = true;
+                            setHasValidMove(true);
                         }
                         incr_x++;
                         incr_y--;
@@ -231,7 +231,7 @@ public class QueenPiece extends ChessPiece {
             }
         }
         if(checkAllFalse(valid_moves)){
-            hasValidMove = false;
+            setHasValidMove(false);
         }
 
         return valid_moves;
