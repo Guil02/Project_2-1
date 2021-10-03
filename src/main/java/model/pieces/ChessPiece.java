@@ -8,6 +8,12 @@ import model.Board;
 public abstract class ChessPiece {
 
     protected boolean isWhite;
+    protected boolean hasValidMove;
+
+    public boolean hasValidMove() {
+        return hasValidMove;
+    }
+
     protected int index_x;
     protected int index_y;
     protected Board currentBoard;
@@ -29,6 +35,19 @@ public abstract class ChessPiece {
 
     }
 
+    public boolean checkAllFalse(boolean[][] validMoves){
+
+
+        for (boolean[] validMove : validMoves) {
+            for (int j = 0; j < validMoves[0].length; j++) {
+                if (validMove[j]) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
     public int getIndex_x() {
         return this.index_x;
     }

@@ -59,10 +59,10 @@ public class ChessSpot extends Label {
      */
     public void setBackgroundColor(){
         if((x+y)%2==0){
-            setStyle(color1);
+            setStyle(color2);
         }
         else{
-            setStyle(color2);
+            setStyle(color1);
         }
     }
 
@@ -181,6 +181,7 @@ public class ChessSpot extends Label {
                 setPiece(actualPiece);
                 board.turnBoard();
                 board.changeTimer();
+                board.updateDice();
                 board.initializeBoard();
             }
 

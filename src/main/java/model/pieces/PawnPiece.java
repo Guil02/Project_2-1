@@ -25,6 +25,7 @@ public class PawnPiece extends ChessPiece {
 
         boolean[][] valid_moves = new boolean[Board.getBoardSize()][Board.getBoardSize()];
 
+
         if(isTurn()) {
             if(isWhite) {
                 //first move --> 2 options if conditions reunited

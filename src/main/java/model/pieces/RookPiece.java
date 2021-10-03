@@ -37,6 +37,7 @@ public class RookPiece extends ChessPiece {
 
             //horizontal rank
             int temp = 1;
+
             while(true) {
                 if(withinBounds(index_x,temp)) {
                     if(isOpenSpot(index_x+temp,index_y)) {
@@ -68,6 +69,7 @@ public class RookPiece extends ChessPiece {
                         }
                         else {
                             valid_moves[index_x+temp][index_y] = true;
+=======
                         }
                         temp--;
                     }

@@ -104,34 +104,43 @@ public class KingPiece extends ChessPiece {
 			if (withinBounds(index_x, 1)){
 				if(withinBounds(index_y,1)&&isOpenSpot(index_x+1,index_y+1)){
 					valid_moves[index_x+1][index_y+1]=true;
+					hasValidMove = true;
 				}
 				if(withinBounds(index_y,-1)&&isOpenSpot(index_x+1,index_y-1)){
 					valid_moves[index_x+1][index_y-1]=true;
+					hasValidMove = true;
 				}
 				if(isOpenSpot(index_x+1,index_y)){
 					valid_moves[index_x+1][index_y]=true;
+					hasValidMove = true;
 				}
 			}
 			//vertical and diagonal moves (backwards)
 			if(withinBounds(index_x,-1)){
 				if(withinBounds(index_y,1)&&isOpenSpot(index_x-1,index_y+1)){
 					valid_moves[index_x-1][index_y+1]=true;
+					hasValidMove = true;
 				}
 				if(withinBounds(index_y,-1)&&isOpenSpot(index_x-1,index_y-1)){
 					valid_moves[index_x-1][index_y-1]=true;
+					hasValidMove = true;
 				}
 				if(isOpenSpot(index_x-1,index_y)){
 					valid_moves[index_x-1][index_y]=true;
+					hasValidMove = true;
 				}
 			}
 			//lateral moves
 			if(withinBounds(index_y,1)&&isOpenSpot(index_x,index_y+1)){
 				valid_moves[index_x][index_y+1]=true;
+				hasValidMove = true;
 			}
 			if(withinBounds(index_y,-1)&&isOpenSpot(index_x,index_y-1)){
 				valid_moves[index_x][index_y-1]=true;
+				hasValidMove = true;
 			}
 		}
+
 		if(hasNotMoved) {
 			//small castling
 			//whites
