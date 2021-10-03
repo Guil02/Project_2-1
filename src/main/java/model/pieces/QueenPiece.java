@@ -20,7 +20,7 @@ public class QueenPiece extends ChessPiece {
 
     public boolean[][] validMoves() {
 
-        boolean[][] valid_moves = new boolean[8][8];
+        boolean[][] valid_moves = new boolean[Board.getBoardSize()][Board.getBoardSize()];
 
         if(isTurn()){
 
