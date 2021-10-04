@@ -59,10 +59,10 @@ public class ChessSpot extends Label {
      */
     public void setBackgroundColor(){
         if((x+y)%2==0){
-            setStyle(color2);
+            setStyle(color1);
         }
         else{
-            setStyle(color1);
+            setStyle(color2);
         }
     }
 
