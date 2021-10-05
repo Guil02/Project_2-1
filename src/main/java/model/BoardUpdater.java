@@ -78,7 +78,7 @@ public class BoardUpdater {
         boardModel.getField()[xFrom][yFrom] = null;
         boardModel.doMove();
 
-
+        boardModel.checkForTakenPieces();
         //TODO: make this a prompt
         promotion(targetPiece, xTo, yTo);
     }
