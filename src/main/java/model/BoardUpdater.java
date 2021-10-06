@@ -1,6 +1,7 @@
 package model;
 
 import controller.GameRunner;
+import controller.GraphicsConnector;
 import model.pieces.*;
 
 /**
@@ -9,6 +10,7 @@ import model.pieces.*;
 public class BoardUpdater {
 
     private Board boardModel;
+    private GraphicsConnector graphicsConnector;
     private char currentMove;
     /**
      * Constructor
@@ -88,5 +90,9 @@ public class BoardUpdater {
             removePiece(xTo,yTo);
             addPiece(new QueenPiece(targetPiece.isWhite(), boardModel, xTo, yTo));
         }
+    }
+
+    public void setGraphicsConnector(GraphicsConnector graphicsConnector) {
+        this.graphicsConnector = graphicsConnector;
     }
 }

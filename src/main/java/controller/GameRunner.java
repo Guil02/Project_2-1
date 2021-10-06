@@ -36,6 +36,7 @@ public class GameRunner {
         board = new Board(this);
         boardUpdater = new BoardUpdater(board);
         board.setBoardUpdater(boardUpdater);
+        boardUpdater.setGraphicsConnector(graphicsConnector);
         boardUpdater.fillGameStart();
         board.printBoard();
         dice = new Dice(this);
