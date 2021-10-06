@@ -1,16 +1,18 @@
 package controller;
 
 
+import gui.ChessGUI;
+import model.pieces.*;
 import utils.Transform;
 import model.Board;
 import model.BoardUpdater;
-import model.pieces.ChessPiece;
 
 public class GraphicsConnector {
 
     private final GameRunner gameRunner;
     private Board board;
     private BoardUpdater boardUpdater;
+    private ChessGUI chessGUI;
 
     public GraphicsConnector(GameRunner gameRunner) {
         this.gameRunner = gameRunner;
@@ -225,5 +227,18 @@ public class GraphicsConnector {
         return "gui/error_cross.png";
     }
 
+    public ChessPiece startPromotionDialog(boolean isWhite, Board boardModel, int x, int y){
+        int piece = 1;
+        switch (piece){
+            case 1:
+                return new KnightPiece(isWhite, boardModel, x, y);
+            case 2:
+                return new BishopPiece(isWhite, boardModel, x, y);
+            case 3:
+                return new RookPiece(isWhite, boardModel, x, y);
+            case 4:
+                return new QueenPiece(isWhite, boardModel, x, y);
+        }
+    }
 
 }
