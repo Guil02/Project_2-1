@@ -238,28 +238,28 @@ public class GraphicsConnector {
     public String getPromotionImage(int type) {
         switch(type){
             case 1:
-                if(whoTurn()){
+                if(!whoTurn()){
                     return "gui/wN.png";
                 }
                 else{
                     return "gui/bN.png";
                 }
             case 2:
-                if(whoTurn()){
+                if(!whoTurn()){
                     return "gui/wB.png";
                 }
                 else{
                     return "gui/bB.png";
                 }
             case 3:
-                if(whoTurn()){
+                if(!whoTurn()){
                     return "gui/wR.png";
                 }
                 else{
                     return "gui/bR.png";
                 }
             case 4:
-                if(whoTurn()){
+                if(!whoTurn()){
                     return "gui/wQ.png";
                 }
                 else{

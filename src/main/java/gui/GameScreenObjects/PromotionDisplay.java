@@ -50,6 +50,10 @@ public class PromotionDisplay extends HBox {
         p2.setVisible(true);
         p3.setVisible(true);
         p4.setVisible(true);
+        p1.updateGraphics();
+        p2.updateGraphics();
+        p3.updateGraphics();
+        p4.updateGraphics();
     }
 
     public void setInvisible(){
