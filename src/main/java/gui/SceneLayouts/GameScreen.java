@@ -12,6 +12,7 @@ import gui.Menus.TurnMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class GameScreen extends BorderPane {
@@ -19,23 +20,31 @@ public class GameScreen extends BorderPane {
     private final LeftSide leftSide;
     private final ChessGUI chessGUI;
     private final Label topEmptySpace;
+    private final Label bottomLeftEmptySpace;
     private final DiceDisplay diceDisplay;
     private final PromotionDisplay promotionDisplay;
     public GameScreen(ChessBoard chessBoard, ChessGUI chessGUI, GraphicsConnector graphicsConnector) {
         this.chessGUI = chessGUI;
         topEmptySpace = new Label();
+        bottomLeftEmptySpace = new Label();
 
         topEmptySpace.setMinSize(chessGUI.getWidth() * DIVIDER, chessGUI.getHeight() * (DIVIDER - 0.10));
         topEmptySpace.setMaxSize(chessGUI.getWidth() * DIVIDER, chessGUI.getHeight() * (DIVIDER - 0.10));
+        bottomLeftEmptySpace.setMinSize(chessGUI.getWidth() * DIVIDER, chessGUI.getHeight() * (DIVIDER));
+        bottomLeftEmptySpace.setMaxSize(chessGUI.getWidth() * DIVIDER, chessGUI.getHeight() * (DIVIDER));
 
         diceDisplay = new DiceDisplay(this, graphicsConnector);
         leftSide = new LeftSide(this);
         promotionDisplay = new PromotionDisplay(graphicsConnector, this);
         setLeft(leftSide);
         setRight(diceDisplay);
-        setBottom(promotionDisplay);
         setCenter(chessBoard);
         setStyle("-fx-background-color: #59913a;");
+
+        HBox hBox = new HBox();
+        hBox.getChildren().addAll(bottomLeftEmptySpace, promotionDisplay);
+        setBottom(hBox);
+
         MenuBar menuBar = new MenuBar();
         DisplayMenu displayMenu = new DisplayMenu(chessGUI);
         HighlightMenu highlightMenu = new HighlightMenu();
@@ -54,6 +63,8 @@ public class GameScreen extends BorderPane {
     public void updateGraphics(double width, double height) {
         topEmptySpace.setMinSize(chessGUI.getWidth() * DIVIDER, chessGUI.getHeight() * (DIVIDER - 0.10));
         topEmptySpace.setMaxSize(chessGUI.getWidth() * DIVIDER, chessGUI.getHeight() * (DIVIDER - 0.10));
+        bottomLeftEmptySpace.setMinSize(chessGUI.getWidth() * DIVIDER, chessGUI.getHeight() * (DIVIDER));
+        bottomLeftEmptySpace.setMaxSize(chessGUI.getWidth() * DIVIDER, chessGUI.getHeight() * (DIVIDER));
 
         diceDisplay.updateGraphics();
 
