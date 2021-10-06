@@ -133,6 +133,9 @@ public class RookPiece extends ChessPiece {
                 }
             }
         }
+        if(checkAllFalse(valid_moves)){
+            setHasValidMove(false);
+        }
         return valid_moves;
     }
 }

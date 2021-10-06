@@ -170,6 +170,7 @@ public class GraphicsConnector {
         ChessPiece piece = piecesArray[x][y];
         return piece.isTurn();
     }
+    //TODO add correct method that gets the correct image for the correct dice throw
     public String getDiceImage(int type){
         if(type == 1) {
             switch (gameRunner.getMovablePiece()) {

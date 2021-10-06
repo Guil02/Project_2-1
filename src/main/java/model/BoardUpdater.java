@@ -78,13 +78,12 @@ public class BoardUpdater {
         boardModel.getField()[xFrom][yFrom] = null;
         boardModel.doMove();
 
-
         //TODO: make this a prompt
         promotion(targetPiece, xTo, yTo);
     }
 
     private void promotion(ChessPiece targetPiece, int xTo, int yTo) {
-        if((targetPiece.getPieceChar()=='p' || targetPiece.getPieceChar()=='P') && targetPiece.isOnOppositeRow(xTo, yTo)){
+        if(targetPiece.isOnOppositeRow(xTo, yTo) && (targetPiece.getPieceChar()=='p' || targetPiece.getPieceChar()=='P')){
             removePiece(xTo,yTo);
             addPiece(new QueenPiece(targetPiece.isWhite(), boardModel, xTo, yTo));
         }
