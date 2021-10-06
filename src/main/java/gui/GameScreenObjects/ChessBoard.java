@@ -112,4 +112,8 @@ public class ChessBoard extends GridPane {
     public void updateDice(){
         gameScreen.updateDice();
     }
+
+    public void setPromotionLock(boolean bool){
+        ChessSpot.setPromotionLock(bool);
+    }
 }

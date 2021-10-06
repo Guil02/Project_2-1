@@ -1,16 +1,18 @@
 package controller;
 
 
+import gui.ChessGUI;
+import model.pieces.*;
 import utils.Transform;
 import model.Board;
 import model.BoardUpdater;
-import model.pieces.ChessPiece;
 
 public class GraphicsConnector {
 
     private final GameRunner gameRunner;
     private Board board;
     private BoardUpdater boardUpdater;
+    private ChessGUI chessGUI;
 
     public GraphicsConnector(GameRunner gameRunner) {
         this.gameRunner = gameRunner;
@@ -170,6 +172,11 @@ public class GraphicsConnector {
         ChessPiece piece = piecesArray[x][y];
         return piece.isTurn();
     }
+
+    public boolean whoTurn(){
+        return gameRunner.getWhiteMove();
+    }
+    //TODO add correct method that gets the correct image for the correct dice throw
     public String getDiceImage(int type){
         if(type == 1) {
             switch (gameRunner.getMovablePiece()) {
@@ -224,5 +231,79 @@ public class GraphicsConnector {
         return "gui/error_cross.png";
     }
 
+    public void setChessGUI(ChessGUI chessGUI) {
+        this.chessGUI = chessGUI;
+    }
 
+    public String getPromotionImage(int type) {
+        switch(type){
+            case 1:
+                if(!whoTurn()){
+                    return "gui/wN.png";
+                }
+                else{
+                    return "gui/bN.png";
+                }
+            case 2:
+                if(!whoTurn()){
+                    return "gui/wB.png";
+                }
+                else{
+                    return "gui/bB.png";
+                }
+            case 3:
+                if(!whoTurn()){
+                    return "gui/wR.png";
+                }
+                else{
+                    return "gui/bR.png";
+                }
+            case 4:
+                if(!whoTurn()){
+                    return "gui/wQ.png";
+                }
+                else{
+                    return "gui/bQ.png";
+                }
+            default:
+                return "gui/error_cross.png";
+        }
+    }
+    private boolean isWhite;
+    private Board boardModel;
+    private int x;
+    private int y;
+    public void startPromotionDialog(boolean isWhite, Board boardModel, int x, int y){
+        chessGUI.launchPromotionDialog();
+        this.isWhite = isWhite;
+        this.boardModel = boardModel;
+        this.x = x;
+        this.y = y;
+    }
+
+    public void doPromotion(int type) {
+        System.out.println(type);
+        switch (type){
+            case 1:
+                boardUpdater.doPromotion(new KnightPiece(this.isWhite,this.boardModel, this.x, this.y));
+                break;
+            case 2:
+                boardUpdater.doPromotion(new BishopPiece(this.isWhite,this.boardModel, this.x, this.y));
+                break;
+            case 3:
+                boardUpdater.doPromotion(new RookPiece(this.isWhite,this.boardModel, this.x, this.y));
+                break;
+            case 4:
+                boardUpdater.doPromotion(new QueenPiece(this.isWhite,this.boardModel, this.x, this.y));
+                break;
+        }
+    }
+
+    public void updateImages() {
+        chessGUI.updateImages();
+    }
+
+    public void setWin(boolean white){
+        chessGUI.setWin(white);
+    }
 }

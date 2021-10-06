@@ -23,6 +23,7 @@ public class ChessSpot extends Label {
     private int y;
     private ChessBoard board;
     private GraphicsConnector graphicsConnector;
+    private static boolean promotionLock = true;
     private static final String color1 = "-fx-background-color: #dfe3e6; -fx-border-color: rgba(0,0,0,0.09);";
     private static final String color2 = "-fx-background-color: #90a1ab; -fx-border-color: rgba(0,0,0,0.09);";
     private static final String attackColor = "-fx-background-color: #99af6f; -fx-border-color: rgba(0,0,0,0.09);";
@@ -124,7 +125,7 @@ public class ChessSpot extends Label {
      * @param e a mouse event
      */
     public void onDragDetected(MouseEvent e){
-        if(piece!=null&&graphicsConnector.isTurn(x,y)) {
+        if(piece!=null&&graphicsConnector.isTurn(x,y) && promotionLock) {
             Dragboard dragboard = startDragAndDrop(TransferMode.MOVE);
             Image image = new Image(graphicsConnector.getImage(piece.getX(), piece.getY()), width /DIVIDER, height /DIVIDER, false, false);
             dragboard.setDragView(image);
@@ -221,5 +222,7 @@ public class ChessSpot extends Label {
         return spots;
     }
 
-
+    public static void setPromotionLock(boolean bool) {
+        promotionLock = bool;
+    }
 }
