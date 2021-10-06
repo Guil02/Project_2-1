@@ -18,13 +18,7 @@ public class Dice {
         if(usablePieces.size()!=0){
             int numberOfPieces = usablePieces.size();
             int random = (int)(Math.random()*numberOfPieces);
-//            return usablePieces.get(random);
-            if(gameRunner.getWhiteMove()){
-                return 'P';
-            }
-            else{
-                return 'p';
-            }
+            return usablePieces.get(random);
         }
         else return '.';
     }
