@@ -98,4 +98,9 @@ public class ChessGUI extends Application {
     public void updateImages() {
         chessBoard.initializeBoard();
     }
+
+    public void setWin(boolean white) {
+        chessBoard.setPromotionLock(false);
+        gameScreen.setWin(white);
+    }
 }

@@ -85,4 +85,10 @@ public class LeftSide extends VBox {
     public double getHeightFromChessGUI() {
         return gameScreen.getHeightFromChessGUI();
     }
+
+    public void stopTime(){
+        time.stop();
+        labelFirst.setText("");
+        labelThird.setText("");
+    }
 }

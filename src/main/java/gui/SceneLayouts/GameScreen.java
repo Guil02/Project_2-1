@@ -9,11 +9,13 @@ import gui.GameScreenObjects.PromotionDisplay;
 import gui.Menus.DisplayMenu;
 import gui.Menus.HighlightMenu;
 import gui.Menus.TurnMenu;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 
 public class GameScreen extends BorderPane {
     public static final double DIVIDER = 0.15;
@@ -28,8 +30,8 @@ public class GameScreen extends BorderPane {
         topEmptySpace = new Label();
         bottomLeftEmptySpace = new Label();
 
-        topEmptySpace.setMinSize(chessGUI.getWidth() * DIVIDER, chessGUI.getHeight() * (DIVIDER - 0.10));
-        topEmptySpace.setMaxSize(chessGUI.getWidth() * DIVIDER, chessGUI.getHeight() * (DIVIDER - 0.10));
+        topEmptySpace.setMinSize(chessGUI.getWidth(), chessGUI.getHeight() * (DIVIDER - 0.10));
+        topEmptySpace.setMaxSize(chessGUI.getWidth(), chessGUI.getHeight() * (DIVIDER - 0.10));
         bottomLeftEmptySpace.setMinSize(chessGUI.getWidth() * DIVIDER, chessGUI.getHeight() * (DIVIDER));
         bottomLeftEmptySpace.setMaxSize(chessGUI.getWidth() * DIVIDER, chessGUI.getHeight() * (DIVIDER));
 
@@ -61,8 +63,8 @@ public class GameScreen extends BorderPane {
     }
 
     public void updateGraphics(double width, double height) {
-        topEmptySpace.setMinSize(chessGUI.getWidth() * DIVIDER, chessGUI.getHeight() * (DIVIDER - 0.10));
-        topEmptySpace.setMaxSize(chessGUI.getWidth() * DIVIDER, chessGUI.getHeight() * (DIVIDER - 0.10));
+        topEmptySpace.setMinSize(chessGUI.getWidth(), chessGUI.getHeight() * (DIVIDER - 0.10));
+        topEmptySpace.setMaxSize(chessGUI.getWidth(), chessGUI.getHeight() * (DIVIDER - 0.10));
         bottomLeftEmptySpace.setMinSize(chessGUI.getWidth() * DIVIDER, chessGUI.getHeight() * (DIVIDER));
         bottomLeftEmptySpace.setMaxSize(chessGUI.getWidth() * DIVIDER, chessGUI.getHeight() * (DIVIDER));
 
@@ -86,5 +88,21 @@ public class GameScreen extends BorderPane {
 
     public void updateDice(){
         diceDisplay.updateDice();
+    }
+
+    public void setWin(boolean white) {
+        topEmptySpace.setAlignment(Pos.CENTER);
+        topEmptySpace.setFont(new Font("Verdana", 20));
+        stopTime();
+        if(white){
+            topEmptySpace.setText("white has won!");
+        }
+        else{
+            topEmptySpace.setText("black has won!");
+        }
+    }
+
+    public void stopTime(){
+        leftSide.stopTime();
     }
 }

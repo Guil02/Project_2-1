@@ -32,7 +32,6 @@ public class PromotionButton extends Button {
 
 
     public void setImage(String URL){
-        System.out.println(URL);
         Image image = new Image(URL,promotionDisplay.getWidthFromTop()/DIVIDER, promotionDisplay.getHeightFromTop()/DIVIDER, true, false);
         ImageView imageView = new ImageView(image);
         setGraphic(imageView);

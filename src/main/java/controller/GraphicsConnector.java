@@ -302,4 +302,8 @@ public class GraphicsConnector {
     public void updateImages() {
         chessGUI.updateImages();
     }
+
+    public void setWin(boolean white){
+        chessGUI.setWin(white);
+    }
 }
