@@ -239,6 +239,7 @@ public class GraphicsConnector {
             case 4:
                 return new QueenPiece(isWhite, boardModel, x, y);
         }
+        return null;
     }
 
 }
