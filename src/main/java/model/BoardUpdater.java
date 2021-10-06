@@ -97,7 +97,6 @@ public class BoardUpdater {
         boardModel.getField()[xFrom][yFrom] = null;
         boardModel.doMove();
 
-        //TODO: make this a prompt
         if(!gameOver) {
             promotion(targetPiece, xTo, yTo);
         }
