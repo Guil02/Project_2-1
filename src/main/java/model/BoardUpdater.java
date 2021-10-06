@@ -65,7 +65,17 @@ public class BoardUpdater {
     public void removePiece(int x, int y) {
         boardModel.getField()[x][y] = null;
     }
-
+    public void capturePiece(int x, int y){
+        if(boardModel.getField()[x][y]!=null) {
+            if (boardModel.getField()[x][y].getPieceChar() == 'K') {
+                boardModel.getField()[x][y] = null;
+                System.out.println("black won");
+            } else if (boardModel.getField()[x][y].getPieceChar() == 'k') {
+                boardModel.getField()[x][y] = null;
+                System.out.println("white won");
+            }
+        }
+    }
     /**
      *
      * @param xFrom
@@ -76,6 +86,7 @@ public class BoardUpdater {
     public void movePiece(int xFrom, int yFrom, int xTo, int yTo) {
         ChessPiece targetPiece = boardModel.getField()[xFrom][yFrom];
         targetPiece.move(xTo,yTo);
+        capturePiece(xTo, yTo);
         boardModel.getField()[xTo][yTo] = targetPiece;
         boardModel.getField()[xFrom][yFrom] = null;
         boardModel.doMove();
@@ -87,7 +98,7 @@ public class BoardUpdater {
     private void promotion(ChessPiece targetPiece, int xTo, int yTo) {
         if(targetPiece.isOnOppositeRow(xTo, yTo) && (targetPiece.getPieceChar()=='p' || targetPiece.getPieceChar()=='P')){
             removePiece(xTo,yTo);
-            addPiece(new QueenPiece(targetPiece.isWhite(), boardModel, xTo, yTo));
+            addPiece(graphicsConnector.startPromotionDialog(targetPiece.isWhite(), boardModel, xTo, yTo));
         }
     }
 
