@@ -282,7 +282,6 @@ public class GraphicsConnector {
     }
 
     public void doPromotion(int type) {
-        System.out.println(type);
         switch (type){
             case 1:
                 boardUpdater.doPromotion(new KnightPiece(this.isWhite,this.boardModel, this.x, this.y));

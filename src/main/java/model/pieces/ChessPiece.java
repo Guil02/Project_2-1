@@ -66,18 +66,19 @@ public abstract class ChessPiece {
 
     public void move(int new_index_x, int new_index_y) {
 
-
+        boolean canChange = true;
         this.currentBoard.setEnPassantAuthorized(-1);
         if( (this.getPieceChar() == 'P') || (this.getPieceChar() == 'p') ) {
             if(Math.abs(this.index_y - new_index_y) == 2) {
-
+                currentBoard.setEnPassant(true);
+                canChange = false;
                 this.currentBoard.setEnPassantAuthorized(this.index_x);
 
             }
         }
 
         if( (this.getPieceChar() == 'P') || (this.getPieceChar() == 'p') ) {
-            if( (Math.abs(this.index_x - new_index_x) == 1) && (Math.abs(this.index_y - new_index_y) == 1) ) {
+            if( (Math.abs(this.index_x - new_index_x) == 1) && (Math.abs(this.index_y - new_index_y) == 1) && currentBoard.isEnPassant()) {
                 if(isOpenSpot(new_index_x, new_index_y)){
 
                     this.currentBoard.getBoardUpdater().removePiece(new_index_x, this.index_y);
@@ -111,6 +112,10 @@ public abstract class ChessPiece {
                 this.currentBoard.getGameRunner().setWhiteMove(false);
             }
 
+        }
+
+        if(canChange){
+            currentBoard.setEnPassant(false);
         }
 
         // Updates internal position
