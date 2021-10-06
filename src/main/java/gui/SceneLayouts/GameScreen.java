@@ -5,6 +5,7 @@ import gui.ChessGUI;
 import gui.GameScreenObjects.ChessBoard;
 import gui.GameScreenObjects.DiceDisplay;
 import gui.GameScreenObjects.LeftSide;
+import gui.GameScreenObjects.PromotionDisplay;
 import gui.Menus.DisplayMenu;
 import gui.Menus.HighlightMenu;
 import gui.Menus.TurnMenu;
@@ -19,6 +20,7 @@ public class GameScreen extends BorderPane {
     private final ChessGUI chessGUI;
     private final Label topEmptySpace;
     private final DiceDisplay diceDisplay;
+    private final PromotionDisplay promotionDisplay;
     public GameScreen(ChessBoard chessBoard, ChessGUI chessGUI, GraphicsConnector graphicsConnector) {
         this.chessGUI = chessGUI;
         topEmptySpace = new Label();
@@ -28,8 +30,10 @@ public class GameScreen extends BorderPane {
 
         diceDisplay = new DiceDisplay(this, graphicsConnector);
         leftSide = new LeftSide(this);
+        promotionDisplay = new PromotionDisplay(graphicsConnector, this);
         setLeft(leftSide);
         setRight(diceDisplay);
+        setBottom(promotionDisplay);
         setCenter(chessBoard);
         setStyle("-fx-background-color: #59913a;");
         MenuBar menuBar = new MenuBar();
@@ -41,6 +45,10 @@ public class GameScreen extends BorderPane {
         VBox vBox = new VBox();
         vBox.getChildren().addAll(menuBar,topEmptySpace);
         setTop(vBox);
+    }
+
+    public void launchPromotionDialog() {
+        promotionDisplay.showPromotionDialog();
     }
 
     public void updateGraphics(double width, double height) {

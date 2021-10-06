@@ -32,6 +32,7 @@ public class ChessGUI extends Application {
 
     @Override
     public void start(Stage stage) {
+        graphicsConnector.setChessGUI(this);
         this.stage=stage;
         this.mainMenu = new StartScreen(this);
         Scene startMenu = new Scene(mainMenu, width, height);
@@ -89,4 +90,12 @@ public class ChessGUI extends Application {
         height = size;
     }
 
+    public void launchPromotionDialog(){
+        this.gameScreen.launchPromotionDialog();
+        chessBoard.setPromotionLock(false);
+    }
+
+    public void updateImages() {
+        chessBoard.initializeBoard();
+    }
 }

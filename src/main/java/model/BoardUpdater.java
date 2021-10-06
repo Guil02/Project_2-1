@@ -97,9 +97,14 @@ public class BoardUpdater {
 
     private void promotion(ChessPiece targetPiece, int xTo, int yTo) {
         if(targetPiece.isOnOppositeRow(xTo, yTo) && (targetPiece.getPieceChar()=='p' || targetPiece.getPieceChar()=='P')){
-            removePiece(xTo,yTo);
-            addPiece(graphicsConnector.startPromotionDialog(targetPiece.isWhite(), boardModel, xTo, yTo));
+            graphicsConnector.startPromotionDialog(targetPiece.isWhite(), boardModel, xTo, yTo);
         }
+    }
+
+    public void doPromotion(ChessPiece piece){
+        removePiece(piece.getIndex_x(),piece.getIndex_y());
+        addPiece(piece);
+        graphicsConnector.updateImages();
     }
 
     public void setGraphicsConnector(GraphicsConnector graphicsConnector) {
