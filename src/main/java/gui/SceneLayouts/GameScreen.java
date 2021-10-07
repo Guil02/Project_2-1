@@ -94,12 +94,17 @@ public class GameScreen extends BorderPane {
         topEmptySpace.setAlignment(Pos.CENTER);
         topEmptySpace.setFont(new Font("Verdana", 20));
         stopTime();
+        hideDice();
         if(white){
             topEmptySpace.setText("white has won!");
         }
         else{
             topEmptySpace.setText("black has won!");
         }
+    }
+
+    private void hideDice() {
+        diceDisplay.hideDice();
     }
 
     public void stopTime(){

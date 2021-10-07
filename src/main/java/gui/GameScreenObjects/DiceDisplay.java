@@ -42,4 +42,8 @@ public class DiceDisplay extends VBox {
         diceImageLabelOne.updateDice();
         diceImageLabelTwo.updateDice();
     }
+
+    public void hideDice() {
+        setVisible(false);
+    }
 }
