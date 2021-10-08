@@ -14,6 +14,8 @@ import java.util.ArrayList;
  * the class that represents every single square on the chess board.
  */
 public class ChessSpot extends Label {
+
+    // Variables
     private static final double DIVIDER = 8.0;
     public static final double PERCENTAGE_FILLED = 0.7;
     private double width;
@@ -23,10 +25,10 @@ public class ChessSpot extends Label {
     private int y;
     private ChessBoard board;
     private GraphicsConnector graphicsConnector;
-    private static final String color1 = "-fx-background-color: #dfe3e6; -fx-border-color: rgba(0,0,0,0.09);";
-    private static final String color2 = "-fx-background-color: #90a1ab; -fx-border-color: rgba(0,0,0,0.09);";
-    private static final String attackColor = "-fx-background-color: #99af6f; -fx-border-color: rgba(0,0,0,0.09);";
-    private static final String moveColor = "-fx-background-color: #c6d590; -fx-border-color: rgba(0,0,0,0.09);";
+    private static final String color1 = "-fx-background-color: #dfe3e6; -fx-border-color: rgba(0,0,0,0.09);";      // white
+    private static final String color2 = "-fx-background-color: #90a1ab; -fx-border-color: rgba(0,0,0,0.09);";      // light-blue
+    private static final String attackColor = "-fx-background-color: #99af6f; -fx-border-color: rgba(0,0,0,0.09);"; // green
+    private static final String moveColor = "-fx-background-color: #c6d590; -fx-border-color: rgba(0,0,0,0.09);";   // pale-green
 
 
     /**
@@ -66,26 +68,44 @@ public class ChessSpot extends Label {
         }
     }
 
+    /**
+     * Sets the attack colour.
+     */
     public void setAttackColor(){
         if(ChessGUI.COLOR){
             setStyle(attackColor);
         }
     }
 
+    /**
+     * Sets the move colour.
+     */
     public void setMoveColor(){
         if(ChessGUI.COLOR){
             setStyle(moveColor);
         }
     }
 
+    /**
+     * Get current x-position.
+     * @return x-value
+     */
     public int getX() {
         return x;
     }
 
+    /**
+     * Get current y-position.
+     * @return y-value
+     */
     public int getY() {
         return y;
     }
 
+    /**
+     * Sets a piece to the spot.
+     * @param piece     current piece
+     */
     public void setPiece(Piece piece) {
         this.piece = piece;
         if (piece == null) {
@@ -112,6 +132,10 @@ public class ChessSpot extends Label {
         }
     }
 
+    /**
+     * Get the current piece.
+     * @return  current piece.
+     */
     public Piece getPiece() {
         return piece;
     }
@@ -204,7 +228,6 @@ public class ChessSpot extends Label {
         }
     }
 
-
     /**
      * @return returns an arraylist of all the possible moves for the piece that is located
      * on the spot represented by this object.
@@ -219,6 +242,5 @@ public class ChessSpot extends Label {
         }
         return spots;
     }
-
 
 }
