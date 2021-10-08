@@ -19,56 +19,6 @@ public class Board {
         boardModel = new ChessPiece[BOARDSIZE][BOARDSIZE];
     }
 
-
-    /**
-     * Checks for taken pieces on both sides.
-     * Indexes:     0 = Pawn,   1 = Knight,     2 = Bishop,     3 = Rook,   4 = Queen,  5 = King (white)
-     *              6 = Pawn,   7 = Knight,     8 = Bishop,     9 = Rook,  10 = Queen, 11 = King (black)
-     * @return
-     */
-    public void checkForTakenPieces() {
-        int totalPawns = 8;
-        int totalKnights, totalBishops, totalRooks = 2;
-        int totalQueens, totalKings = 1;
-        int[] countedPieces = new int[12];
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                char currentChar = boardModel[i][j].getPieceChar();
-                switch (currentChar) {
-                    case 'P':
-                        countedPieces[0] ++;
-                    case 'N':
-                        countedPieces[1] ++;
-                    case 'B':
-                        countedPieces[2] ++;
-                    case 'R':
-                        countedPieces[3] ++;
-                    case 'Q':
-                        countedPieces[4] ++;
-                    case 'K':
-                        countedPieces[5] ++;
-                    case 'p':
-                        countedPieces[6] ++;
-                    case 'n':
-                        countedPieces[7] ++;
-                    case 'b':
-                        countedPieces[8] ++;
-                    case 'r':
-                        countedPieces[9] ++;
-                    case 'q':
-                        countedPieces[10] ++;
-                    case 'k':
-                        countedPieces[11] ++;
-                    default:
-                }
-            }
-        }
-        for (int i = 0; i < countedPieces.length; i++) {
-
-        }
-
-    }
-
     private ArrayList<ChessPiece> whitePieces = new ArrayList<ChessPiece>();
     private ArrayList<ChessPiece> blackPieces = new ArrayList<ChessPiece>();
 
