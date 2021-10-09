@@ -13,11 +13,11 @@ import javafx.util.Duration;
 
 
 public class LeftSide extends VBox {
-    private Label labelOne;
-    private Label labelTwo;
-    private Label labelFirst;
-    private Label labelSecond;
-    private Label labelThird;
+    private GoodLabel labelOne;
+    private GoodLabel labelTwo;
+    private GoodLabel labelFirst;
+    private GoodLabel labelSecond;
+    private GoodLabel labelThird;
     private Timeline time;
     private int whiteTime = 600;
     private int blackTime = 600;
@@ -90,5 +90,16 @@ public class LeftSide extends VBox {
         time.stop();
         labelFirst.setText("");
         labelThird.setText("");
+    }
+
+    public void updateGraphics(){
+        setMinSize(getWidthFromChessGUI() * 0.15, getHeightFromChessGUI() * 0.7);
+        setMaxSize(getWidthFromChessGUI() * 0.15, getHeightFromChessGUI() * 0.7);
+        labelFirst.updateGraphics();
+        labelSecond.updateGraphics();
+        labelThird.updateGraphics();
+        labelOne.updateGraphics();
+        labelTwo.updateGraphics();
+        doTimeMagic();
     }
 }
