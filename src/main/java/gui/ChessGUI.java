@@ -14,8 +14,8 @@ import javafx.stage.Stage;
 public class ChessGUI extends Application {
     public static boolean COLOR = true;
     public static boolean TURN = false;
-    private double width = 900;
-    private double height = 900;
+    private double width = 800;
+    private double height = 800;
     private Stage stage;
     private Scene gameScene;
     private ChessBoard chessBoard;
