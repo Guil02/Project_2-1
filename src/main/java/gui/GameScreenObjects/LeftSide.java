@@ -27,9 +27,9 @@ public class LeftSide extends VBox {
     public LeftSide(GameScreen gameScreen) {
         this.gameScreen = gameScreen;
         labelOne = new GoodLabel(this);
-        labelOne.setText("10:00");
+        labelOne.setText(timeClean(blackTime));
         labelTwo = new GoodLabel(this);
-        labelTwo.setText("10:00");
+        labelTwo.setText(timeClean(whiteTime));
         labelFirst = new GoodLabel(this);
         labelSecond = new GoodLabel(this);
         labelThird = new GoodLabel(this);
@@ -48,6 +48,12 @@ public class LeftSide extends VBox {
     }
 
     public void doTimeMagic() {
+        if(whiteTime==1){
+            gameScreen.endGame(false);
+        }
+        if(blackTime==1){
+            gameScreen.endGame(true);
+        }
         if (isWhiteTurn) {
             whiteTime--;
             labelTwo.setText(timeClean(whiteTime));

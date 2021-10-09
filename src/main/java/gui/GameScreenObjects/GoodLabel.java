@@ -43,7 +43,7 @@ public class GoodLabel extends Label {
                 setStyle("-fx-font: 23px \"Verdana\";");
                 break;
             default:
-                setStyle("-fx-font: 20px \"Verdana\";");
+                setStyle("-fx-font: 16px \"Verdana\";");
         }
     }
 }

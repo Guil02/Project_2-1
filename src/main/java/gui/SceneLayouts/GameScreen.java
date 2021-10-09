@@ -110,4 +110,8 @@ public class GameScreen extends BorderPane {
     public void stopTime(){
         leftSide.stopTime();
     }
+
+    public void endGame(boolean white) {
+        chessGUI.setWin(white);
+    }
 }
