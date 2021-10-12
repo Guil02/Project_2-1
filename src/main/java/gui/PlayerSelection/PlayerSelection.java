@@ -3,7 +3,10 @@ package gui.PlayerSelection;
 import gui.SceneLayouts.StartScreen;
 import javafx.geometry.Pos;
 import javafx.scene.layout.VBox;
-
+/**
+ * a class to change the first scene based on user's choices for sizes
+ * and set the player choice and start the game
+ */
 public class PlayerSelection extends VBox {
     private StartScreen startScreen;
     private PlayerSelectionLabel playerSelectionLabel;

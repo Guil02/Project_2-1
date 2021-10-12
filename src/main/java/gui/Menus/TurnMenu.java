@@ -5,7 +5,9 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
-
+/**
+ * a class to define turns based on user's choices in the begining of the game
+ */
 
 public class TurnMenu extends Menu {
     public TurnMenu(){

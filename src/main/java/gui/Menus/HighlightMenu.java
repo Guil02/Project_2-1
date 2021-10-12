@@ -5,7 +5,9 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
-
+/**
+ * a class to change menus highlight based on user's choice
+ */
 public class HighlightMenu extends Menu {
     public HighlightMenu(){
         setText("Highlighting setting");
