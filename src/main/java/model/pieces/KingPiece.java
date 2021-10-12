@@ -1,6 +1,5 @@
 package model.pieces;
 
-import controller.GameRunner;
 import model.Board;
 
 import java.util.*;
@@ -58,11 +57,7 @@ public class KingPiece extends ChessPiece {
             Arrays.fill(booleans, true);
         }
 
-        if (this.isWhite) {
-            this.currentBoard.getGameRunner().setWhiteMove(false);
-        } else {
-            this.currentBoard.getGameRunner().setWhiteMove(true);
-        }
+		this.currentBoard.getGameRunner().setWhiteMove(!this.isWhite);
 
         for (ChessPiece enemy : enemies) {
             if (enemy.getPieceChar() == 'k' || enemy.getPieceChar() == 'K') {
@@ -78,11 +73,7 @@ public class KingPiece extends ChessPiece {
             }
         }
 
-        if (this.isWhite) {
-            this.currentBoard.getGameRunner().setWhiteMove(true);
-        } else {
-            this.currentBoard.getGameRunner().setWhiteMove(false);
-        }
+		this.currentBoard.getGameRunner().setWhiteMove(this.isWhite);
 
         this.index_x = oldIndex_x; // King returning to initial position
         this.index_y = oldIndex_y;
