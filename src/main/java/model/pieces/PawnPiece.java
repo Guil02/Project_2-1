@@ -1,7 +1,6 @@
 package model.pieces;
 
 import model.Board;
-import model.BoardUpdater;
 
 //TODO add promotion
 
