@@ -1,6 +1,6 @@
 package gui.PlayerSelection;
 /**
- * a class to design menus styles
+ * a class to design menus styles based on the chosen size
  */
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.text.Font;

@@ -3,6 +3,9 @@ package gui.PlayerSelection;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
+/**
+ * a class to design player menus styles
+ */
 
 public class PlayerSelectionChoiceBox extends HBox {
     private PlayerSelection playerSelection;
