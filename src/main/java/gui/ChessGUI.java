@@ -9,7 +9,9 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-
+/**
+ * a class that run the javaFX application and link it to graphics connector
+ */
 
 public class ChessGUI extends Application {
     public static boolean COLOR = true;

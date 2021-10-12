@@ -4,7 +4,9 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.text.Font;
-
+/**
+ * a class to change the first scene to the game scene based on user's choices
+ */
 public class StartButton extends Button {
     public StartButton(PlayerSelection playerSelection){
         setText("start game");

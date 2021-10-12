@@ -16,6 +16,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+/**
+ * a class for designing the game scene which contains
+ * the chess bord,the dice and 2 timers
+ */
 
 public class GameScreen extends BorderPane {
     public static final double DIVIDER = 0.15;
