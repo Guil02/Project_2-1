@@ -3,10 +3,13 @@ package model.pieces;
 import model.Board;
 
 /**
- * Bishop piece
+ * class that determines every valid moves for a bishop
  */
 public class BishopPiece extends ChessPiece {
 
+    /**
+     * constructor that creates a bishop chess piece
+     */
     public BishopPiece(boolean isWhite, Board board, int index_x, int index_y) {
         super(isWhite, index_x, index_y, board);
     }
@@ -19,7 +22,7 @@ public class BishopPiece extends ChessPiece {
     }
 
     /*
-     * this method returns a 2x2 boolean matrix where each value 'true' represent a possible position for the bishop to move to
+     * method that returns all possible positions for a bishop to move to
      */
     public boolean[][] validMoves() {
 
@@ -27,9 +30,8 @@ public class BishopPiece extends ChessPiece {
 
         if(isTurn()){
 
-            //north west
+            //north-west diagonal
             int incr = 1;
-
             while(true){
                 int x = index_x + incr;
                 int y = index_y + incr;
@@ -53,7 +55,7 @@ public class BishopPiece extends ChessPiece {
                 else break;
             }
 
-            //north east
+            //north-east diagonal
             int incr_x = -1;
             int incr_y = 1;
             while(true){
@@ -80,7 +82,7 @@ public class BishopPiece extends ChessPiece {
                 else break;
             }
 
-            //south east
+            //south-east diagonal
             incr_x = -1;
             incr_y = -1;
             while(true){
@@ -107,7 +109,7 @@ public class BishopPiece extends ChessPiece {
                 else break;
             }
 
-            //south west
+            //south-west diagonal
             incr_x = 1;
             incr_y = -1;
             while(true){
@@ -134,8 +136,8 @@ public class BishopPiece extends ChessPiece {
                 else break;
             }
         }
-        if(checkAllFalse(valid_moves)){
-            setHasValidMove(false);
+        if(checkAllFalse(valid_moves)){ // if there are no valid moves for the current state of the board
+            hasValidMove = false;
         }
         return valid_moves;
     }

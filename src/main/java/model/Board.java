@@ -4,8 +4,11 @@ import controller.GameRunner;
 import model.pieces.ChessPiece;
 import java.util.*;
 
+/**
+ * class representing the chess board
+ */
 public class Board {
-
+    // variables
     private static final int BOARDSIZE = 8;
     private ChessPiece[][] boardModel;
     private BoardUpdater boardUpdater;
@@ -21,6 +24,10 @@ public class Board {
         return enPassant;
     }
 
+    /**
+     * board constructor
+     * @param gameRunner connect the board with the game runner
+     */
     public Board(GameRunner gameRunner) {
         this.gameRunner=gameRunner;
         boardModel = new ChessPiece[BOARDSIZE][BOARDSIZE];
@@ -28,6 +35,11 @@ public class Board {
 
     private ArrayList<ChessPiece> whitePieces = new ArrayList<ChessPiece>();
     private ArrayList<ChessPiece> blackPieces = new ArrayList<ChessPiece>();
+
+    /**
+     * method that distinguish white from black pieces and store their data into separate Arraylists
+     * @param piece can be either white or black
+     */
     public void addBlackOrWhite(ChessPiece piece) {
         if(piece.isWhite()) {
             whitePieces.add(piece);
@@ -45,7 +57,7 @@ public class Board {
 
     public ChessPiece[][] getBoardModel() {
         return boardModel;
-    } //TODO: same methods ?
+    }
     public ChessPiece[][] getField() {
         return boardModel;
     }
@@ -58,10 +70,22 @@ public class Board {
         this.enPassantAuthorized = enPassantAuthorized;
     }
 
+    /**
+     * method that allow to get the piece position on the board
+     * @param index_x
+     * @param index_y
+     * @return piece position within the board
+     */
     public ChessPiece getPiece(int index_x, int index_y) {
         return boardModel[index_x][index_y];
     }
 
+    /**
+     * method that assigns respective chars to corresponding chess piece on every field of the board
+     * @param x
+     * @param y
+     * @return the current field in chars
+     */
     public char getCharOfField(int x, int y) {
         if (boardModel[x][y] == null) {
             return '-';
@@ -71,6 +95,9 @@ public class Board {
         }
     }
 
+    /**
+     * representation of the state of the board and the positions of its pieces in a certain way that each piece (represented by its char) is viewable in the terminal
+     */
     public void printBoard() {
         System.out.println("--- Board State ---\n");
         for(int i = 0; i < boardModel[0].length; i++) {
