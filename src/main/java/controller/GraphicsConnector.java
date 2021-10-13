@@ -326,7 +326,6 @@ public class GraphicsConnector {
      * @param type of piece
      */
     public void doPromotion(int type) {
-        System.out.println(type);
         switch (type){
             case 1:
                 boardUpdater.doPromotion(new KnightPiece(this.isWhite,this.boardModel, this.x, this.y));
@@ -348,5 +347,9 @@ public class GraphicsConnector {
      */
     public void updateImages() {
         chessGUI.updateImages();
+    }
+
+    public void setWin(boolean white){
+        chessGUI.setWin(white);
     }
 }

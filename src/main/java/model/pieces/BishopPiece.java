@@ -27,7 +27,7 @@ public class BishopPiece extends ChessPiece {
 
         if(isTurn()){
 
-            //north west
+            //north-west
             int incr = 1;
 
             while(true){
@@ -53,7 +53,7 @@ public class BishopPiece extends ChessPiece {
                 else break;
             }
 
-            //north east
+            //north-east
             int incr_x = -1;
             int incr_y = 1;
             while(true){
@@ -80,7 +80,7 @@ public class BishopPiece extends ChessPiece {
                 else break;
             }
 
-            //south east
+            //south-east
             incr_x = -1;
             incr_y = -1;
             while(true){
@@ -107,7 +107,7 @@ public class BishopPiece extends ChessPiece {
                 else break;
             }
 
-            //south west
+            //south-west
             incr_x = 1;
             incr_y = -1;
             while(true){

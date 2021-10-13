@@ -59,6 +59,8 @@ public class BoardUpdater {
         boardModel.addBlackOrWhite(piece);
     }
 
+
+    private boolean gameOver = false;
     /**
      * Removes a piece from the board.
      */
@@ -70,10 +72,13 @@ public class BoardUpdater {
             if (boardModel.getField()[x][y].getPieceChar() == 'K') {
                 boardModel.getField()[x][y] = null;
                 System.out.println("black won");
+                graphicsConnector.setWin(false);
+                gameOver = true;
             } else if (boardModel.getField()[x][y].getPieceChar() == 'k') {
                 boardModel.getField()[x][y] = null;
                 System.out.println("white won");
-
+                graphicsConnector.setWin(true);
+                gameOver = true;
             }
         }
     }
@@ -92,8 +97,9 @@ public class BoardUpdater {
         boardModel.getField()[xFrom][yFrom] = null;
         boardModel.doMove();
 
-        //TODO: make this a prompt
-        promotion(targetPiece, xTo, yTo);
+        if(!gameOver) {
+            promotion(targetPiece, xTo, yTo);
+        }
     }
 
     private void promotion(ChessPiece targetPiece, int xTo, int yTo) {
