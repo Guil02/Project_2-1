@@ -42,7 +42,6 @@ public class GameRunner {
         board.setBoardUpdater(boardUpdater);
         boardUpdater.setGraphicsConnector(graphicsConnector);
         boardUpdater.fillGameStart();
-        board.printBoard();
         dice = new Dice(this);
         movablePiece = dice.firstMoveDiceRoll();
         boolean[][] testValidMoves = board.getPiece(2,0).validMoves();

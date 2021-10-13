@@ -71,12 +71,10 @@ public class BoardUpdater {
         if(boardModel.getField()[x][y]!=null) {
             if (boardModel.getField()[x][y].getPieceChar() == 'K') {
                 boardModel.getField()[x][y] = null;
-                System.out.println("black won");
                 graphicsConnector.setWin(false);
                 gameOver = true;
             } else if (boardModel.getField()[x][y].getPieceChar() == 'k') {
                 boardModel.getField()[x][y] = null;
-                System.out.println("white won");
                 graphicsConnector.setWin(true);
                 gameOver = true;
             }

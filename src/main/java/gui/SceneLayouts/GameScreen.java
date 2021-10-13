@@ -85,7 +85,7 @@ public class GameScreen extends BorderPane {
         bottomLeftEmptySpace.setMaxSize(chessGUI.getWidth() * DIVIDER, chessGUI.getHeight() * (DIVIDER));
         leftSide.updateGraphics();
         diceDisplay.updateGraphics();
-
+        updateLabelGraphic();
 
     }
 
@@ -123,7 +123,7 @@ public class GameScreen extends BorderPane {
      */
     public void setWin(boolean white) {
         topEmptySpace.setAlignment(Pos.CENTER);
-        topEmptySpace.setFont(new Font("Verdana", 20));
+        updateLabelGraphic();
         stopTime();
         hideDice();
         if(white){
@@ -150,5 +150,26 @@ public class GameScreen extends BorderPane {
 
     public void endGame(boolean white) {
         chessGUI.setWin(white);
+    }
+
+    public void updateLabelGraphic(){
+        int width = (int) getWidthFromChessGUI();
+        switch (width){
+            case 200:
+                topEmptySpace.setFont(new Font("Verdana", 6));
+            case 400:
+                topEmptySpace.setFont(new Font("Verdana", 11));
+                break;
+            case 600:
+                topEmptySpace.setFont(new Font("Verdana", 17));
+                break;
+            case 800:
+                topEmptySpace.setFont(new Font("Verdana", 22));
+                break;
+            case 1000:
+                topEmptySpace.setFont(new Font("Verdana", 28));
+            default:
+                topEmptySpace.setFont(new Font("Verdana", 20));
+        }
     }
 }
