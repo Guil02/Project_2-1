@@ -1,16 +1,18 @@
 package controller;
 
 
+import gui.ChessGUI;
+import model.pieces.*;
 import utils.Transform;
 import model.Board;
 import model.BoardUpdater;
-import model.pieces.ChessPiece;
 
 public class GraphicsConnector {
 
     private final GameRunner gameRunner;
     private Board board;
     private BoardUpdater boardUpdater;
+    private ChessGUI chessGUI;
 
     public GraphicsConnector(GameRunner gameRunner) {
         this.gameRunner = gameRunner;
@@ -71,7 +73,6 @@ public class GraphicsConnector {
      */
     public void doMove(int initialX, int initialY, int finalX, int finalY){
         boardUpdater.movePiece(initialX, initialY, finalX, finalY);
-        System.out.println(gameRunner.getMovablePiece());
     }
 
 
@@ -91,33 +92,21 @@ public class GraphicsConnector {
      */
     public String getImage(int x, int y){
         char field = board.getCharOfField(x,y);
-        switch(field){
-            case 'b':
-                return "gui/black_bishop.png";
-            case 'k':
-                return "gui/black_king.png";
-            case 'n':
-                return "gui/black_knight.png";
-            case 'p':
-                return "gui/black_pawn.png";
-            case 'q':
-                return "gui/black_queen.png";
-            case 'r':
-                return "gui/black_rook.png";
-            case 'B':
-                return "gui/white_bishop.png";
-            case 'K':
-                return "gui/white_king.png";
-            case 'N':
-                return "gui/white_knight.png";
-            case 'P':
-                return "gui/white_pawn.png";
-            case 'Q':
-                return "gui/white_queen.png";
-            case 'R':
-                return "gui/white_rook.png";
-        }
-        return "gui/error_cross.png";
+        return switch (field) {
+            case 'b' -> "gui/bB.png";
+            case 'k' -> "gui/bK.png";
+            case 'n' -> "gui/bN.png";
+            case 'p' -> "gui/bP.png";
+            case 'q' -> "gui/bQ.png";
+            case 'r' -> "gui/bR.png";
+            case 'B' -> "gui/wB.png";
+            case 'K' -> "gui/wK.png";
+            case 'N' -> "gui/wN.png";
+            case 'P' -> "gui/wP.png";
+            case 'Q' -> "gui/wQ.png";
+            case 'R' -> "gui/wR.png";
+            default -> "gui/error_cross.png";
+        };
     }
 
     /**
@@ -183,34 +172,38 @@ public class GraphicsConnector {
         ChessPiece piece = piecesArray[x][y];
         return piece.isTurn();
     }
+
+    public boolean whoTurn(){
+        return gameRunner.getWhiteMove();
+    }
     //TODO add correct method that gets the correct image for the correct dice throw
     public String getDiceImage(int type){
         if(type == 1) {
             switch (gameRunner.getMovablePiece()) {
                 case 'K':
-                    return "gui/white_king.png";
+                    return "gui/wK.png";
                 case 'Q':
-                    return "gui/white_queen.png";
+                    return "gui/wQ.png";
                 case 'R':
-                    return "gui/white_rook.png";
+                    return "gui/wR.png";
                 case 'B':
-                    return "gui/white_bishop.png";
+                    return "gui/wB.png";
                 case 'N':
-                    return "gui/white_knight.png";
+                    return "gui/wN.png";
                 case 'P':
-                    return "gui/white_pawn.png";
+                    return "gui/wP.png";
                 case 'k':
-                    return "gui/black_king.png";
+                    return "gui/bK.png";
                 case 'q':
-                    return "gui/black_queen.png";
+                    return "gui/bQ.png";
                 case 'r':
-                    return "gui/black_rook.png";
+                    return "gui/bR.png";
                 case 'b':
-                    return "gui/black_bishop.png";
+                    return "gui/bB.png";
                 case 'n':
-                    return "gui/black_knight.png";
+                    return "gui/bN.png";
                 case 'p':
-                    return "gui/black_pawn.png";
+                    return "gui/bP.png";
             }
         }
         else {
@@ -236,5 +229,80 @@ public class GraphicsConnector {
             }
         }
         return "gui/error_cross.png";
+    }
+
+    public void setChessGUI(ChessGUI chessGUI) {
+        this.chessGUI = chessGUI;
+    }
+
+    public String getPromotionImage(int type) {
+        switch(type){
+            case 1:
+                if(!whoTurn()){
+                    return "gui/wN.png";
+                }
+                else{
+                    return "gui/bN.png";
+                }
+            case 2:
+                if(!whoTurn()){
+                    return "gui/wB.png";
+                }
+                else{
+                    return "gui/bB.png";
+                }
+            case 3:
+                if(!whoTurn()){
+                    return "gui/wR.png";
+                }
+                else{
+                    return "gui/bR.png";
+                }
+            case 4:
+                if(!whoTurn()){
+                    return "gui/wQ.png";
+                }
+                else{
+                    return "gui/bQ.png";
+                }
+            default:
+                return "gui/error_cross.png";
+        }
+    }
+    private boolean isWhite;
+    private Board boardModel;
+    private int x;
+    private int y;
+    public void startPromotionDialog(boolean isWhite, Board boardModel, int x, int y){
+        chessGUI.launchPromotionDialog();
+        this.isWhite = isWhite;
+        this.boardModel = boardModel;
+        this.x = x;
+        this.y = y;
+    }
+
+    public void doPromotion(int type) {
+        switch (type){
+            case 1:
+                boardUpdater.doPromotion(new KnightPiece(this.isWhite,this.boardModel, this.x, this.y));
+                break;
+            case 2:
+                boardUpdater.doPromotion(new BishopPiece(this.isWhite,this.boardModel, this.x, this.y));
+                break;
+            case 3:
+                boardUpdater.doPromotion(new RookPiece(this.isWhite,this.boardModel, this.x, this.y));
+                break;
+            case 4:
+                boardUpdater.doPromotion(new QueenPiece(this.isWhite,this.boardModel, this.x, this.y));
+                break;
+        }
+    }
+
+    public void updateImages() {
+        chessGUI.updateImages();
+    }
+
+    public void setWin(boolean white){
+        chessGUI.setWin(white);
     }
 }

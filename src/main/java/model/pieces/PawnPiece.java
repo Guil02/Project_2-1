@@ -34,11 +34,14 @@ public class PawnPiece extends ChessPiece {
                 // first move --> 2 options if conditions reunited
                 if( (withinBounds(index_y,-1)) && (isOpenSpot(index_x,index_y-1)) && !(checkForEnemyPiece(index_x,index_y-1)) ) {
                     if( (index_y==6) && (isOpenSpot(index_x,index_y-2)) && !(checkForEnemyPiece(index_x,index_y-2)) ) {
-                        valid_moves[index_x][index_y-1] = true; // option 1: move to 1 spot forward
-                        valid_moves[index_x][index_y-2] = true; // option 2: move to 2 spots forward
+
+                        valid_moves[index_x][index_y-1] = true;
+                        valid_moves[index_x][index_y-2] = true;
+                        setHasValidMove(true);
                     }
                     else {
-                        valid_moves[index_x][index_y-1] = true; // if piece blocking the second forward spot
+                        valid_moves[index_x][index_y-1] = true;
+                        setHasValidMove(true);
                     }
                 }
 
@@ -46,9 +49,11 @@ public class PawnPiece extends ChessPiece {
                 // check if move possible and if there is an enemy piece on the target spot
                 if( (withinBounds(index_x,-1)) && (withinBounds(index_y,-1)) && (isOpenSpot(index_x-1,index_y-1)) && (checkForEnemyPiece(index_x-1,index_y-1)) ) {
                     valid_moves[index_x-1][index_y-1] = true;
+                    setHasValidMove(true);
                 }
                 if( (withinBounds(index_x,1)) && (withinBounds(index_y,-1)) && (isOpenSpot(index_x+1,index_y-1)) && (checkForEnemyPiece(index_x+1,index_y-1)) ) {
                     valid_moves[index_x+1][index_y-1] = true;
+                    setHasValidMove(true);
                 }
             }
             else{
@@ -57,16 +62,20 @@ public class PawnPiece extends ChessPiece {
                     if( (index_y==1) && (isOpenSpot(index_x,index_y+2)) && (!checkForEnemyPiece(index_x,index_y+2)) ) {
                         valid_moves[index_x][index_y+1] = true;
                         valid_moves[index_x][index_y+2] = true;
+                        setHasValidMove(true);
                     }
                     else {
                         valid_moves[index_x][index_y+1] = true;
+                        setHasValidMove(true);
                     }
                 }
                 if( (withinBounds(index_x,-1)) && (withinBounds(index_y,1)) && (isOpenSpot(index_x-1,index_y+1)) && (checkForEnemyPiece(index_x-1,index_y+1)) ) {
                     valid_moves[index_x-1][index_y+1] = true;
+                    setHasValidMove(true);
                 }
                 if( (withinBounds(index_x,1)) && (withinBounds(index_y,1)) && (isOpenSpot(index_x+1,index_y+1)) && (checkForEnemyPiece(index_x+1,index_y+1)) ) {
                     valid_moves[index_x+1][index_y+1] = true;
+                    setHasValidMove(true);
                 }
             }
         }
@@ -76,11 +85,17 @@ public class PawnPiece extends ChessPiece {
             if( (this.index_x + 1 == this.currentBoard.getEnPassantAuthorized()) || (this.index_x - 1 == this.currentBoard.getEnPassantAuthorized()) ) { // check if enemy pawns on left/right hand-size of the target pawn are authorized to do en passant
                 if( (this.isWhite) && (this.index_y == 3) ) { // whites that moved to 2 spots forward
                     valid_moves[this.currentBoard.getEnPassantAuthorized()][2] = true;
+                    setHasValidMove(true);
                 }
                 else if( (!this.isWhite) && (this.index_y == 4) ) { // blacks that moved to 2 spots forward
                     valid_moves[this.currentBoard.getEnPassantAuthorized()][5] = true;
+                    setHasValidMove(true);
                 }
             }
+        }
+
+        if(checkAllFalse(valid_moves)){
+            setHasValidMove(false);
         }
         return valid_moves;
     }

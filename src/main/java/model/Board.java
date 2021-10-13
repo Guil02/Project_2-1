@@ -14,6 +14,15 @@ public class Board {
     private BoardUpdater boardUpdater;
     private GameRunner gameRunner;
     private int enPassantAuthorized = -1;
+    private boolean enPassant = false;
+
+    public void setEnPassant(boolean enPassant) {
+        this.enPassant = enPassant;
+    }
+
+    public boolean isEnPassant() {
+        return enPassant;
+    }
 
     /**
      * board constructor

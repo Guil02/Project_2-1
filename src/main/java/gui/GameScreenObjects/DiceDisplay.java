@@ -32,8 +32,8 @@ public class DiceDisplay extends VBox {
     }
 
     public void updateGraphics(){
-        setMinSize(getWidthFromTop()/ DIVIDER_WIDTH, getHeightFromTop()* DIVIDER_HEIGHT);
-        setMaxSize(getWidthFromTop()/ DIVIDER_WIDTH, getHeightFromTop()* DIVIDER_HEIGHT);
+        setMinSize(getWidthFromTop()* DIVIDER_WIDTH, getHeightFromTop()* DIVIDER_HEIGHT);
+        setMaxSize(getWidthFromTop()* DIVIDER_WIDTH, getHeightFromTop()* DIVIDER_HEIGHT);
         diceImageLabelOne.updateGraphics();
         diceImageLabelTwo.updateGraphics();
     }
@@ -41,5 +41,9 @@ public class DiceDisplay extends VBox {
     public void updateDice(){
         diceImageLabelOne.updateDice();
         diceImageLabelTwo.updateDice();
+    }
+
+    public void hideDice() {
+        setVisible(false);
     }
 }

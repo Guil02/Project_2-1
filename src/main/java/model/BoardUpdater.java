@@ -1,6 +1,7 @@
 package model;
 
 import controller.GameRunner;
+import controller.GraphicsConnector;
 import model.pieces.*;
 
 /**
@@ -9,6 +10,7 @@ import model.pieces.*;
 public class BoardUpdater {
 
     private Board boardModel;
+    private GraphicsConnector graphicsConnector;
     private char currentMove;
     /**
      * Constructor
@@ -57,13 +59,29 @@ public class BoardUpdater {
         boardModel.addBlackOrWhite(piece);
     }
 
+
+    private boolean gameOver = false;
     /**
      * Removes a piece from the board.
      */
     public void removePiece(int x, int y) {
         boardModel.getField()[x][y] = null;
     }
-
+    public void capturePiece(int x, int y){
+        if(boardModel.getField()[x][y]!=null) {
+            if (boardModel.getField()[x][y].getPieceChar() == 'K') {
+                boardModel.getField()[x][y] = null;
+                System.out.println("black won");
+                graphicsConnector.setWin(false);
+                gameOver = true;
+            } else if (boardModel.getField()[x][y].getPieceChar() == 'k') {
+                boardModel.getField()[x][y] = null;
+                System.out.println("white won");
+                graphicsConnector.setWin(true);
+                gameOver = true;
+            }
+        }
+    }
     /**
      *
      * @param xFrom
@@ -74,19 +92,29 @@ public class BoardUpdater {
     public void movePiece(int xFrom, int yFrom, int xTo, int yTo) {
         ChessPiece targetPiece = boardModel.getField()[xFrom][yFrom];
         targetPiece.move(xTo,yTo);
-        boardModel.doMove();
+        capturePiece(xTo, yTo);
         boardModel.getField()[xTo][yTo] = targetPiece;
         boardModel.getField()[xFrom][yFrom] = null;
+        boardModel.doMove();
 
-
-        //TODO: make this a prompt
-        promotion(targetPiece, xTo, yTo);
+        if(!gameOver) {
+            promotion(targetPiece, xTo, yTo);
+        }
     }
 
     private void promotion(ChessPiece targetPiece, int xTo, int yTo) {
-        if((targetPiece.getPieceChar()=='p' || targetPiece.getPieceChar()=='P') && targetPiece.isOnOppositeRow(xTo, yTo)){
-            removePiece(xTo,yTo);
-            addPiece(new QueenPiece(targetPiece.isWhite(), boardModel, xTo, yTo));
+        if(targetPiece.isOnOppositeRow(xTo, yTo) && (targetPiece.getPieceChar()=='p' || targetPiece.getPieceChar()=='P')){
+            graphicsConnector.startPromotionDialog(targetPiece.isWhite(), boardModel, xTo, yTo);
         }
+    }
+
+    public void doPromotion(ChessPiece piece){
+        removePiece(piece.getIndex_x(),piece.getIndex_y());
+        addPiece(piece);
+        graphicsConnector.updateImages();
+    }
+
+    public void setGraphicsConnector(GraphicsConnector graphicsConnector) {
+        this.graphicsConnector = graphicsConnector;
     }
 }

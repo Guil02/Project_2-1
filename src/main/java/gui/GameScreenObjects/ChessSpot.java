@@ -23,10 +23,11 @@ public class ChessSpot extends Label {
     private int y;
     private ChessBoard board;
     private GraphicsConnector graphicsConnector;
-    private static final String color1 = "-fx-background-color: #4a4b3e; -fx-border-color: #000000;";
-    private static final String color2 = "-fx-background-color: #2f7244; -fx-border-color: #000000;";
-    private static final String attackColor = "-fx-background-color: #bd2b2b; -fx-border-color: #000000;";
-    private static final String moveColor = "-fx-background-color: #23a94d; -fx-border-color: #000000;";
+    private static boolean promotionLock = true;
+    private static final String color1 = "-fx-background-color: #dfe3e6; -fx-border-color: rgba(0,0,0,0.09);";
+    private static final String color2 = "-fx-background-color: #90a1ab; -fx-border-color: rgba(0,0,0,0.09);";
+    private static final String attackColor = "-fx-background-color: #99af6f; -fx-border-color: rgba(0,0,0,0.09);";
+    private static final String moveColor = "-fx-background-color: #c6d590; -fx-border-color: rgba(0,0,0,0.09);";
 
 
     /**
@@ -59,10 +60,10 @@ public class ChessSpot extends Label {
      */
     public void setBackgroundColor(){
         if((x+y)%2==0){
-            setStyle(color2);
+            setStyle(color1);
         }
         else{
-            setStyle(color1);
+            setStyle(color2);
         }
     }
 
@@ -124,7 +125,7 @@ public class ChessSpot extends Label {
      * @param e a mouse event
      */
     public void onDragDetected(MouseEvent e){
-        if(piece!=null&&graphicsConnector.isTurn(x,y)) {
+        if(piece!=null&&graphicsConnector.isTurn(x,y) && promotionLock) {
             Dragboard dragboard = startDragAndDrop(TransferMode.MOVE);
             Image image = new Image(graphicsConnector.getImage(piece.getX(), piece.getY()), width /DIVIDER, height /DIVIDER, false, false);
             dragboard.setDragView(image);
@@ -221,5 +222,7 @@ public class ChessSpot extends Label {
         return spots;
     }
 
-
+    public static void setPromotionLock(boolean bool) {
+        promotionLock = bool;
+    }
 }

@@ -68,6 +68,11 @@ public abstract class ChessPiece {
         return this.isWhite;
     }
 
+
+    public void setHasValidMove(boolean hasValidMove) {
+        this.hasValidMove = hasValidMove;
+    }
+    
     /**
      * move method to check if en passant/castling conditions are reunited to authorize en passant/castling
      * @param new_index_x next x position after doing the move
@@ -75,20 +80,21 @@ public abstract class ChessPiece {
      */
     public void move(int new_index_x, int new_index_y) {
 
-        // en passant
-        this.currentBoard.setEnPassantAuthorized(-1); // set en passant not authorized
-        // check if a pawn has moved 2 spots from its initial position
+        boolean canChange = true;
+        this.currentBoard.setEnPassantAuthorized(-1);
         if( (this.getPieceChar() == 'P') || (this.getPieceChar() == 'p') ) {
             if(Math.abs(this.index_y - new_index_y) == 2) {
-
+                currentBoard.setEnPassant(true);
+                canChange = false;
                 this.currentBoard.setEnPassantAuthorized(this.index_x); // set en passant authorized for the enemy pawns who have the possibility to take the current pawn in en passant
+
 
             }
         }
 
         // pawns taking enemy pawns in en passant
         if( (this.getPieceChar() == 'P') || (this.getPieceChar() == 'p') ) {
-            if( (Math.abs(this.index_x - new_index_x) == 1) && (Math.abs(this.index_y - new_index_y) == 1) ) {
+            if( (Math.abs(this.index_x - new_index_x) == 1) && (Math.abs(this.index_y - new_index_y) == 1) && currentBoard.isEnPassant()) {
                 if(isOpenSpot(new_index_x, new_index_y)){
 
                     this.currentBoard.getBoardUpdater().removePiece(new_index_x, this.index_y); // remove automatically the enemy pawn that was taken by en passant from the board
@@ -129,7 +135,12 @@ public abstract class ChessPiece {
 
         }
 
-        // update internal position
+
+        if(canChange){
+            currentBoard.setEnPassant(false);
+        }
+
+        // Updates internal position
         this.index_x = new_index_x;
         this.index_y = new_index_y;
     }
