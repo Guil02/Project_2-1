@@ -13,11 +13,11 @@ import javafx.util.Duration;
 
 
 public class LeftSide extends VBox {
-    private Label labelOne;
-    private Label labelTwo;
-    private Label labelFirst;
-    private Label labelSecond;
-    private Label labelThird;
+    private GoodLabel labelOne;
+    private GoodLabel labelTwo;
+    private GoodLabel labelFirst;
+    private GoodLabel labelSecond;
+    private GoodLabel labelThird;
     private Timeline time;
     private int whiteTime = 600;
     private int blackTime = 600;
@@ -27,9 +27,9 @@ public class LeftSide extends VBox {
     public LeftSide(GameScreen gameScreen) {
         this.gameScreen = gameScreen;
         labelOne = new GoodLabel(this);
-        labelOne.setText("10:00");
+        labelOne.setText(timeClean(blackTime));
         labelTwo = new GoodLabel(this);
-        labelTwo.setText("10:00");
+        labelTwo.setText(timeClean(whiteTime));
         labelFirst = new GoodLabel(this);
         labelSecond = new GoodLabel(this);
         labelThird = new GoodLabel(this);
@@ -48,6 +48,12 @@ public class LeftSide extends VBox {
     }
 
     public void doTimeMagic() {
+        if(whiteTime==1){
+            gameScreen.endGame(false);
+        }
+        if(blackTime==1){
+            gameScreen.endGame(true);
+        }
         if (isWhiteTurn) {
             whiteTime--;
             labelTwo.setText(timeClean(whiteTime));
@@ -90,5 +96,16 @@ public class LeftSide extends VBox {
         time.stop();
         labelFirst.setText("");
         labelThird.setText("");
+    }
+
+    public void updateGraphics(){
+        setMinSize(getWidthFromChessGUI() * 0.15, getHeightFromChessGUI() * 0.7);
+        setMaxSize(getWidthFromChessGUI() * 0.15, getHeightFromChessGUI() * 0.7);
+        labelFirst.updateGraphics();
+        labelSecond.updateGraphics();
+        labelThird.updateGraphics();
+        labelOne.updateGraphics();
+        labelTwo.updateGraphics();
+        doTimeMagic();
     }
 }

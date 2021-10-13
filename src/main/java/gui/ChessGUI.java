@@ -9,13 +9,14 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-
-
+/**
+ * a class that run the javaFX application and link it to graphics connector
+ */
 public class ChessGUI extends Application {
     public static boolean COLOR = true;
     public static boolean TURN = false;
-    private double width = 900;
-    private double height = 900;
+    private double width = 700;
+    private double height = 700;
     private Stage stage;
     private Scene gameScene;
     private ChessBoard chessBoard;
@@ -24,12 +25,18 @@ public class ChessGUI extends Application {
     private StartScreen mainMenu;
 
 
+    /**
+     * @param graphicsConnector
+     */
     public void launchGUI(GraphicsConnector graphicsConnector) {
         ChessGUI.graphicsConnector = graphicsConnector;
         String[] args = new String[0];
         launch(args);
     }
 
+    /**
+     * @param stage
+     */
     @Override
     public void start(Stage stage) {
         graphicsConnector.setChessGUI(this);
@@ -45,6 +52,10 @@ public class ChessGUI extends Application {
         stage.show();
     }
 
+    /**
+     * @param playerOne
+     * @param PlayerTwo
+     */
     public void startGame(int playerOne, int PlayerTwo){
         graphicsConnector.setPlayers(playerOne, PlayerTwo);
         graphicsConnector.init();
@@ -62,6 +73,9 @@ public class ChessGUI extends Application {
         stage.setScene(gameScene);
     }
 
+    /**
+     * @param size
+     */
     public void updateDisplaySize(double size){
         stage.setHeight(size);
         stage.setWidth(size);
@@ -74,31 +88,52 @@ public class ChessGUI extends Application {
         mainMenu.updateGraphics();
     }
 
+    /**
+     * @return
+     */
     public double getWidth(){
         return width;
     }
 
+    /**
+     * @return
+     */
     public double getHeight(){
         return height;
     }
 
+    /**
+     * @param size
+     */
     public void setWidth(double size){
         width = size;
     }
 
+    /**
+     * @param size
+     */
     public void setHeight(double size){
         height = size;
     }
 
+    /**
+     *
+     */
     public void launchPromotionDialog(){
         this.gameScreen.launchPromotionDialog();
         chessBoard.setPromotionLock(false);
     }
 
+    /**
+     *
+     */
     public void updateImages() {
         chessBoard.initializeBoard();
     }
 
+    /**
+     * @param white
+     */
     public void setWin(boolean white) {
         chessBoard.setPromotionLock(false);
         gameScreen.setWin(white);

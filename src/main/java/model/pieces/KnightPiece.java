@@ -3,10 +3,13 @@ package model.pieces;
 import model.Board;
 
 /**
- * Knight piece
+ * class that determines every valid moves for a knight
  */
 public class KnightPiece extends ChessPiece {
 
+    /**
+     * constructor that creates a knight chess piece
+     */
     public KnightPiece(boolean white, Board board, int index_x, int index_y) {
         super(white, index_x, index_y, board);
     }
@@ -18,6 +21,9 @@ public class KnightPiece extends ChessPiece {
             return 'n';
     }
 
+    /*
+     * method that returns all possible positions for a knight to move to
+     */
     public boolean[][] validMoves() {
 
         boolean[][] valid_moves = new boolean[Board.getBoardSize()][8];
@@ -55,6 +61,7 @@ public class KnightPiece extends ChessPiece {
                 setHasValidMove(true);
             }
         }
+      
         if (checkAllFalse(valid_moves)) {
             setHasValidMove(false);
         }

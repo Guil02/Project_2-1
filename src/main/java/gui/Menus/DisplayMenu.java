@@ -6,8 +6,13 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-
+/**
+ * A class for menus which appear in the first scene of the game and handles user events
+ */
 public class DisplayMenu extends Menu {
+    /**
+     * @param chessGUI reference to the chessGUI in which it is located
+     */
     public DisplayMenu(ChessGUI chessGUI){
         setText("display options");
         MenuItem m1 = new MenuItem("200x200");

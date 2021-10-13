@@ -5,7 +5,7 @@ import model.Board;
 import java.util.*;
 
 /**
- * King piece
+ * class that determines every valid moves for a king
  */
 public class KingPiece extends ChessPiece {
     private boolean hasNotMoved = true;
@@ -239,4 +239,3 @@ public class KingPiece extends ChessPiece {
         RookPiece piece = (RookPiece) this.currentBoard.getField()[x][y];
         return piece.isHasNotMoved();
     }
-}

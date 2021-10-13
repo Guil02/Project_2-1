@@ -3,10 +3,13 @@ package model.pieces;
 import model.Board;
 
 /**
- * Queen piece
+ * class that determines every valid moves for a queen
  */
 public class QueenPiece extends ChessPiece {
 
+    /**
+     * constructor that creates a queen chess piece
+     */
     public QueenPiece(boolean isWhite, Board board, int index_x, int index_y) {
         super(isWhite, index_x, index_y, board);
     }
@@ -18,14 +21,16 @@ public class QueenPiece extends ChessPiece {
             return 'q';
     }
 
+    /*
+     * method that returns all possible positions for a queen to move to
+     */
     public boolean[][] validMoves() {
 
         boolean[][] valid_moves = new boolean[Board.getBoardSize()][Board.getBoardSize()];
 
         if(isTurn()){
 
-
-            //horizontal rank
+            // horizontal rank
             int temp = 1;
             while(true){
                 if(withinBounds(index_x,temp)){
@@ -74,7 +79,7 @@ public class QueenPiece extends ChessPiece {
                 }
             }
 
-            //vertical rank
+            // vertical rank
             temp = 1;
             while(true){
                 if(withinBounds(index_y,temp)){
@@ -123,9 +128,8 @@ public class QueenPiece extends ChessPiece {
                 }
             }
 
-            //north west
+            //north-west diagonal
             int incr = 1;
-
             while(true){
                 int x = index_x + incr;
                 int y = index_y + incr;
@@ -149,7 +153,7 @@ public class QueenPiece extends ChessPiece {
                 else break;
             }
 
-            //north east
+            //north-east diagonal
             int incr_x = -1;
             int incr_y = 1;
             while(true){
@@ -176,7 +180,7 @@ public class QueenPiece extends ChessPiece {
                 else break;
             }
 
-            //south east
+            //south-east diagonal
             incr_x = -1;
             incr_y = -1;
             while(true){
@@ -203,7 +207,7 @@ public class QueenPiece extends ChessPiece {
                 else break;
             }
 
-            //south west
+            //south-west diagonal
             incr_x = 1;
             incr_y = -1;
             while(true){
@@ -230,7 +234,7 @@ public class QueenPiece extends ChessPiece {
                 else break;
             }
         }
-        if(checkAllFalse(valid_moves)){
+        if(checkAllFalse(valid_moves)){ // if there are no valid moves for the current state of the board
             setHasValidMove(false);
         }
 
