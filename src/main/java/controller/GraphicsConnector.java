@@ -1,6 +1,5 @@
 package controller;
 
-
 import gui.ChessGUI;
 import model.pieces.*;
 import utils.Transform;
@@ -18,6 +17,13 @@ public class GraphicsConnector {
     private final GameRunner gameRunner;
     private Board board;
     private BoardUpdater boardUpdater;
+    private ChessGUI chessGUI;
+
+
+    /**
+     * constructor
+     * @param gameRunner
+     */
     public GraphicsConnector(GameRunner gameRunner) {
         this.gameRunner = gameRunner;
     }
@@ -80,9 +86,6 @@ public class GraphicsConnector {
         System.out.println(gameRunner.getMovablePiece());
     }
 
-
-
-
     /**
      * I want this method to return the url of the image of the piece located at that spot
      * so say it is a white king, you return "gui/white_king.png".
@@ -138,7 +141,6 @@ public class GraphicsConnector {
         return validMoves[finalX][finalY];
     }
 
-
     /**
      * checks whether there is a piece locate on the field with the provided coordinates.
      *
@@ -192,6 +194,13 @@ public class GraphicsConnector {
         ChessPiece[][] piecesArray = board.getField();
         ChessPiece piece = piecesArray[x][y];
         return piece.isTurn();
+    }
+
+    /**
+     * @return white or black based on the turn
+     */
+    public boolean whoTurn(){
+        return !gameRunner.getWhiteMove();
     }
 
     /**
