@@ -18,3 +18,5 @@ gradle-app.setting
 .project
 /bin
 .DS_Store
+/out
+/src/main/java/META-INF/
