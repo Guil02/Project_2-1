@@ -5,11 +5,18 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 
+/**
+ * label for the playet selection
+ */
 public class PlayerSelectionLabel extends HBox {
     public static final int DEFAULT_WIDTH = 188;
     public static final int DEFAULT_HEIGHT = 58;
     private Label labelPlayerOne;
         private Label labelPlayerTwo;
+
+    /**
+     * the constructor
+     */
     public PlayerSelectionLabel() {
         this.labelPlayerOne = new Label("Player 1");
         this.labelPlayerTwo = new Label("Player 2");
@@ -28,6 +35,9 @@ public class PlayerSelectionLabel extends HBox {
         getChildren().addAll(labelPlayerOne,labelPlayerTwo);
     }
 
+    /**
+     * @param size the size of the screen
+     */
     public void updateGraphics(int size) {
         switch(size){
             case 1:

@@ -3,12 +3,19 @@ package gui.PlayerSelection;
 import gui.SceneLayouts.StartScreen;
 import javafx.geometry.Pos;
 import javafx.scene.layout.VBox;
-
+/**
+ * a class to change the first scene based on user's choices for sizes
+ * and set the player choice and start the game
+ */
 public class PlayerSelection extends VBox {
     private StartScreen startScreen;
     private PlayerSelectionLabel playerSelectionLabel;
     private PlayerSelectionChoiceBox playerSelectionChoiceBox;
     private StartButton startButton;
+
+    /**
+     * @param startScreen reference to the start screen in which it is located
+     */
     public PlayerSelection(StartScreen startScreen){
         this.startScreen = startScreen;
         setAlignment(Pos.CENTER);
@@ -20,14 +27,25 @@ public class PlayerSelection extends VBox {
         getChildren().addAll(playerSelectionLabel,playerSelectionChoiceBox,startButton);
     }
 
+    /**
+     * @param playerNumber number of the player
+     * @param player type of player
+     */
     public void setPlayer(int playerNumber, int player){
         startScreen.setPlayer(playerNumber, player);
     }
 
+    /**
+     * launches the game
+     */
     public void startGame(){
         startScreen.startGame();
     }
 
+    /**
+     * @param width width of the screen
+     * @param height height of the screen
+     */
     public void updateGraphics(double width, double height) {
         setMinSize(width,height);
         setMaxSize(width,height);
@@ -38,6 +56,10 @@ public class PlayerSelection extends VBox {
 
     }
 
+    /**
+     * @param width width of the screen
+     * @return returns an int of the size
+     */
     private int getSize(double width){
         int size;
         switch((int) width){
