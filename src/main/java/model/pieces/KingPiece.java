@@ -8,6 +8,10 @@ import java.util.*;
  */
 public class KingPiece extends ChessPiece {
 	private boolean hasNotMoved = true;
+
+	/**
+	 * constructor that creates a king chess piece
+	 */
 	public KingPiece(boolean white, Board board, int index_x, int index_y) {
 		super(white, index_x, index_y, board);
 	}
