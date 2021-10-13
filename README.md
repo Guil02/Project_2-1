@@ -5,7 +5,6 @@ group 10, phase 1
 
 ## Running the application
 
----
 To run this program you will need to have a java version of at least 16,
 you also need to have gradle installed on your pc. If these requirements
 are met then you will need to change you terminal directory to the one 
