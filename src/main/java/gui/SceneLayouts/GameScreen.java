@@ -83,7 +83,7 @@ public class GameScreen extends BorderPane {
         topEmptySpace.setMaxSize(chessGUI.getWidth(), chessGUI.getHeight() * (DIVIDER - 0.10));
         bottomLeftEmptySpace.setMinSize(chessGUI.getWidth() * DIVIDER, chessGUI.getHeight() * (DIVIDER));
         bottomLeftEmptySpace.setMaxSize(chessGUI.getWidth() * DIVIDER, chessGUI.getHeight() * (DIVIDER));
-
+        leftSide.updateGraphics();
         diceDisplay.updateGraphics();
 
 
@@ -146,5 +146,9 @@ public class GameScreen extends BorderPane {
      */
     public void stopTime(){
         leftSide.stopTime();
+    }
+
+    public void endGame(boolean white) {
+        chessGUI.setWin(white);
     }
 }

@@ -81,7 +81,7 @@ public class BishopPiece extends ChessPiece {
                 }
                 else break;
             }
-
+          
             //south-east diagonal
             incr_x = -1;
             incr_y = -1;

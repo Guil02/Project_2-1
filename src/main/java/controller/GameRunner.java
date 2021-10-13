@@ -3,9 +3,7 @@ package controller;
 import gui.ChessGUI;
 import model.Board;
 import model.BoardUpdater;
-import model.pieces.ChessPiece;
-
-import java.util.ArrayList;
+import model.Dice.Dice;
 
 /**
  * Main part of the backend.
@@ -22,6 +20,9 @@ public class GameRunner {
     private char movablePiece;
     private Dice dice;
 
+    /**
+     * constructor
+     */
     public GameRunner() {
         chessGUI = new ChessGUI();
         graphicsConnector = new GraphicsConnector(this);
