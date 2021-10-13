@@ -2,6 +2,7 @@ package model.pieces;
 
 import model.Board;
 
+
 /**
  * class that determines every valid moves for a pawn
  */
