@@ -239,3 +239,4 @@ public class KingPiece extends ChessPiece {
         RookPiece piece = (RookPiece) this.currentBoard.getField()[x][y];
         return piece.isHasNotMoved();
     }
+}
