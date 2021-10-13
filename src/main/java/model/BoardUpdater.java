@@ -73,6 +73,7 @@ public class BoardUpdater {
             } else if (boardModel.getField()[x][y].getPieceChar() == 'k') {
                 boardModel.getField()[x][y] = null;
                 System.out.println("white won");
+
             }
         }
     }

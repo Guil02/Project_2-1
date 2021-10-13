@@ -1,5 +1,6 @@
-package controller;
+package model.Dice;
 
+import controller.GameRunner;
 import model.pieces.ChessPiece;
 
 import java.util.ArrayList;
@@ -23,6 +24,11 @@ public class Dice {
         else return '.';
     }
 
+
+    /**
+    * adds pieces that can be moved to the arraylist
+     * @return char - the character value of the movable piece
+     */
     public char rollTheDice(){
         runValidMoves();
         ArrayList<Character> movablePieces = new ArrayList<>();
@@ -38,12 +44,16 @@ public class Dice {
         return choosePiece(movablePieces);
     }
 
+
     private void addCharToArray(ArrayList<Character> movablePieces, char charToAdd) {
         if(!movablePieces.contains(charToAdd)){
             movablePieces.add(charToAdd);
         }
     }
 
+    /**
+     * sets the hasValidMove boolean in all the pieces
+     */
     public void runValidMoves(){
         ChessPiece[][] pieces = gameRunner.getBoard().getField();
 
@@ -65,6 +75,10 @@ public class Dice {
         }
     }
 
+    /**
+    * dice roll for the first move, because only n or p can be moved and it will take some initializing to be able to run the other methods
+    * @char - n or p
+     */
     public char firstMoveDiceRoll(){
         double r = Math.random();
         if(r<0.5){

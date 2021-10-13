@@ -14,6 +14,11 @@ public class GraphicsConnector {
     private BoardUpdater boardUpdater;
     private ChessGUI chessGUI;
 
+
+    /**
+     * constructor
+     * @param gameRunner
+     */
     public GraphicsConnector(GameRunner gameRunner) {
         this.gameRunner = gameRunner;
     }
@@ -45,7 +50,7 @@ public class GraphicsConnector {
             return new boolean[64];
         }
         else return temp;
-//        return Transform.transformBooleanToOneDimension(validMoves);
+//      return Transform.transformBooleanToOneDimension(validMoves);
     }
 
     /**
@@ -158,24 +163,44 @@ public class GraphicsConnector {
         return Transform.transformCharToOneDimension(arrayOfPositions);
     }
 
+    /**
+     * init
+     */
     public void init(){
         gameRunner.init();
     }
 
+    /**
+     * initconnector
+     */
     public void initConnector(){
         board = gameRunner.getBoard();
         boardUpdater = gameRunner.getBoardUpdater();
     }
 
+    /**
+     * @param x
+     * @param y
+     * @return if it's that pieces turn
+     */
     public boolean isTurn(int x, int y){
         ChessPiece[][] piecesArray = board.getField();
         ChessPiece piece = piecesArray[x][y];
         return piece.isTurn();
     }
 
+
+    /**
+     * @return white or black based on the turn
+     */
     public boolean whoTurn(){
-        return gameRunner.getWhiteMove();
+        return !gameRunner.getWhiteMove();
     }
+
+    /**
+     * @param type of piece
+     * @return - the url string of the entered piece
+     */
     //TODO add correct method that gets the correct image for the correct dice throw
     public String getDiceImage(int type){
         if(type == 1) {
@@ -231,35 +256,42 @@ public class GraphicsConnector {
         return "gui/error_cross.png";
     }
 
+    /**
+     * @param chessGUI chessGUI setter
+     */
     public void setChessGUI(ChessGUI chessGUI) {
         this.chessGUI = chessGUI;
     }
 
+    /**
+     * @param type of piece
+     * @return url of piece - used for promotion
+     */
     public String getPromotionImage(int type) {
         switch(type){
             case 1:
-                if(!whoTurn()){
+                if(whoTurn()){
                     return "gui/wN.png";
                 }
                 else{
                     return "gui/bN.png";
                 }
             case 2:
-                if(!whoTurn()){
+                if(whoTurn()){
                     return "gui/wB.png";
                 }
                 else{
                     return "gui/bB.png";
                 }
             case 3:
-                if(!whoTurn()){
+                if(whoTurn()){
                     return "gui/wR.png";
                 }
                 else{
                     return "gui/bR.png";
                 }
             case 4:
-                if(!whoTurn()){
+                if(whoTurn()){
                     return "gui/wQ.png";
                 }
                 else{
@@ -273,6 +305,14 @@ public class GraphicsConnector {
     private Board boardModel;
     private int x;
     private int y;
+
+    /**
+     * starts the dialog for a promotion choice
+     * @param isWhite - turn boolean
+     * @param boardModel - boardMoodel
+     * @param x
+     * @param y
+     */
     public void startPromotionDialog(boolean isWhite, Board boardModel, int x, int y){
         chessGUI.launchPromotionDialog();
         this.isWhite = isWhite;
@@ -281,6 +321,10 @@ public class GraphicsConnector {
         this.y = y;
     }
 
+    /**
+     * carries out the promotion - makes the new piece
+     * @param type of piece
+     */
     public void doPromotion(int type) {
         System.out.println(type);
         switch (type){
@@ -299,6 +343,9 @@ public class GraphicsConnector {
         }
     }
 
+    /**
+     * update images
+     */
     public void updateImages() {
         chessGUI.updateImages();
     }
