@@ -1,5 +1,8 @@
 package controller;
 
+
+import gui.ChessGUI;
+import model.pieces.*;
 import utils.Transform;
 import model.Board;
 import model.BoardUpdater;
@@ -74,7 +77,11 @@ public class GraphicsConnector {
      */
     public void doMove(int initialX, int initialY, int finalX, int finalY){
         boardUpdater.movePiece(initialX, initialY, finalX, finalY);
+        System.out.println(gameRunner.getMovablePiece());
     }
+
+
+
 
     /**
      * I want this method to return the url of the image of the piece located at that spot
@@ -133,7 +140,7 @@ public class GraphicsConnector {
 
 
     /**
-     * Checks whether there is a piece locate on the field with the provided coordinates.
+     * checks whether there is a piece locate on the field with the provided coordinates.
      *
      * @param x x coordinate of a field
      * @param y y coordinate of a field
@@ -246,4 +253,101 @@ public class GraphicsConnector {
         return "gui/error_cross.png";
     }
 
+    /**
+     * Sets the chessGUI to a given instance
+     * @param chessGUI chessGUI instance
+     */
+    public void setChessGUI(ChessGUI chessGUI) {
+        this.chessGUI = chessGUI;
+    }
+
+    /**
+     * @param type of piece
+     * @return url of piece - used for promotion
+     */
+    public String getPromotionImage(int type) {
+        switch(type){
+            case 1:
+                if(whoTurn()){
+                    return "gui/wN.png";
+                }
+                else{
+                    return "gui/bN.png";
+                }
+            case 2:
+                if(whoTurn()){
+                    return "gui/wB.png";
+                }
+                else{
+                    return "gui/bB.png";
+                }
+            case 3:
+                if(whoTurn()){
+                    return "gui/wR.png";
+                }
+                else{
+                    return "gui/bR.png";
+                }
+            case 4:
+                if(whoTurn()){
+                    return "gui/wQ.png";
+                }
+                else{
+                    return "gui/bQ.png";
+                }
+            default:
+                return "gui/error_cross.png";
+        }
+    }
+    private boolean isWhite;
+    private Board boardModel;
+    private int x;
+    private int y;
+
+    /**
+     * starts the dialog for a promotion choice
+     * @param isWhite - turn boolean
+     * @param boardModel - boardMoodel
+     * @param x
+     * @param y
+     */
+    public void startPromotionDialog(boolean isWhite, Board boardModel, int x, int y){
+        chessGUI.launchPromotionDialog();
+        this.isWhite = isWhite;
+        this.boardModel = boardModel;
+        this.x = x;
+        this.y = y;
+    }
+
+    /**
+     * carries out the promotion - makes the new piece
+     * @param type of piece
+     */
+    public void doPromotion(int type) {
+        switch (type){
+            case 1:
+                boardUpdater.doPromotion(new KnightPiece(this.isWhite,this.boardModel, this.x, this.y));
+                break;
+            case 2:
+                boardUpdater.doPromotion(new BishopPiece(this.isWhite,this.boardModel, this.x, this.y));
+                break;
+            case 3:
+                boardUpdater.doPromotion(new RookPiece(this.isWhite,this.boardModel, this.x, this.y));
+                break;
+            case 4:
+                boardUpdater.doPromotion(new QueenPiece(this.isWhite,this.boardModel, this.x, this.y));
+                break;
+        }
+    }
+
+    /**
+     * update images
+     */
+    public void updateImages() {
+        chessGUI.updateImages();
+    }
+
+    public void setWin(boolean white){
+        chessGUI.setWin(white);
+    }
 }

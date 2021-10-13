@@ -3,9 +3,7 @@ package controller;
 import gui.ChessGUI;
 import model.Board;
 import model.BoardUpdater;
-import model.pieces.ChessPiece;
-
-import java.util.ArrayList;
+import model.Dice.Dice;
 
 /**
  * Keeps track of the game loop and acts as the core piece of the controller.
@@ -42,14 +40,13 @@ public class GameRunner {
         board = new Board(this);
         boardUpdater = new BoardUpdater(board);
         board.setBoardUpdater(boardUpdater);
+        boardUpdater.setGraphicsConnector(graphicsConnector);
         boardUpdater.fillGameStart();
         board.printBoard();
         dice = new Dice(this);
         movablePiece = dice.firstMoveDiceRoll();
         boolean[][] testValidMoves = board.getPiece(2,0).validMoves();
         graphicsConnector.initConnector();
-        System.out.println(getMovablePiece());
-
     }
 
     /**
@@ -123,8 +120,5 @@ public class GameRunner {
     public void setMovablePiece(char movablePiece) {
         this.movablePiece = movablePiece;
     }
-
-
-
 
 }

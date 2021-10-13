@@ -1,5 +1,6 @@
-package controller;
+package model.Dice;
 
+import controller.GameRunner;
 import model.pieces.ChessPiece;
 
 import java.util.ArrayList;
