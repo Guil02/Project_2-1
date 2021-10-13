@@ -1,14 +1,19 @@
 package controller;
 
-
 import gui.ChessGUI;
 import model.pieces.*;
 import utils.Transform;
 import model.Board;
 import model.BoardUpdater;
+import model.pieces.ChessPiece;
 
+/**
+ * This class is used as an exchange point for the GUI and the back end.
+ * Relevant data is passed forth and back to separate concerns.
+ */
 public class GraphicsConnector {
 
+    // Variables
     private final GameRunner gameRunner;
     private Board board;
     private BoardUpdater boardUpdater;
@@ -50,7 +55,7 @@ public class GraphicsConnector {
             return new boolean[64];
         }
         else return temp;
-//      return Transform.transformBooleanToOneDimension(validMoves);
+//        return Transform.transformBooleanToOneDimension(validMoves);
     }
 
     /**
@@ -78,10 +83,8 @@ public class GraphicsConnector {
      */
     public void doMove(int initialX, int initialY, int finalX, int finalY){
         boardUpdater.movePiece(initialX, initialY, finalX, finalY);
+        System.out.println(gameRunner.getMovablePiece());
     }
-
-
-
 
     /**
      * I want this method to return the url of the image of the piece located at that spot
@@ -138,7 +141,6 @@ public class GraphicsConnector {
         return validMoves[finalX][finalY];
     }
 
-
     /**
      * checks whether there is a piece locate on the field with the provided coordinates.
      *
@@ -152,6 +154,10 @@ public class GraphicsConnector {
         return Character.compare(field, '-') != 0;
     }
 
+    /**
+     * Gets the starting positions of all pieces on the board.
+     * @return  1-dimensional char array with corresponding pieces
+     */
     public char[] getStartingPositions(){
         char[][] arrayOfPositions = new char[8][8];
         for (int i = 0; i < arrayOfPositions.length; i++) {
@@ -164,14 +170,14 @@ public class GraphicsConnector {
     }
 
     /**
-     * init
+     * Initializes the game runner.
      */
     public void init(){
         gameRunner.init();
     }
 
     /**
-     * initconnector
+     * Initializes the board and the board updater.
      */
     public void initConnector(){
         board = gameRunner.getBoard();
@@ -179,16 +185,16 @@ public class GraphicsConnector {
     }
 
     /**
-     * @param x
-     * @param y
-     * @return if it's that pieces turn
+     * Checks, if it is the turn of a certain piece at a target position.
+     * @param x     target x-position
+     * @param y     target y-position
+     * @return      true if it is the pieces' turn
      */
     public boolean isTurn(int x, int y){
         ChessPiece[][] piecesArray = board.getField();
         ChessPiece piece = piecesArray[x][y];
         return piece.isTurn();
     }
-
 
     /**
      * @return white or black based on the turn
@@ -198,10 +204,10 @@ public class GraphicsConnector {
     }
 
     /**
-     * @param type of piece
-     * @return - the url string of the entered piece
+     * Returns the image file of a certain dice roll.
+     * @param type  input condition
+     * @return
      */
-    //TODO add correct method that gets the correct image for the correct dice throw
     public String getDiceImage(int type){
         if(type == 1) {
             switch (gameRunner.getMovablePiece()) {
@@ -257,7 +263,8 @@ public class GraphicsConnector {
     }
 
     /**
-     * @param chessGUI chessGUI setter
+     * Sets the chessGUI to a given instance
+     * @param chessGUI chessGUI instance
      */
     public void setChessGUI(ChessGUI chessGUI) {
         this.chessGUI = chessGUI;

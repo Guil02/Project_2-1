@@ -6,7 +6,7 @@ import model.BoardUpdater;
 import model.Dice.Dice;
 
 /**
- * Main part of the backend.
+ * Keeps track of the game loop and acts as the core piece of the controller.
  */
 public class GameRunner {
 
@@ -21,7 +21,7 @@ public class GameRunner {
     private Dice dice;
 
     /**
-     * constructor
+     * Constructor
      */
     public GameRunner() {
         chessGUI = new ChessGUI();
@@ -30,6 +30,9 @@ public class GameRunner {
 
     }
 
+    /**
+     * Initializes the game when it is started.
+     */
     public void init() {
         totalMoves = 0;
         whiteMove = true;
@@ -62,36 +65,60 @@ public class GameRunner {
         totalMoves++;
     }
 
+    /**
+     * Getter for the current game board.
+     * @return  current game board
+     */
     public Board getBoard() {
         return board;
     }
 
+    /**
+     * Getter for the current game board updater.
+     * @return  current game board updater
+     */
     public BoardUpdater getBoardUpdater() {
         return boardUpdater;
     }
 
+    /**
+     * Getter to see, whose turn it is.
+     * @return  white move or not
+     */
     public boolean getWhiteMove(){
         return whiteMove;
     }
 
+    /**
+     * Setter of the current player to move a piece.
+     * @param whiteMove     "true" for white, "false" for black
+     */
     public void setWhiteMove(boolean whiteMove) {
         this.whiteMove = whiteMove;
     }
 
+    /**
+     * Executes the move of a piece.
+     */
     public void doMove(){
         whiteMove = !whiteMove;
         setMovablePiece(dice.rollTheDice());
     }
 
+    /**
+     * Getter of a movable pieces in the game.
+     * @return  char of the piece
+     */
     public char getMovablePiece() {
         return movablePiece;
     }
 
+    /**
+     * Setter of a movable piece in the game.
+     * @param movablePiece  the movable piece to pass
+     */
     public void setMovablePiece(char movablePiece) {
         this.movablePiece = movablePiece;
     }
-
-
-
 
 }

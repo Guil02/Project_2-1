@@ -5,15 +5,24 @@ import model.pieces.ChessPiece;
 
 import java.util.ArrayList;
 
+/**
+ * This class represents a die for the chess game, which determines the kind of piece that needs to be moved.
+ */
 public class Dice {
+
+    /**
+     * Private method to get the current GameRunner instance
+     * @return  current GameRunner
+     */
     private GameRunner gameRunner;
     public Dice(GameRunner gameRunner){
         this.gameRunner = gameRunner;
     }
+
     /**
-     * sees which pieces have a valid play and decides which piece will be rolled based on that
-     * @param usablePieces - a list containing all the characters that represent pieces that have at least one valid move
-     * @return char - the character value representing the piece that will have to be moved in the next play
+     * Sees which pieces have a valid play and decides which piece will be rolled based on that.
+     * @param   usablePieces - a list containing all the characters that represent pieces that have at least one valid move
+     * @return  char - the character value representing the piece that will have to be moved in the next play
      */
     public char choosePiece(ArrayList<Character> usablePieces) {
         if(usablePieces.size()!=0){
@@ -24,10 +33,9 @@ public class Dice {
         else return '.';
     }
 
-
     /**
-    * adds pieces that can be moved to the arraylist
-     * @return char - the character value of the movable piece
+     * Executes the dice roll and checks if the result has a possible move.
+     * @return  char - the character of the kind of piece that can be moved
      */
     public char rollTheDice(){
         runValidMoves();
@@ -44,7 +52,12 @@ public class Dice {
         return choosePiece(movablePieces);
     }
 
-
+    /**
+     * Support method to add a piece to the set of movable pieces.
+     * @see #rollTheDice()
+     * @param movablePieces     set of current pieces that can be moved
+     * @param charToAdd         piece to add
+     */
     private void addCharToArray(ArrayList<Character> movablePieces, char charToAdd) {
         if(!movablePieces.contains(charToAdd)){
             movablePieces.add(charToAdd);
@@ -52,7 +65,8 @@ public class Dice {
     }
 
     /**
-     * sets the hasValidMove boolean in all the pieces
+     * Support method to run all the valid moves.
+     * @see #rollTheDice()
      */
     public void runValidMoves(){
         ChessPiece[][] pieces = gameRunner.getBoard().getField();
@@ -76,8 +90,9 @@ public class Dice {
     }
 
     /**
-    * dice roll for the first move, because only n or p can be moved and it will take some initializing to be able to run the other methods
-    * @char - n or p
+     * Gets the kind of piece that can be moved in the first move.
+     * Only knight and pawn are possible options.
+     * @return  char - kind of piece to move
      */
     public char firstMoveDiceRoll(){
         double r = Math.random();
