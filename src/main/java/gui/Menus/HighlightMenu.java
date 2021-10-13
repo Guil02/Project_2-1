@@ -9,6 +9,9 @@ import javafx.scene.control.MenuItem;
  * a class to change menus highlight based on user's choice
  */
 public class HighlightMenu extends Menu {
+    /**
+     *
+     */
     public HighlightMenu(){
         setText("Highlighting setting");
         MenuItem m1 = new MenuItem("on");

@@ -8,6 +8,9 @@ import javafx.scene.text.Font;
  * a class to change the first scene to the game scene based on user's choices
  */
 public class StartButton extends Button {
+    /**
+     * @param playerSelection reference to the playerSelection it is in.
+     */
     public StartButton(PlayerSelection playerSelection){
         setText("start game");
         setFont(new Font("Verdana", 30));
@@ -19,6 +22,9 @@ public class StartButton extends Button {
         });
     }
 
+    /**
+     * @param size size to which to resize
+     */
     public void updateGraphics(int size) {
         switch(size){
             case 1:

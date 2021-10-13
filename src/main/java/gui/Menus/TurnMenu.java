@@ -10,6 +10,9 @@ import javafx.scene.control.MenuItem;
  */
 
 public class TurnMenu extends Menu {
+    /**
+     * 
+     */
     public TurnMenu(){
         setText("turn settings");
         MenuItem m1 = new MenuItem("on");

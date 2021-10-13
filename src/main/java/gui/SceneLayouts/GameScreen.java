@@ -20,7 +20,6 @@ import javafx.scene.text.Font;
  * a class for designing the game scene which contains
  * the chess bord,the dice and 2 timers
  */
-
 public class GameScreen extends BorderPane {
     public static final double DIVIDER = 0.15;
     private final LeftSide leftSide;
@@ -29,6 +28,12 @@ public class GameScreen extends BorderPane {
     private final Label bottomLeftEmptySpace;
     private final DiceDisplay diceDisplay;
     private final PromotionDisplay promotionDisplay;
+
+    /**
+     * @param chessBoard
+     * @param chessGUI
+     * @param graphicsConnector
+     */
     public GameScreen(ChessBoard chessBoard, ChessGUI chessGUI, GraphicsConnector graphicsConnector) {
         this.chessGUI = chessGUI;
         topEmptySpace = new Label();
@@ -62,10 +67,17 @@ public class GameScreen extends BorderPane {
         setTop(vBox);
     }
 
+    /**
+     *
+     */
     public void launchPromotionDialog() {
         promotionDisplay.showPromotionDialog();
     }
 
+    /**
+     * @param width
+     * @param height
+     */
     public void updateGraphics(double width, double height) {
         topEmptySpace.setMinSize(chessGUI.getWidth(), chessGUI.getHeight() * (DIVIDER - 0.10));
         topEmptySpace.setMaxSize(chessGUI.getWidth(), chessGUI.getHeight() * (DIVIDER - 0.10));
@@ -77,23 +89,38 @@ public class GameScreen extends BorderPane {
 
     }
 
+    /**
+     * @return
+     */
     public double getWidthFromChessGUI() {
         return chessGUI.getWidth();
     }
 
+    /**
+     * @return
+     */
     public double getHeightFromChessGUI() {
         return chessGUI.getHeight();
     }
 
 
+    /**
+     *
+     */
     public void changeTimer(){
         leftSide.changeTimer();
     }
 
+    /**
+     *
+     */
     public void updateDice(){
         diceDisplay.updateDice();
     }
 
+    /**
+     * @param white
+     */
     public void setWin(boolean white) {
         topEmptySpace.setAlignment(Pos.CENTER);
         topEmptySpace.setFont(new Font("Verdana", 20));
@@ -107,10 +134,16 @@ public class GameScreen extends BorderPane {
         }
     }
 
+    /**
+     *
+     */
     private void hideDice() {
         diceDisplay.hideDice();
     }
 
+    /**
+     *
+     */
     public void stopTime(){
         leftSide.stopTime();
     }

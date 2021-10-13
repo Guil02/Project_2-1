@@ -1,15 +1,19 @@
 package gui.PlayerSelection;
+import javafx.scene.control.ChoiceBox;
+
 /**
  * a class to design menus styles based on the chosen size
  */
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.text.Font;
-
 public class PlayerChoiceBox extends ChoiceBox<String> {
     public static final int DEFAULT_WIDTH = 188;
     public static final int DEFAULT_HEIGHT = 58;
     private PlayerSelectionChoiceBox playerSelectionChoiceBox;
     private int number;
+
+    /**
+     * @param playerSelectionChoiceBox reference to the playerSelectionChoiceBox it is in
+     * @param number the number of the player
+     */
     public PlayerChoiceBox(PlayerSelectionChoiceBox playerSelectionChoiceBox, int number){
         this.playerSelectionChoiceBox = playerSelectionChoiceBox;
         this.number = number;
@@ -24,6 +28,9 @@ public class PlayerChoiceBox extends ChoiceBox<String> {
         });
     }
 
+    /**
+     * @param size the size to which it needs to be changed
+     */
     public void updateGraphics(int size) {
         switch(size){
             case 1:

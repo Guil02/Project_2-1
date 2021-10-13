@@ -21,6 +21,9 @@ public class StartScreen extends BorderPane {
     private int playerTwo = 1;
     private PlayerSelection playerSelection;
 
+    /**
+     * @param chessGUI
+     */
     public StartScreen(ChessGUI chessGUI) {
         this.chessGUI = chessGUI;
         setStyle("-fx-background-color: #336699;");
@@ -38,6 +41,10 @@ public class StartScreen extends BorderPane {
         setCenter(playerSelection);
     }
 
+    /**
+     * @param playerNumber
+     * @param player
+     */
     public void setPlayer(int playerNumber, int player){
         if(playerNumber==1){
             this.playerOne = player;
@@ -47,10 +54,16 @@ public class StartScreen extends BorderPane {
         }
     }
 
+    /**
+     *
+     */
     public void startGame() {
         chessGUI.startGame(playerOne,playerTwo);
     }
 
+    /**
+     * 
+     */
     public void updateGraphics(){
         setMinSize(chessGUI.getWidth(),chessGUI.getHeight());
         setMaxSize(chessGUI.getWidth(),chessGUI.getHeight());
