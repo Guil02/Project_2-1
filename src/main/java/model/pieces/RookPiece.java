@@ -69,7 +69,7 @@ public class RookPiece extends ChessPiece {
                         }
                         else {
                             valid_moves[index_x+temp][index_y] = true;
-=======
+
                         }
                         temp--;
                     }
