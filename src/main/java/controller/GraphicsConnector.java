@@ -48,9 +48,9 @@ public class GraphicsConnector {
         }
         char movablePiece = board.getMovablePiece();
         boolean movable = board.getCharOffField(x, y)==movablePiece;
-//        if(!movable){
-//            return new boolean[64];
-//        }
+        if(!movable){
+            return new boolean[64];
+        }
         return temp;
 //        return Transform.transformBooleanToOneDimension(validMoves);
     }
@@ -132,9 +132,9 @@ public class GraphicsConnector {
 
         char movablePiece = board.getMovablePiece();
         boolean movable = board.getCharOffField(initialX, initialY)==movablePiece;
-//        if(!movable){
-//            return false;
-//        }
+        if(!movable){
+            return false;
+        }
         return validMoves[finalX][finalY];
     }
 
