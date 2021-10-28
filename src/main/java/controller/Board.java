@@ -11,6 +11,7 @@ public class Board {
     private boolean gameOver;
     private boolean whiteMove = true;
     private char movablePiece;
+    public static final boolean GUI_ON = true;
 
     public Board() {
     }
@@ -96,6 +97,7 @@ public class Board {
     }
 
     public ArrayList<Character> getMovablePieces(){
+        runValidMoves();
         ArrayList<Character> movablePieces = new ArrayList<>();
         for(ChessPiece[] pieceArray : boardModel){
             for(ChessPiece piece : pieceArray){

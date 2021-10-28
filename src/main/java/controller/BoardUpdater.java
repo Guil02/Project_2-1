@@ -52,11 +52,15 @@ public class BoardUpdater {
         if(board.getPieceOffField(x,y)!=null) {
             if (board.getPieceOffField(x,y).getPieceChar() == 'K') {
                 board.getBoardModel()[x][y] = null;
-                board.getGraphicsConnector().setWin(false);
+                if(Board.GUI_ON){
+                    board.getGraphicsConnector().setWin(false);
+                }
                 board.setGameOver(true);
             } else if (board.getPieceOffField(x,y).getPieceChar() == 'k') {
                 board.getBoardModel()[x][y] = null;
-                board.getGraphicsConnector().setWin(true);
+                if(Board.GUI_ON){
+                    board.getGraphicsConnector().setWin(true);
+                }
                 board.setGameOver(true);
             }
         }

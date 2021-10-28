@@ -39,7 +39,7 @@ public class KingPiece extends ChessPiece {
         int[] directions = {-8,-1,8,1,-9,-7,9,7};
 
         for(int i = 0; i<directions.length; i++){
-            for(int j = 0; j<maxAmountOfSquaresToEdge(x,y,directions[i]) && j<2; j++){
+            for(int j = 0; j<maxAmountOfSquaresToEdge(x,y,directions[i]) && j<1; j++){
                 int oneVar = y*8+x;
                 int goal = oneVar + directions[i] * (j+1);
                 int xTo = goal % 8;
@@ -78,8 +78,11 @@ public class KingPiece extends ChessPiece {
     }
 
     public boolean rookHasNotMoved(Board board, int x, int y) {
-        RookPiece piece = (RookPiece) board.getPieceOffField(x,y);
-        return piece.isHasNotMoved();
+        if((withinBoundsOneVariable(x)&&withinBoundsOneVariable(y))&&board.getPieceOffField(x,y)!=null && board.getPieceOffField(x,y).getPieceType()==4){
+            RookPiece piece = (RookPiece) board.getPieceOffField(x,y);
+            return piece.isHasNotMoved();
+        }
+        else return false;
     }
 
     public boolean longCastleOpen(Board board){

@@ -4,7 +4,9 @@ import controller.Board;
 import controller.BoardUpdater;
 import controller.GameRunner;
 import controller.GraphicsConnector;
+import model.pieces.BishopPiece;
 import model.pieces.ChessPiece;
+import model.pieces.KingPiece;
 
 public class test {
     public static void main(String[] args) {
@@ -12,27 +14,35 @@ public class test {
         Board board = new Board();
         GraphicsConnector graphicsConnector = new GraphicsConnector(gameRunner);
         board.setGraphicsConnector(graphicsConnector);
-        BoardUpdater.fillGameStart(board);
-        board.firstMoveDiceRoll();
-        Board copy = board.clone();
-        board.setMovablePiece('N');
-        copy.setMovablePiece('K');
-        System.out.println(board.getMovablePiece());
-        System.out.println(copy.getMovablePiece());
+
+        KingPiece king1 = new KingPiece(true, 2,3);
+        KingPiece king2 = new KingPiece(false, 5,6);
+        BishopPiece bishop1 = new BishopPiece(true, 3,4);
+        BishopPiece bishop2 = new BishopPiece(false, 6,1);
+
+        BoardUpdater.addPiece(board, king1);
+        BoardUpdater.addPiece(board, king2);
+        BoardUpdater.addPiece(board, bishop1);
+        BoardUpdater.addPiece(board, bishop2);
+        board.rollTheDice();
+        printBoard(board.getBoardModel(), board);
+
 
         ChessTreeNode root = new ChessTreeNode(board, 0, null, 1, 1, 0,0,0,0);
-        GetAIMoves getAIMoves = new GetAIMoves();
-        getAIMoves.createChildren(root, false);
+        AiTree aiTree = new AiTree();
+        aiTree.createChildren(root, false);
+
+
         for(int i = 0; i<root.getChildren().size(); i++){
             ChessTreeNode child = (ChessTreeNode) root.getChildren().get(i);
             printBoard(child.getBoard().getBoardModel(), child.getBoard());
             System.out.println("board value: "+child.getValue());
         }
 
-//        for(TreeNode node: root.getChildren()){
-//            ChessTreeNode subNode = (ChessTreeNode) node;
-//            getAIMoves.createChildren(root, true);
-//        }
+        for(TreeNode node: root.getChildren()){
+            ChessTreeNode subNode = (ChessTreeNode) node;
+            aiTree.createChildren(subNode, true);
+        }
 
         Expectiminimax expectiminimax = new Expectiminimax();
         System.out.println(expectiminimax.expectiminimax(root, 10));

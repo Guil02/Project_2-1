@@ -113,7 +113,10 @@ public abstract class ChessPiece {
     }
 
     public boolean isOpenSpot(Board board, int x, int y) {
-        return (!checkForOwnPiece(board, x,y)&&!checkForEnemyPiece(board,x,y));
+        if(withinBoundsOneVariable(x)&&withinBoundsOneVariable(y)){
+            return (!checkForOwnPiece(board, x,y)&&!checkForEnemyPiece(board,x,y));
+        }
+        else return false;
     }
 
 
@@ -126,8 +129,8 @@ public abstract class ChessPiece {
     }
 
     /**
-     * method that determines who's turn is to play
-     * @return white or black moves
+     * method that checks whether it is the piece's turn to play or not.
+     * @return true if it is its turn, false if it is not its turn
      */
     public boolean isTurn(Board board) {
         if(isWhite) {
