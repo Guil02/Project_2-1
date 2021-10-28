@@ -72,7 +72,6 @@ public abstract class ChessPiece {
      * @param yTo next y position after doing the move
      */
     public void move(Board board, int xTo, int yTo) {
-        System.out.println(enPassantActive);
         this.x = xTo;
         this.y = yTo;
     }

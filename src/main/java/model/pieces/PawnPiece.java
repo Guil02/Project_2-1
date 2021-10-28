@@ -26,7 +26,6 @@ public class PawnPiece extends ChessPiece {
      */
     @Override
     public void move(Board board, int xTo, int yTo) {
-        System.out.println("X: "+x+"\nY: "+y+"\nxTo: "+xTo+"\nyTo: "+yTo);
         if(ChessPiece.isEnPassantActive() && xTo == enPassantColumn){
             if(isWhite() && yTo == 2){
                 BoardUpdater.captureEnPassantField(board, xTo, yTo+1);
