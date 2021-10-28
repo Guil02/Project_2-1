@@ -1,18 +1,61 @@
 package model.pieces;
 
-import model.Board;
 
+import controller.Board;
+import controller.BoardUpdater;
 
 /**
  * class that determines every valid moves for a pawn
  */
 public class PawnPiece extends ChessPiece {
+    private static int enPassantColumn;
+
 
     /**
      * constructor that creates a pawn chess piece
      */
-    public PawnPiece(boolean white, Board board, int index_x, int index_y) {
-        super(white, index_x, index_y, board);
+    public PawnPiece(boolean white, int x, int y) {
+        super(white, x, y,1);
+    }
+
+    public boolean firstMove = true;
+
+    /**
+     * @param xTo next x position after doing the move
+     * @param yTo next y position after doing the move
+     */
+    @Override
+    public void move(Board board, int xTo, int yTo) {
+        System.out.println("X: "+x+"\nY: "+y+"\nxTo: "+xTo+"\nyTo: "+yTo);
+        if(ChessPiece.isEnPassantActive() && xTo == enPassantColumn){
+            if(isWhite() && yTo == 2){
+                BoardUpdater.captureEnPassantField(board, xTo, yTo+1);
+            }
+            else if(!isWhite() && yTo == 5){
+                BoardUpdater.captureEnPassantField(board, xTo, yTo-1);
+            }
+        }
+
+        ChessPiece.setEnPassantActive(false);
+
+        if(isWhite()){
+            if(y == 6 && yTo == 4){
+                ChessPiece.setEnPassantActive(true);
+                enPassantColumn = x;
+            }
+        }
+        else if(!isWhite()){
+            if(y==1 && yTo == 3){
+                enPassantColumn = x;
+                ChessPiece.setEnPassantActive(true);
+            }
+        }
+
+        if(firstMove){
+            firstMove=false;
+        }
+
+        super.move(board, xTo, yTo);
     }
 
     public char getPieceChar() {
@@ -25,79 +68,87 @@ public class PawnPiece extends ChessPiece {
     /*
      * method that returns all possible positions for a pawn to move to
      */
-    public boolean[][] validMoves() {
+    public boolean[][] validMoves(Board board) {
 
-        boolean[][] valid_moves = new boolean[Board.getBoardSize()][Board.getBoardSize()];
+        boolean[][] validMoves = new boolean[Board.getBoardSize()][Board.getBoardSize()];
 
-        if(isTurn()) {
-            // whites
-            if(isWhite) {
-                // first move --> 2 options if conditions reunited
-                if( (withinBounds(index_y,-1)) && (isOpenSpot(index_x,index_y-1)) && !(checkForEnemyPiece(index_x,index_y-1)) ) {
-                    if( (index_y==6) && (isOpenSpot(index_x,index_y-2)) && !(checkForEnemyPiece(index_x,index_y-2)) ) {
+        if(!isTurn(board)) {
+            return validMoves;
+        }
 
-                        valid_moves[index_x][index_y-1] = true;
-                        valid_moves[index_x][index_y-2] = true;
-                        setHasValidMove(true);
-                    }
-                    else {
-                        valid_moves[index_x][index_y-1] = true;
-                        setHasValidMove(true);
-                    }
-                }
+        if(isWhite) {
+            if (board.getPieceOffField(x, y - 1)==null){
+                validMoves[x][y-1] = true;
 
-                // eating in diagonal
-                // check if move possible and if there is an enemy piece on the target spot
-                if( (withinBounds(index_x,-1)) && (withinBounds(index_y,-1)) && (isOpenSpot(index_x-1,index_y-1)) && (checkForEnemyPiece(index_x-1,index_y-1)) ) {
-                    valid_moves[index_x-1][index_y-1] = true;
-                    setHasValidMove(true);
-                }
-                if( (withinBounds(index_x,1)) && (withinBounds(index_y,-1)) && (isOpenSpot(index_x+1,index_y-1)) && (checkForEnemyPiece(index_x+1,index_y-1)) ) {
-                    valid_moves[index_x+1][index_y-1] = true;
-                    setHasValidMove(true);
-                }
             }
-            else{
-                // same for blacks
-                if( (withinBounds(index_y, 1)) && (isOpenSpot(index_x,index_y+1)) && (!checkForEnemyPiece(index_x,index_y+1)) ) {
-                    if( (index_y==1) && (isOpenSpot(index_x,index_y+2)) && (!checkForEnemyPiece(index_x,index_y+2)) ) {
-                        valid_moves[index_x][index_y+1] = true;
-                        valid_moves[index_x][index_y+2] = true;
-                        setHasValidMove(true);
-                    }
-                    else {
-                        valid_moves[index_x][index_y+1] = true;
-                        setHasValidMove(true);
-                    }
-                }
-                if( (withinBounds(index_x,-1)) && (withinBounds(index_y,1)) && (isOpenSpot(index_x-1,index_y+1)) && (checkForEnemyPiece(index_x-1,index_y+1)) ) {
-                    valid_moves[index_x-1][index_y+1] = true;
-                    setHasValidMove(true);
-                }
-                if( (withinBounds(index_x,1)) && (withinBounds(index_y,1)) && (isOpenSpot(index_x+1,index_y+1)) && (checkForEnemyPiece(index_x+1,index_y+1)) ) {
-                    valid_moves[index_x+1][index_y+1] = true;
-                    setHasValidMove(true);
-                }
+
+            if(firstMove && board.getPieceOffField(x, y - 2)==null){
+                validMoves[x][y-2] = true;
             }
         }
 
-        // en passant
-        if(this.currentBoard.getEnPassantAuthorized() > -1) { // if en passant authorized
-            if( (this.index_x + 1 == this.currentBoard.getEnPassantAuthorized()) || (this.index_x - 1 == this.currentBoard.getEnPassantAuthorized()) ) { // check if enemy pawns on left/right hand-size of the target pawn are authorized to do en passant
-                if( (this.isWhite) && (this.index_y == 3) ) { // whites that moved to 2 spots forward
-                    valid_moves[this.currentBoard.getEnPassantAuthorized()][2] = true;
-                    setHasValidMove(true);
-                }
-                else if( (!this.isWhite) && (this.index_y == 4) ) { // blacks that moved to 2 spots forward
-                    valid_moves[this.currentBoard.getEnPassantAuthorized()][5] = true;
-                    setHasValidMove(true);
-                }
+        if(!isWhite){
+            if (board.getPieceOffField(x, y + 1)==null){
+                validMoves[x][y+1] = true;
+            }
+
+            if(firstMove && board.getPieceOffField(x, y + 2)==null){
+                validMoves[x][y+2] = true;
             }
         }
 
-        if(checkAllFalse(valid_moves)){
+        validCaptures(board, validMoves);
+
+        enPassant(board, validMoves);
+
+        if(checkAllFalse(validMoves)){
             setHasValidMove(false);
         }
-        return valid_moves;
+        return validMoves;
+    }
+
+    public void validCaptures(Board board, boolean[][] validMoves){
+        if(isWhite){
+            if(withinBounds(x,-1)&&withinBounds(y,-1)&&checkForEnemyPiece(board, x-1, y-1)){
+                validMoves[x-1][y-1]=true;
+            }
+            if(withinBounds(x,1)&&withinBounds(y,-1)&&checkForEnemyPiece(board, x+1, y-1)){
+                validMoves[x+1][y-1]=true;
+            }
+        }
+
+        if(!isWhite){
+            if(withinBounds(x,-1)&&withinBounds(y,1)&&checkForEnemyPiece(board, x-1, y+1)){
+                validMoves[x-1][y+1]=true;
+            }
+            if(withinBounds(x,1)&&withinBounds(y,1)&&checkForEnemyPiece(board, x+1, y+1)){
+                validMoves[x+1][y+1]=true;
+            }
+        }
+    }
+
+    public void enPassant(Board board, boolean[][] validMoves){
+        if(ChessPiece.isEnPassantActive()){
+            if(x+1 == enPassantColumn|| x-1 == enPassantColumn){
+                if(isWhite() && y == 3){
+                    if(isOpenSpot(board,enPassantColumn, 2)){
+                        validMoves[enPassantColumn][2]=true;
+                    }
+                }
+                else if(!isWhite() && y == 4){
+                    if(isOpenSpot(board,enPassantColumn, 5)){
+                        validMoves[enPassantColumn][5]=true;
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public ChessPiece copy() {
+        PawnPiece pawnPiece = new PawnPiece(isWhite, x, y);
+        pawnPiece.hasValidMove = hasValidMove;
+        pawnPiece.firstMove = firstMove;
+        return pawnPiece;
     }
 }

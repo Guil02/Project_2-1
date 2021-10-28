@@ -1,6 +1,6 @@
 package model.pieces;
 
-import model.Board;
+import controller.Board;
 
 /**
  * class that determines every valid moves for a queen
@@ -10,8 +10,19 @@ public class QueenPiece extends ChessPiece {
     /**
      * constructor that creates a queen chess piece
      */
-    public QueenPiece(boolean isWhite, Board board, int index_x, int index_y) {
-        super(isWhite, index_x, index_y, board);
+    public QueenPiece(boolean isWhite, int x, int y) {
+        super(isWhite, x, y,5);
+    }
+
+    /**
+     * @param board
+     * @param xTo   next x position after doing the move
+     * @param yTo   next y position after doing the move
+     */
+    @Override
+    public void move(Board board, int xTo, int yTo) {
+        ChessPiece.setEnPassantActive(false);
+        super.move(board, xTo, yTo);
     }
 
     public char getPieceChar() {
@@ -24,221 +35,52 @@ public class QueenPiece extends ChessPiece {
     /*
      * method that returns all possible positions for a queen to move to
      */
-    public boolean[][] validMoves() {
+    public boolean[][] validMoves(Board board) {
 
-        boolean[][] valid_moves = new boolean[Board.getBoardSize()][Board.getBoardSize()];
+        boolean[][] validMoves = new boolean[Board.getBoardSize()][Board.getBoardSize()];
 
-        if(isTurn()){
+        if(!isTurn(board)){
+            return validMoves;
+        }
 
-            // horizontal rank
-            int temp = 1;
-            while(true){
-                if(withinBounds(index_x,temp)){
-                    if(isOpenSpot(index_x+temp,index_y)){
-                        if(checkForEnemyPiece(index_x+temp,index_y)){
-                            valid_moves[index_x+temp][index_y]=true;
-                            setHasValidMove(true);
-                            break;
-                        }
-                        else{
-                            valid_moves[index_x+temp][index_y]=true;
-                            setHasValidMove(true);
-                        }
-                        temp++;
-                    }
-                    else{
-                        break;
-                    }
-                }
-                else{
+
+        int[] directions = {-9,-8,-7,-1,1,7,8,9};
+        for(int i = 0; i<directions.length; i++){
+            for(int j = 0; j<maxAmountOfSquaresToEdge(x,y,directions[i]); j++){
+                int oneVar = y*8+x;
+                int goal = oneVar + directions[i] * (j+1);
+                int xTo = goal % 8;
+                int yTo = (goal-xTo)/8;
+
+                if(!withinBoundsOneVariable(xTo)||!withinBoundsOneVariable(yTo)){
                     break;
                 }
-            }
 
-            temp = -1;
-            while(true){
-                if(withinBounds(index_x,temp)){
-                    if(isOpenSpot(index_x+temp,index_y)){
-                        if(checkForEnemyPiece(index_x+temp,index_y)){
-                            valid_moves[index_x+temp][index_y]=true;
-                            setHasValidMove(true);
-                            break;
-                        }
-                        else{
-                            valid_moves[index_x+temp][index_y]=true;
-                            setHasValidMove(true);
-                        }
-                        temp--;
-                    }
-                    else{
-                        break;
-                    }
-                }
-                else{
+                if(checkForOwnPiece(board,xTo, yTo)){
                     break;
                 }
-            }
 
-            // vertical rank
-            temp = 1;
-            while(true){
-                if(withinBounds(index_y,temp)){
-                    if(isOpenSpot(index_x,index_y+temp)){
-                        if(checkForEnemyPiece(index_x,index_y+temp)){
-                            valid_moves[index_x][index_y+temp]=true;
-                            setHasValidMove(true);
-                            break;
-                        }
-                        else{
-                            valid_moves[index_x][index_y+temp]=true;
-                            setHasValidMove(true);
-                        }
-                        temp++;
-                    }
-                    else{
-                        break;
-                    }
-                }
-                else{
+                validMoves[xTo][yTo]=true;
+
+                if(checkForEnemyPiece(board, xTo, yTo)){
                     break;
                 }
-            }
-
-            temp = -1;
-            while(true){
-                if(withinBounds(index_y,temp)){
-                    if(isOpenSpot(index_x,index_y+temp)){
-                        if(checkForEnemyPiece(index_x,index_y+temp)){
-                            valid_moves[index_x][index_y+temp]=true;
-                            setHasValidMove(true);
-                            break;
-                        }
-                        else{
-                            valid_moves[index_x][index_y+temp]=true;
-                            setHasValidMove(true);
-                        }
-                        temp--;
-                    }
-                    else{
-                        break;
-                    }
-                }
-                else{
-                    break;
-                }
-            }
-
-            //north-west diagonal
-            int incr = 1;
-            while(true){
-                int x = index_x + incr;
-                int y = index_y + incr;
-                if(withinBoundsOneVariable(x) && withinBoundsOneVariable(y)){
-                    if(isOpenSpot(x, y)){
-                        if(checkForEnemyPiece(x,y)){
-                            valid_moves[x][y] = true;
-                            setHasValidMove(true);
-                            break;
-                        }
-                        else{
-                            valid_moves[x][y] = true;
-                            setHasValidMove(true);
-                        }
-                        incr++;
-                    }
-                    else{
-                        break;
-                    }
-                }
-                else break;
-            }
-
-            //north-east diagonal
-            int incr_x = -1;
-            int incr_y = 1;
-            while(true){
-                int x = index_x + incr_x;
-                int y = index_y + incr_y;
-                if(withinBoundsOneVariable(x) && withinBoundsOneVariable(y)){
-                    if(isOpenSpot(x, y)){
-                        if(checkForEnemyPiece(x,y)){
-                            valid_moves[x][y] = true;
-                            setHasValidMove(true);
-                            break;
-                        }
-                        else{
-                            valid_moves[x][y] = true;
-                            setHasValidMove(true);
-                        }
-                        incr_x--;
-                        incr_y++;
-                    }
-                    else{
-                        break;
-                    }
-                }
-                else break;
-            }
-
-            //south-east diagonal
-            incr_x = -1;
-            incr_y = -1;
-            while(true){
-                int x = index_x + incr_x;
-                int y = index_y + incr_y;
-                if(withinBoundsOneVariable(x) && withinBoundsOneVariable(y)){
-                    if(isOpenSpot(x, y)){
-                        if(checkForEnemyPiece(x,y)){
-                            valid_moves[x][y] = true;
-                            setHasValidMove(true);
-                            break;
-                        }
-                        else{
-                            valid_moves[x][y] = true;
-                            setHasValidMove(true);
-                        }
-                        incr_x--;
-                        incr_y--;
-                    }
-                    else{
-                        break;
-                    }
-                }
-                else break;
-            }
-
-            //south-west diagonal
-            incr_x = 1;
-            incr_y = -1;
-            while(true){
-                int x = index_x + incr_x;
-                int y = index_y + incr_y;
-                if(withinBoundsOneVariable(x) && withinBoundsOneVariable(y)){
-                    if(isOpenSpot(x, y)){
-                        if(checkForEnemyPiece(x,y)){
-                            valid_moves[x][y] = true;
-                            setHasValidMove(true);
-                            break;
-                        }
-                        else{
-                            valid_moves[x][y] = true;
-                            setHasValidMove(true);
-                        }
-                        incr_x++;
-                        incr_y--;
-                    }
-                    else{
-                        break;
-                    }
-                }
-                else break;
             }
         }
-        if(checkAllFalse(valid_moves)){ // if there are no valid moves for the current state of the board
+
+
+        setHasValidMove(true);
+        if(checkAllFalse(validMoves)){ // if there are no valid moves for the current state of the board
             setHasValidMove(false);
         }
 
-        return valid_moves;
+        return validMoves;
     }
 
+    @Override
+    public ChessPiece copy() {
+        QueenPiece queenPiece = new QueenPiece(isWhite, x, y);
+        queenPiece.hasValidMove = hasValidMove;
+        return queenPiece;
+    }
 }

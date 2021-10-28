@@ -1,6 +1,6 @@
 package model.pieces;
 
-import model.Board;
+import controller.Board;
 
 /**
  * class that determines every valid moves for a rook
@@ -11,8 +11,8 @@ public class RookPiece extends ChessPiece {
     /**
      * constructor that creates a rook chess piece
      */
-    public RookPiece(boolean white, Board board, int index_x, int index_y) {
-        super(white, index_x, index_y, board);
+    public RookPiece(boolean white, int x, int y) {
+        super(white, x, y,4);
     }
 
     public char getPieceChar() {
@@ -23,9 +23,10 @@ public class RookPiece extends ChessPiece {
     }
 
     @Override
-    public void move(int new_index_x, int new_index_y) {
+    public void move(Board board, int new_x, int new_y) {
         this.hasNotMoved=false;
-        super.move(new_index_x, new_index_y);
+        ChessPiece.setEnPassantActive(false);
+        super.move(board, new_x, new_y);
     }
 
     /**
@@ -38,114 +39,52 @@ public class RookPiece extends ChessPiece {
     /*
      * method that returns all possible positions for a rook to move to
      */
-    public boolean[][] validMoves() {
+    public boolean[][] validMoves(Board board) {
 
-        boolean[][] valid_moves = new boolean[Board.getBoardSize()][Board.getBoardSize()];
+        boolean[][] validMoves = new boolean[Board.getBoardSize()][Board.getBoardSize()];
 
-        if(isTurn()) {
+        if(!isTurn(board)) {
+            return validMoves;
+        }
 
-            // horizontal rank
-            int temp = 1;
-            while(true) {
-                if(withinBounds(index_x,temp)) {
-                    if(isOpenSpot(index_x+temp,index_y)) {
-                        if(checkForEnemyPiece(index_x+temp,index_y)) {
-                            valid_moves[index_x+temp][index_y] = true;
-                            setHasValidMove(true);
-                            break;
-                        }
-                        else {
-                            valid_moves[index_x+temp][index_y] = true;
-                            setHasValidMove(true);
-                        }
-                        temp++;
-                    }
-                    else {
-                        break;
-                    }
-                }
-                else {
+        int[] directions = {-8,-1,1,8};
+        for(int i = 0; i< directions.length; i++){
+            for(int j = 0; j<maxAmountOfSquaresToEdge(x,y,directions[i]); j++){
+                int oneVar = y*8+x;
+                int goal = oneVar + directions[i] * (j+1);
+                int xTo = goal % 8;
+                int yTo = (goal-xTo)/8;
+
+                if(!withinBoundsOneVariable(xTo)||!withinBoundsOneVariable(yTo)){
                     break;
                 }
-            }
 
-            temp = -1;
-            while(true) {
-                if(withinBounds(index_x,temp)) {
-                    if(isOpenSpot(index_x+temp,index_y)) {
-                        if(checkForEnemyPiece(index_x+temp,index_y)) {
-                            valid_moves[index_x+temp][index_y] = true;
-                            setHasValidMove(true);
-                            break;
-                        }
-                        else {
-                            valid_moves[index_x+temp][index_y] = true;
-                            setHasValidMove(true);
-                        }
-                        temp--;
-                    }
-                    else {
-                        break;
-                    }
-                }
-                else {
+                if(checkForOwnPiece(board,xTo, yTo)){
                     break;
                 }
-            }
 
-            // vertical rank
-            temp = 1;
-            while(true) {
-                if(withinBounds(index_y,temp)) {
-                    if(isOpenSpot(index_x,index_y+temp)) {
-                        if(checkForEnemyPiece(index_x,index_y+temp)) {
-                            valid_moves[index_x][index_y+temp] = true;
-                            setHasValidMove(true);
-                            break;
-                        }
-                        else {
-                            valid_moves[index_x][index_y+temp] = true;
-                            setHasValidMove(true);
-                        }
-                        temp++;
-                    }
-                    else {
-                        break;
-                    }
-                }
-                else {
-                    break;
-                }
-            }
+                validMoves[xTo][yTo]=true;
 
-            temp = -1;
-            while(true) {
-                if(withinBounds(index_y,temp)) {
-                    if(isOpenSpot(index_x,index_y+temp)) {
-                        if(checkForEnemyPiece(index_x,index_y+temp)) {
-                            valid_moves[index_x][index_y+temp] = true;
-                            setHasValidMove(true);
-                            break;
-                        }
-                        else {
-                            valid_moves[index_x][index_y+temp] = true;
-                            setHasValidMove(true);
-                        }
-                        temp--;
-                    }
-                    else {
-                        break;
-                    }
-                }
-                else {
+                if(checkForEnemyPiece(board, xTo, yTo)){
                     break;
                 }
             }
         }
-        if(checkAllFalse(valid_moves)){
+
+
+        setHasValidMove(true);
+        if(checkAllFalse(validMoves)){
             setHasValidMove(false);
         }
-        return valid_moves;
+        return validMoves;
+    }
+
+    @Override
+    public ChessPiece copy() {
+        RookPiece rookPiece = new RookPiece(isWhite, x, y);
+        rookPiece.hasNotMoved = hasNotMoved;
+        rookPiece.hasValidMove = hasValidMove;
+        return rookPiece;
     }
 }
 

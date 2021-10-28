@@ -3,8 +3,6 @@ package controller;
 import gui.ChessGUI;
 import model.pieces.*;
 import utils.Transform;
-import model.Board;
-import model.BoardUpdater;
 import model.pieces.ChessPiece;
 
 /**
@@ -13,10 +11,9 @@ import model.pieces.ChessPiece;
  */
 public class GraphicsConnector {
 
-    // Variables
-    private final GameRunner gameRunner;
+    // Variab
     private Board board;
-    private BoardUpdater boardUpdater;
+    private GameRunner gamerunner;
     private ChessGUI chessGUI;
 
 
@@ -25,7 +22,7 @@ public class GraphicsConnector {
      * @param gameRunner
      */
     public GraphicsConnector(GameRunner gameRunner) {
-        this.gameRunner = gameRunner;
+        this.gamerunner = gameRunner;
     }
 
     /**
@@ -38,9 +35,9 @@ public class GraphicsConnector {
      * @return an arraylist that contains all the 1 dimensional coordinates of the spots a piece can move to.
      */
     public boolean[] getMoveAbleSpots(int x, int y){
-        ChessPiece[][] piecesArray = board.getField();
+        ChessPiece[][] piecesArray = board.getBoardModel();
         ChessPiece piece = piecesArray[x][y];
-        boolean[][] validMoves = piece.validMoves();
+        boolean[][] validMoves = piece.validMoves(board);
 
         boolean[] temp = new boolean[64];
         int tempInt = 0;
@@ -49,12 +46,12 @@ public class GraphicsConnector {
                 temp[tempInt++] = validMoves[j][i];
             }
         }
-        char movablePiece = gameRunner.getMovablePiece();
-        boolean movable = board.getCharOfField(x, y)==movablePiece;
-        if(!movable){
-            return new boolean[64];
-        }
-        else return temp;
+        char movablePiece = board.getMovablePiece();
+        boolean movable = board.getCharOffField(x, y)==movablePiece;
+//        if(!movable){
+//            return new boolean[64];
+//        }
+        return temp;
 //        return Transform.transformBooleanToOneDimension(validMoves);
     }
 
@@ -82,7 +79,7 @@ public class GraphicsConnector {
      * @param finalY the final y coordinate of the piece that is moved
      */
     public void doMove(int initialX, int initialY, int finalX, int finalY){
-        boardUpdater.movePiece(initialX, initialY, finalX, finalY);
+        BoardUpdater.movePiece(board, initialX, initialY, finalX, finalY);
     }
 
     /**
@@ -98,7 +95,7 @@ public class GraphicsConnector {
      * @return the URL of the image. return null if the spot is empty
      */
     public String getImage(int x, int y){
-        char field = board.getCharOfField(x,y);
+        char field = board.getCharOffField(x,y);
         return switch (field) {
             case 'b' -> "gui/bB.png";
             case 'k' -> "gui/bK.png";
@@ -128,15 +125,16 @@ public class GraphicsConnector {
      * @return returns whether the move that is attempted is legal.
      */
     public boolean canMove(int initialX, int initialY, int finalX, int finalY){
-        ChessPiece[][] piecesArray = board.getField();
+        ChessPiece[][] piecesArray = board.getBoardModel();
         ChessPiece piece = piecesArray[initialX][initialY];
-        boolean[][] validMoves = piece.validMoves();
+        boolean[][] validMoves = piece.validMoves(board);
 
-        char movablePiece = gameRunner.getMovablePiece();
-        boolean movable = board.getCharOfField(initialX, initialY)==movablePiece;
-        if(!movable){
-            return false;
-        }
+
+        char movablePiece = board.getMovablePiece();
+        boolean movable = board.getCharOffField(initialX, initialY)==movablePiece;
+//        if(!movable){
+//            return false;
+//        }
         return validMoves[finalX][finalY];
     }
 
@@ -148,7 +146,7 @@ public class GraphicsConnector {
      * @return whether there is a piece on that field
      */
     public boolean hasPiece(int x, int y){
-        char field = board.getCharOfField(x,y);
+        char field = board.getCharOffField(x,y);
 
         return Character.compare(field, '-') != 0;
     }
@@ -161,27 +159,21 @@ public class GraphicsConnector {
         char[][] arrayOfPositions = new char[8][8];
         for (int i = 0; i < arrayOfPositions.length; i++) {
             for (int j = 0; j < arrayOfPositions.length; j++) {
-                arrayOfPositions[i][j] = board.getCharOfField(i, j);
+                arrayOfPositions[i][j] = board.getCharOffField(i, j);
             }
         }
 
         return Transform.transformCharToOneDimension(arrayOfPositions);
     }
 
-    /**
-     * Initializes the game runner.
-     */
-    public void init(){
-        gameRunner.init();
+    public void setBoard(Board board) {
+        this.board = board;
+        board.setGraphicsConnector(this);
     }
 
-    /**
-     * Initializes the board and the board updater.
-     */
-    public void initConnector(){
-        board = gameRunner.getBoard();
-        boardUpdater = gameRunner.getBoardUpdater();
-    }
+    public void init(){
+        gamerunner.init();
+   }
 
     /**
      * Checks, if it is the turn of a certain piece at a target position.
@@ -190,17 +182,18 @@ public class GraphicsConnector {
      * @return      true if it is the pieces' turn
      */
     public boolean isTurn(int x, int y){
-        ChessPiece[][] piecesArray = board.getField();
+        ChessPiece[][] piecesArray = board.getBoardModel();
         ChessPiece piece = piecesArray[x][y];
-        return piece.isTurn();
+        return piece.isTurn(board);
     }
 
     /**
      * @return white or black based on the turn
      */
     public boolean whoTurn(){
-        return !gameRunner.getWhiteMove();
+        return !board.getWhiteMove();
     }
+
 
     /**
      * Returns the image file of a certain dice roll.
@@ -209,7 +202,7 @@ public class GraphicsConnector {
      */
     public String getDiceImage(int type){
         if(type == 1) {
-            switch (gameRunner.getMovablePiece()) {
+            switch (board.getMovablePiece()) {
                 case 'K':
                     return "gui/wK.png";
                 case 'Q':
@@ -237,7 +230,7 @@ public class GraphicsConnector {
             }
         }
         else {
-            switch (gameRunner.getMovablePiece()) {
+            switch (board.getMovablePiece()) {
                 case 'K':
                 case 'k':
                     return "gui/dice_six.png";
@@ -334,16 +327,16 @@ public class GraphicsConnector {
     public void doPromotion(int type) {
         switch (type){
             case 1:
-                boardUpdater.doPromotion(new KnightPiece(this.isWhite,this.boardModel, this.x, this.y));
+                BoardUpdater.doPromotion(board, new KnightPiece(this.isWhite, this.x, this.y));
                 break;
             case 2:
-                boardUpdater.doPromotion(new BishopPiece(this.isWhite,this.boardModel, this.x, this.y));
+                BoardUpdater.doPromotion(board, new BishopPiece(this.isWhite, this.x, this.y));
                 break;
             case 3:
-                boardUpdater.doPromotion(new RookPiece(this.isWhite,this.boardModel, this.x, this.y));
+                BoardUpdater.doPromotion(board, new RookPiece(this.isWhite, this.x, this.y));
                 break;
             case 4:
-                boardUpdater.doPromotion(new QueenPiece(this.isWhite,this.boardModel, this.x, this.y));
+                BoardUpdater.doPromotion(board, new QueenPiece(this.isWhite, this.x, this.y));
                 break;
         }
     }
@@ -357,5 +350,17 @@ public class GraphicsConnector {
 
     public void setWin(boolean white){
         chessGUI.setWin(white);
+    }
+
+
+    @Override
+    protected GraphicsConnector clone(){
+        try{
+            return (GraphicsConnector) super.clone();
+        }
+        catch(CloneNotSupportedException e){
+            System.err.println("could not make clone.");
+        }
+        return new GraphicsConnector(new GameRunner());
     }
 }

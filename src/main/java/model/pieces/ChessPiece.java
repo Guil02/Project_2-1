@@ -1,6 +1,6 @@
 package model.pieces;
 
-import model.Board;
+import controller.Board;
 
 /**
  * Abstract class representing a chess piece
@@ -9,38 +9,34 @@ public abstract class ChessPiece {
 
     // variables
     protected boolean isWhite;
-    protected boolean hasValidMove;
+    protected boolean hasValidMove = false;
+    private static boolean enPassantActive = false;
     public boolean hasValidMove() {
         return hasValidMove;
     }
-    protected int index_x;
-    protected int index_y;
-    protected Board currentBoard;
+    protected int x;
+    protected int y;
+    private final int pieceType;
 
-    /**
-     * empty constructor
-     */
-    public ChessPiece() { }
+
 
     /**
      * Constructor
      * @param isWhite
-     * @param index_x
-     * @param index_y
-     * @param board current board
+     * @param x
+     * @par
      */
-    public ChessPiece(boolean isWhite, int index_x, int index_y, Board board) {
+    public ChessPiece(boolean isWhite, int x, int y, int pieceType) {
         this.isWhite = isWhite;
-        this.index_x = index_x;
-        this.index_y = index_y;
-        this.currentBoard = board;
-
+        this.x = x;
+        this.y = y;
+        this.pieceType = pieceType;
     }
 
     /**
-     * method that checks all false moves
+     * method that checks if no valid move exists
      * @param validMoves
-     * @return boolean true when it's done
+     * @return true when no valid moves exist
      */
     public boolean checkAllFalse(boolean[][] validMoves){
 
@@ -52,128 +48,54 @@ public abstract class ChessPiece {
                 }
             }
         }
-
         return true;
     }
 
-    public int getIndex_x() {
-        return this.index_x;
+    public void setHasValidMove(boolean hasValidMove) {
+        this.hasValidMove = hasValidMove;
     }
 
-    public int getIndex_y() {
-        return this.index_y;
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 
     public boolean isWhite() {
         return this.isWhite;
     }
 
-
-    public void setHasValidMove(boolean hasValidMove) {
-        this.hasValidMove = hasValidMove;
-    }
-    
     /**
-     * move method to check if en passant/castling conditions are reunited to authorize en passant/castling
-     * @param new_index_x next x position after doing the move
-     * @param new_index_y next y position after doing the move
+     * @param xTo next x position after doing the move
+     * @param yTo next y position after doing the move
      */
-    public void move(int new_index_x, int new_index_y) {
-
-        boolean canChange = true;
-        this.currentBoard.setEnPassantAuthorized(-1);
-        if( (this.getPieceChar() == 'P') || (this.getPieceChar() == 'p') ) {
-            if(Math.abs(this.index_y - new_index_y) == 2) {
-                currentBoard.setEnPassant(true);
-                canChange = false;
-                this.currentBoard.setEnPassantAuthorized(this.index_x); // set en passant authorized for the enemy pawns who have the possibility to take the current pawn in en passant
-
-
-            }
-        }
-
-        // pawns taking enemy pawns in en passant
-        if( (this.getPieceChar() == 'P') || (this.getPieceChar() == 'p') ) {
-            if( (Math.abs(this.index_x - new_index_x) == 1) && (Math.abs(this.index_y - new_index_y) == 1) && currentBoard.isEnPassant()) {
-                if(isOpenSpot(new_index_x, new_index_y)){
-
-                    this.currentBoard.getBoardUpdater().removePiece(new_index_x, this.index_y); // remove automatically the enemy pawn that was taken by en passant from the board
-                }
-            }
-        }
-
-        // castling
-        // whites
-        if(this.getPieceChar() == 'K') {
-            // small castling
-            if(this.index_x - new_index_x == -2) { // if king moved to castling position
-
-                currentBoard.getBoardUpdater().movePiece(7, 7, 5, 7); // move automatically the associated rook to its castling position
-                this.currentBoard.getGameRunner().setWhiteMove(true);
-            }
-            // great castling
-            else if(this.index_x - new_index_x == 2) {
-
-                currentBoard.getBoardUpdater().movePiece(0, 7, 3, 7);
-                this.currentBoard.getGameRunner().setWhiteMove(true);
-            }
-        }
-        // same for blacks
-        if(this.getPieceChar() == 'k') {
-            if(this.index_x - new_index_x == -2){
-
-                currentBoard.getBoardUpdater().movePiece(7, 0, 5, 0);
-                this.currentBoard.getGameRunner().setWhiteMove(false);
-
-
-            }
-            else if(this.index_x - new_index_x == 2) {
-
-                currentBoard.getBoardUpdater().movePiece(0, 0, 3, 0);
-                this.currentBoard.getGameRunner().setWhiteMove(false);
-            }
-
-        }
-
-
-        if(canChange){
-            currentBoard.setEnPassant(false);
-        }
-
-        // Updates internal position
-        this.index_x = new_index_x;
-        this.index_y = new_index_y;
+    public void move(Board board, int xTo, int yTo) {
+        System.out.println(enPassantActive);
+        this.x = xTo;
+        this.y = yTo;
     }
 
     /**
      * method that checks if another piece on a different field has the same colour (own team)
-     * @param index_x
-     * @param index_y
+     * @param x
+     * @param y
      */
-    public boolean checkForOwnPiece(int index_x, int index_y) {
-        if (currentBoard.getPiece(index_x, index_y) == null)
-            return false;
-        if (currentBoard.getField()[index_x][index_y].isWhite == this.isWhite)
-            return true;
-        else
-            return false;
+    public boolean checkForOwnPiece(Board board, int x, int y){
+        return (board.getPieceOffField(x,y) != null && board.getPieceOffField(x,y).isWhite == this.isWhite);
     }
 
     /**
      * method that checks if another piece on a different field has a different colour (enemy team)
-     * @param index_x
-     * @param index_y
+     * @param x
+     * @param y
      */
-    public boolean checkForEnemyPiece(int index_x, int index_y) {
-        if (currentBoard.getPiece(index_x, index_y) == null)
-            return false;
-        if (currentBoard.getField()[index_x][index_y].isWhite != this.isWhite)
-            return true;
-        else
-            return false;
+    public boolean checkForEnemyPiece(Board board, int x, int y) {
+        return (board.getPieceOffField(x,y) != null && board.getPieceOffField(x,y).isWhite != this.isWhite);
     }
 
-    private int BOARDSIZE = Board.getBoardSize();
+ private int BOARDSIZE = Board.getBoardSize();
     /**
      * method that checks if incrementing the actual x or y position by a certain value will lead the piece to remain within the bounds of the board
      * @param variable x or y parameters
@@ -191,18 +113,13 @@ public abstract class ChessPiece {
         return value < BOARDSIZE && value >= 0;
     }
 
-    public boolean isOpenSpot(int x, int y) {
-        if(!checkForOwnPiece(x,y)) {
-            return true;
-        }
-        else{
-            return false;
-        }
+    public boolean isOpenSpot(Board board, int x, int y) {
+        return (!checkForOwnPiece(board, x,y)&&!checkForEnemyPiece(board,x,y));
     }
 
-    public abstract boolean[][] validMoves();
-    public abstract char getPieceChar();
-    public boolean isOnOppositeRow(int x,int y) {
+
+
+    public boolean isOnOppositeRow(int y) {
         if(isWhite){
             return y == 0;
         }
@@ -213,10 +130,58 @@ public abstract class ChessPiece {
      * method that determines who's turn is to play
      * @return white or black moves
      */
-    public boolean isTurn() {
+    public boolean isTurn(Board board) {
         if(isWhite) {
-            return currentBoard.getWhiteMove();
+            return board.getWhiteMove();
         }
-        else return !currentBoard.getWhiteMove();
+        else return !board.getWhiteMove();
     }
+
+    public int maxAmountOfSquaresToEdge(int x, int y, int direction){
+        int a=0;
+        switch(direction){
+            case 9:
+                a = Math.min(7-x, 7-y);
+                break;
+            case 7:
+                a = Math.min(x, 7-y);
+                break;
+            case -7:
+                a = Math.min(7-x, y);
+                break;
+            case -9:
+                a = Math.min(x, y);
+                break;
+            case 8:
+                a = 7-y;
+                break;
+            case 1:
+                a = 7-x;
+                break;
+            case -1:
+                a = x;
+                break;
+            case -8:
+                a = y;
+                break;
+        }
+        return a;
+
+    }
+
+    public int getPieceType() {
+        return pieceType;
+    }
+
+    public static boolean isEnPassantActive() {
+        return enPassantActive;
+    }
+
+    public static void setEnPassantActive(boolean enPassantActive) {
+        ChessPiece.enPassantActive = enPassantActive;
+    }
+
+    public abstract boolean[][] validMoves(Board board);
+    public abstract char getPieceChar();
+    public abstract ChessPiece copy();
 }

@@ -1,9 +1,3 @@
-import controller.GameRunner;
-import model.Board;
-import model.BoardUpdater;
-import model.pieces.ChessPiece;
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

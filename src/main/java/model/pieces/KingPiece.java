@@ -1,6 +1,6 @@
 package model.pieces;
 
-import model.Board;
+import controller.Board;
 
 import java.util.*;
 
@@ -10,8 +10,8 @@ import java.util.*;
 public class KingPiece extends ChessPiece {
     private boolean hasNotMoved = true;
 
-    public KingPiece(boolean white, Board board, int index_x, int index_y) {
-        super(white, index_x, index_y, board);
+    public KingPiece(boolean white, int x, int y) {
+        super(white, x, y, 6);
     }
 
     public char getPieceChar() {
@@ -22,221 +22,79 @@ public class KingPiece extends ChessPiece {
     }
 
     @Override
-    public void move(int new_index_x, int new_index_y) {
+    public void move(Board board, int new_x, int new_y) {
         this.hasNotMoved = false;
-        super.move(new_index_x, new_index_y);
+        ChessPiece.setEnPassantActive(false);
+        super.move(board, new_x, new_y);
     }
 
-    /*
-     * method checking if the king doesn't put himslef in danger
-     */
-    private boolean[][] isSafe(int index_x, int index_y) {
+    public boolean[][] validMoves(Board board) {
 
-        int oldIndex_x = this.index_x; // memorizing King current position
-        int oldIndex_y = this.index_y;
+        boolean[][] validMoves = new boolean[Board.getBoardSize()][Board.getBoardSize()];
 
-        this.index_x = index_x; // simulating possible King's moves
-        this.index_y = index_y;
-
-        if ((this.index_x != oldIndex_x) || (this.index_y != oldIndex_y)) {
-            this.currentBoard.getBoardModel()[index_x][index_y] = this.currentBoard.getBoardModel()[oldIndex_x][oldIndex_y]; // updating the new King position into the board
-            this.currentBoard.getBoardModel()[oldIndex_x][oldIndex_y] = null;
+        if (!isTurn(board)) {
+            return validMoves;
         }
 
-        ArrayList<ChessPiece> enemies; // storing current piece threat enemies
-        if (this.isWhite) {
+        int[] directions = {-8,-1,8,1,-9,-7,9,7};
 
-            enemies = this.currentBoard.getBlackPieces();
-        } else {
-            enemies = this.currentBoard.getWhitePieces();
+        for(int i = 0; i<directions.length; i++){
+            for(int j = 0; j<maxAmountOfSquaresToEdge(x,y,directions[i]) && j<2; j++){
+                int oneVar = y*8+x;
+                int goal = oneVar + directions[i] * (j+1);
+                int xTo = goal % 8;
+                int yTo = (goal-xTo)/8;
 
-        }
+                if(!withinBoundsOneVariable(xTo)||!withinBoundsOneVariable(yTo)){
+                    break;
+                }
 
-        boolean[][] isSafe = new boolean[Board.getBoardSize()][Board.getBoardSize()];
-        for (boolean[] booleans : isSafe) { // setting all moves being safe by default
-            Arrays.fill(booleans, true);
-        }
+                if(checkForOwnPiece(board,xTo, yTo)){
+                    break;
+                }
 
-		this.currentBoard.getGameRunner().setWhiteMove(!this.isWhite);
+                validMoves[xTo][yTo]=true;
 
-        for (ChessPiece enemy : enemies) {
-            if (enemy.getPieceChar() == 'k' || enemy.getPieceChar() == 'K') {
-                continue;
-            }
-            boolean[][] tmp = enemy.validMoves(); // checking if enemy is threat
-            for (int j = 0; j < isSafe.length; j++) {
-                for (int k = 0; k < isSafe[j].length; k++) {
-                    if (tmp[j][k]) {
-                        isSafe[j][k] = false;
-                    }
+                if(checkForEnemyPiece(board, xTo, yTo)){
+                    break;
                 }
             }
         }
 
-		this.currentBoard.getGameRunner().setWhiteMove(this.isWhite);
-
-        this.index_x = oldIndex_x; // King returning to initial position
-        this.index_y = oldIndex_y;
-
-        if ((index_x != oldIndex_x) || (index_y != oldIndex_y)) {
-            this.currentBoard.getBoardModel()[oldIndex_x][oldIndex_y] = this.currentBoard.getBoardModel()[index_x][index_y]; // re-updating the board as it originally was
-            this.currentBoard.getBoardModel()[index_x][index_y] = null;
-        }
-        return isSafe;
-    }
-
-    public boolean[][] validMoves() {
-
-        boolean[][] valid_moves = new boolean[Board.getBoardSize()][Board.getBoardSize()];
-
-        if (isTurn()) {
-            //vertical and diagonal moves (forwards)
-            if (withinBounds(index_x, 1)) {
-                if (withinBounds(index_y, 1) && isOpenSpot(index_x + 1, index_y + 1)) {
-                    valid_moves[index_x + 1][index_y + 1] = true;
-                    setHasValidMove(true);
-                }
-                if (withinBounds(index_y, -1) && isOpenSpot(index_x + 1, index_y - 1)) {
-                    valid_moves[index_x + 1][index_y - 1] = true;
-                    setHasValidMove(true);
-                }
-                if (isOpenSpot(index_x + 1, index_y)) {
-                    valid_moves[index_x + 1][index_y] = true;
-                    setHasValidMove(true);
-                }
+        if(hasNotMoved){
+            if(longCastleOpen(board) && rookHasNotMoved(board, x-4, y)){
+                validMoves[x-2][y]=true;
             }
-            //vertical and diagonal moves (backwards)
-            if (withinBounds(index_x, -1)) {
-                if (withinBounds(index_y, 1) && isOpenSpot(index_x - 1, index_y + 1)) {
-                    valid_moves[index_x - 1][index_y + 1] = true;
-                    setHasValidMove(true);
-                }
-                if (withinBounds(index_y, -1) && isOpenSpot(index_x - 1, index_y - 1)) {
-                    valid_moves[index_x - 1][index_y - 1] = true;
-                    setHasValidMove(true);
-                }
-                if (isOpenSpot(index_x - 1, index_y)) {
-                    valid_moves[index_x - 1][index_y] = true;
-                    setHasValidMove(true);
-                }
-            }
-            //lateral moves
-            if (withinBounds(index_y, 1) && isOpenSpot(index_x, index_y + 1)) {
-                valid_moves[index_x][index_y + 1] = true;
-                setHasValidMove(true);
-            }
-            if (withinBounds(index_y, -1) && isOpenSpot(index_x, index_y - 1)) {
-                valid_moves[index_x][index_y - 1] = true;
-                setHasValidMove(true);
+            if(shortCastleOpen(board) && rookHasNotMoved(board, x+3, y)){
+                validMoves[x+2][y]=true;
             }
         }
 
-        if (hasNotMoved) {
-            //small castling
-            //whites
-            if (this.isWhite) {
-                if (this.index_x == 4 && this.index_y == 7) { //checking if the king is at his initial position
-                    if ((this.currentBoard.getBoardModel()[7][7] != null) && (this.currentBoard.getBoardModel()[7][7].getPieceChar() == 'R')) { //checking if the left rook is at his initial position
-                        if (rookHasNotMoved(7, 7)) {
-                            if (this.isSafe(this.index_x, this.index_y)[this.index_x][this.index_y]) { //checking if the king not in a position of danger before doing the castling
-                                if (isOpenSpot(this.index_x + 1, this.index_y)) { //checking if no pieces on the way between the king and the rook + if the king doesn't put himself in danger while passing
-                                    if (this.isSafe(this.index_x + 1, this.index_y)[this.index_x + 1][this.index_y]) {
-                                        if (isOpenSpot(this.index_x + 2, this.index_y)) {
-                                            if (this.isSafe(this.index_x + 2, this.index_y)[this.index_x + 2][this.index_y]) { //checking that king doesn't put himself in danger after doing the castling
-                                                valid_moves[6][7] = true;
-                                                setHasValidMove(true);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            //blacks
-            else {
-                if (this.index_x == 4 && this.index_y == 0) { //checking if the king is at his initial position
-                    if (this.currentBoard.getBoardModel()[7][0] != null && this.currentBoard.getBoardModel()[7][0].getPieceChar() == 'r') { //checking if the left rook is at his initial position
-                        if (rookHasNotMoved(7, 0)) {
-                            if (this.isSafe(this.index_x, this.index_y)[this.index_x][this.index_y]) { //checking if the king not in a position of danger before doing the castling
-                                if (isOpenSpot(this.index_x + 1, this.index_y)) { //checking if no pieces on the way between the king and the rook + if the king doesn't put himself in danger while passing
-                                    if (this.isSafe(this.index_x, this.index_y)[this.index_x + 1][this.index_y]) {
-                                        if (isOpenSpot(this.index_x + 2, this.index_y)) {
-                                            if (this.isSafe(this.index_x, this.index_y)[this.index_x + 2][this.index_y]) { //checking that king doesn't put himself in danger after doing the castling
-                                                valid_moves[6][0] = true;
-                                                setHasValidMove(true);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            //great castling
-            //whites
-            if (this.isWhite) {
-                if (this.index_x == 4 && this.index_y == 7) { //checking if the king is at his initial position
-                    if ((this.currentBoard.getBoardModel()[0][7]) != null && (this.currentBoard.getBoardModel()[0][7].getPieceChar() == 'R')) { //checking if the right rook is at his initial position
-                        if (rookHasNotMoved(0, 7)) {
-                            if (this.isSafe(this.index_x, this.index_y)[this.index_x][this.index_y]) { //checking if the king not in a position of danger before doing the castling
-                                if (isOpenSpot(this.index_x - 1, this.index_y)) { //checking if no pieces on the way between the king and the rook + if the king doesn't put himself in danger while passing
-                                    if (this.isSafe(this.index_x - 1, this.index_y)[this.index_x - 1][this.index_y]) {
-                                        if (isOpenSpot(this.index_x - 2, this.index_y)) {
-                                            if (this.isSafe(this.index_x - 2, this.index_y)[this.index_x - 2][this.index_y]) { //checking that king doesn't put himself in danger after doing the castling
-                                                if (isOpenSpot(this.index_x - 3, this.index_y)) {
-                                                    if (this.isSafe(this.index_x - 3, this.index_y)[this.index_x - 3][this.index_y]) {
-                                                        valid_moves[2][7] = true;
-                                                        setHasValidMove(true);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            //blacks
-            else {
-                if (this.index_x == 4 && this.index_y == 0) { //checking if the king is at his initial position
-                    if (this.currentBoard.getBoardModel()[0][0] != null && this.currentBoard.getBoardModel()[0][0].getPieceChar() == 'r') { //checking if the right rook is at his initial position
-                        if (rookHasNotMoved(0, 0)) {
-                            if (this.isSafe(this.index_x, this.index_y)[this.index_x][this.index_y]) { //checking if the king not in a position of danger before doing the castling
-                                if (isOpenSpot(this.index_x - 1, this.index_y)) { //checking if no pieces on the way between the king and the rook + if the king doesn't put himself in danger while passing
-                                    if (this.isSafe(this.index_x - 1, this.index_y)[this.index_x - 1][this.index_y]) {
-                                        if (isOpenSpot(this.index_x - 2, this.index_y)) {
-                                            if (this.isSafe(this.index_x - 2, this.index_y)[this.index_x - 2][this.index_y]) { //checking that king doesn't put himself in danger after doing the castling
-                                                if (isOpenSpot(this.index_x - 3, this.index_y)) {
-                                                    if (this.isSafe(this.index_x - 3, this.index_y)[this.index_x - 3][this.index_y]) {
-                                                        valid_moves[2][0] = true;
-                                                        setHasValidMove(true);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        if (checkAllFalse(valid_moves)) {
+        setHasValidMove(true);
+        if (checkAllFalse(validMoves)) {
             setHasValidMove(false);
         }
-        return valid_moves;
+        return validMoves;
     }
 
-    public boolean rookHasNotMoved(int x, int y) {
-        RookPiece piece = (RookPiece) this.currentBoard.getField()[x][y];
+    public boolean rookHasNotMoved(Board board, int x, int y) {
+        RookPiece piece = (RookPiece) board.getPieceOffField(x,y);
         return piece.isHasNotMoved();
+    }
+
+    public boolean longCastleOpen(Board board){
+        return isOpenSpot(board, x-1, y) && isOpenSpot(board, x-2, y) && isOpenSpot(board, x-3, y);
+    }
+
+    public boolean shortCastleOpen(Board board){
+        return isOpenSpot(board, x+1, y) && isOpenSpot(board, x+2, y);
+    }
+
+    @Override
+    public ChessPiece copy() {
+        KingPiece kingPiece = new KingPiece(isWhite, x, y);
+        kingPiece.hasValidMove = hasValidMove;
+        kingPiece.hasNotMoved = hasNotMoved;
+        return kingPiece;
     }
 }
