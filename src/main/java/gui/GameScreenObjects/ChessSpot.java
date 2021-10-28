@@ -125,7 +125,7 @@ public class ChessSpot extends Label {
      * @param e a mouse event
      */
     public void onDragDetected(MouseEvent e){
-        if(piece!=null&&graphicsConnector.isTurn(x,y) && promotionLock) {
+        if(piece!=null&&graphicsConnector.isTurn(x,y) && promotionLock && graphicsConnector.isHumanPlayer()) {
             Dragboard dragboard = startDragAndDrop(TransferMode.MOVE);
             Image image = new Image(graphicsConnector.getImage(piece.getX(), piece.getY()), width /DIVIDER, height /DIVIDER, false, false);
             dragboard.setDragView(image);

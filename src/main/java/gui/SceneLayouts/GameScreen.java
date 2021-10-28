@@ -8,6 +8,7 @@ import gui.GameScreenObjects.LeftSide;
 import gui.GameScreenObjects.PromotionDisplay;
 import gui.Menus.DisplayMenu;
 import gui.Menus.HighlightMenu;
+import gui.Menus.StartAIButton;
 import gui.Menus.TurnMenu;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -60,7 +61,8 @@ public class GameScreen extends BorderPane {
         DisplayMenu displayMenu = new DisplayMenu(chessGUI);
         HighlightMenu highlightMenu = new HighlightMenu();
         TurnMenu turnMenu = new TurnMenu();
-        menuBar.getMenus().addAll(displayMenu, highlightMenu, turnMenu);
+        StartAIButton st = new StartAIButton(chessGUI);
+        menuBar.getMenus().addAll(displayMenu, highlightMenu, turnMenu, st);
 
         VBox vBox = new VBox();
         vBox.getChildren().addAll(menuBar,topEmptySpace);

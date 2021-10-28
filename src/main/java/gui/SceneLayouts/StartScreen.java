@@ -17,8 +17,8 @@ import javafx.scene.text.Font;
  */
 public class StartScreen extends BorderPane {
     private ChessGUI chessGUI;
-    private int playerOne = 1;
-    private int playerTwo = 1;
+    private int playerOne = 0;
+    private int playerTwo = 0;
     private PlayerSelection playerSelection;
 
     /**

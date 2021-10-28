@@ -54,11 +54,11 @@ public class ChessGUI extends Application {
 
     /**
      * @param playerOne
-     * @param PlayerTwo
+     * @param playerTwo
      */
-    public void startGame(int playerOne, int PlayerTwo){
-        graphicsConnector.setPlayers(playerOne, PlayerTwo);
-        graphicsConnector.init();
+    public void startGame(int playerOne, int playerTwo){
+        graphicsConnector.init(playerOne, playerTwo);
+        graphicsConnector.setPlayers(playerOne, playerTwo);
 
         ChessBoard board = new ChessBoard(graphicsConnector, this);
         this.chessBoard = board;
@@ -137,5 +137,9 @@ public class ChessGUI extends Application {
     public void setWin(boolean white) {
         chessBoard.setPromotionLock(false);
         gameScreen.setWin(white);
+    }
+
+    public void launchAI(){
+        graphicsConnector.launchAI();
     }
 }

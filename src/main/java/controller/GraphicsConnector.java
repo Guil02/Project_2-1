@@ -65,7 +65,16 @@ public class GraphicsConnector {
      * @param player2 the player with the black pieces
      */
     public void setPlayers(int player1, int player2){
+        board.setPlayers(player1, player2);
+    }
 
+    public boolean isHumanPlayer() {
+        if(board.getWhiteMove()){
+            return board.getPlayer1() == 0;
+        }
+        else{
+            return board.getPlayer2() == 0;
+        }
     }
 
     /**
@@ -171,8 +180,8 @@ public class GraphicsConnector {
         board.setGraphicsConnector(this);
     }
 
-    public void init(){
-        gamerunner.init();
+    public void init(int playerOne, int playerTwo){
+        gamerunner.init(playerOne, playerTwo);
    }
 
     /**
@@ -261,7 +270,6 @@ public class GraphicsConnector {
     public void setChessGUI(ChessGUI chessGUI) {
         this.chessGUI = chessGUI;
     }
-
     /**
      * @param type of piece
      * @return url of piece - used for promotion
@@ -303,6 +311,7 @@ public class GraphicsConnector {
     private boolean isWhite;
     private Board boardModel;
     private int x;
+
     private int y;
 
     /**
@@ -362,5 +371,9 @@ public class GraphicsConnector {
             System.err.println("could not make clone.");
         }
         return new GraphicsConnector(new GameRunner());
+    }
+
+    public void launchAI() {
+        board.checkAi();
     }
 }

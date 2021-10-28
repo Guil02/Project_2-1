@@ -11,62 +11,60 @@ public class AiTree {
     public AiTree() {
     }
 
-    public void createChildren(ChessTreeNode root, boolean doEvaluation){
+    public void createChildren(ChessTreeNode root, boolean doEvaluation, boolean maxIsWhite){
         if(root.getNodeType()== 1 || root.getNodeType() == 2){
-            createChanceChildren(root, doEvaluation);
+            createChanceChildren(root, doEvaluation, maxIsWhite);
         }
         else if(root.getNodeType() == 3){
             if(root.getParent().getNodeType() == 1){
-                createMinChildren(root, doEvaluation);
+                createMinChildren(root, doEvaluation, maxIsWhite);
             }
             else if(root.getParent().getNodeType() == 2){
-                createMaxChildren(root, doEvaluation);
+                createMaxChildren(root, doEvaluation, maxIsWhite);
             }
         }
     }
 
-    private void createMaxChildren(ChessTreeNode root, boolean doEvaluation) {
+    private void createChanceChildren(ChessTreeNode root, boolean doEvaluation, boolean maxIsWhite){
         for (ChessPiece[] pieces: root.getBoard().getBoardModel()) {
             for(ChessPiece piece: pieces){
                 if(piece != null && piece.isTurn(root.getBoard()) && root.getBoard().getMovablePiece()==piece.getPieceChar()){
                     boolean[][] validMoves = piece.validMoves(root.getBoard());
-                    createChild(root, validMoves, piece, 1, doEvaluation);
+                    createChild(root, validMoves, piece, 3, doEvaluation, maxIsWhite);
                 }
             }
         }
     }
 
-    private void createMinChildren(ChessTreeNode root, boolean doEvaluation) {
-        for (ChessPiece[] pieces: root.getBoard().getBoardModel()) {
-            for(ChessPiece piece: pieces){
-                if(piece != null && piece.isTurn(root.getBoard()) && root.getBoard().getMovablePiece()==piece.getPieceChar()){
-                    boolean[][] validMoves = piece.validMoves(root.getBoard());
-                    createChild(root, validMoves, piece, 2, doEvaluation);
-                }
-            }
-        }
-    }
-
-    private void createChanceChildren(ChessTreeNode root, boolean doEvaluation){
+    private void createMaxChildren(ChessTreeNode root, boolean doEvaluation, boolean maxIsWhite) {
         ArrayList<Character> movablePieces = Dice.getMovablePieces(root.getBoard());
 
         for (Character movablePiece : movablePieces) {
-            createChanceChild(root, doEvaluation, movablePiece);
+            createChanceChild(root, doEvaluation, movablePiece, 1, 1.0/movablePieces.size(), maxIsWhite);
+        }
+
+    }
+
+    private void createMinChildren(ChessTreeNode root, boolean doEvaluation, boolean maxIsWhite) {
+        ArrayList<Character> movablePieces = Dice.getMovablePieces(root.getBoard());
+
+        for (Character movablePiece : movablePieces) {
+            createChanceChild(root, doEvaluation, movablePiece, 2, 1.0/movablePieces.size(), maxIsWhite);
         }
     }
 
-    private void createChanceChild(ChessTreeNode root, boolean doEvaluation, char movablePiece){
-        for (ChessPiece[] pieces: root.getBoard().getBoardModel()) {
-            for(ChessPiece piece: pieces){
-                if(piece != null && piece.isTurn(root.getBoard()) && movablePiece==piece.getPieceChar()){
-                    boolean[][] validMoves = piece.validMoves(root.getBoard());
-                    createChild(root, validMoves, piece, 3, doEvaluation);
-                }
-            }
+    private void createChanceChild(ChessTreeNode parent, boolean doEvaluation, char movablePiece, int nodeType, double probability, boolean maxIsWhite){
+        Board copy = parent.getBoard().clone();
+        copy.setMovablePiece(movablePiece);
+        double value = 0;
+        if(doEvaluation){
+            value = staticBoardEvaluation(copy, maxIsWhite);
         }
+        ChessTreeNode child = new ChessTreeNode(copy,value, parent, nodeType, probability, 0,0,0,0);
+        parent.addChild(child);
     }
 
-    private void createChild(ChessTreeNode parent, boolean[][] validMoves, ChessPiece piece, int nodeType, boolean doEvaluation){
+    private void createChild(ChessTreeNode parent, boolean[][] validMoves, ChessPiece piece, int nodeType, boolean doEvaluation, boolean maxIsWhite){
 
         for(int i = 0; i< validMoves.length; i++){
             for(int j = 0; j<validMoves[0].length; j++){
@@ -76,7 +74,7 @@ public class AiTree {
 
                     double value = 0;
                     if(doEvaluation){
-                        value = staticBoardEvaluation(copy);
+                        value = staticBoardEvaluation(copy, maxIsWhite);
                     }
 
                     ChessTreeNode child = new ChessTreeNode(copy, value,parent,nodeType,1,piece.getX(),piece.getY(),i,j);
@@ -86,33 +84,105 @@ public class AiTree {
         }
     }
 
-    private double staticBoardEvaluation(Board board){
+    private double staticBoardEvaluation(Board board, boolean maxIsWhite){
         double value = 0;
-        boolean seenFriendlyKing = false;
-        boolean seenEnemyKing = false;
+        boolean seenWhiteKing = false;
+        boolean seenBlackKing = false;
 
         for(ChessPiece[] pieces: board.getBoardModel()){
             for(ChessPiece piece: pieces){
                 if(piece != null){
-                    if(piece.isTurn(board)){
-                        if(piece.getPieceType() == 6){
-                            seenFriendlyKing  = true;
+                    if(maxIsWhite){
+                        if(piece.isWhite()){
+                            value += getPieceValue(piece.getPieceType());
                         }
-                        value += getPieceValue(piece.getPieceType());
                     }
-                    else if(piece.getPieceType() == 6){
-                        seenEnemyKing = true;
+                    else{
+                        if(!piece.isWhite()){
+                            value += getPieceValue(piece.getPieceType());
+                        }
+                    }
+
+                    if(piece.getPieceChar() == 'K'){
+                        seenWhiteKing = true;
+                    }
+                    if(piece.getPieceChar() == 'k'){
+                        seenBlackKing = true;
                     }
                 }
             }
         }
-        if(!seenFriendlyKing){
-            return Double.MIN_VALUE;
+        if(maxIsWhite){
+            if(!seenWhiteKing){
+                return Double.MIN_VALUE;
+            }
+            else if(!seenBlackKing){
+                return Double.MAX_VALUE;
+            }
         }
-        if(!seenEnemyKing){
-            return Double.MAX_VALUE;
+        else {
+            if(!seenBlackKing){
+                return Double.MIN_VALUE;
+            }
+            else if(!seenWhiteKing){
+                return Double.MAX_VALUE;
+            }
         }
         return value;
+    }
+
+    private double staticBoardEvaluation2(Board board, boolean maxIsWhite){
+        double value = 0;
+        double toBeSubtracted = 0;
+        boolean seenWhiteKing = false;
+        boolean seenBlackKing = false;
+
+        for(ChessPiece[] pieces: board.getBoardModel()){
+            for(ChessPiece piece: pieces){
+                if(piece != null){
+                    if(maxIsWhite){
+                        if(piece.isWhite()){
+                            value += getPieceValue(piece.getPieceType());
+                        }
+                        else{
+                            toBeSubtracted += getPieceValue(piece.getPieceType());
+                        }
+                    }
+                    else{
+                        if(!piece.isWhite()){
+                            value += getPieceValue(piece.getPieceType());
+                        }
+                        else{
+                            toBeSubtracted += getPieceValue(piece.getPieceType());
+                        }
+                    }
+
+                    if(piece.getPieceChar() == 'K'){
+                        seenWhiteKing = true;
+                    }
+                    if(piece.getPieceChar() == 'k'){
+                        seenBlackKing = true;
+                    }
+                }
+            }
+        }
+        if(maxIsWhite){
+            if(!seenWhiteKing){
+                return Double.MIN_VALUE;
+            }
+            else if(!seenBlackKing){
+                return Double.MAX_VALUE;
+            }
+        }
+        else {
+            if(!seenBlackKing){
+                return Double.MIN_VALUE;
+            }
+            else if(!seenWhiteKing){
+                return Double.MAX_VALUE;
+            }
+        }
+        return value - toBeSubtracted;
     }
 
     private double getPieceValue(int pieceType){

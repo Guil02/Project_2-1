@@ -42,31 +42,31 @@ public class KnightPiece extends ChessPiece {
             return validMoves;
         }
 
-        if (withinBounds(x, 2) && withinBounds(y, 1) && isOpenSpot(board,x + 2, y + 1)) {
+        if (withinBounds(x, 2) && withinBounds(y, 1) && (isOpenSpot(board,x + 2, y + 1)||checkForEnemyPiece(board,x + 2, y + 1))) {
             validMoves[x + 2][y + 1] = true;
             setHasValidMove(true);
         }
-        if (withinBounds(x, 2) && withinBounds(y, -1) && isOpenSpot(board,x + 2, y - 1)) {
+        if (withinBounds(x, 2) && withinBounds(y, -1) && (isOpenSpot(board,x + 2, y - 1)||checkForEnemyPiece(board,x + 2, y - 1))) {
             validMoves[x + 2][y - 1] = true;
             setHasValidMove(true);
         }
-        if (withinBounds(x, -2) && withinBounds(y, 1) && isOpenSpot(board,x - 2, y + 1)) {
+        if (withinBounds(x, -2) && withinBounds(y, 1) && (isOpenSpot(board,x - 2, y + 1)||checkForEnemyPiece(board,x - 2, y + 1))) {
             validMoves[x - 2][y + 1] = true;
             setHasValidMove(true);
         }
-        if (withinBounds(x, -2) && withinBounds(y, -1) && isOpenSpot(board,x - 2, y - 1)) {
+        if (withinBounds(x, -2) && withinBounds(y, -1) && (isOpenSpot(board,x - 2, y - 1)||checkForEnemyPiece(board,x - 2, y - 1))) {
             validMoves[x - 2][y - 1] = true;
         }
-        if (withinBounds(x, 1) && withinBounds(y, 2) && isOpenSpot(board,x + 1, y + 2)) {
+        if (withinBounds(x, 1) && withinBounds(y, 2) && (isOpenSpot(board,x + 1, y + 2)||checkForEnemyPiece(board,x + 1, y + 2))) {
             validMoves[x + 1][y + 2] = true;
         }
-        if (withinBounds(x, 1) && withinBounds(y, -2) && isOpenSpot(board,x + 1, y - 2)) {
+        if (withinBounds(x, 1) && withinBounds(y, -2) && (isOpenSpot(board,x + 1, y - 2)||checkForEnemyPiece(board,x + 1, y - 2))) {
             validMoves[x + 1][y - 2] = true;
         }
-        if (withinBounds(x, -1) && withinBounds(y, 2) && isOpenSpot(board,x - 1, y + 2)) {
+        if (withinBounds(x, -1) && withinBounds(y, 2) && (isOpenSpot(board,x - 1, y + 2)||checkForEnemyPiece(board,x - 1, y + 2))) {
             validMoves[x - 1][y + 2] = true;
         }
-        if (withinBounds(x, -1) && withinBounds(y, -2) && isOpenSpot(board,x - 1, y - 2)) {
+        if (withinBounds(x, -1) && withinBounds(y, -2) && (isOpenSpot(board,x - 1, y - 2)||checkForEnemyPiece(board,x - 1, y - 2))) {
             validMoves[x - 1][y - 2] = true;
         }
 

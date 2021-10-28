@@ -7,7 +7,7 @@ public class ChessTreeNode extends TreeNode{
     private int yFrom;
     private int xTo;
     private int yTo;
-    Board board;
+    private Board board;
 
     public ChessTreeNode(Board board, double value, TreeNode parent, int nodeType, double probability, int xFrom, int yFrom, int xTo, int yTo) {
         super(value, parent, nodeType, probability);

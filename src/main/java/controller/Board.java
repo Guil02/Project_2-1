@@ -2,18 +2,22 @@ package controller;
 
 import model.pieces.ChessPiece;
 
-import java.util.ArrayList;
-
 public class Board {
     private static final int BOARDSIZE = 8;
     private ChessPiece[][] boardModel = new ChessPiece[BOARDSIZE][BOARDSIZE];
     private GraphicsConnector graphicsConnector;
+    private GameRunner gameRunner;
     private boolean gameOver;
     private boolean whiteMove = true;
     private char movablePiece;
     public static final boolean GUI_ON = true;
+    private int player1 = 0;
+    private int player2 = 0;
+    private boolean isOriginal = false;
 
-    public Board() {
+    public Board(GameRunner gameRunner) {
+        isOriginal = true;
+        this.gameRunner = gameRunner;
     }
 
     private Board(ChessPiece[][] boardModel, GraphicsConnector graphicsConnector, boolean gameOver, boolean whiteMove, char movablePiece){
@@ -28,6 +32,20 @@ public class Board {
     public void changeTurn(){
         whiteMove = !whiteMove;
         Dice.rollTheDice(this);
+        checkAi();
+    }
+
+    public void checkAi() {
+        if(whiteMove){
+            if(player1>0){
+                gameRunner.doAiMove(this, player1);
+            }
+        }
+        else{
+            if(player2 > 0){
+                gameRunner.doAiMove(this, player2);
+            }
+        }
     }
 
     public char getCharOffField(int x, int y){
@@ -70,6 +88,10 @@ public class Board {
         return whiteMove;
     }
 
+    public void setWhiteMove(boolean whiteMove) {
+        this.whiteMove = whiteMove;
+    }
+
     public char getMovablePiece() {
         return movablePiece;
     }
@@ -78,7 +100,27 @@ public class Board {
         this.movablePiece = movablePiece;
     }
 
+    public void setPlayers(int player1, int player2){
+        System.out.println("playerOne: "+player1+"\nplayerTwo: "+player2);
+        this.player1 = player1;
+        this.player2 = player2;
+    }
 
+    public int getPlayer1() {
+        return player1;
+    }
+
+    public int getPlayer2() {
+        return player2;
+    }
+
+    public boolean isOriginal() {
+        return isOriginal;
+    }
+
+    public void setOriginal(boolean original) {
+        isOriginal = original;
+    }
 
     @Override
     public Board clone() {
