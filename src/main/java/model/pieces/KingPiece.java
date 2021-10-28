@@ -23,7 +23,7 @@ public class KingPiece extends ChessPiece {
 
     @Override
     public void move(Board board, int new_x, int new_y) {
-        this.hasNotMoved = false;
+        this.hasNotMoved = false; //TODO add castling move
         ChessPiece.setEnPassantActive(false);
         super.move(board, new_x, new_y);
     }

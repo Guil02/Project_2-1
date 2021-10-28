@@ -64,6 +64,7 @@ public class GameRunner {
     }
 
     public void ruleBasedAgent(Board board){
+        System.out.println(board.getWhiteMove());
         Board copy = board.clone();
         ChessTreeNode root = new ChessTreeNode(copy, 0, null, 1, 1, 0, 0, 0, 0);
         boolean maxIsWhite = board.getWhiteMove();
@@ -89,7 +90,7 @@ public class GameRunner {
                 }
             }
         }
-
+        System.out.println(board.getWhiteMove());
         double res = expectiminimax.expectiminimax(root, 10);
         System.out.println(res);
         double maxValue = Double.MIN_VALUE;
@@ -98,7 +99,7 @@ public class GameRunner {
             ChessTreeNode subChild = (ChessTreeNode) child;
             if(subChild.getValue()>=maxValue){
                 if(subChild.getValue() == maxValue){
-                    if(Math.random()<0.3){
+                    if(Math.random()<0.5){
                         maxValue = subChild.getValue();
                         maxNode = subChild;
                     }

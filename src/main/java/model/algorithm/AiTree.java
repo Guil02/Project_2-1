@@ -84,7 +84,7 @@ public class AiTree {
         }
     }
 
-    private double staticBoardEvaluation(Board board, boolean maxIsWhite){
+    private double staticBoardEvaluation2(Board board, boolean maxIsWhite){
         double value = 0;
         boolean seenWhiteKing = false;
         boolean seenBlackKing = false;
@@ -131,9 +131,9 @@ public class AiTree {
         return value;
     }
 
-    private double staticBoardEvaluation2(Board board, boolean maxIsWhite){
+    private double staticBoardEvaluation(Board board, boolean maxIsWhite){
         double value = 0;
-        double toBeSubtracted = 0;
+        double enemyPiecesOnBoardValue = 0;
         boolean seenWhiteKing = false;
         boolean seenBlackKing = false;
 
@@ -145,7 +145,7 @@ public class AiTree {
                             value += getPieceValue(piece.getPieceType());
                         }
                         else{
-                            toBeSubtracted += getPieceValue(piece.getPieceType());
+                            enemyPiecesOnBoardValue += getPieceValue(piece.getPieceType());
                         }
                     }
                     else{
@@ -153,7 +153,7 @@ public class AiTree {
                             value += getPieceValue(piece.getPieceType());
                         }
                         else{
-                            toBeSubtracted += getPieceValue(piece.getPieceType());
+                            enemyPiecesOnBoardValue += getPieceValue(piece.getPieceType());
                         }
                     }
 
@@ -182,7 +182,7 @@ public class AiTree {
                 return Double.MAX_VALUE;
             }
         }
-        return value - toBeSubtracted;
+        return value - 0.5*enemyPiecesOnBoardValue;
     }
 
     private double getPieceValue(int pieceType){
