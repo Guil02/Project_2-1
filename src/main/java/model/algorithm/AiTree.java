@@ -2,6 +2,7 @@ package model.algorithm;
 
 import controller.Board;
 import controller.BoardUpdater;
+import controller.Dice;
 import model.pieces.ChessPiece;
 
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public class AiTree {
     }
 
     private void createChanceChildren(ChessTreeNode root, boolean doEvaluation){
-        ArrayList<Character> movablePieces = root.getBoard().getMovablePieces();
+        ArrayList<Character> movablePieces = Dice.getMovablePieces(root.getBoard());
 
         for (Character movablePiece : movablePieces) {
             createChanceChild(root, doEvaluation, movablePiece);

@@ -27,7 +27,7 @@ public class Board {
 
     public void changeTurn(){
         whiteMove = !whiteMove;
-        rollTheDice();
+        Dice.rollTheDice(this);
     }
 
     public char getCharOffField(int x, int y){
@@ -78,86 +78,7 @@ public class Board {
         this.movablePiece = movablePiece;
     }
 
-    /**
-     * Executes the dice roll and checks if the result has a possible move.
-     * @return  char - the character of the kind of piece that can be moved
-     */
-    public void rollTheDice(){
-        runValidMoves();
-        ArrayList<Character> movablePieces = new ArrayList<>();
-        for(ChessPiece[] pieceArray : boardModel){
-            for(ChessPiece piece : pieceArray){
-                if(piece!=null && piece.hasValidMove() && (getWhiteMove()==piece.isWhite())){
-                    char charToAdd = piece.getPieceChar();
-                    addCharToArray(movablePieces, charToAdd);
-                }
-            }
-        }
-        movablePiece = Dice.choosePiece(movablePieces);
-    }
 
-    public ArrayList<Character> getMovablePieces(){
-        runValidMoves();
-        ArrayList<Character> movablePieces = new ArrayList<>();
-        for(ChessPiece[] pieceArray : boardModel){
-            for(ChessPiece piece : pieceArray){
-                if(piece!=null && piece.hasValidMove() && (getWhiteMove()==piece.isWhite())){
-                    char charToAdd = piece.getPieceChar();
-                    addCharToArray(movablePieces, charToAdd);
-                }
-            }
-        }
-        return movablePieces;
-    }
-
-    /**
-     * Support method to add a piece to the set of movable pieces.
-     * @see #rollTheDice()
-     * @param movablePieces     set of current pieces that can be moved
-     * @param charToAdd         piece to add
-     */
-    private void addCharToArray(ArrayList<Character> movablePieces, char charToAdd) {
-        if(!movablePieces.contains(charToAdd)){
-            movablePieces.add(charToAdd);
-        }
-    }
-
-    /**
-     * Support method to run all the valid moves.
-     * @see #rollTheDice()
-     */
-    public void runValidMoves(){
-        for(ChessPiece[] piecesArray : boardModel){
-            for(ChessPiece piece : piecesArray){
-                if(piece!=null){
-                    if(getWhiteMove()){
-                        if(piece.isWhite()) {
-                            piece.validMoves(this);
-                        }
-                    }
-                    else{
-                        if(!piece.isWhite()){
-                            piece.validMoves(this);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Gets the kind of piece that can be moved in the first move.
-     * Only knight and pawn are possible options.
-     * @return  char - kind of piece to move
-     */
-    public void firstMoveDiceRoll(){
-        double r = Math.random();
-        if(r<0.5){
-            movablePiece = 'N';
-        }
-        else
-            movablePiece = 'P';
-    }
 
     @Override
     public Board clone() {

@@ -31,7 +31,7 @@ public class GameRunner {
         board = new Board();
         BoardUpdater.fillGameStart(board);
         graphicsConnector.setBoard(board);
-        board.firstMoveDiceRoll();
+        Dice.firstMoveDiceRoll(board);
     }
 
     @Override

@@ -1,9 +1,6 @@
 package model.algorithm;
 
-import controller.Board;
-import controller.BoardUpdater;
-import controller.GameRunner;
-import controller.GraphicsConnector;
+import controller.*;
 import model.pieces.BishopPiece;
 import model.pieces.ChessPiece;
 import model.pieces.KingPiece;
@@ -24,7 +21,7 @@ public class test {
         BoardUpdater.addPiece(board, king2);
         BoardUpdater.addPiece(board, bishop1);
         BoardUpdater.addPiece(board, bishop2);
-        board.rollTheDice();
+        Dice.rollTheDice(board);
         printBoard(board.getBoardModel(), board);
 
 
