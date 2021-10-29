@@ -41,8 +41,8 @@ public class Board {
         amountOfTurns++;
         whiteMove = !whiteMove;
         if(GUI_ON){
-            graphicsConnector.changeTurn();
             graphicsConnector.updateImages();
+            graphicsConnector.changeTurn();
         }
         Dice.rollTheDice(this);
         if(!gameOver){
@@ -59,6 +59,7 @@ public class Board {
     }
 
     public void checkAi() {
+        graphicsConnector.changeTurn();
         if(whiteMove){
             if(player1>0){
                 ((FirstAi) playerOne).launch(this);
