@@ -42,7 +42,7 @@ public class GameRunner {
         expectiminimax = new Expectiminimax();
         board = new Board(this);
         Player player1 = createPlayer(playerOne);
-        Player player2 = createPlayer(playerOne);
+        Player player2 = createPlayer(playerTwo);
         board.setPlayers(playerOne, playerTwo);
         board.setPlayerPlayers(player1, player2);
         BoardUpdater.fillGameStart(board);
