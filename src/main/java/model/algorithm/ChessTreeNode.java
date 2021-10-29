@@ -8,6 +8,7 @@ public class ChessTreeNode extends TreeNode{
     private int xTo;
     private int yTo;
     private Board board;
+    private boolean doPromotion = false;
 
     public ChessTreeNode(Board board, double value, TreeNode parent, int nodeType, double probability, int xFrom, int yFrom, int xTo, int yTo) {
         super(value, parent, nodeType, probability);
@@ -32,6 +33,14 @@ public class ChessTreeNode extends TreeNode{
 
     public int getyTo() {
         return yTo;
+    }
+
+    public void setDoPromotion(boolean doPromotion) {
+        this.doPromotion = doPromotion;
+    }
+
+    public boolean isDoPromotion() {
+        return doPromotion;
     }
 
     public Board getBoard() {

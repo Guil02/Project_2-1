@@ -3,7 +3,7 @@ package model.algorithm;
 import controller.Board;
 import controller.BoardUpdater;
 import controller.Dice;
-import model.pieces.ChessPiece;
+import model.pieces.*;
 
 import java.util.ArrayList;
 
@@ -69,6 +69,14 @@ public class AiTree {
         for(int i = 0; i< validMoves.length; i++){
             for(int j = 0; j<validMoves[0].length; j++){
                 if(validMoves[i][j]){
+                    if(isPromotion(piece, j)){
+                        createPromotionChild(parent, piece, i, j, 2, doEvaluation, maxIsWhite, nodeType);
+                        createPromotionChild(parent, piece, i, j, 3, doEvaluation, maxIsWhite, nodeType);
+                        createPromotionChild(parent, piece, i, j, 4, doEvaluation, maxIsWhite, nodeType);
+                        createPromotionChild(parent, piece, i, j, 5, doEvaluation, maxIsWhite, nodeType);
+                        continue;
+                    }
+
                     Board copy = parent.getBoard().clone();
                     BoardUpdater.movePiece(copy, piece.getX(), piece.getY(), i,j);
 
@@ -81,6 +89,39 @@ public class AiTree {
                     parent.addChild(child);
                 }
             }
+        }
+    }
+
+    private void createPromotionChild(ChessTreeNode parent, ChessPiece piece, int xTo, int yTo, int pieceType, boolean doEvaluation, boolean maxIsWhite, int nodeType){
+        Board copy = parent.getBoard().clone();
+        BoardUpdater.removePiece(copy, piece.getX(), piece.getY());
+        ChessPiece promoted = BoardUpdater.createPiece(piece.isWhite(), xTo, yTo, pieceType);
+        BoardUpdater.addPiece(copy, promoted);
+
+        double value = 0;
+        if(doEvaluation){
+            value = staticBoardEvaluation(copy, maxIsWhite);
+        }
+
+        ChessTreeNode child = new ChessTreeNode(copy, value,parent,nodeType,1,piece.getX(),piece.getY(),xTo,yTo);
+        child.setDoPromotion(true);
+        parent.addChild(child);
+    }
+
+    private boolean isPromotion(ChessPiece piece, int yTo){
+        if(piece.getPieceType()==1){
+            if(piece.isWhite()&&yTo==0){
+                return true;
+            }
+            else if(!piece.isWhite()&&yTo==7){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        else{
+            return false;
         }
     }
 
@@ -182,7 +223,7 @@ public class AiTree {
                 return Double.MAX_VALUE;
             }
         }
-        return value - 0.5*enemyPiecesOnBoardValue;
+        return value - 0.7*enemyPiecesOnBoardValue;
     }
 
     private double getPieceValue(int pieceType){

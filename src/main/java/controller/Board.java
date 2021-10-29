@@ -1,9 +1,14 @@
 package controller;
 
 import model.pieces.ChessPiece;
+import model.player.FirstAi;
+import model.player.Player;
+
+import java.util.concurrent.TimeUnit;
 
 public class Board {
     private static final int BOARDSIZE = 8;
+    public static boolean hasMoved = false;
     private ChessPiece[][] boardModel = new ChessPiece[BOARDSIZE][BOARDSIZE];
     private GraphicsConnector graphicsConnector;
     private GameRunner gameRunner;
@@ -13,7 +18,10 @@ public class Board {
     public static final boolean GUI_ON = true;
     private int player1 = 0;
     private int player2 = 0;
+    Player playerOne;
+    Player playerTwo;
     private boolean isOriginal = false;
+    private int amountOfTurns = 1;
 
     public Board(GameRunner gameRunner) {
         isOriginal = true;
@@ -30,20 +38,39 @@ public class Board {
     }
 
     public void changeTurn(){
+        amountOfTurns++;
         whiteMove = !whiteMove;
+        if(GUI_ON){
+            graphicsConnector.changeTurn();
+            graphicsConnector.updateImages();
+        }
         Dice.rollTheDice(this);
-        checkAi();
+        if(!gameOver){
+//            if(isOriginal()){
+////                System.out.println("amount of turns played: "+amountOfTurns/2);
+//            }
+            checkAi();
+        }
+        else{
+//            if(isOriginal()){
+////                System.out.println("amount of turns played: "+amountOfTurns/2);
+//            }
+        }
     }
 
     public void checkAi() {
         if(whiteMove){
             if(player1>0){
-                gameRunner.doAiMove(this, player1);
+                ((FirstAi) playerOne).launch(this);
+//                graphicsConnector.updateImages();
+//                gameRunner.doAiMove(this, player1);
             }
         }
         else{
             if(player2 > 0){
-                gameRunner.doAiMove(this, player2);
+                ((FirstAi) playerTwo).launch(this);
+//                graphicsConnector.updateImages();
+//                gameRunner.doAiMove(this, player2);
             }
         }
     }
@@ -101,7 +128,6 @@ public class Board {
     }
 
     public void setPlayers(int player1, int player2){
-        System.out.println("playerOne: "+player1+"\nplayerTwo: "+player2);
         this.player1 = player1;
         this.player2 = player2;
     }
@@ -134,5 +160,10 @@ public class Board {
         }
         Board board = new Board(copy,graphicsConnector, gameOver, whiteMove, movablePiece);
         return board;
+    }
+
+    public void setPlayerPlayers(Player player1, Player player2) {
+        this.playerOne = player1;
+        this.playerTwo = player2;
     }
 }

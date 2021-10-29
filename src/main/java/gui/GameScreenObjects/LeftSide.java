@@ -49,10 +49,10 @@ public class LeftSide extends VBox {
 
     public void doTimeMagic() {
         if(whiteTime==1){
-            gameScreen.endGame(false);
+//            gameScreen.endGame(false);
         }
         if(blackTime==1){
-            gameScreen.endGame(true);
+//            gameScreen.endGame(true);
         }
         if (isWhiteTurn) {
             whiteTime--;

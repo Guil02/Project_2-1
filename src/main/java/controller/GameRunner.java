@@ -1,14 +1,15 @@
 package controller;
 
-import com.sun.source.tree.Tree;
 import gui.ChessGUI;
 import model.algorithm.AiTree;
-import model.algorithm.ChessTreeNode;
 import model.algorithm.Expectiminimax;
-import model.algorithm.TreeNode;
 import model.pieces.ChessPiece;
+import model.pieces.KingPiece;
+import model.pieces.PawnPiece;
+import model.player.FirstAi;
+import model.player.HumanPlayer;
+import model.player.Player;
 
-import java.util.concurrent.TimeUnit;
 
 public class GameRunner {
     private Board board;
@@ -29,7 +30,7 @@ public class GameRunner {
             chessGUI.launchGUI(graphicsConnector);
         }
         else{
-            init(0,0);
+            init(1,1);
         }
     }
 
@@ -40,10 +41,23 @@ public class GameRunner {
         aiTree = new AiTree();
         expectiminimax = new Expectiminimax();
         board = new Board(this);
+        Player player1 = createPlayer(playerOne);
+        Player player2 = createPlayer(playerOne);
         board.setPlayers(playerOne, playerTwo);
+        board.setPlayerPlayers(player1, player2);
         BoardUpdater.fillGameStart(board);
         graphicsConnector.setBoard(board);
         Dice.firstMoveDiceRoll(board);
+//        board.checkAi();
+    }
+
+    public Player createPlayer(int playerType){
+        if(playerType == 0){
+            return new HumanPlayer();
+        }
+        else{
+            return new FirstAi(board);
+        }
     }
 
     @Override
@@ -55,63 +69,6 @@ public class GameRunner {
             System.err.println("failed to make copy.");
         }
         return new GameRunner();
-    }
-
-    public void doAiMove(Board board, int aiType){
-        if(aiType ==1){
-            ruleBasedAgent(board);
-        }
-    }
-
-    public void ruleBasedAgent(Board board){
-        System.out.println(board.getWhiteMove());
-        Board copy = board.clone();
-        ChessTreeNode root = new ChessTreeNode(copy, 0, null, 1, 1, 0, 0, 0, 0);
-        boolean maxIsWhite = board.getWhiteMove();
-        aiTree.createChildren(root, false, maxIsWhite);
-
-        for(TreeNode node: root.getChildren()){
-            ChessTreeNode subNode = (ChessTreeNode) node;
-            aiTree.createChildren(subNode, false, maxIsWhite);
-        }
-
-        for(TreeNode node: root.getChildren()){
-            for(TreeNode node1: node.getChildren()){
-                ChessTreeNode subNode = (ChessTreeNode) node1;
-                aiTree.createChildren(subNode, false, maxIsWhite);
-            }
-        }
-
-        for(TreeNode node: root.getChildren()){
-            for(TreeNode node1: node.getChildren()){
-                for(TreeNode node2: node1.getChildren()){
-                    ChessTreeNode subNode = (ChessTreeNode) node2;
-                    aiTree.createChildren(subNode, true, maxIsWhite);
-                }
-            }
-        }
-        System.out.println(board.getWhiteMove());
-        double res = expectiminimax.expectiminimax(root, 10);
-        System.out.println(res);
-        double maxValue = Double.MIN_VALUE;
-        ChessTreeNode maxNode = (ChessTreeNode) root.getChildren().get(0);
-        for(TreeNode child: root.getChildren()){
-            ChessTreeNode subChild = (ChessTreeNode) child;
-            if(subChild.getValue()>=maxValue){
-                if(subChild.getValue() == maxValue){
-                    if(Math.random()<0.5){
-                        maxValue = subChild.getValue();
-                        maxNode = subChild;
-                    }
-                    continue;
-                }
-                maxValue = subChild.getValue();
-                maxNode = subChild;
-            }
-        }
-
-        printBoard(board.getBoardModel(), board);
-        BoardUpdater.movePiece(board, maxNode.getxFrom(), maxNode.getyFrom(), maxNode.getxTo(), maxNode.getyTo());
     }
 
     public static void printBoard(ChessPiece[][] boardModel, Board board) {

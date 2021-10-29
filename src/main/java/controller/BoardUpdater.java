@@ -3,6 +3,7 @@ package controller;
 import model.pieces.*;
 
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 public class BoardUpdater {
 
@@ -82,6 +83,16 @@ public class BoardUpdater {
         if(!board.getGameOver()&& board.isOriginal()) {
             startPromotionDialog(board, pieceToMove, xTo, yTo);
         }
+        if(board.getGameOver()&& board.isOriginal()){
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+            if(Board.GUI_ON){
+                board.getGraphicsConnector().updateImages();
+            }
+        }
     }
 
     public static void startPromotionDialog(Board board, ChessPiece targetPiece, int xTo, int yTo) {
@@ -93,6 +104,42 @@ public class BoardUpdater {
         removePiece(board, piece.getX(),piece.getY());
         addPiece(board, piece);
         board.getGraphicsConnector().updateImages();
+    }
+
+    public static ChessPiece createPiece(boolean isWhite, int x, int y, int pieceType){
+        return switch (pieceType) {
+            case 2 -> new KnightPiece(isWhite, x, y);
+            case 3 -> new BishopPiece(isWhite, x, y);
+            case 4 -> new RookPiece(isWhite, x, y);
+            case 5 -> new QueenPiece(isWhite, x, y);
+            default -> null;
+        };
+    }
+
+    public static boolean containsKing(Board board, boolean white){
+        if(white){
+            for(int i = 0; i<Board.getBoardSize(); i++){
+                for(int j = 0; j<Board.getBoardSize(); j++){
+                    if(board.getPieceOffField(i,j)!=null){
+                        if(board.getCharOffField(i,j)=='K'){
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        else{
+            for(int i = 0; i<Board.getBoardSize(); i++){
+                for(int j = 0; j<Board.getBoardSize(); j++){
+                    if(board.getPieceOffField(i,j)!=null){
+                        if(board.getCharOffField(i,j)=='k'){
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
     }
 
 

@@ -11,6 +11,7 @@ public class StartAIButton extends Menu {
         MenuItem m1 = new MenuItem("start");
         setStyle("-fx-font: 10px \"Verdana\";");
         m1.setStyle("-fx-font: 10px \"Verdana\";");
+        setText("start ai");
         EventHandler<ActionEvent> event1 = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {

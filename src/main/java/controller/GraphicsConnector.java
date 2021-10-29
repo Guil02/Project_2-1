@@ -357,6 +357,10 @@ public class GraphicsConnector {
         chessGUI.updateImages();
     }
 
+    public void changeTurn(){
+        chessGUI.updateDisplaySize(chessGUI.getHeight());
+    }
+
     public void setWin(boolean white){
         chessGUI.setWin(white);
     }

@@ -171,6 +171,18 @@ public abstract class ChessPiece {
 
     }
 
+    @Override
+    public String toString() {
+        return "ChessPiece{" +
+                "isWhite=" + isWhite +
+                ", hasValidMove=" + hasValidMove +
+                ", x=" + x +
+                ", y=" + y +
+                ", pieceType=" + pieceType +
+                ", BOARDSIZE=" + BOARDSIZE +
+                '}';
+    }
+
     public int getPieceType() {
         return pieceType;
     }

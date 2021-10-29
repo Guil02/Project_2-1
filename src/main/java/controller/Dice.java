@@ -99,5 +99,6 @@ public class Dice {
         }
         else
             board.setMovablePiece('P');
+        rollTheDice(board);
     }
 }

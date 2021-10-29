@@ -16,6 +16,12 @@ public class PawnPiece extends ChessPiece {
      */
     public PawnPiece(boolean white, int x, int y) {
         super(white, x, y,1);
+        if(isWhite && y != 6){
+            firstMove = false;
+        }
+        else if(!isWhite && y != 1){
+            firstMove = false;
+        }
     }
 
     public boolean firstMove = true;
@@ -76,30 +82,32 @@ public class PawnPiece extends ChessPiece {
         }
 
         if(isWhite) {
-            if (board.getPieceOffField(x, y - 1)==null){
+            if (withinBoundsOneVariable(y-1)&&board.getPieceOffField(x, y - 1)==null){
                 validMoves[x][y-1] = true;
 
+                if(firstMove && board.getPieceOffField(x, y - 2)==null){
+                    validMoves[x][y-2] = true;
+                }
             }
 
-            if(firstMove && board.getPieceOffField(x, y - 2)==null){
-                validMoves[x][y-2] = true;
-            }
         }
 
         if(!isWhite){
-            if (board.getPieceOffField(x, y + 1)==null){
+            if (withinBoundsOneVariable(y+1)&&board.getPieceOffField(x, y + 1)==null){
                 validMoves[x][y+1] = true;
+
+                if(firstMove && board.getPieceOffField(x, y + 2)==null){
+                    validMoves[x][y+2] = true;
+                }
             }
 
-            if(firstMove && board.getPieceOffField(x, y + 2)==null){
-                validMoves[x][y+2] = true;
-            }
         }
 
         validCaptures(board, validMoves);
 
         enPassant(board, validMoves);
 
+        setHasValidMove(true);
         if(checkAllFalse(validMoves)){
             setHasValidMove(false);
         }
