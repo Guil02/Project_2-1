@@ -129,9 +129,11 @@ public class FirstAi extends Player {
                     }
                     else{
                         BoardUpdater.movePiece(board, move.getxFrom(), move.getyFrom(), move.getxTo(), move.getyTo());
-                        Platform.runLater(
-                                new Thread(board::launchGuiUpdate)
-                        );
+                        if(Board.GUI_ON){
+                            Platform.runLater(
+                                    new Thread(board::launchGuiUpdate)
+                            );
+                        }
                     }
                 }
                 catch(Exception e){
@@ -251,8 +253,8 @@ public class FirstAi extends Player {
 //        System.out.println(highestNodes.size());
         maxNode = highestNodes.get(rand.nextInt(highestNodes.size()));
 
-//        System.out.println("move from: x=" + maxNode.getxFrom() + " y=" + maxNode.getyFrom() + " to: x=" + maxNode.getxTo() + " y=" + maxNode.getyTo());
-//        printBoard(board.getBoardModel(), board);
+        System.out.println("move from: x=" + maxNode.getxFrom() + " y=" + maxNode.getyFrom() + " to: x=" + maxNode.getxTo() + " y=" + maxNode.getyTo());
+        printBoard(board.getBoardModel(), board);
         maxima = maxNode;
     }
 

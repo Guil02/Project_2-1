@@ -15,7 +15,7 @@ public class Board {
     private boolean gameOver;
     private boolean whiteMove = true;
     private char movablePiece;
-    public static final boolean GUI_ON = true;
+    public static final boolean GUI_ON = false;
     private int player1 = 0;
     private int player2 = 0;
     Player playerOne;

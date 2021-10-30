@@ -48,7 +48,7 @@ public class GameRunner {
         BoardUpdater.fillGameStart(board);
         graphicsConnector.setBoard(board);
         Dice.firstMoveDiceRoll(board);
-//        board.checkAi();
+        board.checkAi();
     }
 
     public Player createPlayer(int playerType){
