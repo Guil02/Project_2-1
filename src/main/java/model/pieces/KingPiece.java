@@ -1,6 +1,7 @@
 package model.pieces;
 
 import controller.Board;
+import controller.BoardUpdater;
 
 import java.util.*;
 
@@ -25,6 +26,12 @@ public class KingPiece extends ChessPiece {
     public void move(Board board, int new_x, int new_y) {
         this.hasNotMoved = false; //TODO add castling move
         ChessPiece.setEnPassantActive(false);
+        if(new_x == 2 && x==4){
+            BoardUpdater.movePiece(board, 0,new_y,3,new_y);
+        }
+        else if(new_x == 6 && x == 4){
+            BoardUpdater.movePiece(board, 7,new_y, 5,new_y);
+        }
         super.move(board, new_x, new_y);
     }
 
