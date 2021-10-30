@@ -37,12 +37,14 @@ public class FirstAi extends Player {
     }
 
     public void launch(Board board){
-        if(Board.GUI_ON){
+        if(Board.GUI_ON && false){
 
-
+            System.out.println(Thread.currentThread().getName());
             Platform.runLater(
+
             new Thread(() -> {
                 try{
+                    System.out.println(Thread.currentThread().getName());
 //                    Thread.sleep(1000);
                     ruleBasedAgent(board);
                     ChessTreeNode move = getMaxima();
@@ -83,7 +85,7 @@ public class FirstAi extends Player {
         else{
             new Thread(() -> {
                 try{
-//                    Thread.sleep(1000);
+                    Thread.sleep(1000);
                     ruleBasedAgent(board);
                     ChessTreeNode move = getMaxima();
                     if(move.isDoPromotion()){
@@ -95,10 +97,38 @@ public class FirstAi extends Player {
                         ChessPiece promoted = BoardUpdater.createPiece(isWhite, move.getxTo(), move.getyTo(), pieceType);
                         BoardUpdater.removePiece(board, move.getxFrom(), move.getyFrom());
                         BoardUpdater.addPiece(board, promoted);
+                        if(!BoardUpdater.containsKing(board, !isWhite)){
+                            if(isWhite){
+                                if(Board.GUI_ON && board.isOriginal()){
+                                    Platform.runLater(
+                                        new Thread(()->{
+                                            board.getGraphicsConnector().setWin(true);
+                                        })
+                                    );
+                                }
+                                board.setGameOver(true);
+                            }
+                            else{
+                                if(Board.GUI_ON && board.isOriginal()){
+                                    Platform.runLater(
+                                            new Thread(()->{
+                                                board.getGraphicsConnector().setWin(false);
+                                            })
+                                    );
+                                }
+                                board.setGameOver(true);
+                            }
+                        }
+                        Platform.runLater(
+                            new Thread(board::launchGuiUpdate)
+                        );
                         board.changeTurn();
                     }
                     else{
                         BoardUpdater.movePiece(board, move.getxFrom(), move.getyFrom(), move.getxTo(), move.getyTo());
+                        Platform.runLater(
+                                new Thread(board::launchGuiUpdate)
+                        );
                     }
                 }
                 catch(Exception e){
@@ -117,21 +147,77 @@ public class FirstAi extends Player {
 
         for (TreeNode node : root.getChildren()) {
             ChessTreeNode subNode = (ChessTreeNode) node;
-            aiTree.createChildren(subNode, true, maxIsWhite);
+            aiTree.createChildren(subNode, false, maxIsWhite);
         }
 
+        for (TreeNode node : root.getChildren()) {
+            for (TreeNode node1 : node.getChildren()) {
+                ChessTreeNode subNode = (ChessTreeNode) node1;
+                aiTree.createChildren(subNode, false, maxIsWhite);
+            }
+        }
+
+        for (TreeNode node : root.getChildren()) {
+            for (TreeNode node1 : node.getChildren()) {
+                for (TreeNode node2 : node1.getChildren()) {
+                    ChessTreeNode subNode = (ChessTreeNode) node2;
+                    aiTree.createChildren(subNode, true, maxIsWhite);
+                }
+            }
+        }
+//
 //        for (TreeNode node : root.getChildren()) {
 //            for (TreeNode node1 : node.getChildren()) {
-//                ChessTreeNode subNode = (ChessTreeNode) node1;
-//                aiTree.createChildren(subNode, false, maxIsWhite);
+//                for (TreeNode node2 : node1.getChildren()) {
+//                    for(TreeNode node3: node2.getChildren()){
+//                        ChessTreeNode subNode = (ChessTreeNode) node3;
+//                        aiTree.createChildren(subNode, false, maxIsWhite);
+//                    }
+//                }
 //            }
 //        }
 //
 //        for (TreeNode node : root.getChildren()) {
 //            for (TreeNode node1 : node.getChildren()) {
 //                for (TreeNode node2 : node1.getChildren()) {
-//                    ChessTreeNode subNode = (ChessTreeNode) node2;
-//                    aiTree.createChildren(subNode, true, maxIsWhite);
+//                    for(TreeNode node3: node2.getChildren()){
+//                        for(TreeNode node4: node3.getChildren()){
+//                            ChessTreeNode subNode = (ChessTreeNode) node4;
+//                            aiTree.createChildren(subNode, false, maxIsWhite);
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
+//        for (TreeNode node : root.getChildren()) {
+//            for (TreeNode node1 : node.getChildren()) {
+//                for (TreeNode node2 : node1.getChildren()) {
+//                    for(TreeNode node3: node2.getChildren()){
+//                        for(TreeNode node4: node3.getChildren()){
+//                            for(TreeNode node5: node4.getChildren()){
+//                                ChessTreeNode subNode = (ChessTreeNode) node5;
+//                                aiTree.createChildren(subNode, false, maxIsWhite);
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
+//        for (TreeNode node : root.getChildren()) {
+//            for (TreeNode node1 : node.getChildren()) {
+//                for (TreeNode node2 : node1.getChildren()) {
+//                    for(TreeNode node3: node2.getChildren()){
+//                        for(TreeNode node4: node3.getChildren()){
+//                            for(TreeNode node5: node4.getChildren()){
+//                                for(TreeNode node6: node5.getChildren()){
+//                                    ChessTreeNode subNode = (ChessTreeNode) node6;
+//                                    aiTree.createChildren(subNode, true, maxIsWhite);
+//                                }
+//                            }
+//                        }
+//                    }
 //                }
 //            }
 //        }

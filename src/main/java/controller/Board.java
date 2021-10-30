@@ -40,10 +40,7 @@ public class Board {
     public void changeTurn(){
         amountOfTurns++;
         whiteMove = !whiteMove;
-        if(GUI_ON){
-            graphicsConnector.updateImages();
-            graphicsConnector.changeTurn();
-        }
+
         Dice.rollTheDice(this);
         if(!gameOver){
 //            if(isOriginal()){
@@ -59,7 +56,7 @@ public class Board {
     }
 
     public void checkAi() {
-        graphicsConnector.changeTurn();
+//        graphicsConnector.changeTurn();
         if(whiteMove){
             if(player1>0){
                 ((FirstAi) playerOne).launch(this);
@@ -161,6 +158,18 @@ public class Board {
         }
         Board board = new Board(copy,graphicsConnector, gameOver, whiteMove, movablePiece);
         return board;
+    }
+
+    public void launchGuiUpdate(){
+        if(GUI_ON){
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            graphicsConnector.updateImages();
+            graphicsConnector.changeTurn();
+        }
     }
 
     public void setPlayerPlayers(Player player1, Player player2) {

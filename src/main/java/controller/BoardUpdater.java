@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.application.Platform;
 import model.pieces.*;
 
 import java.util.Arrays;
@@ -54,13 +55,21 @@ public class BoardUpdater {
             if (board.getPieceOffField(x,y).getPieceChar() == 'K') {
                 board.getBoardModel()[x][y] = null;
                 if(Board.GUI_ON && board.isOriginal()){
-                    board.getGraphicsConnector().setWin(false);
+                    Platform.runLater(
+                        new Thread(()->{
+                            board.getGraphicsConnector().setWin(false);
+                        })
+                    );
                 }
                 board.setGameOver(true);
             } else if (board.getPieceOffField(x,y).getPieceChar() == 'k') {
                 board.getBoardModel()[x][y] = null;
                 if(Board.GUI_ON && board.isOriginal()){
-                    board.getGraphicsConnector().setWin(true);
+                    Platform.runLater(
+                            new Thread(()->{
+                                board.getGraphicsConnector().setWin(true);
+                            })
+                    );
                 }
                 board.setGameOver(true);
             }
@@ -89,9 +98,9 @@ public class BoardUpdater {
 //            } catch (InterruptedException e) {
 //                e.printStackTrace();
 //            }
-            if(Board.GUI_ON){
-                board.getGraphicsConnector().updateImages();
-            }
+//            if(Board.GUI_ON){
+//                board.getGraphicsConnector().updateImages();
+//            }
         }
     }
 
