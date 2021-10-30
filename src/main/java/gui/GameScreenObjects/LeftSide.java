@@ -27,23 +27,23 @@ public class LeftSide extends VBox {
     public LeftSide(GameScreen gameScreen) {
         this.gameScreen = gameScreen;
         labelOne = new GoodLabel(this);
-        labelOne.setText(timeClean(blackTime));
+//        labelOne.setText(timeClean(blackTime));
         labelTwo = new GoodLabel(this);
-        labelTwo.setText(timeClean(whiteTime));
+//        labelTwo.setText(timeClean(whiteTime));
         labelFirst = new GoodLabel(this);
         labelSecond = new GoodLabel(this);
         labelThird = new GoodLabel(this);
 
-        time = new Timeline();
-        time.setCycleCount(Timeline.INDEFINITE);
-        KeyFrame frame = new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                doTimeMagic();
-            }
-        });
-        time.getKeyFrames().add(frame);
-        time.playFromStart();
+//        time = new Timeline();
+//        time.setCycleCount(Timeline.INDEFINITE);
+//        KeyFrame frame = new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                doTimeMagic();
+//            }
+//        });
+//        time.getKeyFrames().add(frame);
+//        time.playFromStart();
         getChildren().addAll(labelOne, labelFirst, labelSecond, labelThird, labelTwo);
     }
 
@@ -55,15 +55,15 @@ public class LeftSide extends VBox {
 //            gameScreen.endGame(true);
         }
         if (isWhiteTurn) {
-            whiteTime--;
-            labelTwo.setText(timeClean(whiteTime));
-            labelFirst.setText("");
-            labelThird.setText("White's turn!");
+//            whiteTime--;
+//            labelTwo.setText(timeClean(whiteTime));
+//            labelFirst.setText("");
+//            labelThird.setText("White's turn!");
         } else {
-            blackTime--;
-            labelOne.setText(timeClean(blackTime));
-            labelThird.setText("");
-            labelFirst.setText("Black's turn!");
+//            blackTime--;
+//            labelOne.setText(timeClean(blackTime));
+//            labelThird.setText("");
+//            labelFirst.setText("Black's turn!");
         }
     }
     public String timeClean(int a){
@@ -93,7 +93,7 @@ public class LeftSide extends VBox {
     }
 
     public void stopTime(){
-        time.stop();
+//        time.stop();
         labelFirst.setText("");
         labelThird.setText("");
     }

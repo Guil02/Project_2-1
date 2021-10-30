@@ -88,15 +88,15 @@ public class FirstAi extends Player {
         else{
             new Thread(() -> {
                 try{
-                    Thread.sleep(1000);
+                    Thread.sleep(50);
                     ruleBasedAgent(board);
                     ChessTreeNode move = getMaxima();
                     if(move.isDoPromotion()){
-                        System.err.println("---------------------------------------------------------------------");
+//                        System.err.println("---------------------------------------------------------------------");
                         boolean isWhite = board.getPieceOffField(move.getxFrom(), move.getyFrom()).isWhite();
                         int pieceType = getPieceType(move.getBoard().getCharOffField(move.getxTo(), move.getyTo()));
-                        System.out.println(move.getxTo()+" "+ move.getyTo());
-                        printBoard(board.getBoardModel(), board);
+//                        System.out.println(move.getxTo()+" "+ move.getyTo());
+//                        printBoard(board.getBoardModel(), board);
                         ChessPiece promoted = BoardUpdater.createPiece(isWhite, move.getxTo(), move.getyTo(), pieceType);
                         BoardUpdater.removePiece(board, move.getxFrom(), move.getyFrom());
                         BoardUpdater.addPiece(board, promoted);
@@ -229,6 +229,7 @@ public class FirstAi extends Player {
         double maxValue = Double.MIN_VALUE;
         ArrayList<ChessTreeNode> highestNodes = new ArrayList<>();
         ChessTreeNode maxNode = (ChessTreeNode) root.getChildren().get(0);
+        highestNodes.add(maxNode);
         for (TreeNode child : root.getChildren()) {
             ChessTreeNode subChild = (ChessTreeNode) child;
             if (subChild.getValue() >= maxValue) {
@@ -247,7 +248,7 @@ public class FirstAi extends Player {
             }
         }
         Random rand = new Random();
-        System.out.println(highestNodes.size());
+//        System.out.println(highestNodes.size());
         maxNode = highestNodes.get(rand.nextInt(highestNodes.size()));
 
 //        System.out.println("move from: x=" + maxNode.getxFrom() + " y=" + maxNode.getyFrom() + " to: x=" + maxNode.getxTo() + " y=" + maxNode.getyTo());
