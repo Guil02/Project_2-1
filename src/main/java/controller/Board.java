@@ -162,11 +162,11 @@ public class Board {
 
     public void launchGuiUpdate(){
         if(GUI_ON){
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
             graphicsConnector.updateImages();
             graphicsConnector.changeTurn();
         }

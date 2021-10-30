@@ -10,6 +10,9 @@ import model.algorithm.Expectiminimax;
 import model.algorithm.TreeNode;
 import model.pieces.ChessPiece;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 public class FirstAi extends Player {
     private AiTree aiTree = new AiTree();
     private Expectiminimax expectiminimax = new Expectiminimax();
@@ -224,28 +227,29 @@ public class FirstAi extends Player {
         double res = expectiminimax.expectiminimax(root, 10);
 //        System.out.println(res);
         double maxValue = Double.MIN_VALUE;
+        ArrayList<ChessTreeNode> highestNodes = new ArrayList<>();
         ChessTreeNode maxNode = (ChessTreeNode) root.getChildren().get(0);
         for (TreeNode child : root.getChildren()) {
             ChessTreeNode subChild = (ChessTreeNode) child;
             if (subChild.getValue() >= maxValue) {
                 if (subChild.getValue() == maxValue) {
-                    if (Math.random() < 0.5) {
-                        maxValue = subChild.getValue();
-                        maxNode = subChild;
-                    }
+                    highestNodes.add(subChild);
+//                    if (Math.random() < 0.5) {
+//                        maxValue = subChild.getValue();
+//                        maxNode = subChild;
+//                    }
                     continue;
                 }
+                highestNodes.clear();
+                highestNodes.add(subChild);
                 maxValue = subChild.getValue();
-                maxNode = subChild;
+//                maxNode = subChild;
             }
         }
-        if (board.getPlayer1() > 0 && board.getPlayer2() > 0) {
-//            try {
-//                TimeUnit.SECONDS.sleep(0);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-        }
+        Random rand = new Random();
+        System.out.println(highestNodes.size());
+        maxNode = highestNodes.get(rand.nextInt(highestNodes.size()));
+
 //        System.out.println("move from: x=" + maxNode.getxFrom() + " y=" + maxNode.getyFrom() + " to: x=" + maxNode.getxTo() + " y=" + maxNode.getyTo());
 //        printBoard(board.getBoardModel(), board);
         maxima = maxNode;
