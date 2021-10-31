@@ -21,7 +21,8 @@ public class PlayerChoiceBox extends ChoiceBox<String> {
         setMaxSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         setStyle("-fx-font: 30px \"Verdana\";");
         getItems().add("Human");
-        getItems().add("AI");
+        getItems().add("Search AI");
+        getItems().add("Random AI");
         setOnAction(event -> {
             int selectedIndex = getSelectionModel().getSelectedIndex();
             playerSelectionChoiceBox.setPlayer(number, selectedIndex);

@@ -56,19 +56,28 @@ public class Board {
     }
 
     public void checkAi() {
-//        graphicsConnector.changeTurn();
         if(whiteMove){
             if(player1>0){
-                ((FirstAi) playerOne).launch(this);
-//                graphicsConnector.updateImages();
-//                gameRunner.doAiMove(this, player1);
+                if(player1==1){
+                    ((FirstAi) playerOne).launch(this);
+                }
+                else if(player1==2){
+                    System.out.println("AI is not yet implemented");
+                    //TODO add random ai
+                    // ((BaselineAI) playerOne).launch(this);
+                }
             }
         }
         else{
             if(player2 > 0){
-                ((FirstAi) playerTwo).launch(this);
-//                graphicsConnector.updateImages();
-//                gameRunner.doAiMove(this, player2);
+                if(player2==1){
+                    ((FirstAi) playerTwo).launch(this);
+                }
+                else if(player2==2){
+                    System.out.println("AI is not yet implemented");
+                    //TODO add random ai
+                    // ((BaselineAI) playerTwo).launch(this);
+                }
             }
         }
     }
