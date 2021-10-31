@@ -24,6 +24,7 @@ public class FirstAi extends Player {
     }
 
     public void launch(Board board){
+        System.gc();
         new Thread(() -> {
             try{
                 Thread.sleep(50);
