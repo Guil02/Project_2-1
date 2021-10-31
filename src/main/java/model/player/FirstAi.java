@@ -23,124 +23,66 @@ public class FirstAi extends Player {
         this.board = board;
     }
 
-    /**
-     * When an object implementing interface {@code Runnable} is used
-     * to create a thread, starting the thread causes the object's
-     * {@code run} method to be called in that separately executing
-     * thread.
-     * <p>
-     * The general contract of the method {@code run} is that it may
-     * take any action whatsoever.
-     *
-     * @see Thread#run()
-     */
-    @Override
-    public void run() {
-        ruleBasedAgent(board);
-    }
-
     public void launch(Board board){
-        if(Board.GUI_ON && false){
-
-            System.out.println(Thread.currentThread().getName());
-            Platform.runLater(
-
-            new Thread(() -> {
-                try{
-                    System.out.println(Thread.currentThread().getName());
-//                    Thread.sleep(1000);
-                    ruleBasedAgent(board);
-                    ChessTreeNode move = getMaxima();
-                    if(move.isDoPromotion()){
-                        System.err.println("---------------------------------------------------------------------");
-                        boolean isWhite = board.getPieceOffField(move.getxFrom(), move.getyFrom()).isWhite();
-                        int pieceType = getPieceType(move.getBoard().getCharOffField(move.getxTo(), move.getyTo()));
-                        System.out.println(move.getxTo()+" "+ move.getyTo());
-                        printBoard(board.getBoardModel(), board);
-                        ChessPiece promoted = BoardUpdater.createPiece(isWhite, move.getxTo(), move.getyTo(), pieceType);
-                        BoardUpdater.removePiece(board, move.getxFrom(), move.getyFrom());
-                        BoardUpdater.addPiece(board, promoted);
-                        if(!BoardUpdater.containsKing(board, !isWhite)){
-                            if(isWhite){
-                                if(Board.GUI_ON && board.isOriginal()){
-                                    board.getGraphicsConnector().setWin(true);
-                                }
-                                board.setGameOver(true);
-                            }
-                            else{
-                                if(Board.GUI_ON && board.isOriginal()){
-                                    board.getGraphicsConnector().setWin(false);
-                                }
-                                board.setGameOver(true);
-                            }
-                        }
-                        board.changeTurn();
-                    }
-                    else{
-                        BoardUpdater.movePiece(board, move.getxFrom(), move.getyFrom(), move.getxTo(), move.getyTo());
-                    }
-                }
-                catch(Exception e){
-                    e.printStackTrace();
-                }
-            }));
-        }
-        else{
-            new Thread(() -> {
-                try{
-                    Thread.sleep(50);
-                    ruleBasedAgent(board);
-                    ChessTreeNode move = getMaxima();
-                    if(move.isDoPromotion()){
+        new Thread(() -> {
+            try{
+                Thread.sleep(50);
+                ruleBasedAgent(board);
+                ChessTreeNode move = getMaxima();
+                if(move.isDoPromotion()){
 //                        System.err.println("---------------------------------------------------------------------");
-                        boolean isWhite = board.getPieceOffField(move.getxFrom(), move.getyFrom()).isWhite();
-                        int pieceType = getPieceType(move.getBoard().getCharOffField(move.getxTo(), move.getyTo()));
+                    boolean isWhite = board.getPieceOffField(move.getxFrom(), move.getyFrom()).isWhite();
+                    int pieceType = getPieceType(move.getBoard().getCharOffField(move.getxTo(), move.getyTo()));
 //                        System.out.println(move.getxTo()+" "+ move.getyTo());
 //                        printBoard(board.getBoardModel(), board);
-                        ChessPiece promoted = BoardUpdater.createPiece(isWhite, move.getxTo(), move.getyTo(), pieceType);
-                        BoardUpdater.removePiece(board, move.getxFrom(), move.getyFrom());
-                        BoardUpdater.addPiece(board, promoted);
-                        if(!BoardUpdater.containsKing(board, !isWhite)){
-                            if(isWhite){
-                                if(Board.GUI_ON && board.isOriginal()){
-                                    Platform.runLater(
+                    ChessPiece promoted = BoardUpdater.createPiece(isWhite, move.getxTo(), move.getyTo(), pieceType);
+                    BoardUpdater.removePiece(board, move.getxFrom(), move.getyFrom());
+                    BoardUpdater.addPiece(board, promoted);
+                    if(!BoardUpdater.containsKing(board, !isWhite)){
+                        if(isWhite){
+                            if(Board.GUI_ON && board.isOriginal()){
+                                Platform.runLater(
+                                    new Thread(()->{
+                                        board.getGraphicsConnector().setWin(true);
+                                    })
+                                );
+                            }
+                            board.setGameOver(true);
+                        }
+                        else{
+                            if(Board.GUI_ON && board.isOriginal()){
+                                Platform.runLater(
                                         new Thread(()->{
-                                            board.getGraphicsConnector().setWin(true);
+                                            board.getGraphicsConnector().setWin(false);
                                         })
-                                    );
-                                }
-                                board.setGameOver(true);
+                                );
                             }
-                            else{
-                                if(Board.GUI_ON && board.isOriginal()){
-                                    Platform.runLater(
-                                            new Thread(()->{
-                                                board.getGraphicsConnector().setWin(false);
-                                            })
-                                    );
-                                }
-                                board.setGameOver(true);
-                            }
+                            board.setGameOver(true);
                         }
+                    }
+                    if(Board.GUI_ON){
                         Platform.runLater(
-                            new Thread(board::launchGuiUpdate)
+                                new Thread(board::launchGuiUpdate)
                         );
-                        board.changeTurn();
                     }
-                    else{
-                        BoardUpdater.movePiece(board, move.getxFrom(), move.getyFrom(), move.getxTo(), move.getyTo());
-                        if(Board.GUI_ON){
-                            Platform.runLater(
-                                    new Thread(board::launchGuiUpdate)
-                            );
-                        }
+                    board.changeTurn();
+                }
+                else{
+                    if(!Board.GUI_ON) printBoard(board.getBoardModel(), board);
+                    BoardUpdater.movePiece(board, move.getxFrom(), move.getyFrom(), move.getxTo(), move.getyTo());
+                    if(Board.GUI_ON){
+                        Platform.runLater(
+                                new Thread(board::launchGuiUpdate)
+                        );
                     }
                 }
-                catch(Exception e){
-                    e.printStackTrace();
-                }
-            }).start();
-        }
+            }
+            catch(Exception e){
+                System.err.println("Piece might already have been moved due to glitch in the threading");
+                e.printStackTrace();
+            }
+        }).start();
+
     }
 
     public void ruleBasedAgent(Board board) {
@@ -253,8 +195,8 @@ public class FirstAi extends Player {
 //        System.out.println(highestNodes.size());
         maxNode = highestNodes.get(rand.nextInt(highestNodes.size()));
 
-        System.out.println("move from: x=" + maxNode.getxFrom() + " y=" + maxNode.getyFrom() + " to: x=" + maxNode.getxTo() + " y=" + maxNode.getyTo());
-        printBoard(board.getBoardModel(), board);
+//        System.out.println("move from: x=" + maxNode.getxFrom() + " y=" + maxNode.getyFrom() + " to: x=" + maxNode.getxTo() + " y=" + maxNode.getyTo());
+//        printBoard(board.getBoardModel(), board);
         maxima = maxNode;
     }
 

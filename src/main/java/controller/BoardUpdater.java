@@ -84,10 +84,12 @@ public class BoardUpdater {
 
     public static void movePiece(Board board, int xFrom, int yFrom, int xTo, int yTo) {
         ChessPiece pieceToMove = board.getPieceOffField(xFrom, yFrom);
-        pieceToMove.move(board, xTo,yTo);
-        capturePiece(board, xTo, yTo);
-        removePiece(board, xFrom, yFrom);
-        addPiece(board, pieceToMove);
+        if(pieceToMove!= null){
+            pieceToMove.move(board, xTo,yTo);
+            capturePiece(board, xTo, yTo);
+            removePiece(board, xFrom, yFrom);
+            addPiece(board, pieceToMove);
+        }
         board.changeTurn();
         if(!board.getGameOver()&& board.isOriginal()) {
             startPromotionDialog(board, pieceToMove, xTo, yTo);
