@@ -223,7 +223,7 @@ public class AiTree {
                 return Double.MAX_VALUE;
             }
         }
-        return value - 0.7*enemyPiecesOnBoardValue;
+        return value - enemyPiecesOnBoardValue;
     }
 
     private double getPieceValue(int pieceType){
