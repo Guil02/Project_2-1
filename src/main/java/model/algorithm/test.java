@@ -38,7 +38,7 @@ public class test {
         }
 
         Expectiminimax expectiminimax = new Expectiminimax();
-        double res = expectiminimax.expectiminimax(root, 10);
+        double res = expectiminimax.expectiminimax(root, 10,10);
 
         for(int i = 0; i<root.getChildren().size(); i++){
             ChessTreeNode child = (ChessTreeNode) root.getChildren().get(i);
