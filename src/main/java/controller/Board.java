@@ -1,6 +1,7 @@
 package controller;
 
 import model.pieces.ChessPiece;
+import model.player.BaselineAgent;
 import model.player.FirstAi;
 import model.player.Player;
 
@@ -62,9 +63,8 @@ public class Board {
                     ((FirstAi) playerOne).launch(this);
                 }
                 else if(player1==2){
-                    System.out.println("AI is not yet implemented");
-                    //TODO add random ai
-                    // ((BaselineAI) playerOne).launch(this);
+                    playerOne = new BaselineAgent();
+                    ((BaselineAgent) playerOne).launch(this);
                 }
             }
         }
@@ -74,9 +74,8 @@ public class Board {
                     ((FirstAi) playerTwo).launch(this);
                 }
                 else if(player2==2){
-                    System.out.println("AI is not yet implemented");
-                    //TODO add random ai
-                    // ((BaselineAI) playerTwo).launch(this);
+                    playerTwo = new BaselineAgent();
+                    ((BaselineAgent) playerTwo).launch(this);
                 }
             }
         }
