@@ -18,7 +18,7 @@ public class FirstAi extends Player {
     private Expectiminimax expectiminimax = new Expectiminimax();
     private ChessTreeNode maxima;
     private Board board;
-    private static final int ply = 3;
+    private static final int ply = 2;
 
     public FirstAi(Board board) {
         this.board = board;
@@ -92,7 +92,7 @@ public class FirstAi extends Player {
         Board copy = board.clone();
         boolean maxIsWhite = board.getWhiteMove();
         ChessTreeNode root = new ChessTreeNode(copy, 0, null, 1, 1, 0, 0, 0, 0, maxIsWhite);
-        double res = expectiminimax.expectiminimax(root, (ply*2)-1, (ply*2)-1);
+        double res = expectiminimax.expectiminimax(root, (ply*2)-1);
 //        System.out.println(res);
         double maxValue = Double.MIN_VALUE;
         ArrayList<ChessTreeNode> highestNodes = new ArrayList<>();
