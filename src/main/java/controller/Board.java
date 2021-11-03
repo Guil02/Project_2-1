@@ -6,6 +6,7 @@ import model.player.FirstAi;
 import model.player.Player;
 import model.player.TDLearning;
 
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 public class Board {
@@ -86,6 +87,31 @@ public class Board {
         }
     }
 
+    public int getAmountOfPieces(char c){
+        int count = 0;
+        ChessPiece[][] model = getBoardModel();
+        for(int i=0; i<getBoardSize(); i++){
+            for(int j=0; j<getBoardSize(); j++){
+                if(model[i][j] != null &&model[i][j].getPieceChar()==c){
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    public ArrayList<ChessPiece> getPieces(char c){
+        ArrayList<ChessPiece> list = new ArrayList<>();
+        ChessPiece[][] model = getBoardModel();
+        for(int i=0; i<getBoardSize(); i++){
+            for(int j=0; j<getBoardSize(); j++){
+                if(model[i][j] != null && model[i][j].getPieceChar()==c){
+                    list.add(model[i][j]);
+                }
+            }
+        }
+        return list;
+    }
     public char getCharOffField(int x, int y){
         if(getPieceOffField(x,y) == null){
             return '-';
