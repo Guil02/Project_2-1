@@ -214,19 +214,19 @@ public class AiTree {
         if(maxIsWhite){
             distanceBlackKingFromBackRow = 0;
             if(!seenWhiteKing){
-                return -10000;
+                return -100;
             }
             else if(!seenBlackKing){
-                return 10000;
+                return 100;
             }
         }
         else {
             distanceWhiteKingFromBackRow = 0;
             if(!seenBlackKing){
-                return -10000;
+                return -100;
             }
             else if(!seenWhiteKing){
-                return 10000;
+                return 100;
             }
         }
         return value - enemyPiecesOnBoardValue - 0.3*distanceBlackKingFromBackRow - 0.3*distanceWhiteKingFromBackRow;

@@ -4,6 +4,7 @@ import model.pieces.ChessPiece;
 import model.player.BaselineAgent;
 import model.player.FirstAi;
 import model.player.Player;
+import model.player.TDLearning;
 
 import java.util.concurrent.TimeUnit;
 
@@ -63,8 +64,10 @@ public class Board {
                     ((FirstAi) playerOne).launch(this);
                 }
                 else if(player1==2){
-                    playerOne = new BaselineAgent();
                     ((BaselineAgent) playerOne).launch(this);
+                }
+                else if(player1 == 3){
+                    ((TDLearning) playerOne).launch(this);
                 }
             }
         }
@@ -74,8 +77,10 @@ public class Board {
                     ((FirstAi) playerTwo).launch(this);
                 }
                 else if(player2==2){
-                    playerTwo = new BaselineAgent();
                     ((BaselineAgent) playerTwo).launch(this);
+                }
+                else if(player2==3){
+                    ((TDLearning) playerTwo).launch(this);
                 }
             }
         }

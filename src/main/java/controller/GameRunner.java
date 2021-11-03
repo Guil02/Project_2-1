@@ -6,9 +6,7 @@ import model.algorithm.Expectiminimax;
 import model.pieces.ChessPiece;
 import model.pieces.KingPiece;
 import model.pieces.PawnPiece;
-import model.player.FirstAi;
-import model.player.HumanPlayer;
-import model.player.Player;
+import model.player.*;
 
 
 public class GameRunner {
@@ -55,8 +53,14 @@ public class GameRunner {
         if(playerType == 0){
             return new HumanPlayer();
         }
-        else{
+        else if(playerType== 1){
             return new FirstAi(board);
+        }
+        else if(playerType == 2){
+            return new BaselineAgent();
+        }
+        else{
+            return new TDLearning();
         }
     }
 
