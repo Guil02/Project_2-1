@@ -89,30 +89,30 @@ public class FirstAi extends Player {
     public void ruleBasedAgent(Board board) {
 //        System.out.println(board.getWhiteMove());
         Board copy = board.clone();
-        ChessTreeNode root = new ChessTreeNode(copy, 0, null, 1, 1, 0, 0, 0, 0);
         boolean maxIsWhite = board.getWhiteMove();
-        aiTree.createChildren(root, false, maxIsWhite);
-
-        for (TreeNode node : root.getChildren()) {
-            ChessTreeNode subNode = (ChessTreeNode) node;
-            aiTree.createChildren(subNode, false, maxIsWhite);
-        }
-
-        for (TreeNode node : root.getChildren()) {
-            for (TreeNode node1 : node.getChildren()) {
-                ChessTreeNode subNode = (ChessTreeNode) node1;
-                aiTree.createChildren(subNode, false, maxIsWhite);
-            }
-        }
-
-        for (TreeNode node : root.getChildren()) {
-            for (TreeNode node1 : node.getChildren()) {
-                for (TreeNode node2 : node1.getChildren()) {
-                    ChessTreeNode subNode = (ChessTreeNode) node2;
-                    aiTree.createChildren(subNode, true, maxIsWhite);
-                }
-            }
-        }
+        ChessTreeNode root = new ChessTreeNode(copy, 0, null, 1, 1, 0, 0, 0, 0, maxIsWhite);
+//        aiTree.createChildren(root, false, maxIsWhite);
+//
+//        for (TreeNode node : root.getChildren()) {
+//            ChessTreeNode subNode = (ChessTreeNode) node;
+//            aiTree.createChildren(subNode, false, maxIsWhite);
+//        }
+//
+//        for (TreeNode node : root.getChildren()) {
+//            for (TreeNode node1 : node.getChildren()) {
+//                ChessTreeNode subNode = (ChessTreeNode) node1;
+//                aiTree.createChildren(subNode, false, maxIsWhite);
+//            }
+//        }
+//
+//        for (TreeNode node : root.getChildren()) {
+//            for (TreeNode node1 : node.getChildren()) {
+//                for (TreeNode node2 : node1.getChildren()) {
+//                    ChessTreeNode subNode = (ChessTreeNode) node2;
+//                    aiTree.createChildren(subNode, true, maxIsWhite);
+//                }
+//            }
+//        }
 //
 //        for (TreeNode node : root.getChildren()) {
 //            for (TreeNode node1 : node.getChildren()) {
@@ -169,7 +169,7 @@ public class FirstAi extends Player {
 //                }
 //            }
 //        }
-        double res = expectiminimax.expectiminimax(root, 10);
+        double res = expectiminimax.expectiminimax(root, 5);
 //        System.out.println(res);
         double maxValue = Double.MIN_VALUE;
         ArrayList<ChessTreeNode> highestNodes = new ArrayList<>();

@@ -9,14 +9,22 @@ public class ChessTreeNode extends TreeNode{
     private int yTo;
     private Board board;
     private boolean doPromotion = false;
+    private AiTree aiTree = new AiTree();
+    private boolean maxIsWhite;
 
-    public ChessTreeNode(Board board, double value, TreeNode parent, int nodeType, double probability, int xFrom, int yFrom, int xTo, int yTo) {
+    public ChessTreeNode(Board board, double value, TreeNode parent, int nodeType, double probability, int xFrom, int yFrom, int xTo, int yTo, boolean maxIsWhite) {
         super(value, parent, nodeType, probability);
         this.xFrom = xFrom;
         this.yFrom = yFrom;
         this.xTo = xTo;
         this.yTo = yTo;
         this.board = board;
+        this.maxIsWhite = maxIsWhite;
+    }
+
+    @Override
+    public void createChildren() {
+        aiTree.createChildren(this, true, board.getWhiteMove());
     }
 
     public int getxFrom() {
@@ -45,5 +53,9 @@ public class ChessTreeNode extends TreeNode{
 
     public Board getBoard() {
         return board;
+    }
+
+    public boolean isMaxIsWhite() {
+        return maxIsWhite;
     }
 }

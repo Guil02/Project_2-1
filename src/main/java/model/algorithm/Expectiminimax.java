@@ -6,12 +6,12 @@ public class Expectiminimax {
 
     public double expectiminimax(TreeNode node, int depth){
         double a;
+        node.createChildren();
         if(depth==0 || !node.hasChildren()){
             return node.getValue();
         }
         else if(node.getNodeType()==2){
             a = Double.MAX_VALUE;
-            TreeNode chosenChild = null;
             for(TreeNode children: node.getChildren()){
                 a = Math.min(a, expectiminimax(children, depth-1));
             }

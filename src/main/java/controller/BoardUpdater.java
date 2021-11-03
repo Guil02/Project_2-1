@@ -90,10 +90,10 @@ public class BoardUpdater {
             removePiece(board, xFrom, yFrom);
             addPiece(board, pieceToMove);
         }
-        board.changeTurn();
-        if(!board.getGameOver()&& board.isOriginal()) {
+        if(!board.getGameOver()&& board.isOriginal() && board.isHumanPlayer()) {
             startPromotionDialog(board, pieceToMove, xTo, yTo);
         }
+        board.changeTurn();
         if(board.getGameOver()&& board.isOriginal()){
 //            try {
 //                Thread.sleep(1000);

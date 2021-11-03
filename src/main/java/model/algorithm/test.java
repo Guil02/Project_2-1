@@ -26,7 +26,7 @@ public class test {
         printBoard(board.getBoardModel(), board);
 
         boolean maxIsWhite = board.getWhiteMove();
-        ChessTreeNode root = new ChessTreeNode(board, 0, null, 1, 1, 0,0,0,0);
+        ChessTreeNode root = new ChessTreeNode(board, 0, null, 1, 1, 0,0,0,0, maxIsWhite);
         AiTree aiTree = new AiTree();
         aiTree.createChildren(root, false, maxIsWhite);
 

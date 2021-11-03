@@ -39,6 +39,10 @@ public class TreeNode {
         return parent;
     }
 
+    public void createChildren(){
+
+    }
+
     public int getNodeType() {
         return nodeType;
     }

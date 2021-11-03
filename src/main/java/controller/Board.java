@@ -181,6 +181,15 @@ public class Board {
         }
     }
 
+    public boolean isHumanPlayer(){
+        if(whiteMove){
+            return player1==0;
+        }
+        else{
+            return player2==0;
+        }
+    }
+
     public void setPlayerPlayers(Player player1, Player player2) {
         this.playerOne = player1;
         this.playerTwo = player2;

@@ -60,7 +60,7 @@ public class AiTree {
         if(doEvaluation){
             value = staticBoardEvaluation(copy, maxIsWhite);
         }
-        ChessTreeNode child = new ChessTreeNode(copy,value, parent, nodeType, probability, 0,0,0,0);
+        ChessTreeNode child = new ChessTreeNode(copy,value, parent, nodeType, probability, 0,0,0,0, parent.isMaxIsWhite());
         parent.addChild(child);
     }
 
@@ -85,7 +85,7 @@ public class AiTree {
                         value = staticBoardEvaluation(copy, maxIsWhite);
                     }
 
-                    ChessTreeNode child = new ChessTreeNode(copy, value,parent,nodeType,1,piece.getX(),piece.getY(),i,j);
+                    ChessTreeNode child = new ChessTreeNode(copy, value,parent,nodeType,1,piece.getX(),piece.getY(),i,j, parent.isMaxIsWhite());
                     parent.addChild(child);
                 }
             }
@@ -103,7 +103,7 @@ public class AiTree {
             value = staticBoardEvaluation(copy, maxIsWhite);
         }
 
-        ChessTreeNode child = new ChessTreeNode(copy, value,parent,nodeType,1,piece.getX(),piece.getY(),xTo,yTo);
+        ChessTreeNode child = new ChessTreeNode(copy, value,parent,nodeType,1,piece.getX(),piece.getY(),xTo,yTo, parent.isMaxIsWhite());
         child.setDoPromotion(true);
         parent.addChild(child);
     }
@@ -177,6 +177,8 @@ public class AiTree {
         double enemyPiecesOnBoardValue = 0;
         boolean seenWhiteKing = false;
         boolean seenBlackKing = false;
+        int distanceWhiteKingFromBackRow = 0;
+        int distanceBlackKingFromBackRow = 0;
 
         for(ChessPiece[] pieces: board.getBoardModel()){
             for(ChessPiece piece: pieces){
@@ -199,31 +201,35 @@ public class AiTree {
                     }
 
                     if(piece.getPieceChar() == 'K'){
+                        distanceWhiteKingFromBackRow = 7-piece.getY();
                         seenWhiteKing = true;
                     }
                     if(piece.getPieceChar() == 'k'){
+                        distanceBlackKingFromBackRow = piece.getY();
                         seenBlackKing = true;
                     }
                 }
             }
         }
         if(maxIsWhite){
+            distanceBlackKingFromBackRow = 0;
             if(!seenWhiteKing){
-                return Double.MIN_VALUE;
+                return -10000;
             }
             else if(!seenBlackKing){
-                return Double.MAX_VALUE;
+                return 10000;
             }
         }
         else {
+            distanceWhiteKingFromBackRow = 0;
             if(!seenBlackKing){
-                return Double.MIN_VALUE;
+                return -10000;
             }
             else if(!seenWhiteKing){
-                return Double.MAX_VALUE;
+                return 10000;
             }
         }
-        return value - enemyPiecesOnBoardValue;
+        return value - enemyPiecesOnBoardValue - 0.3*distanceBlackKingFromBackRow - 0.3*distanceWhiteKingFromBackRow;
     }
 
     private double getPieceValue(int pieceType){
