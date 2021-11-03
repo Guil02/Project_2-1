@@ -91,84 +91,7 @@ public class FirstAi extends Player {
         Board copy = board.clone();
         boolean maxIsWhite = board.getWhiteMove();
         ChessTreeNode root = new ChessTreeNode(copy, 0, null, 1, 1, 0, 0, 0, 0, maxIsWhite);
-//        aiTree.createChildren(root, false, maxIsWhite);
 //
-//        for (TreeNode node : root.getChildren()) {
-//            ChessTreeNode subNode = (ChessTreeNode) node;
-//            aiTree.createChildren(subNode, false, maxIsWhite);
-//        }
-//
-//        for (TreeNode node : root.getChildren()) {
-//            for (TreeNode node1 : node.getChildren()) {
-//                ChessTreeNode subNode = (ChessTreeNode) node1;
-//                aiTree.createChildren(subNode, false, maxIsWhite);
-//            }
-//        }
-//
-//        for (TreeNode node : root.getChildren()) {
-//            for (TreeNode node1 : node.getChildren()) {
-//                for (TreeNode node2 : node1.getChildren()) {
-//                    ChessTreeNode subNode = (ChessTreeNode) node2;
-//                    aiTree.createChildren(subNode, true, maxIsWhite);
-//                }
-//            }
-//        }
-//
-//        for (TreeNode node : root.getChildren()) {
-//            for (TreeNode node1 : node.getChildren()) {
-//                for (TreeNode node2 : node1.getChildren()) {
-//                    for(TreeNode node3: node2.getChildren()){
-//                        ChessTreeNode subNode = (ChessTreeNode) node3;
-//                        aiTree.createChildren(subNode, false, maxIsWhite);
-//                    }
-//                }
-//            }
-//        }
-//
-//        for (TreeNode node : root.getChildren()) {
-//            for (TreeNode node1 : node.getChildren()) {
-//                for (TreeNode node2 : node1.getChildren()) {
-//                    for(TreeNode node3: node2.getChildren()){
-//                        for(TreeNode node4: node3.getChildren()){
-//                            ChessTreeNode subNode = (ChessTreeNode) node4;
-//                            aiTree.createChildren(subNode, false, maxIsWhite);
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-//        for (TreeNode node : root.getChildren()) {
-//            for (TreeNode node1 : node.getChildren()) {
-//                for (TreeNode node2 : node1.getChildren()) {
-//                    for(TreeNode node3: node2.getChildren()){
-//                        for(TreeNode node4: node3.getChildren()){
-//                            for(TreeNode node5: node4.getChildren()){
-//                                ChessTreeNode subNode = (ChessTreeNode) node5;
-//                                aiTree.createChildren(subNode, false, maxIsWhite);
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-//        for (TreeNode node : root.getChildren()) {
-//            for (TreeNode node1 : node.getChildren()) {
-//                for (TreeNode node2 : node1.getChildren()) {
-//                    for(TreeNode node3: node2.getChildren()){
-//                        for(TreeNode node4: node3.getChildren()){
-//                            for(TreeNode node5: node4.getChildren()){
-//                                for(TreeNode node6: node5.getChildren()){
-//                                    ChessTreeNode subNode = (ChessTreeNode) node6;
-//                                    aiTree.createChildren(subNode, true, maxIsWhite);
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
         double res = expectiminimax.expectiminimax(root, 5);
 //        System.out.println(res);
         double maxValue = Double.MIN_VALUE;
@@ -180,16 +103,11 @@ public class FirstAi extends Player {
             if (subChild.getValue() >= maxValue) {
                 if (subChild.getValue() == maxValue) {
                     highestNodes.add(subChild);
-//                    if (Math.random() < 0.5) {
-//                        maxValue = subChild.getValue();
-//                        maxNode = subChild;
-//                    }
                     continue;
                 }
                 highestNodes.clear();
                 highestNodes.add(subChild);
                 maxValue = subChild.getValue();
-//                maxNode = subChild;
             }
         }
         Random rand = new Random();
