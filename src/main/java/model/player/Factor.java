@@ -9,7 +9,8 @@ import java.util.ArrayList;
 public class Factor {
     public static double piece_value(Board board, boolean whiteIsMax, char c){
         c = convertChar(c, whiteIsMax);
-        return board.getAmountOfPieces(c);
+        char adverse = convertChar(c, !whiteIsMax);
+        return board.getAmountOfPieces(c)-board.getAmountOfPieces(adverse);
     }
 
     public static double pawn_doubled_penalty_value(Board board, boolean whiteIsMax){
