@@ -158,4 +158,8 @@ public class PawnPiece extends ChessPiece {
         pawnPiece.firstMove = firstMove;
         return pawnPiece;
     }
+
+    public static void setEnPassantColumn(int enPassantColumn) {
+        PawnPiece.enPassantColumn = enPassantColumn;
+    }
 }

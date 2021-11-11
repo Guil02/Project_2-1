@@ -86,6 +86,10 @@ public class RookPiece extends ChessPiece {
         rookPiece.hasValidMove = hasValidMove;
         return rookPiece;
     }
+
+    public void setHasNotMoved(boolean hasNotMoved) {
+        this.hasNotMoved = hasNotMoved;
+    }
 }
 
 

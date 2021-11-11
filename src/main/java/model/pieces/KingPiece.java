@@ -107,4 +107,8 @@ public class KingPiece extends ChessPiece {
         kingPiece.hasNotMoved = hasNotMoved;
         return kingPiece;
     }
+
+    public void setHasNotMoved(boolean hasNotMoved) {
+        this.hasNotMoved = hasNotMoved;
+    }
 }
