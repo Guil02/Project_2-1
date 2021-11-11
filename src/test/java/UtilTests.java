@@ -44,7 +44,7 @@ public class UtilTests {
         BoardUpdater.fillGameStart(board);
         BoardUpdater.movePiece(board, 1, 1, 1, 2);
         String testFen = FenEvaluator.write(board);
-        String fen = "rnbqkbnr/p1pppppp/1p6/8/8/8/PPPPPPPP/RNBQKBNR b KQkq";
+        String fen = "rnbqkbnr/p1pppppp/1p6/8/8/8/PPPPPPPP/RNBQKBNR b KQkq -";
         assertEquals(fen, testFen);
     }
 }

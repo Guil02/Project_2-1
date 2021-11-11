@@ -10,7 +10,6 @@ public abstract class ChessPiece {
     // variables
     protected boolean isWhite;
     protected boolean hasValidMove = false;
-    private static boolean enPassantActive = false;
     public boolean hasValidMove() {
         return hasValidMove;
     }
@@ -185,14 +184,6 @@ public abstract class ChessPiece {
 
     public int getPieceType() {
         return pieceType;
-    }
-
-    public static boolean isEnPassantActive() {
-        return enPassantActive;
-    }
-
-    public static void setEnPassantActive(boolean enPassantActive) {
-        ChessPiece.enPassantActive = enPassantActive;
     }
 
     public abstract boolean[][] validMoves(Board board);

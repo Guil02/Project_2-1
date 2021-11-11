@@ -3,6 +3,8 @@ package controller;
 import javafx.application.Platform;
 import model.pieces.*;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
@@ -83,6 +85,7 @@ public class BoardUpdater {
     }
 
     public static void movePiece(Board board, int xFrom, int yFrom, int xTo, int yTo) {
+        board.storeMove();
         ChessPiece pieceToMove = board.getPieceOffField(xFrom, yFrom);
         if(pieceToMove!= null){
             pieceToMove.move(board, xTo,yTo);
@@ -95,6 +98,11 @@ public class BoardUpdater {
         }
         board.changeTurn();
         if(board.getGameOver()&& board.isOriginal()){
+            board.storeMove();
+            ArrayList<String> boardStates = board.getBoardStates();
+            for(int i = 0; i<board.getBoardStates().size(); i++){
+                System.out.println(boardStates.get(i));
+            }
 //            try {
 //                Thread.sleep(1000);
 //            } catch (InterruptedException e) {

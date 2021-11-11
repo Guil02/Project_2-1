@@ -69,37 +69,9 @@ public class FenEvaluator {
             case '-':
                 enPassantActive = false;
                 break;
-            case '0':
+            default:
                 enPassantActive = true;
-                enPassantColumn = 0;
-                break;
-            case '1':
-                enPassantActive = true;
-                enPassantColumn = 1;
-                break;
-            case '2':
-                enPassantActive = true;
-                enPassantColumn = 2;
-                break;
-            case '3':
-                enPassantActive = true;
-                enPassantColumn = 3;
-                break;
-            case '4':
-                enPassantActive = true;
-                enPassantColumn = 4;
-                break;
-            case '5':
-                enPassantActive = true;
-                enPassantColumn = 5;
-                break;
-            case '6':
-                enPassantActive = true;
-                enPassantColumn = 6;
-                break;
-            case '7':
-                enPassantActive = true;
-                enPassantColumn = 7;
+                enPassantColumn = fen.charAt(index);
                 break;
         }
 
@@ -118,7 +90,6 @@ public class FenEvaluator {
 
 
         Board board = new Board();
-
         buildBoard(board, pieces, whiteMove, shortCastleBlack, shortCastleWhite, longCastleBlack, longCastleWhite, enPassantActive, enPassantColumn);
         return board;
     }
@@ -164,9 +135,9 @@ public class FenEvaluator {
                        case 'Q' -> st.append("Q");
                        case 'R' -> st.append("R");
                    }
-                   if(model[i][j].isEnPassantActive()){
+                   if(board.isEnPassantActive()){
                        enPassant = true;
-                       epColumn = ((PawnPiece)(model[i][j])).getEnPassantColumn();
+                       epColumn = PawnPiece.getEnPassantColumn(board);
 
                    }
                }
@@ -209,22 +180,32 @@ public class FenEvaluator {
     }
 
     public static boolean CastleCheck(ChessPiece[][] model, boolean white, boolean king){
-        if(white && model[4][7].getPieceChar()!='K') {
+        if(white && model[4][7]!=null && model[4][7].getPieceChar()!='K') {
             return false;
         }
-        if(!white && model[4][0].getPieceChar()!='k'){
+        if(!white && model[4][0]!=null && model[4][0].getPieceChar()!='k'){
             return false;
         }
-        if(white && king && model[7][7].getPieceChar()=='R'){
+        if(white && model[4][7]!=null && model[4][7].getPieceChar()=='K') {
+            if(!((KingPiece)model[4][7]).getHasNotMoved()){
+                return false;
+            }
+        }
+        if(!white && model[4][0]!=null && model[4][0].getPieceChar()=='k'){
+            if(!((KingPiece)model[4][0]).getHasNotMoved()){
+                return false;
+            }
+        }
+        if(white && king && model[7][7]!=null && model[7][7].getPieceChar()=='R'){
             return ((RookPiece)(model[7][7])).getHasNotMoved();
         }
-        if(white && !king && model[0][7].getPieceChar()=='R'){
+        if(white && !king && model[0][7]!=null && model[0][7].getPieceChar()=='R'){
             return ((RookPiece)(model[0][7])).getHasNotMoved();
         }
-        if(!white && king && model[7][0].getPieceChar()=='r'){
+        if(!white && king && model[7][0]!=null && model[7][0].getPieceChar()=='r'){
             return ((RookPiece)(model[7][0])).getHasNotMoved();
         }
-        if(!white && !king && model[0][0].getPieceChar()=='r'){
+        if(!white && !king && model[0][0]!=null && model[0][0].getPieceChar()=='r'){
             return ((RookPiece)(model[0][0])).getHasNotMoved();
         }
         return false;
@@ -234,13 +215,33 @@ public class FenEvaluator {
             int x = i%8;
             int y = (i-x)/8;
             ChessPiece piece = makePiece(pieces[i], x, y);
+            if(pieces[i]=='r' || pieces[i]=='R'){
+                ((RookPiece) piece).setHasNotMoved(false);
+            }
+            if(pieces[i]=='k' || pieces[i]=='K'){
+                ((KingPiece) piece).setHasNotMoved(false);
+            }
             BoardUpdater.addPiece(board, piece);
         }
         board.setWhiteMove(whiteMove);
-//        board.setEnPassant(false);
         if(shortCastleBlack){
-//            board.getBoardModel()[7][0];
+            ((RookPiece) board.getPieceOffField(7,0)).setHasNotMoved(true);
+            ((KingPiece) board.getPieceOffField(4,0)).setHasNotMoved(true);
         }
+        if(longCastleBlack){
+            ((RookPiece) board.getPieceOffField(0,0)).setHasNotMoved(true);
+            ((KingPiece) board.getPieceOffField(4,0)).setHasNotMoved(true);
+        }
+        if(shortCastleWhite){
+            ((RookPiece) board.getPieceOffField(7,7)).setHasNotMoved(true);
+            ((KingPiece) board.getPieceOffField(4,7)).setHasNotMoved(true);
+        }
+        if(longCastleWhite){
+            ((RookPiece) board.getPieceOffField(0,7)).setHasNotMoved(true);
+            ((KingPiece) board.getPieceOffField(4,7)).setHasNotMoved(true);
+        }
+        board.setEnPassantActive(enPassantActive); //TODO adapted to the newer version of en passant.
+        board.setEnPassantColumn(enPassantColumn);
     }
 
     private static ChessPiece makePiece(char c, int x, int y){

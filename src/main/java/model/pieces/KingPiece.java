@@ -29,7 +29,7 @@ public class KingPiece extends ChessPiece {
     @Override
     public void move(Board board, int new_x, int new_y) {
         this.hasNotMoved = false;
-        ChessPiece.setEnPassantActive(false);
+        board.setEnPassantActive(false);
         if(new_x == 2 && x==4){
             BoardUpdater.movePiece(board, 0,new_y,3,new_y);
         }

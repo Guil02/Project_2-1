@@ -25,7 +25,7 @@ public class RookPiece extends ChessPiece {
     @Override
     public void move(Board board, int new_x, int new_y) {
         this.hasNotMoved=false;
-        ChessPiece.setEnPassantActive(false);
+        board.setEnPassantActive(false);
         super.move(board, new_x, new_y);
     }
 

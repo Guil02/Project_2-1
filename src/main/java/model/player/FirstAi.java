@@ -32,6 +32,7 @@ public class FirstAi extends Player {
                 ruleBasedAgent(board);
                 ChessTreeNode move = getMaxima();
                 if(move.isDoPromotion()){
+                    board.storeMove();
 //                        System.err.println("---------------------------------------------------------------------");
                     boolean isWhite = board.getPieceOffField(move.getxFrom(), move.getyFrom()).isWhite();
                     int pieceType = getPieceType(move.getBoard().getCharOffField(move.getxTo(), move.getyTo()));
@@ -70,7 +71,7 @@ public class FirstAi extends Player {
                     board.changeTurn();
                 }
                 else{
-                    if(!Board.GUI_ON) printBoard(board.getBoardModel(), board);
+//                    if(!Board.GUI_ON) printBoard(board.getBoardModel(), board);
                     BoardUpdater.movePiece(board, move.getxFrom(), move.getyFrom(), move.getxTo(), move.getyTo());
                     if(Board.GUI_ON){
                         Platform.runLater(

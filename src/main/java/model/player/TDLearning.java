@@ -4,14 +4,12 @@ import controller.Board;
 import controller.BoardUpdater;
 import controller.Dice;
 import javafx.application.Platform;
-import model.algorithm.TDTreeNode;
 import model.algorithm.Expectiminimax;
 import model.algorithm.TDTreeNode;
 import model.algorithm.TreeNode;
 import model.pieces.ChessPiece;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -19,13 +17,11 @@ public class TDLearning extends Player{
     private ArrayList<Double> weights;
     private TDTreeNode maxima;
     private static final int ply = 2;
-    private String fileName = "build/classes/java/main/model/player/weights.txt";
+    private static final String fileName = "build/classes/java/main/model/player/weights.txt";
     private Expectiminimax expectiminimax = new Expectiminimax();
 
     public TDLearning() {
-        weights = new ArrayList<>();
-        readInWeights();
-
+        weights = readInWeights();
     }
 
     public ArrayList<Double> evaluateFactors(Board board, boolean whiteIsMax){
@@ -66,18 +62,9 @@ public class TDLearning extends Player{
         return eval;
     }
 
-    public double gradient(String fen, int weight){
-        double val = 0;
-//        evaluateFactors();
-        return val;
-    }
-
-    public void changeWeights(ArrayList<String> fens){
-
-    }
-
-    public void readInWeights(){
+    public static ArrayList<Double> readInWeights(){
         String line;
+        ArrayList<Double> weights = new ArrayList<>();
         try {
             BufferedReader bufferreader = new BufferedReader(new FileReader(fileName));
             while ((line = bufferreader.readLine()) != null) {
@@ -89,9 +76,10 @@ public class TDLearning extends Player{
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+        return weights;
     }
 
-    public void writeWeights(){
+    public static void writeWeights(ArrayList<Double> weights){
         try(FileWriter fileWriter = new FileWriter(fileName, false)) {
             for (Double weight : weights) {
                 fileWriter.write(weight + "\n");
@@ -261,6 +249,7 @@ public class TDLearning extends Player{
                 runAgent(board);
                 TDTreeNode move = getMaxima();
                 if(move.isDoPromotion()){
+                    board.storeMove();
 //                        System.err.println("---------------------------------------------------------------------");
                     boolean isWhite = board.getPieceOffField(move.getxFrom(), move.getyFrom()).isWhite();
                     int pieceType = getPieceType(move.getBoard().getCharOffField(move.getxTo(), move.getyTo()));
@@ -299,7 +288,7 @@ public class TDLearning extends Player{
                     board.changeTurn();
                 }
                 else{
-                    if(!Board.GUI_ON) printBoard(board.getBoardModel(), board);
+//                    if(!Board.GUI_ON) printBoard(board.getBoardModel(), board);
                     BoardUpdater.movePiece(board, move.getxFrom(), move.getyFrom(), move.getxTo(), move.getyTo());
                     if(Board.GUI_ON){
                         Platform.runLater(
@@ -342,5 +331,16 @@ public class TDLearning extends Player{
             }
             System.out.println();
         }
+    }
+
+    public static void learn(Board board){
+        ArrayList<Double> weights = readInWeights();
+
+    }
+
+    public double gradient(String fen, int weight){
+        double val = 0;
+//        evaluateFactors();
+        return val;
     }
 }

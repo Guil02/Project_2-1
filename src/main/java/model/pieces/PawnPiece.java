@@ -8,11 +8,9 @@ import controller.BoardUpdater;
  * class that determines every valid moves for a pawn
  */
 public class PawnPiece extends ChessPiece {
-    public static int getEnPassantColumn() {
-        return enPassantColumn;
+    public static int getEnPassantColumn(Board board) {
+        return board.getEnPassantColumn();
     }
-
-    private static int enPassantColumn;
 
 
     /**
@@ -36,7 +34,7 @@ public class PawnPiece extends ChessPiece {
      */
     @Override
     public void move(Board board, int xTo, int yTo) {
-        if(ChessPiece.isEnPassantActive() && xTo == enPassantColumn){
+        if(board.isEnPassantActive() && xTo == board.getEnPassantColumn()){
             if(isWhite() && yTo == 2){
                 BoardUpdater.captureEnPassantField(board, xTo, yTo+1);
             }
@@ -45,18 +43,18 @@ public class PawnPiece extends ChessPiece {
             }
         }
 
-        ChessPiece.setEnPassantActive(false);
+        board.setEnPassantActive(false);
 
         if(isWhite()){
             if(y == 6 && yTo == 4){
-                ChessPiece.setEnPassantActive(true);
-                enPassantColumn = x;
+                board.setEnPassantActive(true);
+                board.setEnPassantColumn(x);
             }
         }
         else if(!isWhite()){
             if(y==1 && yTo == 3){
-                enPassantColumn = x;
-                ChessPiece.setEnPassantActive(true);
+                board.setEnPassantColumn(x);
+                board.setEnPassantActive(true);
             }
         }
 
@@ -139,16 +137,16 @@ public class PawnPiece extends ChessPiece {
     }
 
     public void enPassant(Board board, boolean[][] validMoves){
-        if(ChessPiece.isEnPassantActive()){
-            if(x+1 == enPassantColumn|| x-1 == enPassantColumn){
+        if(board.isEnPassantActive()){
+            if(x+1 == board.getEnPassantColumn()|| x-1 == board.getEnPassantColumn()){
                 if(isWhite() && y == 3){
-                    if(isOpenSpot(board,enPassantColumn, 2)){
-                        validMoves[enPassantColumn][2]=true;
+                    if(isOpenSpot(board,board.getEnPassantColumn(), 2)){
+                        validMoves[board.getEnPassantColumn()][2]=true;
                     }
                 }
                 else if(!isWhite() && y == 4){
-                    if(isOpenSpot(board,enPassantColumn, 5)){
-                        validMoves[enPassantColumn][5]=true;
+                    if(isOpenSpot(board,board.getEnPassantColumn(), 5)){
+                        validMoves[board.getEnPassantColumn()][5]=true;
                     }
                 }
             }
@@ -163,7 +161,7 @@ public class PawnPiece extends ChessPiece {
         return pawnPiece;
     }
 
-    public static void setEnPassantColumn(int enPassantColumn) {
-        PawnPiece.enPassantColumn = enPassantColumn;
+    public static void setEnPassantColumn(Board board, int enPassantColumn) {
+        board.setEnPassantColumn(enPassantColumn);
     }
 }
