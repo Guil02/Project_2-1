@@ -28,7 +28,7 @@ public class TDLearning extends Player{
 
     }
 
-    public double evaluation(Board board, boolean whiteIsMax){
+    public ArrayList<Double> evaluateFactors(Board board, boolean whiteIsMax){
         ArrayList<Double> factors = new ArrayList<>(33);
         factors.add(0,Factor.piece_value(board, whiteIsMax, 'p'));
         factors.add(1,Factor.piece_value(board, whiteIsMax, 'n'));
@@ -52,11 +52,28 @@ public class TDLearning extends Player{
         factors.add(19,Factor.attacking_king(board, whiteIsMax));
 
 
+
+        return factors;
+    }
+
+
+    public double evaluation(Board board, boolean whiteIsMax){
+        ArrayList<Double> factors = evaluateFactors(board, whiteIsMax);
         double eval = 0;
         for(int i = 0; i<factors.size(); i++){
             eval += factors.get(i)*weights.get(i);
         }
         return eval;
+    }
+
+    public double gradient(String fen, int weight){
+        double val = 0;
+//        evaluateFactors();
+        return val;
+    }
+
+    public void changeWeights(ArrayList<String> fens){
+
     }
 
     public void readInWeights(){
