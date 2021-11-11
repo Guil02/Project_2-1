@@ -40,10 +40,11 @@ public class UtilTests {
     @Test
     public void fenTest(){
         Board board = new Board();
-        PawnPiece pawn = new PawnPiece(true, 0,0);
+
         BoardUpdater.fillGameStart(board);
+        BoardUpdater.movePiece(board, 1, 1, 1, 2);
         String testFen = FenEvaluator.write(board);
-        String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
+        String fen = "rnbqkbnr/p1pppppp/1p6/8/8/8/PPPPPPPP/RNBQKBNR b KQkq";
         assertEquals(fen, testFen);
     }
 }

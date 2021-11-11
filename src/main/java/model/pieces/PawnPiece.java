@@ -8,6 +8,10 @@ import controller.BoardUpdater;
  * class that determines every valid moves for a pawn
  */
 public class PawnPiece extends ChessPiece {
+    public static int getEnPassantColumn() {
+        return enPassantColumn;
+    }
+
     private static int enPassantColumn;
 
 

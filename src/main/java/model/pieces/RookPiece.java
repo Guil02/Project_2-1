@@ -32,7 +32,7 @@ public class RookPiece extends ChessPiece {
     /**
      * method that determines if the piece in question has already moved or not
      */
-    public boolean isHasNotMoved() {
+    public boolean getHasNotMoved() {
         return hasNotMoved;
     }
 

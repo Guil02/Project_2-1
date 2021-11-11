@@ -4,6 +4,8 @@ import controller.Board;
 import controller.BoardUpdater;
 import model.pieces.ChessPiece;
 import model.pieces.KingPiece;
+import model.pieces.PawnPiece;
+import model.pieces.RookPiece;
 
 import java.util.Arrays;
 
@@ -67,37 +69,37 @@ public class FenEvaluator {
             case '-':
                 enPassantActive = false;
                 break;
-            case 'a':
+            case '0':
+                enPassantActive = true;
+                enPassantColumn = 0;
+                break;
+            case '1':
                 enPassantActive = true;
                 enPassantColumn = 1;
                 break;
-            case 'b':
+            case '2':
                 enPassantActive = true;
                 enPassantColumn = 2;
                 break;
-            case 'c':
+            case '3':
                 enPassantActive = true;
                 enPassantColumn = 3;
                 break;
-            case 'd':
+            case '4':
                 enPassantActive = true;
                 enPassantColumn = 4;
                 break;
-            case 'e':
+            case '5':
                 enPassantActive = true;
                 enPassantColumn = 5;
                 break;
-            case 'f':
+            case '6':
                 enPassantActive = true;
                 enPassantColumn = 6;
                 break;
-            case 'g':
+            case '7':
                 enPassantActive = true;
                 enPassantColumn = 7;
-                break;
-            case 'h':
-                enPassantActive = true;
-                enPassantColumn = 8;
                 break;
         }
 
@@ -123,40 +125,110 @@ public class FenEvaluator {
 
     public static String write(Board board){
         ChessPiece[][] model = board.getBoardModel();
-        String fen = "";
+        StringBuilder st = new StringBuilder();
+        int epColumn = 0;
+        boolean enPassant = false;
+        boolean k = false;
+        boolean q = false;
+        boolean K = false;
+        boolean Q = false;
+
+        k = CastleCheck(model, false, true);
+        q = CastleCheck(model, false, false);
+        K = CastleCheck(model, true, true);
+        Q = CastleCheck(model, true, false);
+
         int consecutiveNulls = 0;
         for(int i=0; i<Board.getBoardSize(); i++){
             for(int j=0; j<Board.getBoardSize(); j++){
-                if(model[i][j]==null){
-                    consecutiveNulls++;
-                }
-                 else if(consecutiveNulls>0){
-                    fen += Integer.toString(consecutiveNulls);
-                }
-                else{
-                    consecutiveNulls = 0;
-                    char c = model[i][j].getPieceChar();
-                    switch(c){
-                        case 'b' -> fen += "b";
-                        case 'k' -> fen += "k";
-                        case 'n' -> fen += "n";
-                        case 'p' -> fen += "p";
-                        case 'q' -> fen += "q";
-                        case 'r' -> fen += "r";
-                        case 'B' -> fen += "B";
-                        case 'K' -> fen += "K";
-                        case 'N' -> fen += "N";
-                        case 'P' -> fen += "P";
-                        case 'Q' -> fen += "Q";
-                        case 'R' -> fen += "R";
-                    }
-                }
+               if(model[j][i]==null){
+                   consecutiveNulls++;
+               }
+               else{
+                   if(consecutiveNulls>0) {
+                       st.append(consecutiveNulls);
+                       consecutiveNulls = 0;
+                   }
+                   char c = model[j][i].getPieceChar();
+                   switch (c) {
+                       case 'b' -> st.append("b");
+                       case 'k' -> st.append("k");
+                       case 'n' -> st.append("n");
+                       case 'p' -> st.append("p");
+                       case 'q' -> st.append("q");
+                       case 'r' -> st.append("r");
+                       case 'B' -> st.append("B");
+                       case 'K' -> st.append("K");
+                       case 'N' -> st.append("N");
+                       case 'P' -> st.append("P");
+                       case 'Q' -> st.append("Q");
+                       case 'R' -> st.append("R");
+                   }
+                   if(model[i][j].isEnPassantActive()){
+                       enPassant = true;
+                       epColumn = ((PawnPiece)(model[i][j])).getEnPassantColumn();
+
+                   }
+               }
             }
-            fen += "/";
+            if(consecutiveNulls>0) {
+                st.append(consecutiveNulls);
+                consecutiveNulls = 0;
+            }
+            if(i+1!=Board.getBoardSize())
+                st.append("/");
         }
-        return fen;
+        st.append(" ");
+        if(board.getWhiteMove()){
+            st.append("w");
+        }
+        else{
+            st.append("b");
+        }
+        st.append(" ");
+        if(K){
+            st.append('K');
+        }
+        if(Q){
+            st.append('Q');
+        }
+        if(k){
+            st.append('k');
+        }
+        if(q){
+            st.append('q');
+        }
+        st.append(" ");
+        if(enPassant){
+            st.append(epColumn);
+        }
+        else{
+            st.append("-");
+        }
+        return st.toString();
     }
 
+    public static boolean CastleCheck(ChessPiece[][] model, boolean white, boolean king){
+        if(white && model[4][7].getPieceChar()!='K') {
+            return false;
+        }
+        if(!white && model[4][0].getPieceChar()!='k'){
+            return false;
+        }
+        if(white && king && model[7][7].getPieceChar()=='R'){
+            return ((RookPiece)(model[7][7])).getHasNotMoved();
+        }
+        if(white && !king && model[0][7].getPieceChar()=='R'){
+            return ((RookPiece)(model[0][7])).getHasNotMoved();
+        }
+        if(!white && king && model[7][0].getPieceChar()=='r'){
+            return ((RookPiece)(model[7][0])).getHasNotMoved();
+        }
+        if(!white && !king && model[0][0].getPieceChar()=='r'){
+            return ((RookPiece)(model[0][0])).getHasNotMoved();
+        }
+        return false;
+    }
     private static void buildBoard(Board board, char[] pieces, boolean whiteMove, boolean shortCastleBlack, boolean shortCastleWhite, boolean longCastleBlack, boolean longCastleWhite, boolean enPassantActive, int enPassantColumn){
         for(int i = 0; i<pieces.length; i++){
             int x = i%8;
@@ -175,3 +247,5 @@ public class FenEvaluator {
         return new KingPiece(true,0,0);
     }
 }
+
+
