@@ -240,7 +240,7 @@ public class FenEvaluator {
             ((RookPiece) board.getPieceOffField(0,7)).setHasNotMoved(true);
             ((KingPiece) board.getPieceOffField(4,7)).setHasNotMoved(true);
         }
-        board.setEnPassantActive(enPassantActive); //TODO adapted to the newer version of en passant.
+        board.setEnPassantActive(enPassantActive);
         board.setEnPassantColumn(enPassantColumn);
     }
 
