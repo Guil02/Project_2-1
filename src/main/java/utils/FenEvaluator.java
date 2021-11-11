@@ -9,11 +9,11 @@ import java.util.Arrays;
 
 public class FenEvaluator {
     public static void main(String[] args) {
-        String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - P";
+        String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -";
         read(fen);
     }
 
-    public static void read(String fen){
+    public static Board read(String fen){
         char[] pieces = new char[64];
         boolean whiteMove = true;
         boolean longCastleBlack = false;
@@ -116,6 +116,45 @@ public class FenEvaluator {
 
 
         Board board = new Board();
+
+        buildBoard(board, pieces, whiteMove, shortCastleBlack, shortCastleWhite, longCastleBlack, longCastleWhite, enPassantActive, enPassantColumn);
+        return board;
+    }
+
+    public static String write(Board board){
+        ChessPiece[][] model = board.getBoardModel();
+        String fen = "";
+        int consecutiveNulls = 0;
+        for(int i=0; i<Board.getBoardSize(); i++){
+            for(int j=0; j<Board.getBoardSize(); j++){
+                if(model[i][j]==null){
+                    consecutiveNulls++;
+                }
+                 else if(consecutiveNulls>0){
+                    fen += Integer.toString(consecutiveNulls);
+                }
+                else{
+                    consecutiveNulls = 0;
+                    char c = model[i][j].getPieceChar();
+                    switch(c){
+                        case 'b' -> fen += "b";
+                        case 'k' -> fen += "k";
+                        case 'n' -> fen += "n";
+                        case 'p' -> fen += "p";
+                        case 'q' -> fen += "q";
+                        case 'r' -> fen += "r";
+                        case 'B' -> fen += "B";
+                        case 'K' -> fen += "K";
+                        case 'N' -> fen += "N";
+                        case 'P' -> fen += "P";
+                        case 'Q' -> fen += "Q";
+                        case 'R' -> fen += "R";
+                    }
+                }
+            }
+            fen += "/";
+        }
+        return fen;
     }
 
     private static void buildBoard(Board board, char[] pieces, boolean whiteMove, boolean shortCastleBlack, boolean shortCastleWhite, boolean longCastleBlack, boolean longCastleWhite, boolean enPassantActive, int enPassantColumn){
@@ -127,7 +166,9 @@ public class FenEvaluator {
         }
         board.setWhiteMove(whiteMove);
 //        board.setEnPassant(false);
-
+        if(shortCastleBlack){
+//            board.getBoardModel()[7][0];
+        }
     }
 
     private static ChessPiece makePiece(char c, int x, int y){
