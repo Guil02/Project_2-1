@@ -31,6 +31,10 @@ public class Board {
         this.gameRunner = gameRunner;
     }
 
+    public Board() {
+        isOriginal = true;
+    }
+
     private Board(ChessPiece[][] boardModel, GraphicsConnector graphicsConnector, boolean gameOver, boolean whiteMove, char movablePiece){
         this.gameOver = gameOver;
         this.whiteMove = whiteMove;
