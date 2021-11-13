@@ -20,7 +20,7 @@ public class TDLearning extends Player{
     private TDTreeNode maxima;
     private static final int ply = 2;
     private String fileName = "build/classes/java/main/model/player/weights.txt";
-    private Expectiminimax expectiminimax = new Expectiminimax();
+    private Expectiminimax expectiminimax = new Expectiminimax(true);
 
     public TDLearning() {
         weights = new ArrayList<>();

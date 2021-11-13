@@ -15,7 +15,7 @@ import java.util.Random;
 
 public class FirstAi extends Player {
     private AiTree aiTree = new AiTree();
-    private Expectiminimax expectiminimax = new Expectiminimax();
+    private Expectiminimax expectiminimax = new Expectiminimax(true);
     private ChessTreeNode maxima;
     private Board board;
     private static final int ply = 2;
@@ -88,12 +88,12 @@ public class FirstAi extends Player {
     }
 
     public void ruleBasedAgent(Board board) {
-//        System.out.println(board.getWhiteMove());
+
         Board copy = board.clone();
         boolean maxIsWhite = board.getWhiteMove();
         ChessTreeNode root = new ChessTreeNode(copy, 0, null, 1, 1, 0, 0, 0, 0, maxIsWhite);
-        double res = expectiminimax.expectiminimax(root, (ply*2)-1);
-//        System.out.println(res);
+        expectiminimax.expectiminimax(root, (ply*2)-1); // initialize tree
+
         double maxValue = Double.MIN_VALUE;
         ArrayList<ChessTreeNode> highestNodes = new ArrayList<>();
         ChessTreeNode maxNode = (ChessTreeNode) root.getChildren().get(0);

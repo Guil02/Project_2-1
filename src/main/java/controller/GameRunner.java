@@ -37,7 +37,7 @@ public class GameRunner {
      */
     public void init(int playerOne, int playerTwo) {
         aiTree = new AiTree();
-        expectiminimax = new Expectiminimax();
+        expectiminimax = new Expectiminimax(true);
         board = new Board(this);
         Player player1 = createPlayer(playerOne);
         Player player2 = createPlayer(playerTwo);

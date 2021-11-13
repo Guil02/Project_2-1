@@ -11,12 +11,15 @@ public class TreeNode {
     // 3 = chance
     private int nodeType;
     private double probability;
+    private double lowerBound = Double.MIN_VALUE; // alpha default value
+    private double upperBound = Double.MAX_VALUE; // beta default value
 
     public TreeNode(double value, TreeNode parent, int nodeType, double probability) {
         this.value = value;
         this.parent = parent;
-        this.probability = probability;
         this.nodeType = nodeType;
+        this.probability = probability;
+
     }
 
     public ArrayList<TreeNode> getChildren() {

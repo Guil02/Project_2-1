@@ -37,7 +37,7 @@ public class test {
             aiTree.createChildren(subNode, true, maxIsWhite);
         }
 
-        Expectiminimax expectiminimax = new Expectiminimax();
+        Expectiminimax expectiminimax = new Expectiminimax(true);
         double res = expectiminimax.expectiminimax(root, 10);
 
         for(int i = 0; i<root.getChildren().size(); i++){
