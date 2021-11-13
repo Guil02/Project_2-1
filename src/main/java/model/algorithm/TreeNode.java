@@ -19,7 +19,37 @@ public class TreeNode {
         this.parent = parent;
         this.nodeType = nodeType;
         this.probability = probability;
+    }
 
+    public double getLowerBound() {
+        return this.lowerBound;
+    }
+
+    public double getUpperBound() {
+        return this.upperBound;
+    }
+
+    public void updateLowerAndUpperBounds(double lowerBound, double upperBound) {
+        this.lowerBound = lowerBound;
+        this.upperBound = upperBound;
+    }
+
+    public boolean isWithinBounds(double alpha, double beta) {
+        if(lowerBound<beta && upperBound>alpha){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public void delete() {
+        children = null;
+        parent.removeChildren(this);
+    }
+
+    public void removeChildren(TreeNode children){
+        this.children.remove(children);
     }
 
     public ArrayList<TreeNode> getChildren() {
