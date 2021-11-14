@@ -1,34 +1,63 @@
 package model.algorithm;
 
+import java.util.ArrayList;
+
 public class Expectiminimax {
     final int UPPER_BOUND=100;
     final int LOWER_BOUND=-100;
     public Expectiminimax() {
     }
     public double star1(TreeNode node, int depth){
-       int score = 0;
-       double alpha=0;// we need to get these somehow
+        /*
+        STEPS IMO
+        1. GET ALPHA BETA BOUNDS
+        2. GO THRU EACH POINT AND ALL THE VALUES
+        3. IF THE VALUES EXCEED THE BOUNDS, END GOING THRU POINT
+        4. REMOVE THE OTHER CHILDREN(CUT-OFF)
+
+
+         */
+        boolean doneWithLooking=false;
+        ArrayList<TreeNode> children = node.getChildren();
+        int stuck_at=0;
+        // FIRST STEP
+       double score = 0;
+       double alpha=0;
        double beta=0;
        // i guess bounds = 100 and -100 cus thats our win/loss atm
         if(depth==0 || !node.hasChildren()){
             return node.getValue();
         }
+        //STEP 2
         int predecessor_scores=0;
         double succ_prob=1;
-        for(int i=0;i<node.getChildren().size();i++){
-            double probability =node.getChildren().get(i).getProbability();
-            succ_prob -=probability;
-            double current_alpha =(( alpha - UPPER_BOUND*succ_prob-predecessor_scores)/probability);
-            double current_beta = ((beta - LOWER_BOUND*succ_prob-predecessor_scores)/probability);
-            double n_alpha = Math.max(LOWER_BOUND,current_alpha);
-            double n_beta = Math.min(UPPER_BOUND,current_beta);
-            //random bullshit with doing the moves idk ?????
-            // score = expectiminimax i guess? but with alpha and beta dont we need to rewrite the entire minimax to not use Node???
-            /*
-            if(score>=current_beta) return beta;
-            if(score<=current_alpha) return alpha;
+        for(int i=0;i<children.size();i++){
+            if(!doneWithLooking) {
+                stuck_at=i;
+                double probability = children.get(i).getProbability();
+                succ_prob -= probability;
+                double current_alpha = ((alpha - UPPER_BOUND * succ_prob - predecessor_scores) / probability);
+                double current_beta = ((beta - LOWER_BOUND * succ_prob - predecessor_scores) / probability);
+                double n_alpha = Math.max(LOWER_BOUND, current_alpha);
+                double n_beta = Math.min(UPPER_BOUND, current_beta);
+                score = expectiminimax(children.get(i), depth-1);
+               /*
 
-             */
+               if ( we decide to stop then){
+
+                 doneWithLooking=true
+                 int stuck_at=i
+                 }
+                */
+
+
+            }
+            else{
+                // REMOVING
+              children.remove(stuck_at);
+            }
+
+
         }
     }
     public double expectiminimax(TreeNode node, int depth){
@@ -50,10 +79,7 @@ public class Expectiminimax {
             }
         }
         else{
-            a = 0;
-            for(TreeNode children: node.getChildren()){
-                a = a+(children.getProbability()*expectiminimax(children, depth-1));
-            }
+           a=star1(node,depth);
         }
         node.setValue(a);
         return a;
