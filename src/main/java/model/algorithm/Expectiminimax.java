@@ -33,7 +33,7 @@ public class Expectiminimax {
         double succ_prob=1;
         for(int i=0;i<children.size();i++){
             if(!doneWithLooking) {
-                stuck_at=i;
+                stuck_at=i+1;
                 double probability = children.get(i).getProbability();
                 succ_prob -= probability;
                 double current_alpha = ((alpha - UPPER_BOUND * succ_prob - predecessor_scores) / probability);
@@ -59,6 +59,7 @@ public class Expectiminimax {
 
 
         }
+        return 0;
     }
     public double expectiminimax(TreeNode node, int depth){
         double a;
