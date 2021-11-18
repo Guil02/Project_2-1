@@ -1,4 +1,5 @@
 package model.algorithm;
+import java.util.ArrayList;
 
 public class Expectiminimax {
 

@@ -91,7 +91,7 @@ public class FirstAi extends Player {
 
         Board copy = board.clone();
         boolean maxIsWhite = board.getWhiteMove();
-        ChessTreeNode root = new ChessTreeNode(copy, 0, null, 1, 1, 0, 0, 0, 0, maxIsWhite);
+        ChessTreeNode root = new ChessTreeNode(copy, 0, null, 1, 1, 0, 0, 0, 0, maxIsWhite); // empty tree
         expectiminimax.expectiminimax(root, (ply*2)-1); // initialize tree
 
         double maxValue = Double.MIN_VALUE;

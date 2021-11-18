@@ -11,8 +11,8 @@ public class TreeNode {
     // 3 = chance
     private int nodeType;
     private double probability;
-    private double lowerBound = Double.MIN_VALUE; // alpha default value
-    private double upperBound = Double.MAX_VALUE; // beta default value
+    private double lowerBound = Double.MIN_VALUE; // default value
+    private double upperBound = Double.MAX_VALUE; // default value
 
     public TreeNode(double value, TreeNode parent, int nodeType, double probability) {
         this.value = value;
@@ -44,8 +44,12 @@ public class TreeNode {
     }
 
     public void delete() {
-        children = null;
-        parent.removeChildren(this);
+        for(TreeNode nodes : children){
+            int size = nodes.getChildren().size();
+            for(int i=0; i<(size-1); i++){
+                nodes.getChildren().remove(1);
+            }
+        }
     }
 
     public void removeChildren(TreeNode children){
