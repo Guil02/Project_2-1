@@ -3,7 +3,7 @@ package model.algorithm;
 public class ExpectiminimaxStar2 extends Expectiminimax {
 
     public ExpectiminimaxStar2(boolean withPruning){
-        super();
+        super(withPruning);
     }
 
     /**

@@ -1,7 +1,11 @@
 package model.algorithm;
+import java.util.ArrayList;
 
 public class Expectiminimax {
-    public Expectiminimax() {
+
+    boolean withPruning;
+    public Expectiminimax(boolean withPruning) {
+        this.withPruning = withPruning;
     }
 
     public double expectiminimax(TreeNode node, int depth){
