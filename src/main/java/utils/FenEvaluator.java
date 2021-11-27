@@ -9,10 +9,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class FenEvaluator {
-    public static void main(String[] args) {
-        String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -";
-        read(fen);
+    public FenEvaluator(){
+
     }
+    //public static void main(String[] args) {
+       // String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -";
+      //  read(fen);
+   // }
 
     public static Board read(String fen){
         char[] pieces = new char[64];
