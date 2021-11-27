@@ -2,11 +2,10 @@ package utils;
 
 import controller.Board;
 import controller.BoardUpdater;
-import model.pieces.ChessPiece;
-import model.pieces.KingPiece;
-import model.pieces.PawnPiece;
-import model.pieces.RookPiece;
+import model.pieces.*;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class FenEvaluator {
@@ -53,7 +52,7 @@ public class FenEvaluator {
         index += 2;
 
         while(fen.charAt(index)!= ' '){
-            System.out.println(fen.charAt(index));
+//            System.out.println(fen.charAt(index));
             switch (fen.charAt(index)) {
                 case 'K' -> shortCastleWhite = true;
                 case 'Q' -> longCastleWhite = true;
@@ -78,19 +77,26 @@ public class FenEvaluator {
         index +=2;
 
 
-        System.out.println(Arrays.toString(pieces));
-        System.out.println("white move? "+whiteMove);
-        System.out.println("short castle white: "+shortCastleWhite);
-        System.out.println("long castle white: "+longCastleWhite);
-        System.out.println("short castle black: "+shortCastleBlack);
-        System.out.println("long castle black: "+longCastleBlack);
-        System.out.println("en passant? "+enPassantActive);
-        if(enPassantActive)
-            System.out.println("en passant column: "+enPassantColumn);
+//        System.out.println(Arrays.toString(pieces));
+//        System.out.println("white move? "+whiteMove);
+//        System.out.println("short castle white: "+shortCastleWhite);
+//        System.out.println("long castle white: "+longCastleWhite);
+//        System.out.println("short castle black: "+shortCastleBlack);
+//        System.out.println("long castle black: "+longCastleBlack);
+//        System.out.println("en passant? "+enPassantActive);
+//        if(enPassantActive)
+//            System.out.println("en passant column: "+enPassantColumn);
 
 
         Board board = new Board();
-        buildBoard(board, pieces, whiteMove, shortCastleBlack, shortCastleWhite, longCastleBlack, longCastleWhite, enPassantActive, enPassantColumn);
+        try{
+            buildBoard(board, pieces, whiteMove, shortCastleBlack, shortCastleWhite, longCastleBlack, longCastleWhite, enPassantActive, enPassantColumn);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+//            System.out.println(fen);
+//            System.err.println("error");
+        }
         return board;
     }
 
@@ -180,46 +186,49 @@ public class FenEvaluator {
     }
 
     public static boolean CastleCheck(ChessPiece[][] model, boolean white, boolean king){
-        if(white && model[4][7]!=null && model[4][7].getPieceChar()!='K') {
+        if(white && model[4][7]!=null && (model[4][7].getPieceChar()!='K' || !((KingPiece)model[4][7]).getHasNotMoved())) {
             return false;
         }
-        if(!white && model[4][0]!=null && model[4][0].getPieceChar()!='k'){
+        if(!white && model[4][0]!=null && (model[4][0].getPieceChar()!='k' || !((KingPiece)model[4][0]).getHasNotMoved())){
             return false;
-        }
-        if(white && model[4][7]!=null && model[4][7].getPieceChar()=='K') {
-            if(!((KingPiece)model[4][7]).getHasNotMoved()){
-                return false;
-            }
-        }
-        if(!white && model[4][0]!=null && model[4][0].getPieceChar()=='k'){
-            if(!((KingPiece)model[4][0]).getHasNotMoved()){
-                return false;
-            }
         }
         if(white && king && model[7][7]!=null && model[7][7].getPieceChar()=='R'){
-            return ((RookPiece)(model[7][7])).getHasNotMoved();
+            if(model[4][7]!=null && model[4][7].getPieceChar()=='K' && ((KingPiece) model[4][7]).getHasNotMoved()){
+                return ((RookPiece)(model[7][7])).getHasNotMoved();
+            }
+            else return false;
         }
         if(white && !king && model[0][7]!=null && model[0][7].getPieceChar()=='R'){
-            return ((RookPiece)(model[0][7])).getHasNotMoved();
+            if(model[4][7]!=null && model[4][7].getPieceChar()=='K' && ((KingPiece) model[4][7]).getHasNotMoved()){
+                return ((RookPiece)(model[0][7])).getHasNotMoved();
+            }
+            else return false;
         }
         if(!white && king && model[7][0]!=null && model[7][0].getPieceChar()=='r'){
-            return ((RookPiece)(model[7][0])).getHasNotMoved();
+            if(model[4][0]!=null && model[4][0].getPieceChar()=='k' && ((KingPiece) model[4][0]).getHasNotMoved()){
+                return ((RookPiece)(model[7][0])).getHasNotMoved();
+            }
+            else return false;
         }
         if(!white && !king && model[0][0]!=null && model[0][0].getPieceChar()=='r'){
-            return ((RookPiece)(model[0][0])).getHasNotMoved();
+            if(model[4][0]!=null && model[4][0].getPieceChar()=='k' && ((KingPiece) model[4][0]).getHasNotMoved()){
+                return ((RookPiece)(model[0][0])).getHasNotMoved();
+            }
+            else return false;
         }
         return false;
     }
     private static void buildBoard(Board board, char[] pieces, boolean whiteMove, boolean shortCastleBlack, boolean shortCastleWhite, boolean longCastleBlack, boolean longCastleWhite, boolean enPassantActive, int enPassantColumn){
         for(int i = 0; i<pieces.length; i++){
+            if(pieces[i]=='-') continue;
             int x = i%8;
             int y = (i-x)/8;
             ChessPiece piece = makePiece(pieces[i], x, y);
             if(pieces[i]=='r' || pieces[i]=='R'){
-                ((RookPiece) piece).setHasNotMoved(false);
+                ((RookPiece)piece).setHasNotMoved(false);
             }
             if(pieces[i]=='k' || pieces[i]=='K'){
-                ((KingPiece) piece).setHasNotMoved(false);
+                ((KingPiece)piece).setHasNotMoved(false);
             }
             BoardUpdater.addPiece(board, piece);
         }
@@ -245,7 +254,59 @@ public class FenEvaluator {
     }
 
     private static ChessPiece makePiece(char c, int x, int y){
-        return new KingPiece(true,0,0);
+        switch (c){
+            case 'k':
+                return new KingPiece(false, x,y);
+            case 'K':
+                return new KingPiece(true, x, y);
+            case 'q':
+                return new QueenPiece(false, x, y);
+            case 'Q':
+                return new QueenPiece(true, x, y);
+            case 'r':
+                return new RookPiece(false, x, y);
+            case 'R':
+                return new RookPiece(true, x, y);
+            case 'b':
+                return new BishopPiece(false, x, y);
+            case 'B':
+                return new BishopPiece(true, x, y);
+            case 'n':
+                return new KnightPiece(false, x, y);
+            case 'N':
+                return new KnightPiece(true, x, y);
+            case 'p':
+                return new PawnPiece(false, x, y);
+            case 'P':
+                return new PawnPiece(true, x, y);
+            default:
+                return null;
+        }
+    }
+
+    public static ArrayList<ArrayList<String>> separateWhiteAndBlack(ArrayList<String> fens){
+        ArrayList<String> white = new ArrayList<>();
+        ArrayList<String> black = new ArrayList<>();
+
+        for(int i = 0; i<fens.size(); i++){
+            int index = 0;
+            String fen = fens.get(i);
+            while(fen.charAt(index)!=' '){
+                index++;
+            }
+            index++;
+            if(fen.charAt(index)=='w'){
+                white.add(fen);
+            }
+            else if(fen.charAt(index)=='b'){
+                black.add(fen);
+            }
+        }
+
+        ArrayList<ArrayList<String>> res = new ArrayList<>();
+        res.add(white);
+        res.add(black);
+        return res;
     }
 }
 

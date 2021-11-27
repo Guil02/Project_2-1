@@ -2,6 +2,9 @@ package controller;
 
 import javafx.application.Platform;
 import model.pieces.*;
+import model.player.MCTSAgent;
+import model.player.TDLearning;
+import utils.GameGenerator;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -85,6 +88,7 @@ public class BoardUpdater {
     }
 
     public static void movePiece(Board board, int xFrom, int yFrom, int xTo, int yTo) {
+//        if(board.isOriginal()) System.out.println("did a move");
         board.storeMove();
         ChessPiece pieceToMove = board.getPieceOffField(xFrom, yFrom);
         if(pieceToMove!= null){
@@ -97,12 +101,31 @@ public class BoardUpdater {
             startPromotionDialog(board, pieceToMove, xTo, yTo);
         }
         board.changeTurn();
+        if(board.getAmountOfTurns()>200){
+            board.setGameOver(true);
+        }
         if(board.getGameOver()&& board.isOriginal()){
             board.storeMove();
-            ArrayList<String> boardStates = board.getBoardStates();
-            for(int i = 0; i<board.getBoardStates().size(); i++){
-                System.out.println(boardStates.get(i));
+//            ArrayList<String> boardStates = board.getBoardStates();
+//            for(int i = 0; i<board.getBoardStates().size(); i++){
+//                System.out.println(boardStates.get(i));
+//            }
+            if(GameRunner.GENERATE_GAMES){
+                System.out.println("hi");
+                GameGenerator.writeGame(board);
+                board.getGameRunner().reset();
             }
+            else {
+                if (board.getPlayer1() == 3 && TDLearning.LEARN && board.isOriginal()) {
+                    TDLearning.learn(board);
+                }
+                if (board.getPlayer1() == 4 && MCTSAgent.LEARN && board.isOriginal()) {
+                    double[] endEval = ((MCTSAgent) board.playerOne).computeEndEval(board);
+
+                    ((MCTSAgent) board.playerOne).learn(board, board.getBoardStates(), endEval);
+                }
+            }
+
 //            try {
 //                Thread.sleep(1000);
 //            } catch (InterruptedException e) {
@@ -161,5 +184,23 @@ public class BoardUpdater {
         return false;
     }
 
+    public static void clearBoard(Board board){
+        for(int i = 0; i<Board.getBoardSize(); i++){
+            for(int j = 0; j<Board.getBoardSize(); j++){
+                board.getBoardModel()[i][j]=null;
+            }
+        }
+    }
+
+    public static void printBoard(ChessPiece[][] boardModel, Board board) {
+        System.out.println("--- Board State ---\n");
+        for(int i = 0; i < boardModel[0].length; i++) {
+            for (int j = 0; j < boardModel.length; j++) {
+                System.out.print("[ " + board.getCharOffField(j,i) + " ] ");
+                // System.out.print("[ " + j + " " + i + " ] ");
+            }
+            System.out.println();
+        }
+    }
 
 }

@@ -51,6 +51,11 @@ public class FirstAi extends Player {
                                 );
                             }
                             board.setGameOver(true);
+                            board.storeMove();
+                            ArrayList<String> boardStates = board.getBoardStates();
+                            for(int i = 0; i<board.getBoardStates().size(); i++){
+                                System.out.println(boardStates.get(i));
+                            }
                         }
                         else{
                             if(Board.GUI_ON && board.isOriginal()){
@@ -61,6 +66,11 @@ public class FirstAi extends Player {
                                 );
                             }
                             board.setGameOver(true);
+                            board.storeMove();
+                            ArrayList<String> boardStates = board.getBoardStates();
+                            for(int i = 0; i<board.getBoardStates().size(); i++){
+                                System.out.println(boardStates.get(i));
+                            }
                         }
                     }
                     if(Board.GUI_ON){

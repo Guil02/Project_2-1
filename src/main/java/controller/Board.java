@@ -1,10 +1,7 @@
 package controller;
 
 import model.pieces.ChessPiece;
-import model.player.BaselineAgent;
-import model.player.FirstAi;
-import model.player.Player;
-import model.player.TDLearning;
+import model.player.*;
 import utils.FenEvaluator;
 
 import java.lang.reflect.Array;
@@ -20,7 +17,7 @@ public class Board {
     private boolean gameOver;
     private boolean whiteMove = true;
     private char movablePiece;
-    public static final boolean GUI_ON = false;
+    public static final boolean GUI_ON = GameRunner.GUI_ON;
     private int player1 = 0;
     private int player2 = 0;
     Player playerOne;
@@ -81,6 +78,9 @@ public class Board {
                 else if(player1 == 3){
                     ((TDLearning) playerOne).launch(this);
                 }
+                else if(player1 == 4){
+                    ((MCTSAgent) playerOne).launch(this);
+                }
             }
         }
         else{
@@ -93,6 +93,9 @@ public class Board {
                 }
                 else if(player2==3){
                     ((TDLearning) playerTwo).launch(this);
+                }
+                else if(player2==4){
+                    ((MCTSAgent) playerTwo).launch(this);
                 }
             }
         }
@@ -258,5 +261,39 @@ public class Board {
 
     public void setEnPassantColumn(int enPassantColumn) {
         this.enPassantColumn = enPassantColumn;
+    }
+
+    public boolean containsKing(boolean white){
+        for(int i = 0; i<BOARDSIZE; i++){
+            for(int j = 0; j<BOARDSIZE; j++){
+                if(white){
+                    if(getCharOffField(i,j)=='K'){
+                        return true;
+                    }
+                }
+                else{
+                    if (getCharOffField(i, j) == 'k') {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public GameRunner getGameRunner() {
+        return gameRunner;
+    }
+
+    public void setAmountOfTurns(int amountOfTurns) {
+        this.amountOfTurns = amountOfTurns;
+    }
+
+    public int getAmountOfTurns() {
+        return amountOfTurns;
+    }
+
+    public void movesClear() {
+        moves.clear();
     }
 }

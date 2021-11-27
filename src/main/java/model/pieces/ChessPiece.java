@@ -66,6 +66,10 @@ public abstract class ChessPiece {
         return this.isWhite;
     }
 
+    public void setWhite(boolean white) {
+        isWhite = white;
+    }
+
     /**
      * @param xTo next x position after doing the move
      * @param yTo next y position after doing the move
