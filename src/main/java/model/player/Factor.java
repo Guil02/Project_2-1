@@ -216,6 +216,24 @@ public class Factor {
         }
         return result;
     }
+    public static double king_castling(Board board, boolean whiteIsMax){
+        char k = convertChar('k', whiteIsMax);
+        char c = convertChar('c', whiteIsMax);
+        ArrayList<ChessPiece> list = board.getPieces(k);
+        ArrayList<ChessPiece> list1 = board.getPieces(c);
+        double res = 0;
+        for(ChessPiece piece: list){
+            if((piece.getX() == 2 || piece.getX()== 6 ) && (piece.getY() == 7 )) {
+                for (ChessPiece piece1 : list1) {
+                    if ((piece1.getX() == 3 || piece1.getX() == 5) && (piece1.getY() == 7)) {
+                        res++;
+                    }
+                }
+
+                }
+            }
+    return res;
+    }
 
     public static boolean isCentral(int x, int y){
         if(x>1&&x<6&&y>3&&y<6){

@@ -49,8 +49,7 @@ public class TDLearning extends Player{
         factors.add(17,Factor.knight_periphery_2(board, whiteIsMax));
         factors.add(18,Factor.knight_periphery_3(board, whiteIsMax));
         factors.add(19,Factor.attacking_king(board, whiteIsMax));
-
-
+        factors.add(20,Factor.king_castling(board, whiteIsMax));
         double eval = 0;
         for(int i = 0; i<factors.size(); i++){
             eval += factors.get(i)*weights.get(i);
