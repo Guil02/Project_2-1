@@ -2,6 +2,7 @@ import controller.Board;
 import controller.BoardUpdater;
 import controller.Dice;
 import model.algorithm.*;
+import model.player.FirstAi;
 import org.junit.jupiter.api.Test;
 import utils.FenEvaluator;
 import controller.*;
@@ -15,6 +16,7 @@ public class PruningTests {
         String fen = "8/5K1p/7B/Pb2k3/6P1/2p1Pp1P/2Rr2p1/Q4N2 w - - 0 1";
         FenEvaluator reader = new FenEvaluator();
         Board board = reader.read(fen);
+        board.setPlayers(1,1);
         board.setWhiteMove(true);
         Dice.rollTheDice(board);
         printBoard(board.getBoardModel(), board);
@@ -32,6 +34,7 @@ public class PruningTests {
         double res = expectiminimax.expectiminimax(root, 10);
         System.out.println("getting first value");
         ExpectiminimaxStar2 expectiminimaxStar2 = new ExpectiminimaxStar2(true);
+        System.out.println("First value :" + res);
         System.out.println("initializing expectiminimax with pruning");
         double res2 = expectiminimaxStar2.expectiminimax(root,10);
         System.out.print("Without pruning "+res+" With pruning "+res2+"for piece "+ board.getMovablePiece());

@@ -3,7 +3,6 @@ package model.algorithm;
 public class ExpectiminimaxStar2 extends Expectiminimax {
 
     public ExpectiminimaxStar2(boolean withPruning){
-        super(withPruning);
     }
 
     /**
@@ -79,7 +78,7 @@ public class ExpectiminimaxStar2 extends Expectiminimax {
     public double expectiminimax(TreeNode node, int depth){
 
         double a;
-        if(!node.hasChildren()){
+        if(!node.hasChildren()&&depth!=0){
             node.createChildren();
         }
 
