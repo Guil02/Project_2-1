@@ -3,6 +3,7 @@ package controller;
 import gui.ChessGUI;
 import model.algorithm.AiTree;
 import model.algorithm.Expectiminimax;
+import model.algorithm.ExpectiminimaxStar2;
 import model.pieces.ChessPiece;
 import model.pieces.KingPiece;
 import model.pieces.PawnPiece;
@@ -14,7 +15,7 @@ public class GameRunner {
     ChessGUI chessGUI;
     GraphicsConnector graphicsConnector;
     private AiTree aiTree;
-    private Expectiminimax expectiminimax;
+    private ExpectiminimaxStar2 expectiminimax;
 
 
 
@@ -37,7 +38,7 @@ public class GameRunner {
      */
     public void init(int playerOne, int playerTwo) {
         aiTree = new AiTree();
-        expectiminimax = new Expectiminimax(true);
+        expectiminimax = new ExpectiminimaxStar2(true);
         board = new Board(this);
         Player player1 = createPlayer(playerOne);
         Player player2 = createPlayer(playerTwo);

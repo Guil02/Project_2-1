@@ -5,6 +5,8 @@ public class ExpectiminimaxStar2 extends Expectiminimax {
     public ExpectiminimaxStar2(boolean withPruning){
         super(withPruning);
     }
+    int count = 0;
+
 
     /**
      * star2 pruning method for the expectimax AI
@@ -77,7 +79,9 @@ public class ExpectiminimaxStar2 extends Expectiminimax {
     }
 
     public double expectiminimax(TreeNode node, int depth){
-
+        System.out.println("Test " + count);
+        count++;
+        //System.out.println("Cont nodes: " + countNodes(node, 1));
         double a;
         if(!node.hasChildren()){
             node.createChildren();
@@ -111,5 +115,23 @@ public class ExpectiminimaxStar2 extends Expectiminimax {
         }
         node.setValue(a);
         return a;
+    }
+
+    /**
+     * Recursively iterate over all child nodes to count all the nodes in the tree
+     * @param node      root node
+     * @return          number of nodes in the tree
+     */
+    private int countNodes(TreeNode node, int count) {
+        if (node.hasChildren()) {
+            System.out.println("Found a child");
+            for (TreeNode child : node.getChildren()) {
+                return count + countNodes(child, count);
+            }
+        }
+        else {
+            return 1; // Base case if no more children are available
+        }
+        return -1;
     }
 }

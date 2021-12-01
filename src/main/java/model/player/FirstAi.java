@@ -4,10 +4,7 @@ import controller.Board;
 import controller.BoardUpdater;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
-import model.algorithm.AiTree;
-import model.algorithm.ChessTreeNode;
-import model.algorithm.Expectiminimax;
-import model.algorithm.TreeNode;
+import model.algorithm.*;
 import model.pieces.ChessPiece;
 
 import java.util.ArrayList;
@@ -15,7 +12,7 @@ import java.util.Random;
 
 public class FirstAi extends Player {
     private AiTree aiTree = new AiTree();
-    private Expectiminimax expectiminimax = new Expectiminimax(true);
+    private ExpectiminimaxStar2 expectiminimax = new ExpectiminimaxStar2(true);
     private ChessTreeNode maxima;
     private Board board;
     private static final int ply = 2;
