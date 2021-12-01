@@ -30,10 +30,10 @@ public class PruningTests {
             aiTree.createChildren(subNode, true, maxIsWhite);
         }
         Expectiminimax expectiminimax = new Expectiminimax();
+        ExpectiminimaxStar2 expectiminimaxStar2 = new ExpectiminimaxStar2(true);
         System.out.println("initializing expectiminimax");
         double res = expectiminimax.expectiminimax(root, 10);
         System.out.println("getting first value");
-        ExpectiminimaxStar2 expectiminimaxStar2 = new ExpectiminimaxStar2(true);
         System.out.println("First value :" + res);
         System.out.println("initializing expectiminimax with pruning");
         double res2 = expectiminimaxStar2.expectiminimax(root,10);

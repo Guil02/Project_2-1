@@ -5,7 +5,7 @@ import utils.Learner;
  * Application class which contains the executable method to start the game.
  */
 public class Application {
-    private static final boolean LEARN = true;
+    private static final boolean LEARN = false;
     /**
      * Main method which gets executed upon start.
      * @param args
