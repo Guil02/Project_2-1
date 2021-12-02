@@ -21,7 +21,7 @@ public class ExpectiminimaxStar2 extends Expectiminimax {
         /*
          * if no chance node children layer --> create
          */
-        if(depth > 2){
+        if(depth > 10){
             for (TreeNode nodes : node.getChildren()){
                 nodes.createChildren();
             }
@@ -41,7 +41,7 @@ public class ExpectiminimaxStar2 extends Expectiminimax {
              */
             for (int j = 0; j < max_number_of_leaves; j++) {
                 for (int i = 0; i < number_of_children; i++) {
-                    double leaf_value = expectiminimax(node.getChildren().get(i).getChildren().get(j), depth-2);
+                    double leaf_value = expectiminimax(node.getChildren().get(i).getChildren().get(j), depth-1);
 
                     if (node.getChildren().get(i).getNodeType() == 1) { //max
                         node.getChildren().get(i).updateLowerAndUpperBounds(leaf_value, node.getChildren().get(i).getUpperBound());
@@ -76,17 +76,19 @@ public class ExpectiminimaxStar2 extends Expectiminimax {
     }
 
     public double expectiminimax(TreeNode node, int depth){
-
+        System.out.println("Star2 started!!!");
         double a;
         if(!node.hasChildren()&&depth!=0){
             node.createChildren();
         }
 
         if(depth == 0 || !node.hasChildren()){
+            System.out.println("Star2 Depth 0");
             return node.getValue();
 
         }
         else if(node.getNodeType() == 2){
+            System.out.println("Star2 Node type 2");
             a = Double.MAX_VALUE;
 
             for(TreeNode children : node.getChildren()){
@@ -94,6 +96,7 @@ public class ExpectiminimaxStar2 extends Expectiminimax {
             }
         }
         else if(node.getNodeType() == 1){
+            System.out.println("Star2 Node type 1");
             a = Double.MIN_VALUE;
 
             for(TreeNode children : node.getChildren()){
@@ -101,6 +104,7 @@ public class ExpectiminimaxStar2 extends Expectiminimax {
             }
         }
         else{
+            System.out.println("Star2 Pruning baby!");
             star2(node, depth);
             a = 0;
 

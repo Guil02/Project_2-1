@@ -9,10 +9,10 @@ public class Expectiminimax {
     }
 
     public double expectiminimax(TreeNode node, int depth){
-        System.out.println("IM BEING USED HELP");
+        // System.out.println("IM BEING USED HELP");
         double a;
         if(depth==0 || !node.hasChildren()){
-            System.out.println("REACHED END");
+            // System.out.println("REACHED END");
             return node.getValue();
         }
         else if(node.getNodeType()==2){
