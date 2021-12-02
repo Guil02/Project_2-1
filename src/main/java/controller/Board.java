@@ -87,7 +87,7 @@ public class Board {
                 else if(player2==3){
                     ((TDLearning) playerTwo).launch(this);
                 }
-                else if (player1 == 4) {
+                else if (player2 == 4) {
                     ((TakeAi) playerTwo).launch(this);
                 }
             }

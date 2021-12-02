@@ -8,6 +8,7 @@ import model.pieces.ChessPiece;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.Random;
 
 /**
  * This agent is an improvement of the baseline agent. It looks at the current board and if there
@@ -16,6 +17,13 @@ import java.util.LinkedList;
  * If there is a draw between two equally maximum valuable pieces, it will decide randomly (e.g. two knights).
  */
 public class TakeAi extends Player{
+
+    private int kingScore = 1000;
+    private int queenScore = 100;
+    private int rookScore = 50;
+    private int bishopScore = 40;
+    private int knightScore = 30;
+    private int pawnScore = 10;
 
     /**
      * Launches a single move of the Take-AI.
@@ -55,8 +63,27 @@ public class TakeAi extends Player{
                 // For debug: Print all moves:
                 printMoves(allMoves);
 
+                // Scan all moves for a set of moves that take pieces
+                ArrayList<int[]> takeMoves = new ArrayList<int[]>();
+                for (int[] entry : allMoves) {
+                    if (board.getCharOffField(entry[2], entry[3]) != '-') {
+                        takeMoves.add(entry);
+                    }
+                }
+
                 // Execute move
-                BoardUpdater.movePiece(board, allMoves.get(0)[0], allMoves.get(0)[1], allMoves.get(0)[2], allMoves.get(0)[3]);
+
+                if (takeMoves.size() == 0) { // If AI can't take a piece right now, do a random move
+                    Random rand = new Random();
+                    int[] move = allMoves.get(rand.nextInt(allMoves.size()));
+                    BoardUpdater.movePiece(board, move[0], move[1], move[2], move[3]);
+                }
+                else {
+                    Random rand = new Random();
+                    int[] move = takeMoves.get(rand.nextInt(takeMoves.size()));
+                    BoardUpdater.movePiece(board, move[0], move[1], move[2], move[3]);
+                }
+
                 if(Board.GUI_ON){
                     Platform.runLater(
                             new Thread(board::launchGuiUpdate)
