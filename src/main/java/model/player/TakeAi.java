@@ -1,6 +1,8 @@
 package model.player;
 
 import controller.Board;
+import controller.BoardUpdater;
+import javafx.application.Platform;
 import model.pieces.ChessPiece;
 
 import java.util.ArrayList;
@@ -25,9 +27,11 @@ public class TakeAi extends Player{
             try{
                 Thread.sleep(50);
                 // Actual logic for the move starts here
+
                 ArrayList<int[]> allMoves = new ArrayList<int[]>();
                 ArrayList<ChessPiece> pieceList = new ArrayList<ChessPiece>();
                 char movablePieceChar = board.getMovablePiece(); // All movable pieces
+
                 for (int i = 0; i < 8; i++) {
                     for (int j = 0; j < 8; j++) {
                         if (movablePieceChar == board.getCharOffField(i, j)) {
@@ -36,6 +40,7 @@ public class TakeAi extends Player{
                     }
                 }
                 // Get all the moves for each piece
+
                 for (ChessPiece piece : pieceList) {
                     boolean[][] validMoves = piece.validMoves(board);
                     for (int i = 0; i < 8; i++) {
@@ -46,11 +51,16 @@ public class TakeAi extends Player{
                         }
                     }
                 }
+
                 // For debug: Print all moves:
-                System.out.println("All Moves:");
-                for (int[] entry : allMoves) {
-                    System.out.println("---");
-                    System.out.println(Arrays.toString(entry));
+                printMoves(allMoves);
+
+                // Execute move
+                BoardUpdater.movePiece(board, allMoves.get(0)[0], allMoves.get(0)[1], allMoves.get(0)[2], allMoves.get(0)[3]);
+                if(Board.GUI_ON){
+                    Platform.runLater(
+                            new Thread(board::launchGuiUpdate)
+                    );
                 }
             }
             catch(Exception e) {
@@ -58,5 +68,12 @@ public class TakeAi extends Player{
                 e.printStackTrace();
             }
         }).start();
+    }
+
+    void printMoves(ArrayList<int[]> allMoves) {
+        System.out.println("--- All Moves: ---");
+        for (int[] entry : allMoves) {
+            System.out.println(Arrays.toString(entry));
+        }
     }
 }

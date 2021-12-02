@@ -1,10 +1,7 @@
 package controller;
 
 import model.pieces.ChessPiece;
-import model.player.BaselineAgent;
-import model.player.FirstAi;
-import model.player.Player;
-import model.player.TDLearning;
+import model.player.*;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -74,6 +71,9 @@ public class Board {
                 else if(player1 == 3){
                     ((TDLearning) playerOne).launch(this);
                 }
+                else if (player1 == 4) {
+                    ((TakeAi) playerOne).launch(this);
+                }
             }
         }
         else{
@@ -86,6 +86,9 @@ public class Board {
                 }
                 else if(player2==3){
                     ((TDLearning) playerTwo).launch(this);
+                }
+                else if (player1 == 4) {
+                    ((TakeAi) playerTwo).launch(this);
                 }
             }
         }

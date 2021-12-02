@@ -59,7 +59,7 @@ public class GameRunner {
         else if(playerType == 2){
             return new BaselineAgent();
         }
-        else if(playerType == 3){
+        else if(playerType == 4){
             return new TakeAi();
         }
         else{
