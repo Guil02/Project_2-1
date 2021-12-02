@@ -15,12 +15,14 @@ import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
 import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
 import org.deeplearning4j.nn.conf.layers.DenseLayer;
 import org.deeplearning4j.nn.conf.layers.OutputLayer;
+import org.deeplearning4j.nn.gradient.Gradient;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.deeplearning4j.nn.weights.WeightInit;
 import org.nd4j.linalg.activations.Activation;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.dataset.DataSet;
 import org.nd4j.linalg.factory.Nd4j;
+import org.nd4j.linalg.learning.config.AdaDelta;
 import org.nd4j.linalg.learning.config.Nesterovs;
 import org.nd4j.linalg.lossfunctions.LossFunctions;
 import utils.FenEvaluator;
@@ -34,13 +36,13 @@ import static controller.GameRunner.DEBUG;
 
 public class MCTSAgent extends Player {
     private static final int FEATURES_COUNT = 315;
-    private static final int CLASSES_COUNT = 2;
+    private static final int CLASSES_COUNT = 1;
     private MultiLayerConfiguration configuration;
     private MultiLayerNetwork model;
     private NeuralNetwork neuralNetwork;
     public static final boolean LEARN = true;
     private Expectiminimax expectiminimax;
-    private final int ply = 2;
+    private final int ply = 1;
     private MCTSTreeNode maxima;
     private BaselineAgent baselineAgent;
     private static final boolean DEBUG = GameRunner.DEBUG;
@@ -50,7 +52,7 @@ public class MCTSAgent extends Player {
         configuration = new NeuralNetConfiguration.Builder()
                 .activation(Activation.RELU)
                 .weightInit(WeightInit.XAVIER)
-                .updater(new Nesterovs(0.1, 0.9))
+                .updater(new AdaDelta())
                 .l2(0.0001).list().layer(0, new DenseLayer.Builder()
                         .nIn(FEATURES_COUNT).nOut(3).build()).
                 layer(1, new DenseLayer.Builder()
@@ -63,10 +65,23 @@ public class MCTSAgent extends Player {
 
         model = new MultiLayerNetwork(configuration);
         model.init();
-        model.setParam("0_W", null);
         neuralNetwork = new NeuralNetwork();
         expectiminimax = new Expectiminimax();
         baselineAgent = new BaselineAgent();
+    }
+
+    public void learn(ArrayList<Board> errorBoards, ArrayList<Double> errors){
+        double[][] err = new double[1][CLASSES_COUNT];
+//        for(int i = 0; i<errors.size(); i++){
+//            err[i][0]=errors.get(i);
+//        }
+        err[0][0]=errors.get(0);
+        INDArray err2 = Nd4j.create(err);
+        model.setLabels(err2);
+        model.computeGradientAndScore();
+        Gradient gradient = model.gradient();
+        INDArray gradientArray = gradient.gradient();
+        System.out.println(gradientArray);
     }
 
     public double[] evaluation(Board board) {
@@ -74,7 +89,7 @@ public class MCTSAgent extends Player {
         double[][] temp = {val};
         INDArray input = Nd4j.create(temp);
         INDArray res = model.output(input);
-        double[][] output = res.toDoubleMatrix();
+        double[][] output = res.toDoubleMatrix(); //TODO REMOVE USAGE TO IMPROVE SPEED, DOCUMENTATION MENTIONS THAT IT IS SLOW
         return output[0];
     }
 
@@ -337,7 +352,7 @@ public class MCTSAgent extends Player {
                 value = temp[0];
             }
             else{
-                value = temp[1];
+                value = temp[0];
             }
         }
         MCTSTreeNode child = new MCTSTreeNode(copy,value, parent, nodeType, probability, 0,0,0,0, parent.isMaxIsWhite(), parent.getMctsAgent());
@@ -367,7 +382,7 @@ public class MCTSAgent extends Player {
                             value = temp[0];
                         }
                         else{
-                            value = temp[1];
+                            value = temp[0];
                         }
                     }
 
@@ -391,7 +406,7 @@ public class MCTSAgent extends Player {
                 value = temp[0];
             }
             else{
-                value = temp[1];
+                value = temp[0];
             }
         }
 
@@ -415,6 +430,24 @@ public class MCTSAgent extends Player {
         else{
             return false;
         }
+    }
+
+    public Board doMove(Board board){
+        runAgent(board);
+        MCTSTreeNode move = maxima;
+        Board clone = board.clone();
+        if(move.isDoPromotion()){
+            boolean isWhite = clone.getPieceOffField(move.getxFrom(), move.getyFrom()).isWhite();
+            int pieceType = getPieceType(move.getBoard().getCharOffField(move.getxTo(), move.getyTo()));
+            ChessPiece promoted = BoardUpdater.createPiece(isWhite, move.getxTo(), move.getyTo(), pieceType);
+            BoardUpdater.removePiece(clone, move.getxFrom(), move.getyFrom());
+            BoardUpdater.addPiece(clone, promoted);
+            if(!BoardUpdater.containsKing(clone, !isWhite)){
+                board.setGameOver(true);
+            }
+        }
+        else BoardUpdater.movePiece(clone, move.getxFrom(), move.getyFrom(), move.getxTo(), move.getyTo());
+        return clone;
     }
 
 
