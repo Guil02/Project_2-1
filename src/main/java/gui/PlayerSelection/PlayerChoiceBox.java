@@ -24,6 +24,7 @@ public class PlayerChoiceBox extends ChoiceBox<String> {
         getItems().add("Search AI");
         getItems().add("Random AI");
         getItems().add("TD learning AI");
+        getItems().add("Take AI");
         setOnAction(event -> {
             int selectedIndex = getSelectionModel().getSelectedIndex();
             playerSelectionChoiceBox.setPlayer(number, selectedIndex);

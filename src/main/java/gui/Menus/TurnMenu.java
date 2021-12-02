@@ -14,7 +14,7 @@ public class TurnMenu extends Menu {
      * 
      */
     public TurnMenu(){
-        setText("turn settings");
+        setText("Turn Settings");
         MenuItem m1 = new MenuItem("on");
         MenuItem m2 = new MenuItem("off");
 
