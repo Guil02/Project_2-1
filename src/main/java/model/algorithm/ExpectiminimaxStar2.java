@@ -22,9 +22,9 @@ public class ExpectiminimaxStar2 extends Expectiminimax {
          * if no chance node children layer --> create
          */
         if(depth > 2){
-            for (TreeNode nodes : node.getChildren()){
-                nodes.createChildren();
-            }
+           // for (TreeNode nodes : node.getChildren()){
+            //    nodes.createChildren();
+            //}
         }
         else{
             int number_of_children = node.getChildren().size();
