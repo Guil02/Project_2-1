@@ -61,7 +61,7 @@ public class TakeAi extends Player{
                 }
 
                 // For debug: Print all moves:
-                printMoves(allMoves);
+                // printMoves(allMoves);
 
                 // Scan all moves for a set of moves that take pieces
                 ArrayList<int[]> takeMoves = new ArrayList<int[]>();
@@ -72,15 +72,34 @@ public class TakeAi extends Player{
                 }
 
                 // Execute move
-
                 if (takeMoves.size() == 0) { // If AI can't take a piece right now, do a random move
                     Random rand = new Random();
                     int[] move = allMoves.get(rand.nextInt(allMoves.size()));
                     BoardUpdater.movePiece(board, move[0], move[1], move[2], move[3]);
                 }
                 else {
-                    Random rand = new Random();
-                    int[] move = takeMoves.get(rand.nextInt(takeMoves.size()));
+                    // Save the "score" of all the taken pieces in a new array with the index corresponding to takeMoves
+                    int[] takeScore = new int[takeMoves.size()];
+                    for (int i = 0; i < takeScore.length; i++) {
+                        char currentPieceChar = Character.toUpperCase(board.getCharOffField(takeMoves.get(i)[2], takeMoves.get(i)[3]));
+                        switch(currentPieceChar) {
+                            case('K'): takeScore[i] = kingScore; break;
+                            case('Q'): takeScore[i] = queenScore; break;
+                            case('R'): takeScore[i] = rookScore; break;
+                            case('B'): takeScore[i] = bishopScore; break;
+                            case('N'): takeScore[i] = knightScore; break;
+                            case('P'): takeScore[i] = pawnScore; break;
+                            default: takeScore[i] = 1; System.out.println("ERROR IN SCORE DETERMINATION"); break;
+                        }
+                    }
+                    // Get the index of the highest score out of the takeScore array
+                    int maxScoreIndex = 0;
+                    for (int i = 0; i < takeScore.length; i++) {
+                        if (takeScore[i] > maxScoreIndex) {
+                            maxScoreIndex = i;
+                        }
+                    }
+                    int[] move = takeMoves.get(maxScoreIndex);
                     BoardUpdater.movePiece(board, move[0], move[1], move[2], move[3]);
                 }
 
