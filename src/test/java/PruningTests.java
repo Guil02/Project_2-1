@@ -45,13 +45,22 @@ public class PruningTests {
         AiTree aiTree = new AiTree();
         aiTree.createChildren(root, false, maxIsWhite);
 
-        int ply = 2;
-        Expectiminimax expectiminimax = new Expectiminimax();
-        ExpectiminimaxStar2 expectiminimaxStar2 = new ExpectiminimaxStar2(true);
+        int ply = 4;
 
         // Execute the algorithms
+        long start1 = System.currentTimeMillis();
+        Expectiminimax expectiminimax = new Expectiminimax();
         expectiminimax.expectiminimax(root, (ply * 2) - 1);
+        long end1 = System.currentTimeMillis();
+
+        System.out.println("Time for normal Expectiminimax: " + (end1 - start1));
+
+        long start2 = System.currentTimeMillis();
+        ExpectiminimaxStar2 expectiminimaxStar2 = new ExpectiminimaxStar2(true);
         expectiminimaxStar2.expectiminimax(root2, (ply * 2) - 1);
+        long end2 = System.currentTimeMillis();
+
+        System.out.println("Time for Expectiminimax with P: " + (end2 - start2));
 
         double maxValue = Double.MIN_VALUE;
         ArrayList<ChessTreeNode> highestNodes = new ArrayList<>();
