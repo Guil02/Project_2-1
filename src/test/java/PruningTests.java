@@ -32,11 +32,11 @@ public class PruningTests {
         Expectiminimax expectiminimax = new Expectiminimax();
         ExpectiminimaxStar2 expectiminimaxStar2 = new ExpectiminimaxStar2(true);
         System.out.println("initializing expectiminimax");
-        double res = expectiminimax.expectiminimax(root, 4);
+        double res = expectiminimax.expectiminimax(root, 1);
         System.out.println("getting first value");
         System.out.println("First value :" + res);
         System.out.println("initializing expectiminimax with pruning");
-        double res2 = expectiminimaxStar2.expectiminimax(root,4);
+        double res2 = expectiminimaxStar2.expectiminimax(root,1);
         System.out.print("Without pruning "+res+" With pruning "+res2+"for piece "+ board.getMovablePiece());
         assertEquals(res,res2);
     }
