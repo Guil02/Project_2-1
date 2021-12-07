@@ -16,7 +16,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class TDLearning extends Player{
+public class TDLearningAgent extends Player{
     public static final boolean LEARN = false;
     public static final boolean SIGMOID_ACTIVE = false;
     private ArrayList<Double> weights;
@@ -28,7 +28,7 @@ public class TDLearning extends Player{
     private static double alpha = 1;
     private static int amountOfGame = 0;
 
-    public TDLearning() {
+    public TDLearningAgent() {
         weights = readInWeights();
     }
 

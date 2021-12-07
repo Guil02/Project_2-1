@@ -60,16 +60,16 @@ public class Board {
         if(whiteMove){
             if(player1>0){
                 if(player1==1){
-                    ((SearchAi) playerOne).launch(this);
+                    ((SearchAgent) playerOne).launch(this);
                 }
                 else if(player1==2){
                     ((BaselineAgent) playerOne).launch(this);
                 }
                 else if(player1 == 3){
-                    ((TDLearning) playerOne).launch(this);
+                    ((TDLearningAgent) playerOne).launch(this);
                 }
                 else if(player1 == 4){
-                    ((TakeAi) playerOne).launch(this);
+                    ((TakeAgent) playerOne).launch(this);
                 }
                 else if(player1 == 5){
                     ((NNAgent) playerOne).launch(this);
@@ -79,16 +79,16 @@ public class Board {
         else{
             if(player2 > 0){
                 if(player2==1){
-                    ((SearchAi) playerTwo).launch(this);
+                    ((SearchAgent) playerTwo).launch(this);
                 }
                 else if(player2==2){
                     ((BaselineAgent) playerTwo).launch(this);
                 }
                 else if(player2==3){
-                    ((TDLearning) playerTwo).launch(this);
+                    ((TDLearningAgent) playerTwo).launch(this);
                 }
                 else if(player2==4){
-                    ((TakeAi) playerTwo).launch(this);
+                    ((TakeAgent) playerTwo).launch(this);
                 }
                 else if(player2==5){
                     ((NNAgent) playerTwo).launch(this);

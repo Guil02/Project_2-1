@@ -99,16 +99,16 @@ public class GameRunner {
             return new HumanPlayer();
         }
         else if(playerType== 1){
-            return new SearchAi(board);
+            return new SearchAgent(board);
         }
         else if(playerType == 2){
             return new BaselineAgent();
         }
         else if (playerType == 3){
-            return new TDLearning();
+            return new TDLearningAgent();
         }
         else if(playerType == 4){
-            return new TakeAi();
+            return new TakeAgent();
         }
         else{
             return new NNAgent();

@@ -3,7 +3,7 @@ package controller;
 import javafx.application.Platform;
 import model.pieces.*;
 import model.player.NNAgent;
-import model.player.TDLearning;
+import model.player.TDLearningAgent;
 import utils.GameGenerator;
 
 public class BoardUpdater {
@@ -153,8 +153,8 @@ public class BoardUpdater {
                 board.getGameRunner().reset();
             }
             else {
-                if (board.getPlayer1() == 3 && TDLearning.LEARN && board.isOriginal()) {
-                    TDLearning.learn(board);
+                if (board.getPlayer1() == 3 && TDLearningAgent.LEARN && board.isOriginal()) {
+                    TDLearningAgent.learn(board);
                 }
                 if (board.getPlayer1() == 4 && NNAgent.LEARN && board.isOriginal()) {
                     double[] endEval = ((NNAgent) board.playerOne).computeEndEval(board);

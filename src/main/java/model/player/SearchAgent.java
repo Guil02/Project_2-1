@@ -13,14 +13,14 @@ import model.pieces.ChessPiece;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class SearchAi extends Player {
+public class SearchAgent extends Player {
     private AiTree aiTree = new AiTree();
     private Expectiminimax expectiminimax = new Expectiminimax();
     private ChessTreeNode maxima;
     private Board board;
     private static final int ply = 3;
 
-    public SearchAi(Board board) {
+    public SearchAgent(Board board) {
         this.board = board;
     }
 
