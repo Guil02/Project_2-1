@@ -11,12 +11,43 @@ public class TreeNode {
     // 3 = chance
     private int nodeType;
     private double probability;
+    private double lowerBound = Double.MIN_VALUE; // default value
+    private double upperBound = Double.MAX_VALUE; // default value
 
     public TreeNode(double value, TreeNode parent, int nodeType, double probability) {
         this.value = value;
         this.parent = parent;
         this.probability = probability;
         this.nodeType = nodeType;
+    }
+    public double getLowerBound() {
+        return this.lowerBound;
+    }
+
+    public double getUpperBound() {
+        return this.upperBound;
+    }
+    public void updateLowerAndUpperBounds(double lowerBound, double upperBound) {
+        this.lowerBound = lowerBound;
+        this.upperBound = upperBound;
+    }
+
+    public boolean isWithinBounds(double alpha, double beta) {
+        if(lowerBound<beta && upperBound>alpha){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public void delete() {
+        for(TreeNode nodes : children){
+            int size = nodes.getChildren().size();
+            for(int i=0; i<(size-1); i++){
+                nodes.getChildren().remove(1);
+            }
+        }
     }
 
     public ArrayList<TreeNode> getChildren() {
