@@ -2,7 +2,12 @@ package controller;
 
 import javafx.application.Platform;
 import model.pieces.*;
+import model.player.MCTSAgent;
+import model.player.TDLearning;
+import utils.GameGenerator;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
@@ -82,7 +87,69 @@ public class BoardUpdater {
         }
     }
 
+    public static void runPromotion(Board board, Board target, int xFrom, int yFrom, int xTo, int yTo){
+        boolean isWhite = board.getPieceOffField(xFrom, yFrom).isWhite();
+        int pieceType = getPieceType(target.getCharOffField(xTo, yTo));
+        ChessPiece promoted = BoardUpdater.createPiece(isWhite, xTo,yTo, pieceType);
+        capturePiece(board, xTo, yTo);
+        removePiece(board, xFrom, yFrom);
+        addPiece(board, promoted);
+        board.changeTurn();
+        if(board.getAmountOfTurns()>200){
+            board.setGameOver(true);
+        }
+
+        if(board.getGameOver()&& board.isOriginal()) {
+            board.storeMove();
+
+            if(GameRunner.EXPERIMENT1){
+                if(!board.containsKing(false)){
+                    board.getGameRunner().incrementWhiteWin();
+                }
+                else if(!board.containsKing(true)){
+                    board.getGameRunner().incrementBlackWin();
+                }
+                System.out.println("white wins: "+board.getGameRunner().getWhiteWin());
+                System.out.println("black wins: "+board.getGameRunner().getBlackWin());
+                if(board.getGameRunner().continuePlaying()){
+                    board.getGameRunner().reset();
+                }
+            }
+            else if(GameRunner.GENERATE_GAMES){
+                System.out.println("generating new game");
+                GameGenerator.writeGame(board);
+                board.getGameRunner().reset();
+            }
+            else {
+                if (board.getPlayer1() == 3 && TDLearning.LEARN && board.isOriginal()) {
+                    TDLearning.learn(board);
+                }
+                if (board.getPlayer1() == 4 && MCTSAgent.LEARN && board.isOriginal()) {
+                    double[] endEval = ((MCTSAgent) board.playerOne).computeEndEval(board);
+
+                    ((MCTSAgent) board.playerOne).learn(board, board.getBoardStates(), endEval);
+                }
+            }
+        }
+    }
+
+    public static int getPieceType(char pieceType){
+        switch(pieceType){
+            case 'n','N':
+                return 2;
+            case 'b','B':
+                return 3;
+            case 'r','R':
+                return 4;
+            case 'q','Q':
+                return 5;
+        }
+        return 0;
+    }
+
     public static void movePiece(Board board, int xFrom, int yFrom, int xTo, int yTo) {
+//        if(board.isOriginal()) System.out.println("did a move");
+        board.storeMove();
         ChessPiece pieceToMove = board.getPieceOffField(xFrom, yFrom);
         if(pieceToMove!= null){
             pieceToMove.move(board, xTo,yTo);
@@ -94,7 +161,44 @@ public class BoardUpdater {
             startPromotionDialog(board, pieceToMove, xTo, yTo);
         }
         board.changeTurn();
+        if(board.getAmountOfTurns()>200){
+            board.setGameOver(true);
+        }
         if(board.getGameOver()&& board.isOriginal()){
+            board.storeMove();
+//            ArrayList<String> boardStates = board.getBoardStates();
+//            for(int i = 0; i<board.getBoardStates().size(); i++){
+//                System.out.println(boardStates.get(i));
+//            }
+            if(GameRunner.EXPERIMENT1){
+                if(!board.containsKing(false)){
+                    board.getGameRunner().incrementWhiteWin();
+                }
+                else if(!board.containsKing(true)){
+                    board.getGameRunner().incrementBlackWin();
+                }
+                System.out.println("white wins: "+board.getGameRunner().getWhiteWin());
+                System.out.println("black wins: "+board.getGameRunner().getBlackWin());
+                if(board.getGameRunner().continuePlaying()){
+                    board.getGameRunner().reset();
+                }
+            }
+            if(GameRunner.GENERATE_GAMES){
+                System.out.println("hi");
+                GameGenerator.writeGame(board);
+                board.getGameRunner().reset();
+            }
+            else {
+                if (board.getPlayer1() == 3 && TDLearning.LEARN && board.isOriginal()) {
+                    TDLearning.learn(board);
+                }
+                if (board.getPlayer1() == 4 && MCTSAgent.LEARN && board.isOriginal()) {
+                    double[] endEval = ((MCTSAgent) board.playerOne).computeEndEval(board);
+
+                    ((MCTSAgent) board.playerOne).learn(board, board.getBoardStates(), endEval);
+                }
+            }
+
 //            try {
 //                Thread.sleep(1000);
 //            } catch (InterruptedException e) {
@@ -153,5 +257,23 @@ public class BoardUpdater {
         return false;
     }
 
+    public static void clearBoard(Board board){
+        for(int i = 0; i<Board.getBoardSize(); i++){
+            for(int j = 0; j<Board.getBoardSize(); j++){
+                board.getBoardModel()[i][j]=null;
+            }
+        }
+    }
+
+    public static void printBoard(ChessPiece[][] boardModel, Board board) {
+        System.out.println("--- Board State ---\n");
+        for(int i = 0; i < boardModel[0].length; i++) {
+            for (int j = 0; j < boardModel.length; j++) {
+                System.out.print("[ " + board.getCharOffField(j,i) + " ] ");
+                // System.out.print("[ " + j + " " + i + " ] ");
+            }
+            System.out.println();
+        }
+    }
 
 }

@@ -1,4 +1,8 @@
+import controller.Board;
+import controller.BoardUpdater;
+import model.pieces.PawnPiece;
 import org.junit.jupiter.api.Test;
+import utils.FenEvaluator;
 import utils.Transform;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -33,7 +37,16 @@ public class UtilTests {
 
         assertArrayEquals(transformed, oneDimension);
     }
+    @Test
+    public void fenTest(){
+        Board board = new Board();
 
+        BoardUpdater.fillGameStart(board);
+        BoardUpdater.movePiece(board, 1, 1, 1, 2);
+        String testFen = FenEvaluator.write(board);
+        String fen = "rnbqkbnr/p1pppppp/1p6/8/8/8/PPPPPPPP/RNBQKBNR b KQkq -";
+        assertEquals(fen, testFen);
+    }
 }
 
 

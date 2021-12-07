@@ -1,11 +1,10 @@
 package controller;
 
 import model.pieces.ChessPiece;
-import model.player.BaselineAgent;
-import model.player.FirstAi;
-import model.player.Player;
-import model.player.TDLearning;
+import model.player.*;
+import utils.FenEvaluator;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -18,21 +17,26 @@ public class Board {
     private boolean gameOver;
     private boolean whiteMove = true;
     private char movablePiece;
-    public static final boolean GUI_ON = true;
+    public static final boolean GUI_ON = GameRunner.GUI_ON;
     private int player1 = 0;
     private int player2 = 0;
     Player playerOne;
     Player playerTwo;
     private boolean isOriginal = false;
     private int amountOfTurns = 1;
+    private ArrayList<String> moves;
+    private boolean enPassantActive = false;
+    private int enPassantColumn = 0;
 
     public Board(GameRunner gameRunner) {
         isOriginal = true;
         this.gameRunner = gameRunner;
+        moves = new ArrayList<>();
     }
 
     public Board() {
         isOriginal = true;
+        moves = new ArrayList<>();
     }
 
     private Board(ChessPiece[][] boardModel, GraphicsConnector graphicsConnector, boolean gameOver, boolean whiteMove, char movablePiece){
@@ -41,7 +45,7 @@ public class Board {
         this.movablePiece = movablePiece;
         this.graphicsConnector = graphicsConnector;
         this.boardModel = boardModel;
-
+        moves = new ArrayList<>();
     }
 
     public void changeTurn(){
@@ -74,6 +78,9 @@ public class Board {
                 else if(player1 == 3){
                     ((TDLearning) playerOne).launch(this);
                 }
+                else if(player1 == 4){
+                    ((MCTSAgent) playerOne).launch(this);
+                }
             }
         }
         else{
@@ -86,6 +93,9 @@ public class Board {
                 }
                 else if(player2==3){
                     ((TDLearning) playerTwo).launch(this);
+                }
+                else if(player2==4){
+                    ((MCTSAgent) playerTwo).launch(this);
                 }
             }
         }
@@ -227,5 +237,63 @@ public class Board {
     public void setPlayerPlayers(Player player1, Player player2) {
         this.playerOne = player1;
         this.playerTwo = player2;
+    }
+
+    public void storeMove(){
+        moves.add(FenEvaluator.write(this));
+    }
+
+    public ArrayList<String> getBoardStates() {
+        return moves;
+    }
+
+    public boolean isEnPassantActive() {
+        return enPassantActive;
+    }
+
+    public void setEnPassantActive(boolean enPassantActive) {
+        this.enPassantActive = enPassantActive;
+    }
+
+    public int getEnPassantColumn() {
+        return enPassantColumn;
+    }
+
+    public void setEnPassantColumn(int enPassantColumn) {
+        this.enPassantColumn = enPassantColumn;
+    }
+
+    public boolean containsKing(boolean white){
+        for(int i = 0; i<BOARDSIZE; i++){
+            for(int j = 0; j<BOARDSIZE; j++){
+                if(white){
+                    if(getCharOffField(i,j)=='K'){
+                        return true;
+                    }
+                }
+                else{
+                    if (getCharOffField(i, j) == 'k') {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public GameRunner getGameRunner() {
+        return gameRunner;
+    }
+
+    public void setAmountOfTurns(int amountOfTurns) {
+        this.amountOfTurns = amountOfTurns;
+    }
+
+    public int getAmountOfTurns() {
+        return amountOfTurns;
+    }
+
+    public void movesClear() {
+        moves.clear();
     }
 }
