@@ -8,10 +8,10 @@ import javafx.scene.control.MenuItem;
 
 public class StartAIButton extends Menu {
     public StartAIButton(ChessGUI chessGUI) {
-        MenuItem m1 = new MenuItem("start");
+        MenuItem m1 = new MenuItem("Start");
         setStyle("-fx-font: 10px \"Verdana\";");
         m1.setStyle("-fx-font: 10px \"Verdana\";");
-        setText("start ai");
+        setText("Start AI");
         EventHandler<ActionEvent> event1 = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {

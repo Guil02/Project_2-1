@@ -2,7 +2,9 @@ package controller;
 
 import model.pieces.ChessPiece;
 import model.player.*;
+
 import utils.FenEvaluator;
+
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -78,8 +80,13 @@ public class Board {
                 else if(player1 == 3){
                     ((TDLearning) playerOne).launch(this);
                 }
-                else if(player1 == 4){
+
+                else if (player1 == 4) {
+                    ((TakeAi) playerOne).launch(this);
+
+                else if(player1 == 5){
                     ((MCTSAgent) playerOne).launch(this);
+
                 }
             }
         }
@@ -94,8 +101,13 @@ public class Board {
                 else if(player2==3){
                     ((TDLearning) playerTwo).launch(this);
                 }
-                else if(player2==4){
+
+                else if (player2 == 4) {
+                    ((TakeAi) playerTwo).launch(this);
+
+                else if(player2==5){
                     ((MCTSAgent) playerTwo).launch(this);
+
                 }
             }
         }
