@@ -1,11 +1,10 @@
 package model.algorithm;
 
 import controller.Board;
-import model.player.MCTSAgent;
-import model.player.TDLearning;
+import model.player.NNAgent;
 
-public class MCTSTreeNode extends TreeNode{
-    private MCTSAgent mctsAgent;
+public class NNTreeNode extends TreeNode{
+    private NNAgent NNAgent;
     private int xFrom;
     private int yFrom;
     private int xTo;
@@ -14,7 +13,7 @@ public class MCTSTreeNode extends TreeNode{
     private boolean doPromotion = false;
     private boolean maxIsWhite;
 
-    public MCTSTreeNode(Board board, double value, TreeNode parent, int nodeType, double probability, int xFrom, int yFrom, int xTo, int yTo, boolean maxIsWhite, MCTSAgent mctsAgent) {
+    public NNTreeNode(Board board, double value, TreeNode parent, int nodeType, double probability, int xFrom, int yFrom, int xTo, int yTo, boolean maxIsWhite, NNAgent NNAgent) {
         super(value, parent, nodeType, probability);
         this.xFrom = xFrom;
         this.yFrom = yFrom;
@@ -22,12 +21,12 @@ public class MCTSTreeNode extends TreeNode{
         this.yTo = yTo;
         this.board = board;
         this.maxIsWhite = maxIsWhite;
-        this.mctsAgent = mctsAgent;
+        this.NNAgent = NNAgent;
     }
 
     @Override
     public void createChildren() {
-        mctsAgent.createChildren(this, true, this.getBoard().getWhiteMove());
+        NNAgent.createChildren(this, true, this.getBoard().getWhiteMove());
     }
 
     public int getxFrom() {
@@ -58,8 +57,8 @@ public class MCTSTreeNode extends TreeNode{
         return board;
     }
 
-    public MCTSAgent getMctsAgent() {
-        return mctsAgent;
+    public NNAgent getMctsAgent() {
+        return NNAgent;
     }
 
     public boolean isMaxIsWhite() {

@@ -2,13 +2,9 @@ package controller;
 
 import model.pieces.ChessPiece;
 import model.player.*;
-
 import utils.FenEvaluator;
 
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 public class Board {
     private static final int BOARDSIZE = 8;
@@ -56,15 +52,7 @@ public class Board {
 
         Dice.rollTheDice(this);
         if(!gameOver){
-//            if(isOriginal()){
-////                System.out.println("amount of turns played: "+amountOfTurns/2);
-//            }
             checkAi();
-        }
-        else{
-//            if(isOriginal()){
-////                System.out.println("amount of turns played: "+amountOfTurns/2);
-//            }
         }
     }
 
@@ -72,7 +60,7 @@ public class Board {
         if(whiteMove){
             if(player1>0){
                 if(player1==1){
-                    ((FirstAi) playerOne).launch(this);
+                    ((SearchAi) playerOne).launch(this);
                 }
                 else if(player1==2){
                     ((BaselineAgent) playerOne).launch(this);
@@ -80,20 +68,18 @@ public class Board {
                 else if(player1 == 3){
                     ((TDLearning) playerOne).launch(this);
                 }
-
-                else if (player1 == 4) {
+                else if(player1 == 4){
                     ((TakeAi) playerOne).launch(this);
-
+                }
                 else if(player1 == 5){
-                    ((MCTSAgent) playerOne).launch(this);
-
+                    ((NNAgent) playerOne).launch(this);
                 }
             }
         }
         else{
             if(player2 > 0){
                 if(player2==1){
-                    ((FirstAi) playerTwo).launch(this);
+                    ((SearchAi) playerTwo).launch(this);
                 }
                 else if(player2==2){
                     ((BaselineAgent) playerTwo).launch(this);
@@ -101,13 +87,11 @@ public class Board {
                 else if(player2==3){
                     ((TDLearning) playerTwo).launch(this);
                 }
-
-                else if (player2 == 4) {
+                else if(player2==4){
                     ((TakeAi) playerTwo).launch(this);
-
+                }
                 else if(player2==5){
-                    ((MCTSAgent) playerTwo).launch(this);
-
+                    ((NNAgent) playerTwo).launch(this);
                 }
             }
         }

@@ -4,8 +4,6 @@ import gui.ChessGUI;
 import model.algorithm.AiTree;
 import model.algorithm.Expectiminimax;
 import model.pieces.ChessPiece;
-import model.pieces.KingPiece;
-import model.pieces.PawnPiece;
 import model.player.*;
 
 
@@ -101,22 +99,19 @@ public class GameRunner {
             return new HumanPlayer();
         }
         else if(playerType== 1){
-            return new FirstAi(board);
+            return new SearchAi(board);
         }
         else if(playerType == 2){
             return new BaselineAgent();
+        }
+        else if (playerType == 3){
+            return new TDLearning();
         }
         else if(playerType == 4){
             return new TakeAi();
         }
         else{
-
-        else if (playerType == 3){
-
-            return new TDLearning();
-        }
-        else{
-            return new MCTSAgent();
+            return new NNAgent();
         }
     }
 

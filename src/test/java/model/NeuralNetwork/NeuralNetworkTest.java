@@ -2,16 +2,13 @@ package model.NeuralNetwork;
 
 import controller.Board;
 import controller.BoardUpdater;
-import model.pieces.PawnPiece;
-import model.player.MCTSAgent;
+import model.player.NNAgent;
 import org.junit.jupiter.api.Test;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.dataset.DataSet;
 import org.nd4j.linalg.factory.Nd4j;
 
 import java.util.Arrays;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class NeuralNetworkTest {
 
@@ -42,12 +39,12 @@ class NeuralNetworkTest {
 
     @Test
     public void testMCTS(){
-        MCTSAgent mctsAgent = new MCTSAgent();
+        NNAgent NNAgent = new NNAgent();
         Board board = new Board();
         BoardUpdater.fillGameStart(board);
-        mctsAgent.evaluation(board);
+        NNAgent.evaluation(board);
         for(int i = 0; i<1000; i++){
-            System.out.println(Arrays.toString(mctsAgent.evaluation(board)));
+            System.out.println(Arrays.toString(NNAgent.evaluation(board)));
         }
     }
 }

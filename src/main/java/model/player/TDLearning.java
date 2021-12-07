@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class TDLearning extends Player{
-    public static final boolean LEARN = true;
+    public static final boolean LEARN = false;
     public static final boolean SIGMOID_ACTIVE = false;
     private ArrayList<Double> weights;
     private TDTreeNode maxima;
@@ -282,63 +282,12 @@ public class TDLearning extends Player{
                 runAgent(board);
                 TDTreeNode move = getMaxima();
                 if(move.isDoPromotion()){
-                    boolean hasLearned = false;
                     board.storeMove();
-//                        System.err.println("---------------------------------------------------------------------");
-                    boolean isWhite = board.getPieceOffField(move.getxFrom(), move.getyFrom()).isWhite();
-                    int pieceType = getPieceType(move.getBoard().getCharOffField(move.getxTo(), move.getyTo()));
-//                        System.out.println(move.getxTo()+" "+ move.getyTo());
-//                        printBoard(board.getBoardModel(), board);
-                    ChessPiece promoted = BoardUpdater.createPiece(isWhite, move.getxTo(), move.getyTo(), pieceType);
-                    BoardUpdater.removePiece(board, move.getxFrom(), move.getyFrom());
-                    BoardUpdater.addPiece(board, promoted);
-                    if(!BoardUpdater.containsKing(board, !isWhite)){
-                        if(isWhite){
-                            if(Board.GUI_ON && board.isOriginal()){
-                                Platform.runLater(
-                                        new Thread(()->{
-                                            board.getGraphicsConnector().setWin(true);
-                                        })
-                                );
-                            }
-                            board.setGameOver(true);
-                            board.storeMove();
-//                            ArrayList<String> boardStates = board.getBoardStates();
-//                            for(int i = 0; i<board.getBoardStates().size(); i++){
-//                                System.out.println(boardStates.get(i));
-//                            }
-                            if(LEARN&&board.isOriginal()){
-                                learn(board);
-                                hasLearned = true;
-                            }
-                        }
-                        else{
-                            if(Board.GUI_ON && board.isOriginal()){
-                                Platform.runLater(
-                                        new Thread(()->{
-                                            board.getGraphicsConnector().setWin(false);
-                                        })
-                                );
-                            }
-                            board.setGameOver(true);
-                            board.storeMove();
-//                            ArrayList<String> boardStates = board.getBoardStates();
-//                            for(int i = 0; i<board.getBoardStates().size(); i++){
-//                                System.out.println(boardStates.get(i));
-//                            }
-                            if(LEARN&&board.isOriginal()){
-                                learn(board);
-                                hasLearned = true;
-                            }
-                        }
-                    }
+                    BoardUpdater.runPromotion(board, move.getBoard(), move.getxFrom(), move.getyFrom(), move.getxTo(), move.getyTo());
                     if(Board.GUI_ON){
                         Platform.runLater(
                                 new Thread(board::launchGuiUpdate)
                         );
-                    }
-                    if(!hasLearned){
-                        board.changeTurn();
                     }
                 }
                 else{
@@ -399,7 +348,6 @@ public class TDLearning extends Player{
 //        ArrayList<String> black = subDividedStates.get(1);
             ArrayList<Double> weights = readInWeights();
             System.out.println("initial weights: " + weights);
-//        printEvaluations(states, true, weights);
 
             ArrayList<Double> weightChange = new ArrayList<>();
             for (int i = 0; i < weights.size(); i++) {
@@ -408,7 +356,6 @@ public class TDLearning extends Player{
 
         for(int i = 0; i< states.size()-1; i++){
             ArrayList<Double> gradient = gradient(states.get(i), true, weights);
-//            System.out.println("Gradient"+gradient);
             double mul = 0;
             for(int j = i; j<states.size()-1; j++){
                 double pow = Math.pow(lambda, j - i);
@@ -416,60 +363,16 @@ public class TDLearning extends Player{
                 double v = pow * temporalDifference;
                 mul = mul + v;
             }
-//            mul = mul/states.size()-1;
             ArrayList<Double> arr2 = Matrix.varMultiplication(gradient, mul);
             weightChange = Matrix.additionVector(weightChange, arr2);
         }
-//        System.out.println("initial factors: "+Matrix.normalizeVector(evaluateFactors(FenEvaluator.read(states.get(0)),true), 100, -100));
-//        for(int i = 0; i< states.size()-1; i++){
-//            double val = alpha*getTemporalDifference(states.get(i), states.get(i+1), true, weights);
-//            System.out.println("errors found: "+val);
-//            ArrayList<Double> arr = new ArrayList<>();
-//            for(int j = 0; j< weights.size(); j++){
-//                arr.add(0.0);
-//            }
-//            for(int j = 0; j<=i; j++){
-//                arr = Matrix.additionVector(arr, gradient(states.get(j), true));
-//            }
-//            weightChange = Matrix.additionVector(weightChange, Matrix.varMultiplication(arr, val));
-//        }
-
-//            for (int i = 0; i < states.size() - 1; i++) {
-//                ArrayList<Double> gradient = gradient(states.get(i), true);
-////            ArrayList<Double> gradient = Matrix.normalizeVector(gradient(states.get(i), true), 100, -100);
-////            ArrayList<Double> negativeGradient = Matrix.varMultiplication(gradient, -1);
-//
-//                double mul = 0;
-////            for(int j = i; j<states.size()-1; j++){
-////                double pow = Math.pow(lambda, j - i);
-////                double temporalDifference = getTemporalDifference(states.get(j), states.get(j + 1), true, weights);
-////                double v = pow * temporalDifference;
-////                mul = mul + v;
-////            }
-//                if (board.containsKing(true)) {
-//                    mul = 1;
-//                } else {
-//                    mul = -1;
-//                }
-////            mul = mul/states.size()-1;
-//                ArrayList<Double> arr2 = Matrix.varMultiplication(gradient, mul);
-//                weightChange = Matrix.additionVector(weightChange, arr2);
-//            }
-
 
             weightChange = Matrix.varMultiplication(weightChange, alpha);
 
             weights = Matrix.additionVector(weights, weightChange);
             writeWeights(weights);
-//        alpha = alpha - 0.01;
             System.out.println("weights change: " + weightChange);
             System.out.println("new weights: " + weights);
-//            try {
-//                Thread.sleep(1000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        new GameRunner();
             board.getGameRunner().reset();
         }
     }

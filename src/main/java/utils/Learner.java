@@ -4,7 +4,7 @@ import controller.Board;
 import controller.BoardUpdater;
 import controller.GameRunner;
 import model.NeuralNetwork.NeuralNetwork;
-import model.player.MCTSAgent;
+import model.player.NNAgent;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.dataset.DataSet;
 import org.nd4j.linalg.factory.Nd4j;
@@ -13,7 +13,6 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -26,7 +25,7 @@ public class Learner {
     private static final double LAMBDA = 0.7;
     private static final boolean DEBUG = GameRunner.DEBUG;
     public Learner() {
-        MCTSAgent mctsAgent = new MCTSAgent();
+        NNAgent NNAgent = new NNAgent();
         NeuralNetwork neuralNetwork = new NeuralNetwork();
         String line;
         ArrayList<ArrayList<String>> games = new ArrayList<>();
@@ -79,7 +78,7 @@ public class Learner {
                 INDArray featuresArray = Nd4j.create(temp);
                 INDArray labelsArray = Nd4j.create(temp2);
                 DataSet data = new DataSet(featuresArray, labelsArray);
-                mctsAgent.learn(data);
+                NNAgent.learn(data);
             }
             if(DEBUG) System.out.println("done learning");
         }
@@ -109,8 +108,8 @@ public class Learner {
                 moves.add(batch[i]);
                 double[][] evaluation = new double[AMOUNT_OF_MOVES][1];
                 for(int j = 1; j< AMOUNT_OF_MOVES; j++){
-                    moves.add(mctsAgent.doMove(moves.get(j-1)));
-                    evaluation[j] = mctsAgent.evaluation(moves.get(j));
+                    moves.add(NNAgent.doMove(moves.get(j-1)));
+                    evaluation[j] = NNAgent.evaluation(moves.get(j));
                     if(moves.get(j).getGameOver()){
                         break;
                     }
@@ -126,12 +125,12 @@ public class Learner {
                 }
             }
             if(DEBUG) System.out.println("done calculating error");
-            mctsAgent.learn(errorBoards, error);
+            NNAgent.learn(errorBoards, error);
         }
 
         Board board = new Board();
         BoardUpdater.fillGameStart(board);
-        System.out.println(Arrays.toString(mctsAgent.evaluation(board)));
+        System.out.println(Arrays.toString(NNAgent.evaluation(board)));
     }
 
     public ArrayList<String> to1D(ArrayList<ArrayList<String>> list){

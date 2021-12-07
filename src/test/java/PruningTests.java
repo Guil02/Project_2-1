@@ -1,17 +1,13 @@
 import controller.Board;
-import controller.BoardUpdater;
 import controller.Dice;
 import model.algorithm.*;
-import model.player.FirstAi;
+import model.pieces.ChessPiece;
 import org.junit.jupiter.api.Test;
 import utils.FenEvaluator;
-import controller.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 
-import static model.algorithm.test.printBoard;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PruningTests {
@@ -125,6 +121,17 @@ public class PruningTests {
             for (int j = 0; j < 4; j++) {
                 assertEquals(moves1.get(i)[j], moves2.get(i)[j]);
             }
+        }
+    }
+
+    public static void printBoard(ChessPiece[][] boardModel, Board board) {
+        System.out.println("--- Board State ---\n");
+        for(int i = 0; i < boardModel[0].length; i++) {
+            for (int j = 0; j < boardModel.length; j++) {
+                System.out.print("[ " + board.getCharOffField(j,i) + " ] ");
+                // System.out.print("[ " + j + " " + i + " ] ");
+            }
+            System.out.println();
         }
     }
 }

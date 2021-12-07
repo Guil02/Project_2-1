@@ -7,8 +7,7 @@ import controller.GameRunner;
 import javafx.application.Platform;
 import model.NeuralNetwork.NeuralNetwork;
 import model.algorithm.Expectiminimax;
-import model.algorithm.MCTSTreeNode;
-import model.algorithm.TDTreeNode;
+import model.algorithm.NNTreeNode;
 import model.algorithm.TreeNode;
 import model.pieces.ChessPiece;
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
@@ -23,7 +22,6 @@ import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.dataset.DataSet;
 import org.nd4j.linalg.factory.Nd4j;
 import org.nd4j.linalg.learning.config.AdaDelta;
-import org.nd4j.linalg.learning.config.Nesterovs;
 import org.nd4j.linalg.lossfunctions.LossFunctions;
 import utils.FenEvaluator;
 
@@ -32,9 +30,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static controller.GameRunner.DEBUG;
-
-public class MCTSAgent extends Player {
+public class NNAgent extends Player {
     private static final int FEATURES_COUNT = 315;
     private static final int CLASSES_COUNT = 1;
     private MultiLayerConfiguration configuration;
@@ -43,12 +39,12 @@ public class MCTSAgent extends Player {
     public static final boolean LEARN = true;
     private Expectiminimax expectiminimax;
     private final int ply = 1;
-    private MCTSTreeNode maxima;
+    private NNTreeNode maxima;
     private BaselineAgent baselineAgent;
     private static final boolean DEBUG = GameRunner.DEBUG;
     private static final boolean DO_RANDOM = false;
 
-    public MCTSAgent() {
+    public NNAgent() {
         configuration = new NeuralNetConfiguration.Builder()
                 .activation(Activation.RELU)
                 .weightInit(WeightInit.XAVIER)
@@ -72,9 +68,6 @@ public class MCTSAgent extends Player {
 
     public void learn(ArrayList<Board> errorBoards, ArrayList<Double> errors){
         double[][] err = new double[1][CLASSES_COUNT];
-//        for(int i = 0; i<errors.size(); i++){
-//            err[i][0]=errors.get(i);
-//        }
         err[0][0]=errors.get(0);
         INDArray err2 = Nd4j.create(err);
         model.setLabels(err2);
@@ -139,20 +132,20 @@ public class MCTSAgent extends Player {
     public void runAgent(Board board){
         Board copy = board.clone();
         boolean maxIsWhite = board.getWhiteMove();
-        MCTSTreeNode root = new MCTSTreeNode(copy, 0, null, 1, 1, 0, 0, 0, 0, maxIsWhite, this);
+        NNTreeNode root = new NNTreeNode(copy, 0, null, 1, 1, 0, 0, 0, 0, maxIsWhite, this);
         expectiminimax.expectiminimax(root, (ply*2)-1);
         double maxValue = Double.MIN_VALUE;
-        ArrayList<MCTSTreeNode> highestNodes = new ArrayList<>();
-        MCTSTreeNode maxNode;
+        ArrayList<NNTreeNode> highestNodes = new ArrayList<>();
+        NNTreeNode maxNode;
         try{
-            maxNode = (MCTSTreeNode) root.getChildren().get(0);
+            maxNode = (NNTreeNode) root.getChildren().get(0);
         }
         catch(Exception e){
             maxNode = root;
         }
         highestNodes.add(maxNode);
         for (TreeNode child : root.getChildren()) {
-            MCTSTreeNode subChild = (MCTSTreeNode) child;
+            NNTreeNode subChild = (NNTreeNode) child;
             if (subChild.getValue() >= maxValue) {
                 if (subChild.getValue() == maxValue) {
                     highestNodes.add(subChild);
@@ -177,68 +170,14 @@ public class MCTSAgent extends Player {
 //                    Thread.sleep(100);
                 }
                 runAgent(board);
-                MCTSTreeNode move = getMaxima();
+                NNTreeNode move = getMaxima();
                 if(move.isDoPromotion()){
-                    boolean hasLearned = false;
                     board.storeMove();
-//                        System.err.println("---------------------------------------------------------------------");
-                    boolean isWhite = board.getPieceOffField(move.getxFrom(), move.getyFrom()).isWhite();
-                    int pieceType = getPieceType(move.getBoard().getCharOffField(move.getxTo(), move.getyTo()));
-//                        System.out.println(move.getxTo()+" "+ move.getyTo());
-//                        printBoard(board.getBoardModel(), board);
-                    ChessPiece promoted = BoardUpdater.createPiece(isWhite, move.getxTo(), move.getyTo(), pieceType);
-                    BoardUpdater.removePiece(board, move.getxFrom(), move.getyFrom());
-                    BoardUpdater.addPiece(board, promoted);
-                    if(!BoardUpdater.containsKing(board, !isWhite)){
-                        if(isWhite){
-                            if(Board.GUI_ON && board.isOriginal()){
-                                Platform.runLater(
-                                        new Thread(()->{
-                                            board.getGraphicsConnector().setWin(true);
-                                        })
-                                );
-                            }
-                            board.setGameOver(true);
-                            board.storeMove();
-//                            ArrayList<String> boardStates = board.getBoardStates();
-//                            for(int i = 0; i<board.getBoardStates().size(); i++){
-//                                System.out.println(boardStates.get(i));
-//                            }
-                            if(LEARN&&board.isOriginal()){
-                                double[] endEval = computeEndEval(board);
-
-                                learn(board, board.getBoardStates(),endEval);
-                                hasLearned = true;
-                            }
-                        }
-                        else{
-                            if(Board.GUI_ON && board.isOriginal()){
-                                Platform.runLater(
-                                        new Thread(()->{
-                                            board.getGraphicsConnector().setWin(false);
-                                        })
-                                );
-                            }
-                            board.setGameOver(true);
-                            board.storeMove();
-//                            ArrayList<String> boardStates = board.getBoardStates();
-//                            for(int i = 0; i<board.getBoardStates().size(); i++){
-//                                System.out.println(boardStates.get(i));
-//                            }
-                            if(LEARN&&board.isOriginal()){
-                                double[] endEval = computeEndEval(board);
-                                learn(board, board.getBoardStates(), endEval);
-                                hasLearned = true;
-                            }
-                        }
-                    }
+                    BoardUpdater.runPromotion(board, move.getBoard(), move.getxFrom(), move.getyFrom(), move.getxTo(), move.getyTo());
                     if(Board.GUI_ON){
                         Platform.runLater(
                                 new Thread(board::launchGuiUpdate)
                         );
-                    }
-                    if(!hasLearned){
-                        board.changeTurn();
                     }
                 }
                 else{
@@ -262,7 +201,7 @@ public class MCTSAgent extends Player {
         }).start();
     }
 
-    public MCTSTreeNode getMaxima() {
+    public NNTreeNode getMaxima() {
         return maxima;
     }
 
@@ -300,7 +239,7 @@ public class MCTSAgent extends Player {
         }
         return 0;
     }
-    public void createChildren(MCTSTreeNode root, boolean doEvaluation, boolean maxIsWhite){
+    public void createChildren(NNTreeNode root, boolean doEvaluation, boolean maxIsWhite){
         if(root.getNodeType()== 1 || root.getNodeType() == 2){
             createChanceChildren(root, doEvaluation, maxIsWhite);
         }
@@ -314,7 +253,7 @@ public class MCTSAgent extends Player {
         }
     }
 
-    private void createChanceChildren(MCTSTreeNode root, boolean doEvaluation, boolean maxIsWhite){
+    private void createChanceChildren(NNTreeNode root, boolean doEvaluation, boolean maxIsWhite){
         for (ChessPiece[] pieces: root.getBoard().getBoardModel()) {
             for(ChessPiece piece: pieces){
                 if(piece != null && piece.isTurn(root.getBoard()) && root.getBoard().getMovablePiece()==piece.getPieceChar()){
@@ -325,7 +264,7 @@ public class MCTSAgent extends Player {
         }
     }
 
-    private void createMaxChildren(MCTSTreeNode root, boolean doEvaluation, boolean maxIsWhite) {
+    private void createMaxChildren(NNTreeNode root, boolean doEvaluation, boolean maxIsWhite) {
         ArrayList<Character> movablePieces = Dice.getMovablePieces(root.getBoard());
 
         for (Character movablePiece : movablePieces) {
@@ -334,7 +273,7 @@ public class MCTSAgent extends Player {
 
     }
 
-    private void createMinChildren(MCTSTreeNode root, boolean doEvaluation, boolean maxIsWhite) {
+    private void createMinChildren(NNTreeNode root, boolean doEvaluation, boolean maxIsWhite) {
         ArrayList<Character> movablePieces = Dice.getMovablePieces(root.getBoard());
 
         for (Character movablePiece : movablePieces) {
@@ -342,7 +281,7 @@ public class MCTSAgent extends Player {
         }
     }
 
-    private void createChanceChild(MCTSTreeNode parent, boolean doEvaluation, char movablePiece, int nodeType, double probability, boolean maxIsWhite){
+    private void createChanceChild(NNTreeNode parent, boolean doEvaluation, char movablePiece, int nodeType, double probability, boolean maxIsWhite){
         Board copy = parent.getBoard().clone();
         copy.setMovablePiece(movablePiece);
         double value = 0;
@@ -355,11 +294,11 @@ public class MCTSAgent extends Player {
                 value = temp[0];
             }
         }
-        MCTSTreeNode child = new MCTSTreeNode(copy,value, parent, nodeType, probability, 0,0,0,0, parent.isMaxIsWhite(), parent.getMctsAgent());
+        NNTreeNode child = new NNTreeNode(copy,value, parent, nodeType, probability, 0,0,0,0, parent.isMaxIsWhite(), parent.getMctsAgent());
         parent.addChild(child);
     }
 
-    private void createChild(MCTSTreeNode parent, boolean[][] validMoves, ChessPiece piece, int nodeType, boolean doEvaluation, boolean maxIsWhite){
+    private void createChild(NNTreeNode parent, boolean[][] validMoves, ChessPiece piece, int nodeType, boolean doEvaluation, boolean maxIsWhite){
 
         for(int i = 0; i< validMoves.length; i++){
             for(int j = 0; j<validMoves[0].length; j++){
@@ -386,14 +325,14 @@ public class MCTSAgent extends Player {
                         }
                     }
 
-                    MCTSTreeNode child = new MCTSTreeNode(copy, value,parent,nodeType,1,piece.getX(),piece.getY(),i,j, parent.isMaxIsWhite(), parent.getMctsAgent());
+                    NNTreeNode child = new NNTreeNode(copy, value,parent,nodeType,1,piece.getX(),piece.getY(),i,j, parent.isMaxIsWhite(), parent.getMctsAgent());
                     parent.addChild(child);
                 }
             }
         }
     }
 
-    private void createPromotionChild(MCTSTreeNode parent, ChessPiece piece, int xTo, int yTo, int pieceType, boolean doEvaluation, boolean maxIsWhite, int nodeType){
+    private void createPromotionChild(NNTreeNode parent, ChessPiece piece, int xTo, int yTo, int pieceType, boolean doEvaluation, boolean maxIsWhite, int nodeType){
         Board copy = parent.getBoard().clone();
         BoardUpdater.removePiece(copy, piece.getX(), piece.getY());
         ChessPiece promoted = BoardUpdater.createPiece(piece.isWhite(), xTo, yTo, pieceType);
@@ -410,7 +349,7 @@ public class MCTSAgent extends Player {
             }
         }
 
-        MCTSTreeNode child = new MCTSTreeNode(copy, value,parent,nodeType,1,piece.getX(),piece.getY(),xTo,yTo, parent.isMaxIsWhite(), parent.getMctsAgent());
+        NNTreeNode child = new NNTreeNode(copy, value,parent,nodeType,1,piece.getX(),piece.getY(),xTo,yTo, parent.isMaxIsWhite(), parent.getMctsAgent());
         child.setDoPromotion(true);
         parent.addChild(child);
     }
@@ -434,7 +373,7 @@ public class MCTSAgent extends Player {
 
     public Board doMove(Board board){
         runAgent(board);
-        MCTSTreeNode move = maxima;
+        NNTreeNode move = maxima;
         Board clone = board.clone();
         if(move.isDoPromotion()){
             boolean isWhite = clone.getPieceOffField(move.getxFrom(), move.getyFrom()).isWhite();

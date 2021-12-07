@@ -2,14 +2,9 @@ package controller;
 
 import javafx.application.Platform;
 import model.pieces.*;
-import model.player.MCTSAgent;
+import model.player.NNAgent;
 import model.player.TDLearning;
 import utils.GameGenerator;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
 
 public class BoardUpdater {
 
@@ -98,39 +93,7 @@ public class BoardUpdater {
         if(board.getAmountOfTurns()>200){
             board.setGameOver(true);
         }
-
-        if(board.getGameOver()&& board.isOriginal()) {
-            board.storeMove();
-
-            if(GameRunner.EXPERIMENT1){
-                if(!board.containsKing(false)){
-                    board.getGameRunner().incrementWhiteWin();
-                }
-                else if(!board.containsKing(true)){
-                    board.getGameRunner().incrementBlackWin();
-                }
-                System.out.println("white wins: "+board.getGameRunner().getWhiteWin());
-                System.out.println("black wins: "+board.getGameRunner().getBlackWin());
-                if(board.getGameRunner().continuePlaying()){
-                    board.getGameRunner().reset();
-                }
-            }
-            else if(GameRunner.GENERATE_GAMES){
-                System.out.println("generating new game");
-                GameGenerator.writeGame(board);
-                board.getGameRunner().reset();
-            }
-            else {
-                if (board.getPlayer1() == 3 && TDLearning.LEARN && board.isOriginal()) {
-                    TDLearning.learn(board);
-                }
-                if (board.getPlayer1() == 4 && MCTSAgent.LEARN && board.isOriginal()) {
-                    double[] endEval = ((MCTSAgent) board.playerOne).computeEndEval(board);
-
-                    ((MCTSAgent) board.playerOne).learn(board, board.getBoardStates(), endEval);
-                }
-            }
-        }
+        gameOver(board);
     }
 
     public static int getPieceType(char pieceType){
@@ -164,12 +127,13 @@ public class BoardUpdater {
         if(board.getAmountOfTurns()>200){
             board.setGameOver(true);
         }
+        gameOver(board);
+    }
+
+    private static void gameOver(Board board) {
         if(board.getGameOver()&& board.isOriginal()){
             board.storeMove();
-//            ArrayList<String> boardStates = board.getBoardStates();
-//            for(int i = 0; i<board.getBoardStates().size(); i++){
-//                System.out.println(boardStates.get(i));
-//            }
+
             if(GameRunner.EXPERIMENT1){
                 if(!board.containsKing(false)){
                     board.getGameRunner().incrementWhiteWin();
@@ -177,14 +141,14 @@ public class BoardUpdater {
                 else if(!board.containsKing(true)){
                     board.getGameRunner().incrementBlackWin();
                 }
-                System.out.println("white wins: "+board.getGameRunner().getWhiteWin());
-                System.out.println("black wins: "+board.getGameRunner().getBlackWin());
+                System.out.println("white wins: "+ board.getGameRunner().getWhiteWin());
+                System.out.println("black wins: "+ board.getGameRunner().getBlackWin());
                 if(board.getGameRunner().continuePlaying()){
                     board.getGameRunner().reset();
                 }
             }
             if(GameRunner.GENERATE_GAMES){
-                System.out.println("hi");
+                System.out.println("generating new game");
                 GameGenerator.writeGame(board);
                 board.getGameRunner().reset();
             }
@@ -192,21 +156,12 @@ public class BoardUpdater {
                 if (board.getPlayer1() == 3 && TDLearning.LEARN && board.isOriginal()) {
                     TDLearning.learn(board);
                 }
-                if (board.getPlayer1() == 4 && MCTSAgent.LEARN && board.isOriginal()) {
-                    double[] endEval = ((MCTSAgent) board.playerOne).computeEndEval(board);
+                if (board.getPlayer1() == 4 && NNAgent.LEARN && board.isOriginal()) {
+                    double[] endEval = ((NNAgent) board.playerOne).computeEndEval(board);
 
-                    ((MCTSAgent) board.playerOne).learn(board, board.getBoardStates(), endEval);
+                    ((NNAgent) board.playerOne).learn(board, board.getBoardStates(), endEval);
                 }
             }
-
-//            try {
-//                Thread.sleep(1000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            if(Board.GUI_ON){
-//                board.getGraphicsConnector().updateImages();
-//            }
         }
     }
 

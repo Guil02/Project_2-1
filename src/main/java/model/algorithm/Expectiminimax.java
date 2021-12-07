@@ -1,18 +1,15 @@
 package model.algorithm;
-import java.util.ArrayList;
 
 public class Expectiminimax {
 
     boolean withPruning;
     public Expectiminimax() {
-       // this.withPruning = withPruning;
     }
 
     public double expectiminimax(TreeNode node, int depth){
-        // System.out.println("IM BEING USED HELP");
         double a;
+        node.createChildren();
         if(depth==0 || !node.hasChildren()){
-            // System.out.println("REACHED END");
             return node.getValue();
         }
         else if(node.getNodeType()==2){
