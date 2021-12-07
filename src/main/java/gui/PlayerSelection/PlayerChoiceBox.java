@@ -21,11 +21,11 @@ public class PlayerChoiceBox extends ChoiceBox<String> {
         setMaxSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         setStyle("-fx-font: 30px \"Verdana\";");
         getItems().add("Human");
-        getItems().add("Search AI");
-        getItems().add("Random AI");
-        getItems().add("TD learning AI");
-        getItems().add("Take AI");
-        getItems().add("NN AI");
+        getItems().add("Search Agent");
+        getItems().add("Random Agent");
+        getItems().add("TD learning Agent");
+        getItems().add("Take Agent");
+        getItems().add("NN Agent");
         setOnAction(event -> {
             int selectedIndex = getSelectionModel().getSelectedIndex();
             playerSelectionChoiceBox.setPlayer(number, selectedIndex);
