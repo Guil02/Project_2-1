@@ -15,6 +15,37 @@ public class GameRunner {
     GraphicsConnector graphicsConnector;
     private AiTree aiTree;
     private Expectiminimax expectiminimax;
+    public static final boolean DEBUG = false;
+    public static final boolean GENERATE_GAMES = false;
+    public static final boolean GUI_ON = true;
+    public static final boolean EXPERIMENT1 =false;
+    private int whiteWin = 0;
+    private int blackWin = 0;
+    private int games = 0;
+    private static final int maxGames = 100;
+
+    public void incrementWhiteWin(){
+        whiteWin++;
+    }
+    public void incrementBlackWin(){
+        blackWin++;
+    }
+    public void incrementGames(){
+        games++;
+    }
+    public int getWhiteWin() {
+        return whiteWin;
+    }
+    public int getBlackWin() {
+        return blackWin;
+    }
+    public int getGames(){
+        return games;
+    }
+    public boolean continuePlaying(){
+        return games<maxGames;
+    }
+
 
 
 
@@ -25,7 +56,12 @@ public class GameRunner {
         chessGUI = new ChessGUI();
         graphicsConnector = new GraphicsConnector(this);
         if(Board.GUI_ON){
-            chessGUI.launchGUI(graphicsConnector);
+            try{
+                chessGUI.launchGUI(graphicsConnector);
+            }
+            catch (IllegalStateException e){
+                init(board.getPlayer1(), board.getPlayer2());
+            }
         }
         else{
             init(1,1);
@@ -49,6 +85,17 @@ public class GameRunner {
         board.checkAi();
     }
 
+    public void reset(){
+        board.movesClear();
+        BoardUpdater.clearBoard(board);
+        BoardUpdater.fillGameStart(board);
+        board.setGameOver(false);
+        board.setAmountOfTurns(1);
+        board.setWhiteMove(true);
+        Dice.firstMoveDiceRoll(board);
+        board.checkAi();
+    }
+
     public Player createPlayer(int playerType){
         if(playerType == 0){
             return new HumanPlayer();
@@ -63,7 +110,13 @@ public class GameRunner {
             return new TakeAi();
         }
         else{
+
+        else if (playerType == 3){
+
             return new TDLearning();
+        }
+        else{
+            return new MCTSAgent();
         }
     }
 

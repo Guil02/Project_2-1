@@ -25,14 +25,14 @@ public class RookPiece extends ChessPiece {
     @Override
     public void move(Board board, int new_x, int new_y) {
         this.hasNotMoved=false;
-        ChessPiece.setEnPassantActive(false);
+        board.setEnPassantActive(false);
         super.move(board, new_x, new_y);
     }
 
     /**
      * method that determines if the piece in question has already moved or not
      */
-    public boolean isHasNotMoved() {
+    public boolean getHasNotMoved() {
         return hasNotMoved;
     }
 
@@ -85,6 +85,10 @@ public class RookPiece extends ChessPiece {
         rookPiece.hasNotMoved = hasNotMoved;
         rookPiece.hasValidMove = hasValidMove;
         return rookPiece;
+    }
+
+    public void setHasNotMoved(boolean hasNotMoved) {
+        this.hasNotMoved = hasNotMoved;
     }
 }
 
