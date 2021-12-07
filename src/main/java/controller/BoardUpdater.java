@@ -156,7 +156,7 @@ public class BoardUpdater {
                 if (board.getPlayer1() == 3 && TDLearningAgent.LEARN && board.isOriginal()) {
                     TDLearningAgent.learn(board);
                 }
-                if (board.getPlayer1() == 4 && NNAgent.LEARN && board.isOriginal()) {
+                if (board.getPlayer1() == 5 && NNAgent.LEARN && board.isOriginal()) {
                     double[] endEval = ((NNAgent) board.playerOne).computeEndEval(board);
 
                     ((NNAgent) board.playerOne).learn(board, board.getBoardStates(), endEval);
