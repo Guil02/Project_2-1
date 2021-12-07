@@ -54,13 +54,13 @@ public class MCTSAgent extends Player {
                 .weightInit(WeightInit.XAVIER)
                 .updater(new AdaDelta())
                 .l2(0.0001).list().layer(0, new DenseLayer.Builder()
-                        .nIn(FEATURES_COUNT).nOut(3).build()).
+                        .nIn(FEATURES_COUNT).nOut(20).build()).
                 layer(1, new DenseLayer.Builder()
-                        .nIn(3).nOut(3).build())
+                        .nIn(20).nOut(20).build())
                 .layer(2, new OutputLayer.Builder(
                         LossFunctions.LossFunction.L1)
                         .activation(Activation.TANH)
-                        .nIn(3).nOut(CLASSES_COUNT).build())
+                        .nIn(20).nOut(CLASSES_COUNT).build())
                 .build();
 
         model = new MultiLayerNetwork(configuration);

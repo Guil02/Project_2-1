@@ -18,7 +18,7 @@ public class FirstAi extends Player {
     private Expectiminimax expectiminimax = new Expectiminimax();
     private ChessTreeNode maxima;
     private Board board;
-    private static final int ply = 2;
+    private static final int ply = 3;
 
     public FirstAi(Board board) {
         this.board = board;
@@ -33,52 +33,12 @@ public class FirstAi extends Player {
                 ChessTreeNode move = getMaxima();
                 if(move.isDoPromotion()){
                     board.storeMove();
-//                        System.err.println("---------------------------------------------------------------------");
-                    boolean isWhite = board.getPieceOffField(move.getxFrom(), move.getyFrom()).isWhite();
-                    int pieceType = getPieceType(move.getBoard().getCharOffField(move.getxTo(), move.getyTo()));
-//                        System.out.println(move.getxTo()+" "+ move.getyTo());
-//                        printBoard(board.getBoardModel(), board);
-                    ChessPiece promoted = BoardUpdater.createPiece(isWhite, move.getxTo(), move.getyTo(), pieceType);
-                    BoardUpdater.removePiece(board, move.getxFrom(), move.getyFrom());
-                    BoardUpdater.addPiece(board, promoted);
-                    if(!BoardUpdater.containsKing(board, !isWhite)){
-                        if(isWhite){
-                            if(Board.GUI_ON && board.isOriginal()){
-                                Platform.runLater(
-                                    new Thread(()->{
-                                        board.getGraphicsConnector().setWin(true);
-                                    })
-                                );
-                            }
-                            board.setGameOver(true);
-                            board.storeMove();
-                            ArrayList<String> boardStates = board.getBoardStates();
-                            for(int i = 0; i<board.getBoardStates().size(); i++){
-                                System.out.println(boardStates.get(i));
-                            }
-                        }
-                        else{
-                            if(Board.GUI_ON && board.isOriginal()){
-                                Platform.runLater(
-                                        new Thread(()->{
-                                            board.getGraphicsConnector().setWin(false);
-                                        })
-                                );
-                            }
-                            board.setGameOver(true);
-                            board.storeMove();
-                            ArrayList<String> boardStates = board.getBoardStates();
-                            for(int i = 0; i<board.getBoardStates().size(); i++){
-                                System.out.println(boardStates.get(i));
-                            }
-                        }
-                    }
+                    BoardUpdater.runPromotion(board, move.getBoard(), move.getxFrom(), move.getyFrom(), move.getxTo(), move.getyTo());
                     if(Board.GUI_ON){
                         Platform.runLater(
                                 new Thread(board::launchGuiUpdate)
                         );
                     }
-                    board.changeTurn();
                 }
                 else{
 //                    if(!Board.GUI_ON) printBoard(board.getBoardModel(), board);

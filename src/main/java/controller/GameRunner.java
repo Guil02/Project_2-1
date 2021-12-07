@@ -15,9 +15,37 @@ public class GameRunner {
     GraphicsConnector graphicsConnector;
     private AiTree aiTree;
     private Expectiminimax expectiminimax;
-    public static final boolean DEBUG = true;
-    public static final boolean GENERATE_GAMES = true;
+    public static final boolean DEBUG = false;
+    public static final boolean GENERATE_GAMES = false;
     public static final boolean GUI_ON = true;
+    public static final boolean EXPERIMENT1 =false;
+    private int whiteWin = 0;
+    private int blackWin = 0;
+    private int games = 0;
+    private static final int maxGames = 100;
+
+    public void incrementWhiteWin(){
+        whiteWin++;
+    }
+    public void incrementBlackWin(){
+        blackWin++;
+    }
+    public void incrementGames(){
+        games++;
+    }
+    public int getWhiteWin() {
+        return whiteWin;
+    }
+    public int getBlackWin() {
+        return blackWin;
+    }
+    public int getGames(){
+        return games;
+    }
+    public boolean continuePlaying(){
+        return games<maxGames;
+    }
+
 
 
 
@@ -36,7 +64,7 @@ public class GameRunner {
             }
         }
         else{
-            init(4,4);
+            init(1,1);
         }
     }
 

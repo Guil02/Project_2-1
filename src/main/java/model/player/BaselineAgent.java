@@ -20,7 +20,7 @@ public class BaselineAgent extends Player{
         System.gc();
         new Thread(() -> {
             try{
-                Thread.sleep(10);
+                Thread.sleep(50);
                 char movablePieceChar = board.getMovablePiece();
                 // Select random piece if multiple pieces are movable
                 LinkedList<ChessPiece> pieceList = new LinkedList<ChessPiece>();

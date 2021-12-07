@@ -87,6 +87,66 @@ public class BoardUpdater {
         }
     }
 
+    public static void runPromotion(Board board, Board target, int xFrom, int yFrom, int xTo, int yTo){
+        boolean isWhite = board.getPieceOffField(xFrom, yFrom).isWhite();
+        int pieceType = getPieceType(target.getCharOffField(xTo, yTo));
+        ChessPiece promoted = BoardUpdater.createPiece(isWhite, xTo,yTo, pieceType);
+        capturePiece(board, xTo, yTo);
+        removePiece(board, xFrom, yFrom);
+        addPiece(board, promoted);
+        board.changeTurn();
+        if(board.getAmountOfTurns()>200){
+            board.setGameOver(true);
+        }
+
+        if(board.getGameOver()&& board.isOriginal()) {
+            board.storeMove();
+
+            if(GameRunner.EXPERIMENT1){
+                if(!board.containsKing(false)){
+                    board.getGameRunner().incrementWhiteWin();
+                }
+                else if(!board.containsKing(true)){
+                    board.getGameRunner().incrementBlackWin();
+                }
+                System.out.println("white wins: "+board.getGameRunner().getWhiteWin());
+                System.out.println("black wins: "+board.getGameRunner().getBlackWin());
+                if(board.getGameRunner().continuePlaying()){
+                    board.getGameRunner().reset();
+                }
+            }
+            else if(GameRunner.GENERATE_GAMES){
+                System.out.println("generating new game");
+                GameGenerator.writeGame(board);
+                board.getGameRunner().reset();
+            }
+            else {
+                if (board.getPlayer1() == 3 && TDLearning.LEARN && board.isOriginal()) {
+                    TDLearning.learn(board);
+                }
+                if (board.getPlayer1() == 4 && MCTSAgent.LEARN && board.isOriginal()) {
+                    double[] endEval = ((MCTSAgent) board.playerOne).computeEndEval(board);
+
+                    ((MCTSAgent) board.playerOne).learn(board, board.getBoardStates(), endEval);
+                }
+            }
+        }
+    }
+
+    public static int getPieceType(char pieceType){
+        switch(pieceType){
+            case 'n','N':
+                return 2;
+            case 'b','B':
+                return 3;
+            case 'r','R':
+                return 4;
+            case 'q','Q':
+                return 5;
+        }
+        return 0;
+    }
+
     public static void movePiece(Board board, int xFrom, int yFrom, int xTo, int yTo) {
 //        if(board.isOriginal()) System.out.println("did a move");
         board.storeMove();
@@ -110,6 +170,19 @@ public class BoardUpdater {
 //            for(int i = 0; i<board.getBoardStates().size(); i++){
 //                System.out.println(boardStates.get(i));
 //            }
+            if(GameRunner.EXPERIMENT1){
+                if(!board.containsKing(false)){
+                    board.getGameRunner().incrementWhiteWin();
+                }
+                else if(!board.containsKing(true)){
+                    board.getGameRunner().incrementBlackWin();
+                }
+                System.out.println("white wins: "+board.getGameRunner().getWhiteWin());
+                System.out.println("black wins: "+board.getGameRunner().getBlackWin());
+                if(board.getGameRunner().continuePlaying()){
+                    board.getGameRunner().reset();
+                }
+            }
             if(GameRunner.GENERATE_GAMES){
                 System.out.println("hi");
                 GameGenerator.writeGame(board);
