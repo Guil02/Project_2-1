@@ -15,8 +15,8 @@ public class GameRunner {
     private Expectiminimax expectiminimax;
     public static final boolean DEBUG = false;
     public static final boolean GENERATE_GAMES = false;
-    public static final boolean GUI_ON = true;
-    public static final boolean EXPERIMENT1 =false;
+    public static final boolean GUI_ON = false;
+    public static final boolean EXPERIMENT1 =true;
     private int whiteWin = 0;
     private int blackWin = 0;
     private int games = 0;
@@ -62,7 +62,7 @@ public class GameRunner {
             }
         }
         else{
-            init(1,1);
+            init(1,2);
         }
     }
 

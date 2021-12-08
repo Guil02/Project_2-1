@@ -24,7 +24,7 @@ public class ChessTreeNode extends TreeNode{
 
     @Override
     public void createChildren() {
-        aiTree.createChildren(this, true, board.getWhiteMove());
+        aiTree.createChildren(this, true, maxIsWhite);
     }
 
     public int getxFrom() {

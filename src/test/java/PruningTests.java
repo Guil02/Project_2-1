@@ -46,7 +46,7 @@ public class PruningTests {
         // Execute the algorithms
         long start1 = System.currentTimeMillis();
         Expectiminimax expectiminimax = new Expectiminimax();
-        expectiminimax.expectiminimax(root, (ply * 2) - 1);
+        expectiminimax.expectiminimax(root, (ply * 2) - 1, (ply*2)-1);
         long end1 = System.currentTimeMillis();
 
         System.out.println("Time for normal Expectiminimax: " + (end1 - start1));
