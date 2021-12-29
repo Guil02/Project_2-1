@@ -14,7 +14,7 @@ public class DisplayMenu extends Menu {
      * @param chessGUI reference to the chessGUI in which it is located
      */
     public DisplayMenu(ChessGUI chessGUI){
-        setText("display options");
+        setText("Display Options");
         MenuItem m1 = new MenuItem("200x200");
         MenuItem m2 = new MenuItem("400x400");
         MenuItem m3 = new MenuItem("600x600");

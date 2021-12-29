@@ -4,11 +4,7 @@ import gui.ChessGUI;
 import model.algorithm.AiTree;
 import model.algorithm.Expectiminimax;
 import model.pieces.ChessPiece;
-import model.pieces.KingPiece;
-import model.pieces.PawnPiece;
-import model.player.FirstAi;
-import model.player.HumanPlayer;
-import model.player.Player;
+import model.player.*;
 
 
 public class GameRunner {
@@ -17,6 +13,37 @@ public class GameRunner {
     GraphicsConnector graphicsConnector;
     private AiTree aiTree;
     private Expectiminimax expectiminimax;
+    public static final boolean DEBUG = false;
+    public static final boolean GENERATE_GAMES = false;
+    public static final boolean GUI_ON = false;
+    public static final boolean EXPERIMENT1 =true;
+    private int whiteWin = 0;
+    private int blackWin = 0;
+    private int games = 0;
+    private static final int maxGames = 100;
+
+    public void incrementWhiteWin(){
+        whiteWin++;
+    }
+    public void incrementBlackWin(){
+        blackWin++;
+    }
+    public void incrementGames(){
+        games++;
+    }
+    public int getWhiteWin() {
+        return whiteWin;
+    }
+    public int getBlackWin() {
+        return blackWin;
+    }
+    public int getGames(){
+        return games;
+    }
+    public boolean continuePlaying(){
+        return games<maxGames;
+    }
+
 
 
 
@@ -27,10 +54,15 @@ public class GameRunner {
         chessGUI = new ChessGUI();
         graphicsConnector = new GraphicsConnector(this);
         if(Board.GUI_ON){
-            chessGUI.launchGUI(graphicsConnector);
+            try{
+                chessGUI.launchGUI(graphicsConnector);
+            }
+            catch (IllegalStateException e){
+                init(board.getPlayer1(), board.getPlayer2());
+            }
         }
         else{
-            init(1,1);
+            init(1,2);
         }
     }
 
@@ -51,12 +83,35 @@ public class GameRunner {
         board.checkAi();
     }
 
+    public void reset(){
+        board.movesClear();
+        BoardUpdater.clearBoard(board);
+        BoardUpdater.fillGameStart(board);
+        board.setGameOver(false);
+        board.setAmountOfTurns(1);
+        board.setWhiteMove(true);
+        Dice.firstMoveDiceRoll(board);
+        board.checkAi();
+    }
+
     public Player createPlayer(int playerType){
         if(playerType == 0){
             return new HumanPlayer();
         }
+        else if(playerType== 1){
+            return new SearchAgent(board);
+        }
+        else if(playerType == 2){
+            return new BaselineAgent();
+        }
+        else if (playerType == 3){
+            return new TDLearningAgent();
+        }
+        else if(playerType == 4){
+            return new TakeAgent();
+        }
         else{
-            return new FirstAi(board);
+            return new NNAgent();
         }
     }
 

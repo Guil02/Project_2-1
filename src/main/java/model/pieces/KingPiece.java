@@ -11,6 +11,10 @@ import java.util.*;
 public class KingPiece extends ChessPiece {
     private boolean hasNotMoved = true;
 
+    public boolean getHasNotMoved() {
+        return hasNotMoved;
+    }
+
     public KingPiece(boolean white, int x, int y) {
         super(white, x, y, 6);
     }
@@ -24,8 +28,8 @@ public class KingPiece extends ChessPiece {
 
     @Override
     public void move(Board board, int new_x, int new_y) {
-        this.hasNotMoved = false; //TODO add castling move
-        ChessPiece.setEnPassantActive(false);
+        this.hasNotMoved = false;
+        board.setEnPassantActive(false);
         if(new_x == 2 && x==4){
             BoardUpdater.movePiece(board, 0,new_y,3,new_y);
         }
@@ -87,7 +91,7 @@ public class KingPiece extends ChessPiece {
     public boolean rookHasNotMoved(Board board, int x, int y) {
         if((withinBoundsOneVariable(x)&&withinBoundsOneVariable(y))&&board.getPieceOffField(x,y)!=null && board.getPieceOffField(x,y).getPieceType()==4){
             RookPiece piece = (RookPiece) board.getPieceOffField(x,y);
-            return piece.isHasNotMoved();
+            return piece.getHasNotMoved();
         }
         else return false;
     }
@@ -106,5 +110,9 @@ public class KingPiece extends ChessPiece {
         kingPiece.hasValidMove = hasValidMove;
         kingPiece.hasNotMoved = hasNotMoved;
         return kingPiece;
+    }
+
+    public void setHasNotMoved(boolean hasNotMoved) {
+        this.hasNotMoved = hasNotMoved;
     }
 }

@@ -21,7 +21,7 @@ public class KnightPiece extends ChessPiece {
      */
     @Override
     public void move(Board board, int xTo, int yTo) {
-        ChessPiece.setEnPassantActive(false);
+        board.setEnPassantActive(false);
         super.move(board, xTo, yTo);
     }
 

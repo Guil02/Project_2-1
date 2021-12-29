@@ -1,18 +1,19 @@
 package model.algorithm;
 
 import controller.Board;
+import model.player.TDLearningAgent;
 
-public class ChessTreeNode extends TreeNode{
+public class TDTreeNode extends TreeNode{
+    private TDLearningAgent tdLearningAgent;
     private int xFrom;
     private int yFrom;
     private int xTo;
     private int yTo;
     private Board board;
     private boolean doPromotion = false;
-    private AiTree aiTree = new AiTree();
     private boolean maxIsWhite;
 
-    public ChessTreeNode(Board board, double value, TreeNode parent, int nodeType, double probability, int xFrom, int yFrom, int xTo, int yTo, boolean maxIsWhite) {
+    public TDTreeNode(Board board, double value, TreeNode parent, int nodeType, double probability, int xFrom, int yFrom, int xTo, int yTo, boolean maxIsWhite, TDLearningAgent tdLearningAgent) {
         super(value, parent, nodeType, probability);
         this.xFrom = xFrom;
         this.yFrom = yFrom;
@@ -20,11 +21,12 @@ public class ChessTreeNode extends TreeNode{
         this.yTo = yTo;
         this.board = board;
         this.maxIsWhite = maxIsWhite;
+        this.tdLearningAgent = tdLearningAgent;
     }
 
     @Override
     public void createChildren() {
-        aiTree.createChildren(this, true, maxIsWhite);
+        tdLearningAgent.createChildren(this, true, this.getBoard().getWhiteMove());
     }
 
     public int getxFrom() {
@@ -53,6 +55,10 @@ public class ChessTreeNode extends TreeNode{
 
     public Board getBoard() {
         return board;
+    }
+
+    public TDLearningAgent getTdLearning() {
+        return tdLearningAgent;
     }
 
     public boolean isMaxIsWhite() {

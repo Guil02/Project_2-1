@@ -13,7 +13,7 @@ public class HighlightMenu extends Menu {
      *
      */
     public HighlightMenu(){
-        setText("Highlighting setting");
+        setText("Highlighting Setting");
         MenuItem m1 = new MenuItem("on");
         MenuItem m2 = new MenuItem("off");
 

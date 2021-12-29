@@ -1,10 +1,10 @@
 package controller;
 
 import model.pieces.ChessPiece;
-import model.player.FirstAi;
-import model.player.Player;
+import model.player.*;
+import utils.FenEvaluator;
 
-import java.util.concurrent.TimeUnit;
+import java.util.ArrayList;
 
 public class Board {
     private static final int BOARDSIZE = 8;
@@ -15,17 +15,26 @@ public class Board {
     private boolean gameOver;
     private boolean whiteMove = true;
     private char movablePiece;
-    public static final boolean GUI_ON = true;
+    public static final boolean GUI_ON = GameRunner.GUI_ON;
     private int player1 = 0;
     private int player2 = 0;
     Player playerOne;
     Player playerTwo;
     private boolean isOriginal = false;
     private int amountOfTurns = 1;
+    private ArrayList<String> moves;
+    private boolean enPassantActive = false;
+    private int enPassantColumn = 0;
 
     public Board(GameRunner gameRunner) {
         isOriginal = true;
         this.gameRunner = gameRunner;
+        moves = new ArrayList<>();
+    }
+
+    public Board() {
+        isOriginal = true;
+        moves = new ArrayList<>();
     }
 
     private Board(ChessPiece[][] boardModel, GraphicsConnector graphicsConnector, boolean gameOver, boolean whiteMove, char movablePiece){
@@ -34,7 +43,7 @@ public class Board {
         this.movablePiece = movablePiece;
         this.graphicsConnector = graphicsConnector;
         this.boardModel = boardModel;
-
+        moves = new ArrayList<>();
     }
 
     public void changeTurn(){
@@ -43,15 +52,7 @@ public class Board {
 
         Dice.rollTheDice(this);
         if(!gameOver){
-//            if(isOriginal()){
-////                System.out.println("amount of turns played: "+amountOfTurns/2);
-//            }
             checkAi();
-        }
-        else{
-//            if(isOriginal()){
-////                System.out.println("amount of turns played: "+amountOfTurns/2);
-//            }
         }
     }
 
@@ -59,29 +60,68 @@ public class Board {
         if(whiteMove){
             if(player1>0){
                 if(player1==1){
-                    ((FirstAi) playerOne).launch(this);
+                    ((SearchAgent) playerOne).launch(this);
                 }
                 else if(player1==2){
-                    System.out.println("AI is not yet implemented");
-                    //TODO add random ai
-                    // ((BaselineAI) playerOne).launch(this);
+                    ((BaselineAgent) playerOne).launch(this);
+                }
+                else if(player1 == 3){
+                    ((TDLearningAgent) playerOne).launch(this);
+                }
+                else if(player1 == 4){
+                    ((TakeAgent) playerOne).launch(this);
+                }
+                else if(player1 == 5){
+                    ((NNAgent) playerOne).launch(this);
                 }
             }
         }
         else{
             if(player2 > 0){
                 if(player2==1){
-                    ((FirstAi) playerTwo).launch(this);
+                    ((SearchAgent) playerTwo).launch(this);
                 }
                 else if(player2==2){
-                    System.out.println("AI is not yet implemented");
-                    //TODO add random ai
-                    // ((BaselineAI) playerTwo).launch(this);
+                    ((BaselineAgent) playerTwo).launch(this);
+                }
+                else if(player2==3){
+                    ((TDLearningAgent) playerTwo).launch(this);
+                }
+                else if(player2==4){
+                    ((TakeAgent) playerTwo).launch(this);
+                }
+                else if(player2==5){
+                    ((NNAgent) playerTwo).launch(this);
                 }
             }
         }
     }
 
+    public int getAmountOfPieces(char c){
+        int count = 0;
+        ChessPiece[][] model = getBoardModel();
+        for(int i=0; i<getBoardSize(); i++){
+            for(int j=0; j<getBoardSize(); j++){
+                if(model[i][j] != null &&model[i][j].getPieceChar()==c){
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    public ArrayList<ChessPiece> getPieces(char c){
+        ArrayList<ChessPiece> list = new ArrayList<>();
+        ChessPiece[][] model = getBoardModel();
+        for(int i=0; i<getBoardSize(); i++){
+            for(int j=0; j<getBoardSize(); j++){
+                if(model[i][j] != null && model[i][j].getPieceChar()==c){
+                    list.add(model[i][j]);
+                }
+            }
+        }
+        return list;
+    }
     public char getCharOffField(int x, int y){
         if(getPieceOffField(x,y) == null){
             return '-';
@@ -181,8 +221,75 @@ public class Board {
         }
     }
 
+    public boolean isHumanPlayer(){
+        if(whiteMove){
+            return player1==0;
+        }
+        else{
+            return player2==0;
+        }
+    }
+
     public void setPlayerPlayers(Player player1, Player player2) {
         this.playerOne = player1;
         this.playerTwo = player2;
+    }
+
+    public void storeMove(){
+        moves.add(FenEvaluator.write(this));
+    }
+
+    public ArrayList<String> getBoardStates() {
+        return moves;
+    }
+
+    public boolean isEnPassantActive() {
+        return enPassantActive;
+    }
+
+    public void setEnPassantActive(boolean enPassantActive) {
+        this.enPassantActive = enPassantActive;
+    }
+
+    public int getEnPassantColumn() {
+        return enPassantColumn;
+    }
+
+    public void setEnPassantColumn(int enPassantColumn) {
+        this.enPassantColumn = enPassantColumn;
+    }
+
+    public boolean containsKing(boolean white){
+        for(int i = 0; i<BOARDSIZE; i++){
+            for(int j = 0; j<BOARDSIZE; j++){
+                if(white){
+                    if(getCharOffField(i,j)=='K'){
+                        return true;
+                    }
+                }
+                else{
+                    if (getCharOffField(i, j) == 'k') {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public GameRunner getGameRunner() {
+        return gameRunner;
+    }
+
+    public void setAmountOfTurns(int amountOfTurns) {
+        this.amountOfTurns = amountOfTurns;
+    }
+
+    public int getAmountOfTurns() {
+        return amountOfTurns;
+    }
+
+    public void movesClear() {
+        moves.clear();
     }
 }
