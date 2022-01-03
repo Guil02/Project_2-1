@@ -58,7 +58,7 @@ public class AiTree {
         copy.setMovablePiece(movablePiece);
         double value = 0;
         if(doEvaluation){
-            value = staticBoardEvaluation(copy, maxIsWhite);
+            value = staticBoardEvaluation(copy);
         }
         ChessTreeNode child = new ChessTreeNode(copy,value, parent, nodeType, probability, 0,0,0,0, parent.isMaxIsWhite());
         parent.addChild(child);
@@ -82,7 +82,7 @@ public class AiTree {
 
                     double value = 0;
                     if(doEvaluation){
-                        value = staticBoardEvaluation(copy, maxIsWhite);
+                        value = staticBoardEvaluation(copy);
                     }
 
                     ChessTreeNode child = new ChessTreeNode(copy, value,parent,nodeType,1,piece.getX(),piece.getY(),i,j, parent.isMaxIsWhite());
@@ -100,7 +100,7 @@ public class AiTree {
 
         double value = 0;
         if(doEvaluation){
-            value = staticBoardEvaluation(copy, maxIsWhite);
+            value = staticBoardEvaluation(copy);
         }
 
         ChessTreeNode child = new ChessTreeNode(copy, value,parent,nodeType,1,piece.getX(),piece.getY(),xTo,yTo, parent.isMaxIsWhite());
@@ -172,64 +172,42 @@ public class AiTree {
         return value;
     }
 
-    private double staticBoardEvaluation(Board board, boolean maxIsWhite){
+    private double staticBoardEvaluation(Board board){
         double value = 0;
         double enemyPiecesOnBoardValue = 0;
         boolean seenWhiteKing = false;
         boolean seenBlackKing = false;
-        int distanceWhiteKingFromBackRow = 0;
-        int distanceBlackKingFromBackRow = 0;
+//        int distanceWhiteKingFromBackRow = 0;
+//        int distanceBlackKingFromBackRow = 0;
 
         for(ChessPiece[] pieces: board.getBoardModel()){
             for(ChessPiece piece: pieces){
                 if(piece != null){
-                    if(maxIsWhite){
-                        if(piece.isWhite()){
-                            value += getPieceValue(piece.getPieceType());
-                        }
-                        else{
-                            enemyPiecesOnBoardValue += getPieceValue(piece.getPieceType());
-                        }
+                    if(piece.isWhite()){
+                        value += getPieceValue(piece.getPieceType());
                     }
                     else{
-                        if(!piece.isWhite()){
-                            value += getPieceValue(piece.getPieceType());
-                        }
-                        else{
-                            enemyPiecesOnBoardValue += getPieceValue(piece.getPieceType());
-                        }
+                        enemyPiecesOnBoardValue += getPieceValue(piece.getPieceType());
                     }
 
                     if(piece.getPieceChar() == 'K'){
-                        distanceWhiteKingFromBackRow = 7-piece.getY();
+//                        distanceWhiteKingFromBackRow = 7-piece.getY();
                         seenWhiteKing = true;
                     }
                     if(piece.getPieceChar() == 'k'){
-                        distanceBlackKingFromBackRow = piece.getY();
+//                        distanceBlackKingFromBackRow = piece.getY();
                         seenBlackKing = true;
                     }
                 }
             }
         }
-        if(maxIsWhite){
-            distanceBlackKingFromBackRow = 0;
-            if(!seenWhiteKing){
-                return -100;
-            }
-            else if(!seenBlackKing){
-                return 100;
-            }
+        if(!seenWhiteKing){
+            return -100;
         }
-        else {
-            distanceWhiteKingFromBackRow = 0;
-            if(!seenBlackKing){
-                return -100;
-            }
-            else if(!seenWhiteKing){
-                return 100;
-            }
+        else if(!seenBlackKing){
+            return 100;
         }
-        return value - enemyPiecesOnBoardValue - 0.3*distanceBlackKingFromBackRow - 0.3*distanceWhiteKingFromBackRow;
+        return value - enemyPiecesOnBoardValue + getRandomElement();
     }
 
     private double getPieceValue(int pieceType){
@@ -242,5 +220,8 @@ public class AiTree {
             case 6 -> 0;
             default -> 0;
         };
+    }
+    private double getRandomElement(){
+        return Math.random()*10-5;
     }
 }

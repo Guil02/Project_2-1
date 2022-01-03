@@ -26,6 +26,7 @@ public class PlayerChoiceBox extends ChoiceBox<String> {
         getItems().add("TD learning Agent");
         getItems().add("Take Agent");
         getItems().add("NN Agent");
+        getItems().add("Cheating Agent");
         setOnAction(event -> {
             int selectedIndex = getSelectionModel().getSelectedIndex();
             playerSelectionChoiceBox.setPlayer(number, selectedIndex);

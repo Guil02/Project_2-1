@@ -4,10 +4,7 @@ import controller.Board;
 import controller.BoardUpdater;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
-import model.algorithm.AiTree;
-import model.algorithm.ChessTreeNode;
-import model.algorithm.Expectiminimax;
-import model.algorithm.TreeNode;
+import model.algorithm.*;
 import model.pieces.ChessPiece;
 
 import java.util.ArrayList;
@@ -18,17 +15,16 @@ public class SearchAgent extends Player {
     private Expectiminimax expectiminimax = new Expectiminimax();
     private ChessTreeNode maxima;
     private Board board;
-    private static final int ply = 4;
+    private static final int ply = 2;
 
     public SearchAgent(Board board) {
         this.board = board;
     }
 
     public void launch(Board board){
-        System.gc();
         new Thread(() -> {
             try{
-                Thread.sleep(50);
+//                Thread.sleep(50);
                 ruleBasedAgent(board);
                 ChessTreeNode move = getMaxima();
                 if(move.isDoPromotion()){
@@ -49,7 +45,7 @@ public class SearchAgent extends Player {
                         );
                     }
                 }
-            }
+            }//TODO: IMPLEMENT CHEATING AI, WITH MINIMAX AND PREROLL DICE SO IT CAN CHEAT BETTER
             catch(Exception e){
                 System.err.println("Piece might already have been moved due to glitch in the threading");
                 e.printStackTrace();
@@ -62,8 +58,19 @@ public class SearchAgent extends Player {
 //        System.out.println(board.getWhiteMove());
         Board copy = board.clone();
         boolean maxIsWhite = board.getWhiteMove();
-        ChessTreeNode root = new ChessTreeNode(copy, 0, null, 1, 1, 0, 0, 0, 0, maxIsWhite);
+        ChessTreeNode root;
+        if(maxIsWhite){
+            root = new ChessTreeNode(copy, 0, null, 1, 1, 0, 0, 0, 0, maxIsWhite);
+        }
+        else{
+            root = new ChessTreeNode(copy, 0, null, 2, 1, 0, 0, 0, 0, maxIsWhite);
+        }
         double res = expectiminimax.expectiminimax(root, (ply*2)-1, (ply*2)-1);
+//        NegaMax negaMax = new NegaMax(-100,100);
+//        int color = board.getWhiteMove() ? 1:-1;
+//        double res = negaMax.star2(root, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, (ply*2)-1, color, (ply*2)-1);
+//        int color = maxIsWhite ? 1 : -1;
+//        double res = expectiminimax.star2(root, -100, 100,(ply*2)-1,color, (ply*2)-1);
 //        System.out.println(res);
         double maxValue = Double.MIN_VALUE;
         ArrayList<ChessTreeNode> highestNodes = new ArrayList<>();
@@ -71,14 +78,28 @@ public class SearchAgent extends Player {
         highestNodes.add(maxNode);
         for (TreeNode child : root.getChildren()) {
             ChessTreeNode subChild = (ChessTreeNode) child;
-            if (subChild.getValue() >= maxValue) {
-                if (subChild.getValue() == maxValue) {
+            if(maxIsWhite){
+
+                if (subChild.getValue() >= maxValue) {
+                    if (subChild.getValue() == maxValue) {
+                        highestNodes.add(subChild);
+                        continue;
+                    }
+                    highestNodes.clear();
                     highestNodes.add(subChild);
-                    continue;
+                    maxValue = subChild.getValue();
                 }
-                highestNodes.clear();
-                highestNodes.add(subChild);
-                maxValue = subChild.getValue();
+            }
+            else{
+                if (subChild.getValue() <= maxValue) {
+                    if (subChild.getValue() == maxValue) {
+                        highestNodes.add(subChild);
+                        continue;
+                    }
+                    highestNodes.clear();
+                    highestNodes.add(subChild);
+                    maxValue = subChild.getValue();
+                }
             }
         }
         Random rand = new Random();
