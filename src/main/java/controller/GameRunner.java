@@ -17,7 +17,6 @@ public class GameRunner {
     private AiTree aiTree;
     private Expectiminimax expectiminimax;
     public static final boolean DEBUG = false;
-    public static final boolean GENERATE_GAMES = false;
     public static final boolean EXPERIMENT1 =false;
     private int whiteWin = 0;
     private int blackWin = 0;

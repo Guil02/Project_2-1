@@ -148,7 +148,7 @@ public class BoardUpdater {
                     board.getGameRunner().reset();
                 }
             }
-            if(GameRunner.GENERATE_GAMES){
+            if(Config.GENERATE_GAMES){
                 System.out.println("generating new game");
                 GameGenerator.writeGame(board);
                 board.getGameRunner().reset();
