@@ -74,6 +74,14 @@ public class TreeNode {
 
     }
 
+    public boolean hasBestQuality(){
+        return false;
+    }
+
+    public boolean hasGoodQuality(){
+        return true;
+    }
+
     public int getNodeType() {
         return nodeType;
     }

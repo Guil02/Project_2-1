@@ -58,4 +58,19 @@ public class ChessTreeNode extends TreeNode{
     public boolean isMaxIsWhite() {
         return maxIsWhite;
     }
+
+    @Override
+    public boolean hasBestQuality() {
+        if(!board.containsKing(!board.getWhiteMove())){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    @Override
+    public boolean hasGoodQuality() {
+        return super.hasGoodQuality();
+    }
 }

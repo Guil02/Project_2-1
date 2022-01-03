@@ -5,6 +5,7 @@ import model.algorithm.AiTree;
 import model.algorithm.Expectiminimax;
 import model.pieces.ChessPiece;
 import model.player.*;
+import model.player.CheatAI;
 
 
 public class GameRunner {
@@ -15,8 +16,8 @@ public class GameRunner {
     private Expectiminimax expectiminimax;
     public static final boolean DEBUG = false;
     public static final boolean GENERATE_GAMES = false;
-    public static final boolean GUI_ON = false;
-    public static final boolean EXPERIMENT1 =true;
+    public static final boolean GUI_ON = true;
+    public static final boolean EXPERIMENT1 =false;
     private int whiteWin = 0;
     private int blackWin = 0;
     private int games = 0;
@@ -62,7 +63,16 @@ public class GameRunner {
             }
         }
         else{
-            init(1,2);
+            /*
+            0 = "Human"
+            1 = "Search Agent"
+            2 = "Random Agent"
+            3 = "TD learning Agent"
+            4 = "Take Agent"
+            5 = "NN Agent"
+            6 = "Cheating Agent"
+             */
+            init(1,1);
         }
     }
 
@@ -110,8 +120,11 @@ public class GameRunner {
         else if(playerType == 4){
             return new TakeAgent();
         }
-        else{
+        else if(playerType == 5){
             return new NNAgent();
+        }
+        else{
+            return new CheatAI(board);
         }
     }
 
