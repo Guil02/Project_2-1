@@ -89,6 +89,7 @@ public class GraphicsConnector {
      */
     public void doMove(int initialX, int initialY, int finalX, int finalY){
         BoardUpdater.movePiece(board, initialX, initialY, finalX, finalY);
+        chessGUI.updateDebugWindow();
     }
 
     /**

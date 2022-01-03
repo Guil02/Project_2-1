@@ -25,6 +25,7 @@ public class ChessGUI extends Application {
     private static GraphicsConnector graphicsConnector;
     private GameScreen gameScreen;
     private StartScreen mainMenu;
+    private DebugWindowStage debugWindowStage;
 
 
     /**
@@ -55,9 +56,13 @@ public class ChessGUI extends Application {
 
         // Opens debug window
         if (Config.SHOW_DEBUG_WINDOW) {
-            DebugWindowStage debugWindowStage = new DebugWindowStage();
+            debugWindowStage = new DebugWindowStage();
             debugWindowStage.show();
         }
+    }
+
+    public void updateDebugWindow() {
+        debugWindowStage.updateInformation();
     }
 
     /**
@@ -76,7 +81,6 @@ public class ChessGUI extends Application {
         board.setGameScreen(gameScreen);
 
         this.gameScene = new Scene(gameScreen, width, height);
-
 
         stage.setScene(gameScene);
     }

@@ -1,6 +1,7 @@
 package controller;
 
 import gui.ChessGUI;
+import gui.DebugWindow.DebugWindowStage;
 import model.algorithm.AiTree;
 import model.algorithm.Expectiminimax;
 import model.pieces.ChessPiece;

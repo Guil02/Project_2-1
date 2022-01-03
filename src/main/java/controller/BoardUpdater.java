@@ -1,6 +1,7 @@
 package controller;
 
 import config.Config;
+import gui.DebugWindow.DebugWindowStage;
 import javafx.application.Platform;
 import model.pieces.*;
 import model.player.NNAgent;
@@ -9,7 +10,10 @@ import utils.GameGenerator;
 
 public class BoardUpdater {
 
-
+    /**
+     * Fills the board with the default start setup.
+     * @param board
+     */
     public static void fillGameStart(Board board) {
         // Black side
         addPiece(board, new RookPiece(false, 0, 0));
