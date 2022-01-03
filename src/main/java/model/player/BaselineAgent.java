@@ -1,5 +1,6 @@
 package model.player;
 
+import config.Config;
 import controller.Board;
 import controller.BoardUpdater;
 import javafx.application.Platform;
@@ -65,7 +66,7 @@ public class BaselineAgent extends Player{
 
                 // Execute move
                 BoardUpdater.movePiece(board, pieceX, pieceY, destinationX, destinationY);
-                if(Board.GUI_ON){
+                if(Config.GUI_ON){
                     Platform.runLater(
                             new Thread(board::launchGuiUpdate)
                     );

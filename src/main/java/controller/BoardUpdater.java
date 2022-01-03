@@ -1,5 +1,6 @@
 package controller;
 
+import config.Config;
 import javafx.application.Platform;
 import model.pieces.*;
 import model.player.NNAgent;
@@ -54,7 +55,7 @@ public class BoardUpdater {
         if(board.getPieceOffField(x,y)!=null) {
             if (board.getPieceOffField(x,y).getPieceChar() == 'K') {
                 board.getBoardModel()[x][y] = null;
-                if(Board.GUI_ON && board.isOriginal()){
+                if(Config.GUI_ON && board.isOriginal()){
                     Platform.runLater(
                         new Thread(()->{
                             board.getGraphicsConnector().setWin(false);
@@ -64,7 +65,7 @@ public class BoardUpdater {
                 board.setGameOver(true);
             } else if (board.getPieceOffField(x,y).getPieceChar() == 'k') {
                 board.getBoardModel()[x][y] = null;
-                if(Board.GUI_ON && board.isOriginal()){
+                if(Config.GUI_ON && board.isOriginal()){
                     Platform.runLater(
                             new Thread(()->{
                                 board.getGraphicsConnector().setWin(true);

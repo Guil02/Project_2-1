@@ -5,8 +5,11 @@ import model.algorithm.AiTree;
 import model.algorithm.Expectiminimax;
 import model.pieces.ChessPiece;
 import model.player.*;
+import config.Config;
 
-
+/**
+ * Central controller class to run the game.
+ */
 public class GameRunner {
     private Board board;
     ChessGUI chessGUI;
@@ -15,7 +18,6 @@ public class GameRunner {
     private Expectiminimax expectiminimax;
     public static final boolean DEBUG = false;
     public static final boolean GENERATE_GAMES = false;
-    public static final boolean GUI_ON = true;
     public static final boolean EXPERIMENT1 =false;
     private int whiteWin = 0;
     private int blackWin = 0;
@@ -44,16 +46,13 @@ public class GameRunner {
         return games<maxGames;
     }
 
-
-
-
     /**
      * Constructor
      */
     public GameRunner() {
         chessGUI = new ChessGUI();
         graphicsConnector = new GraphicsConnector(this);
-        if(Board.GUI_ON){
+        if(Config.GUI_ON){
             try{
                 chessGUI.launchGUI(graphicsConnector);
             }

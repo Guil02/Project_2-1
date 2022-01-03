@@ -1,5 +1,6 @@
 package model.player;
 
+import config.Config;
 import controller.Board;
 import controller.BoardUpdater;
 import javafx.application.Platform;
@@ -103,7 +104,7 @@ public class TakeAgent extends Player{
                     BoardUpdater.movePiece(board, move[0], move[1], move[2], move[3]);
                 }
 
-                if(Board.GUI_ON){
+                if(Config.GUI_ON){
                     Platform.runLater(
                             new Thread(board::launchGuiUpdate)
                     );

@@ -1,6 +1,8 @@
 package gui;
 
+import config.Config;
 import controller.GraphicsConnector;
+import gui.DebugWindow.DebugWindowStage;
 import gui.GameScreenObjects.ChessBoard;
 import gui.SceneLayouts.GameScreen;
 import gui.SceneLayouts.StartScreen;
@@ -50,6 +52,12 @@ public class ChessGUI extends Application {
         stage.getIcons().add(0,icon);
         stage.setScene(startMenu);
         stage.show();
+
+        // Opens debug window
+        if (Config.SHOW_DEBUG_WINDOW) {
+            DebugWindowStage debugWindowStage = new DebugWindowStage();
+            debugWindowStage.show();
+        }
     }
 
     /**
