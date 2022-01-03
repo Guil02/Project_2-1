@@ -2,7 +2,6 @@ package controller;
 
 import model.pieces.ChessPiece;
 import model.player.*;
-import model.player.CheatAI;
 import utils.FenEvaluator;
 
 import java.util.ArrayList;
@@ -75,9 +74,6 @@ public class Board {
                 else if(player1 == 5){
                     ((NNAgent) playerOne).launch(this);
                 }
-                else if(player1 == 6){
-                    ((CheatAI) playerOne).launch(this);
-                }
             }
         }
         else{
@@ -96,9 +92,6 @@ public class Board {
                 }
                 else if(player2==5){
                     ((NNAgent) playerTwo).launch(this);
-                }
-                else if(player2==5){
-                    ((CheatAI) playerTwo).launch(this);
                 }
             }
         }

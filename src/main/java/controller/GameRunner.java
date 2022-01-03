@@ -5,7 +5,6 @@ import model.algorithm.AiTree;
 import model.algorithm.Expectiminimax;
 import model.pieces.ChessPiece;
 import model.player.*;
-import model.player.CheatAI;
 
 
 public class GameRunner {
@@ -120,11 +119,8 @@ public class GameRunner {
         else if(playerType == 4){
             return new TakeAgent();
         }
-        else if(playerType == 5){
-            return new NNAgent();
-        }
         else{
-            return new CheatAI(board);
+            return new NNAgent();
         }
     }
 
