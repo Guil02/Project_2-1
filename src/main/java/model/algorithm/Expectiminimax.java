@@ -2,7 +2,6 @@ package model.algorithm;
 
 public class Expectiminimax {
 
-    boolean withPruning;
     public Expectiminimax() {
     }
 
