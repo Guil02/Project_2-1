@@ -1,6 +1,8 @@
 package controller;
 
+import config.Config;
 import gui.ChessGUI;
+import gui.DebugWindow.DebugWindowStage;
 import model.pieces.*;
 import utils.Transform;
 import model.pieces.ChessPiece;
@@ -11,11 +13,10 @@ import model.pieces.ChessPiece;
  */
 public class GraphicsConnector {
 
-    // Variab
+    // Variables
     private Board board;
     private GameRunner gamerunner;
     private ChessGUI chessGUI;
-
 
     /**
      * constructor
@@ -89,7 +90,7 @@ public class GraphicsConnector {
      */
     public void doMove(int initialX, int initialY, int finalX, int finalY){
         BoardUpdater.movePiece(board, initialX, initialY, finalX, finalY);
-        chessGUI.updateDebugWindow();
+        gamerunner.debugWindowStage.incrementPlyCount();
     }
 
     /**

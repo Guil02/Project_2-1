@@ -25,6 +25,7 @@ public class Board {
     private ArrayList<String> moves;
     private boolean enPassantActive = false;
     private int enPassantColumn = 0;
+    public int plyCount = 0;
 
     public Board(GameRunner gameRunner) {
         isOriginal = true;
@@ -206,6 +207,7 @@ public class Board {
             }
         }
         Board board = new Board(copy,graphicsConnector, gameOver, whiteMove, movablePiece);
+        board.gameRunner = this.gameRunner;
         return board;
     }
 
@@ -216,6 +218,7 @@ public class Board {
 //            } catch (InterruptedException e) {
 //                e.printStackTrace();
 //            }
+            getGameRunner().debugWindowStage.incrementPlyCount();
             graphicsConnector.updateImages();
             graphicsConnector.changeTurn();
         }

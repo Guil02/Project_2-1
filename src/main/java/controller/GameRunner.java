@@ -15,6 +15,7 @@ public class GameRunner {
     private Board board;
     ChessGUI chessGUI;
     GraphicsConnector graphicsConnector;
+    DebugWindowStage debugWindowStage;
     private AiTree aiTree;
     private Expectiminimax expectiminimax;
     public static final boolean DEBUG = false;
@@ -89,6 +90,11 @@ public class GameRunner {
         graphicsConnector.setBoard(board);
         Dice.firstMoveDiceRoll(board);
         board.checkAi();
+        // Opens debug window
+        if (Config.SHOW_DEBUG_WINDOW) {
+            debugWindowStage = new DebugWindowStage();
+            debugWindowStage.show();
+        }
     }
 
     public void reset(){
