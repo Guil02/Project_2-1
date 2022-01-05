@@ -53,7 +53,7 @@ public class PruningTests {
 
         long start2 = System.currentTimeMillis();
         ExpectiminimaxStar2 expectiminimaxStar2 = new ExpectiminimaxStar2(true);
-        expectiminimaxStar2.expectiminimax(root2, (ply * 2) - 1);
+        expectiminimaxStar2.expectiminimaxWithStar2(root2, (ply * 2) - 1);
         long end2 = System.currentTimeMillis();
 
         System.out.println("Time for Expectiminimax with P: " + (end2 - start2));
