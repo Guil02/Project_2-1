@@ -10,9 +10,11 @@ import model.algorithm.TDTreeNode;
 import model.algorithm.TreeNode;
 import model.pieces.ChessPiece;
 import utils.FenEvaluator;
+import utils.Functions;
 import utils.Matrix;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -31,7 +33,7 @@ public class TDLearningAgent extends Player{
     private static int amountOfGame = 0;
 
     public TDLearningAgent() {
-        weights = readInWeights();
+        weights = Functions.readInWeights(fileName);
     }
 
     public static ArrayList<Double> evaluateFactors(Board board, boolean whiteIsMax){
@@ -62,6 +64,31 @@ public class TDLearningAgent extends Player{
         return factors;
     }
 
+    public static ArrayList<Double> getPieces(Board board){
+        ArrayList<Double> factors = new ArrayList<>();
+        factors.add(0,Factor.piece_value(board, true,'p'));
+        factors.add(1,Factor.piece_value(board, true,'n'));
+        factors.add(2,Factor.piece_value(board, true,'b'));
+        factors.add(3,Factor.piece_value(board, true,'r'));
+        factors.add(4,Factor.piece_value(board, true,'q'));
+        return factors;
+    }
+
+    public static double evaluationPieces(Board board, ArrayList<Double> weights){
+        ArrayList<Double> factors = getPieces(board);
+        double val = 0;
+        if(!board.containsKing(true)){
+            return -1;
+        }
+        else if(!board.containsKing(false)){
+            return 1;
+        }
+
+        for(int i = 0; i<factors.size(); i++){
+            val += factors.get(i)*weights.get(i);
+        }
+        return  Functions.tanh(val);
+    }
 
     public static double evaluation(Board board, boolean whiteIsMax, ArrayList<Double> weights){
         ArrayList<Double> factors = evaluateFactors(board, whiteIsMax);
@@ -73,50 +100,9 @@ public class TDLearningAgent extends Player{
     }
 
 
-    private void createPromotionChild(TDTreeNode parent, ChessPiece piece, int xTo, int yTo, int pieceType, boolean doEvaluation, boolean maxIsWhite, int nodeType){
-        Board copy = parent.getBoard().clone();
-        BoardUpdater.removePiece(copy, piece.getX(), piece.getY());
-        ChessPiece promoted = BoardUpdater.createPiece(piece.isWhite(), xTo, yTo, pieceType);
-        BoardUpdater.addPiece(copy, promoted);
 
-        double value = 0;
-        if(doEvaluation){
-            value = evaluation(copy, maxIsWhite, weights);
-        }
 
-        TDTreeNode child = new TDTreeNode(copy, value,parent,nodeType,1,piece.getX(),piece.getY(),xTo,yTo, parent.isMaxIsWhite(), parent.getTdLearning());
-        child.setDoPromotion(true);
-        parent.addChild(child);
-    }
 
-    private boolean isPromotion(ChessPiece piece, int yTo){
-        if(piece.getPieceType()==1){
-            if(piece.isWhite()&&yTo==0){
-                return true;
-            }
-            else if(!piece.isWhite()&&yTo==7){
-                return true;
-            }
-            else{
-                return false;
-            }
-        }
-        else{
-            return false;
-        }
-    }
-
-    private double getPieceValue(int pieceType){
-        return switch (pieceType) {
-            case 1 -> 1;
-            case 2 -> 3;
-            case 3 -> 3;
-            case 4 -> 5;
-            case 5 -> 9;
-            case 6 -> 0;
-            default -> 0;
-        };
-    }
 
     public void runAgent(Board board){
         Board copy = board.clone();
@@ -189,19 +175,7 @@ public class TDLearningAgent extends Player{
         return maxima;
     }
 
-    public int getPieceType(char pieceType){
-        switch(pieceType){
-            case 'n','N':
-                return 2;
-            case 'b','B':
-                return 3;
-            case 'r','R':
-                return 4;
-            case 'q','Q':
-                return 5;
-        }
-        return 0;
-    }
+
 
     public static void printBoard(ChessPiece[][] boardModel, Board board) {
         System.out.println("--- Board State ---\n");
