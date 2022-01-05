@@ -25,7 +25,6 @@ public class Board {
     private ArrayList<String> moves;
     private boolean enPassantActive = false;
     private int enPassantColumn = 0;
-    public int plyCount = 0;
 
     public Board(GameRunner gameRunner) {
         isOriginal = true;

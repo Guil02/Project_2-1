@@ -1,5 +1,7 @@
 package gui.DebugWindow;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -19,7 +21,8 @@ public class DebugWindowStage extends Stage {
     private Button stepButton;
     private HBox bottomRow;
     private Slider speedSlider; // Slider to set delay in ms for an agent move
-    private boolean isOnPause;
+    public static boolean isOnPause;
+    public static int delayMS = 1000;
 
     public DebugWindowStage() {
 
@@ -63,11 +66,13 @@ public class DebugWindowStage extends Stage {
                 playPauseButton.setText("Play");
                 stepButton.setDisable(false);
                 isOnPause = true;
+                // TODO: implement pause functionality
             }
             else {
                 playPauseButton.setText("Pause");
                 stepButton.setDisable(true);
                 isOnPause = false;
+                // TODO: implement play functionality
             }
         });
         stepButton = new Button("Step");
@@ -77,7 +82,13 @@ public class DebugWindowStage extends Stage {
         stepButton.setDisable(true);
         speedSlider = new Slider();
         speedSlider.setMin(0);
-        speedSlider.setMax(50);
+        speedSlider.setMax(1000);
+        speedSlider.setValue(1000);
+        speedSlider.setShowTickMarks(true);
+        speedSlider.setShowTickLabels(true);
+        speedSlider.valueProperty().addListener(e -> {
+            delayMS = (int) speedSlider.getValue();
+        });
         bottomRow.getChildren().addAll(playPauseButton, stepButton, new Text("Delay:"), speedSlider);
         root.setBottom(bottomRow);
     }
