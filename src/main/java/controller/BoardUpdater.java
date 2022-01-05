@@ -154,6 +154,7 @@ public class BoardUpdater {
             }
             else {
                 if (board.getPlayer1() == 3 && TDLearningAgent.LEARN && board.isOriginal()) {
+                    System.out.println("Game is over");
                     TDLearningAgent.learn(board);
                 }
                 if (board.getPlayer1() == 5 && NNAgent.LEARN && board.isOriginal()) {

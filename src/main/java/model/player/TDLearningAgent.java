@@ -11,10 +11,7 @@ import model.algorithm.TreeNode;
 import model.pieces.ChessPiece;
 import utils.FenEvaluator;
 import utils.Functions;
-import utils.Matrix;
 
-import java.io.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -29,7 +26,7 @@ public class TDLearningAgent extends Player{
     private Expectiminimax expectiminimax = new Expectiminimax();
     private static final double lambda = 0.70;
     private static double alpha = 0.70;
-    private int sleep = 50;
+    private int sleep = 100;
     private static int amountOfGame = 0;
 
     public TDLearningAgent() {
@@ -121,14 +118,27 @@ public class TDLearningAgent extends Player{
         highestNodes.add(maxNode);
         for (TreeNode child : root.getChildren()) {
             TDTreeNode subChild = (TDTreeNode) child;
-            if (subChild.getValue() >= maxValue) {
-                if (subChild.getValue() == maxValue) {
+            if(maxIsWhite){
+                if (subChild.getValue() >= maxValue) {
+                    if (subChild.getValue() == maxValue) {
+                        highestNodes.add(subChild);
+                        continue;
+                    }
+                    highestNodes.clear();
                     highestNodes.add(subChild);
-                    continue;
+                    maxValue = subChild.getValue();
                 }
-                highestNodes.clear();
-                highestNodes.add(subChild);
-                maxValue = subChild.getValue();
+            }
+            else{
+                if (subChild.getValue() <= maxValue) {
+                    if (subChild.getValue() == maxValue) {
+                        highestNodes.add(subChild);
+                        continue;
+                    }
+                    highestNodes.clear();
+                    highestNodes.add(subChild);
+                    maxValue = subChild.getValue();
+                }
             }
         }
         Random rand = new Random();
