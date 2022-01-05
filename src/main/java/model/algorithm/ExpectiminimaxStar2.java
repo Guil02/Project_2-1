@@ -6,7 +6,7 @@ public class ExpectiminimaxStar2 extends Expectiminimax {
     }
 
     /**
-     * star2 pruning method for the expectimax AI
+     * star2 pruning method for the expectiminimax AI
      * @param node the current node
      * @param depth the depth of the corresponding tree
      */
@@ -41,7 +41,7 @@ public class ExpectiminimaxStar2 extends Expectiminimax {
              */
             for (int j = 0; j < max_number_of_leaves; j++) {
                 for (int i = 0; i < number_of_children; i++) {
-                    double leaf_value = expectiminimax(node.getChildren().get(i).getChildren().get(j), depth-2);
+                    double leaf_value = expectiminimaxWithStar2(node.getChildren().get(i).getChildren().get(j), depth-2);
 
                     if (node.getChildren().get(i).getNodeType() == 1) { //max
                         node.getChildren().get(i).updateLowerAndUpperBounds(leaf_value, node.getChildren().get(i).getUpperBound());
@@ -75,7 +75,7 @@ public class ExpectiminimaxStar2 extends Expectiminimax {
         }
     }
 
-    public double expectiminimax(TreeNode node, int depth){
+    public double expectiminimaxWithStar2(TreeNode node, int depth){
 
         double a;
         if(!node.hasChildren()&&depth!=0){
@@ -87,17 +87,17 @@ public class ExpectiminimaxStar2 extends Expectiminimax {
 
         }
         else if(node.getNodeType() == 2){
-            a = Double.MAX_VALUE;
+            a = Double.POSITIVE_INFINITY;
 
             for(TreeNode children : node.getChildren()){
-                a = Math.min(a, expectiminimax(children, depth - 1));
+                a = Math.min(a, expectiminimaxWithStar2(children, depth - 1));
             }
         }
         else if(node.getNodeType() == 1){
-            a = Double.MIN_VALUE;
+            a = Double.NEGATIVE_INFINITY;
 
             for(TreeNode children : node.getChildren()){
-                a = Math.max(a, expectiminimax(children, depth - 1));
+                a = Math.max(a, expectiminimaxWithStar2(children, depth - 1));
             }
         }
         else{
@@ -105,7 +105,7 @@ public class ExpectiminimaxStar2 extends Expectiminimax {
             a = 0;
 
             for(TreeNode children : node.getChildren()){
-                a = a + (children.getProbability() * expectiminimax(children, depth - 1));
+                a = a + (children.getProbability() * expectiminimaxWithStar2(children, depth - 1));
             }
         }
         node.setValue(a);
