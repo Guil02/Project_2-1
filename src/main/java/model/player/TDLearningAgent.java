@@ -16,7 +16,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static utils.Functions.sigmoid;
 
 public class TDLearningAgent extends Player{
     public static final boolean LEARN = true;
@@ -233,7 +232,7 @@ public class TDLearningAgent extends Player{
             }
             updateWeights(weights, deltaW);
         }
-
+        Functions.writeWeights(weights, fileName);
         System.out.println(evals);
         System.out.println(weights);
         System.out.println("Finished learning");
