@@ -124,7 +124,7 @@ public class BoardUpdater {
             startPromotionDialog(board, pieceToMove, xTo, yTo);
         }
         board.changeTurn();
-        if(board.getAmountOfTurns()>200){
+        if(board.getAmountOfTurns()>500){
             board.setGameOver(true);
         }
         gameOver(board);
