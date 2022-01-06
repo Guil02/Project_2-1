@@ -1,5 +1,6 @@
 package gui.SceneLayouts;
 
+import gui.AgentInfo.AgentInfoStage;
 import gui.ChessGUI;
 import gui.Menus.DisplayMenu;
 import gui.Menus.HighlightMenu;
@@ -7,9 +8,12 @@ import gui.Menus.TurnMenu;
 import gui.PlayerSelection.PlayerSelection;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 /**
  * a class for designing the start scene which contains
@@ -38,7 +42,21 @@ public class StartScreen extends BorderPane {
 
         setTop(menuBar);
 
+        // Add agent description button
+        HBox bottomRow = new HBox();
+        bottomRow.setPadding(new Insets(10, 10, 10, 10));
+        Button descriptionButton = new Button("Agent info");
+        descriptionButton.setPadding(new Insets(10, 10, 10, 10));
+        descriptionButton.setOnAction(e -> {
+            AgentInfoStage agentInfoStage = new AgentInfoStage();
+            agentInfoStage.show();
+        });
+        bottomRow.getChildren().add(descriptionButton);
+
+
+        // Add nodes to root layout
         setCenter(playerSelection);
+        setBottom(bottomRow);
     }
 
     /**
