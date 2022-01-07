@@ -118,7 +118,8 @@ public class BoardUpdater {
     public static void movePiece(Board board, int xFrom, int yFrom, int xTo, int yTo) {
 //        if(board.isOriginal()) System.out.println("did a move");
         try {
-            Thread.sleep(DebugWindowStage.delayMS);
+            if (!(board.getPlayer1() == 0) && !(board.getPlayer2() == 0))
+                Thread.sleep(DebugWindowStage.delayMS);
         } catch (Exception e){};
         board.storeMove();
         ChessPiece pieceToMove = board.getPieceOffField(xFrom, yFrom);

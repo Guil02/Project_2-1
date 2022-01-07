@@ -34,7 +34,7 @@ public class TakeAgent extends Player{
         System.gc();
         new Thread(() -> {
             try{
-                Thread.sleep(50);
+                Thread.sleep(250);
                 // Actual logic for the move starts here
 
                 ArrayList<int[]> allMoves = new ArrayList<int[]>();

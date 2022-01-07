@@ -12,6 +12,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.util.Set;
+
 public class DebugWindowStage extends Stage {
     private int plyCount;
     private Text plyCountText;
@@ -23,6 +25,7 @@ public class DebugWindowStage extends Stage {
     private Slider speedSlider; // Slider to set delay in ms for an agent move
     public static boolean isOnPause;
     public static int delayMS = 1000;
+    public static final Object pauseLock = new Object();
 
     public DebugWindowStage() {
 
@@ -30,6 +33,7 @@ public class DebugWindowStage extends Stage {
         this.setHeight(400);
         this.setWidth(400);
         isOnPause = false; // Not on pause for agents by default
+        // setOnCloseRequest(e -> event.consume());
 
         initComponents();
         this.setScene(new Scene(root));
@@ -62,17 +66,16 @@ public class DebugWindowStage extends Stage {
         bottomRow.setStyle("-fx-background-color: #557799;");
         playPauseButton = new Button("Pause");
         playPauseButton.setOnAction(e -> {
-            if (!isOnPause) {
+            if (!isOnPause) { // When "Pause" is clicked
                 playPauseButton.setText("Play");
                 stepButton.setDisable(false);
                 isOnPause = true;
-                // TODO: implement pause functionality
             }
-            else {
+            else { // When "Play" is clicked
                 playPauseButton.setText("Pause");
                 stepButton.setDisable(true);
                 isOnPause = false;
-                // TODO: implement play functionality
+                interruptSleep();
             }
         });
         stepButton = new Button("Step");
@@ -91,6 +94,31 @@ public class DebugWindowStage extends Stage {
         });
         bottomRow.getChildren().addAll(playPauseButton, stepButton, new Text("Delay:"), speedSlider);
         root.setBottom(bottomRow);
+    }
+
+    /**
+     * This method lets the game continue when it's paused.
+     * It interrupts all sleep methods in threads that are not the GUI.
+     */
+    public void interruptSleep() {
+        synchronized (pauseLock) {
+            pauseLock.notifyAll();
+        }
+
+        // Thread.currentThread().notifyAll();
+
+        //Set<Thread> threads = Thread.getAllStackTraces().keySet();
+
+        //for (Thread t : threads) {
+            // System.out.println(t.getName());
+            /*
+            if (t.getName().equals("AI")) {
+                System.out.println(t);
+                t.notifyAll();
+            }
+
+             */
+        //}
     }
 
     public void incrementPlyCount() {
