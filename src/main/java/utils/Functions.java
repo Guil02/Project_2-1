@@ -38,8 +38,8 @@ public class Functions{
         return (Math.exp(x)-Math.exp(-x))/(Math.exp(x)+Math.exp(-x));
     }
 
-    public static double tanhDeriv(double x, double partialDeriv){
-        return (4*Math.exp(2*x))/Math.pow((Math.exp(2*x)+1), 2)*partialDeriv;
+    public static double tanhDeriv(double x){
+        return (4*Math.exp(2*x))/Math.pow((Math.exp(2*x)+1), 2);
     }
 
     public static double sigmoid(double x){
@@ -76,5 +76,8 @@ public class Functions{
         };
     }
 
-
+    public static double randomNumber(double min, double max){
+        double interval = max-min;
+        return Math.random()*interval+min;
+    }
 }

@@ -221,7 +221,17 @@ public class TDLearningAgent extends Player{
         System.out.println(evals);
         System.out.println(weights);
         System.out.println("Finished learning");
-        board.getGameRunner().reset();
+        boolean foundNaN = false;
+        for (Double weight : weights) {
+            foundNaN = Double.isNaN(weight);
+        }
+        if(!foundNaN){
+            board.getGameRunner().reset();
+        }
+        else{
+            System.out.println("retry learning");
+            learn(board);
+        }
     }
 
     public static void updateWeights(ArrayList<Double> weights, ArrayList<Double> deltaW){
@@ -234,7 +244,7 @@ public class TDLearningAgent extends Player{
         double val = 0;
         ArrayList<Double> factors = evaluateFactors(board, true);
         for(int i = 0; i<finalIndex; i++){
-            val+= Math.pow(lambda, finalIndex-i)*Functions.tanhDeriv(evals.get(i), factors.get(weightIndex));
+            val+= Math.pow(lambda, finalIndex-i)*Functions.tanhDeriv(evals.get(i))*factors.get(weightIndex);
         }
         return val;
     }

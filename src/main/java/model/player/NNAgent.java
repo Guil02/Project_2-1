@@ -10,19 +10,7 @@ import model.algorithm.Expectiminimax;
 import model.algorithm.NNTreeNode;
 import model.algorithm.TreeNode;
 import model.pieces.ChessPiece;
-import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
-import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
-import org.deeplearning4j.nn.conf.layers.DenseLayer;
-import org.deeplearning4j.nn.conf.layers.OutputLayer;
-import org.deeplearning4j.nn.gradient.Gradient;
-import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
-import org.deeplearning4j.nn.weights.WeightInit;
-import org.nd4j.linalg.activations.Activation;
-import org.nd4j.linalg.api.ndarray.INDArray;
-import org.nd4j.linalg.dataset.DataSet;
-import org.nd4j.linalg.factory.Nd4j;
-import org.nd4j.linalg.learning.config.AdaDelta;
-import org.nd4j.linalg.lossfunctions.LossFunctions;
+
 import utils.FenEvaluator;
 
 import java.io.File;
@@ -33,8 +21,8 @@ import java.util.Random;
 public class NNAgent extends Player {
     private static final int FEATURES_COUNT = 315;
     private static final int CLASSES_COUNT = 1;
-    private MultiLayerConfiguration configuration;
-    private MultiLayerNetwork model;
+//    private MultiLayerConfiguration configuration;
+//    private MultiLayerNetwork model;
     private NeuralNetwork neuralNetwork;
     public static final boolean LEARN = true;
     private Expectiminimax expectiminimax;
@@ -45,89 +33,33 @@ public class NNAgent extends Player {
     private static final boolean DO_RANDOM = false;
 
     public NNAgent() {
-        configuration = new NeuralNetConfiguration.Builder()
-                .activation(Activation.RELU)
-                .weightInit(WeightInit.XAVIER)
-                .updater(new AdaDelta())
-                .l2(0.0001).list().layer(0, new DenseLayer.Builder()
-                        .nIn(FEATURES_COUNT).nOut(20).build()).
-                layer(1, new DenseLayer.Builder()
-                        .nIn(20).nOut(20).build())
-                .layer(2, new OutputLayer.Builder(
-                        LossFunctions.LossFunction.L1)
-                        .activation(Activation.TANH)
-                        .nIn(20).nOut(CLASSES_COUNT).build())
-                .build();
-
-        model = new MultiLayerNetwork(configuration);
-        model.init();
-        neuralNetwork = new NeuralNetwork();
+//        configuration = new NeuralNetConfiguration.Builder()
+//                .activation(Activation.RELU)
+//                .weightInit(WeightInit.XAVIER)
+//                .updater(new AdaDelta())
+//                .l2(0.0001).list().layer(0, new DenseLayer.Builder()
+//                        .nIn(FEATURES_COUNT).nOut(20).build()).
+//                layer(1, new DenseLayer.Builder()
+//                        .nIn(20).nOut(20).build())
+//                .layer(2, new OutputLayer.Builder(
+//                        LossFunctions.LossFunction.L1)
+//                        .activation(Activation.TANH)
+//                        .nIn(20).nOut(CLASSES_COUNT).build())
+//                .build();
+//
+//        model = new MultiLayerNetwork(configuration);
+//        model.init();
+//        neuralNetwork = new NeuralNetwork();
         expectiminimax = new Expectiminimax();
         baselineAgent = new BaselineAgent();
     }
 
-    public void learn(ArrayList<Board> errorBoards, ArrayList<Double> errors){
-        double[][] err = new double[1][CLASSES_COUNT];
-        err[0][0]=errors.get(0);
-        INDArray err2 = Nd4j.create(err);
-        model.setLabels(err2);
-        model.computeGradientAndScore();
-        Gradient gradient = model.gradient();
-        INDArray gradientArray = gradient.gradient();
-        System.out.println(gradientArray);
-    }
+
 
     public double[] evaluation(Board board) {
-        double[] val = neuralNetwork.boardToArray(board);
-        double[][] temp = {val};
-        INDArray input = Nd4j.create(temp);
-        INDArray res = model.output(input);
-        double[][] output = res.toDoubleMatrix(); //TODO REMOVE USAGE TO IMPROVE SPEED, DOCUMENTATION MENTIONS THAT IT IS SLOW
-        return output[0];
+        return new double[]{0};
     }
 
-    public void learn(Board endBoard,ArrayList<String> fens, double[] endEval){
-        System.out.println("learning");
-        ArrayList<Board> boards = new ArrayList<>();
-        double[][] evals = new double[fens.size()][2];
-        for(int i = 0; i<fens.size(); i++){
-            Board temp = FenEvaluator.read(fens.get(i));
-            boards.add(temp);
-            evals[i] = endEval;
-        }
-        learn(boards, evals);
-        System.out.println("done");
-        Board defaultBoard = new Board();
-        BoardUpdater.fillGameStart(defaultBoard);
-        double[][] data = {neuralNetwork.boardToArray(defaultBoard)};
-        System.out.println(model.output(Nd4j.create(data)));
-        endBoard.getGameRunner().reset();
-    }
-
-    public void learn(ArrayList<Board> boards, double[][] endEval){
-        double[][] trainSet = new double[boards.size()][FEATURES_COUNT];
-        for(int i = 0; i<boards.size(); i++){
-            trainSet[i] = neuralNetwork.boardToArray(boards.get(i));
-        }
-        INDArray input = Nd4j.create(trainSet);
-        INDArray labels = Nd4j.create(endEval);
-        DataSet data = new DataSet(input, labels);
-        model.fit(data);
-        try {
-            model.save(new File("model"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void learn(DataSet data){
-        model.fit(data);
-        try {
-            model.save(new File("model"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void runAgent(Board board){
         Board copy = board.clone();
