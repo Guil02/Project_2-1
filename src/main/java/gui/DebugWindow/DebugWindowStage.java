@@ -80,7 +80,7 @@ public class DebugWindowStage extends Stage {
         });
         stepButton = new Button("Step");
         stepButton.setOnAction(e -> {
-
+            interruptSleep();
         });
         stepButton.setDisable(true);
         speedSlider = new Slider();
@@ -104,23 +104,11 @@ public class DebugWindowStage extends Stage {
         synchronized (pauseLock) {
             pauseLock.notifyAll();
         }
-
-        // Thread.currentThread().notifyAll();
-
-        //Set<Thread> threads = Thread.getAllStackTraces().keySet();
-
-        //for (Thread t : threads) {
-            // System.out.println(t.getName());
-            /*
-            if (t.getName().equals("AI")) {
-                System.out.println(t);
-                t.notifyAll();
-            }
-
-             */
-        //}
     }
 
+    /**
+     * Increments the internal counter by one.
+     */
     public void incrementPlyCount() {
         plyCount++;
         plyCountText.setText(Integer.toString(plyCount));
