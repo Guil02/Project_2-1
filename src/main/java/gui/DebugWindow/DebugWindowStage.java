@@ -1,8 +1,8 @@
 package gui.DebugWindow;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
@@ -10,10 +10,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-import java.util.Set;
-
+/**
+ * This class represents the debug window next to the game.
+ */
 public class DebugWindowStage extends Stage {
     private int plyCount;
     private Text plyCountText;
@@ -27,13 +29,23 @@ public class DebugWindowStage extends Stage {
     public static int delayMS = 1000;
     public static final Object pauseLock = new Object();
 
+    /**
+     * Constructor
+     */
     public DebugWindowStage() {
 
         this.setTitle("Debug Info");
         this.setHeight(400);
         this.setWidth(400);
         isOnPause = false; // Not on pause for agents by default
-        // setOnCloseRequest(e -> event.consume());
+        setOnCloseRequest(e -> {
+            Platform.exit();
+            System.exit(0);
+        });
+
+        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+        this.setX((screenBounds.getWidth() / 2) - 800);
+        this.setY((screenBounds.getHeight() / 2) - 300);
 
         initComponents();
         this.setScene(new Scene(root));
@@ -63,7 +75,7 @@ public class DebugWindowStage extends Stage {
         // Bottom row
         bottomRow.setPadding(new Insets(10, 10, 10, 10));
         bottomRow.setSpacing(10);
-        bottomRow.setStyle("-fx-background-color: #557799;");
+        bottomRow.setStyle("-fx-background-color: #7799aa;");
         playPauseButton = new Button("Pause");
         playPauseButton.setOnAction(e -> {
             if (!isOnPause) { // When "Pause" is clicked
@@ -89,6 +101,7 @@ public class DebugWindowStage extends Stage {
         speedSlider.setValue(1000);
         speedSlider.setShowTickMarks(true);
         speedSlider.setShowTickLabels(true);
+        speedSlider.setMajorTickUnit(200);
         speedSlider.valueProperty().addListener(e -> {
             delayMS = (int) speedSlider.getValue();
         });
