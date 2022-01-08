@@ -1,7 +1,9 @@
 package model.player;
 
+import config.Config;
 import controller.Board;
 import controller.BoardUpdater;
+import gui.DebugWindow.DebugWindowStage;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import model.algorithm.*;
@@ -24,13 +26,17 @@ public class SearchAgent extends Player {
     public void launch(Board board){
         new Thread(() -> {
             try{
-//                Thread.sleep(50);
+                // Stop if game is on pause
+                if (DebugWindowStage.isOnPause) {
+                    pauseThread();
+                }
+
                 ruleBasedAgent(board);
                 ChessTreeNode move = getMaxima();
                 if(move.isDoPromotion()){
                     board.storeMove();
                     BoardUpdater.runPromotion(board, move.getBoard(), move.getxFrom(), move.getyFrom(), move.getxTo(), move.getyTo());
-                    if(Board.GUI_ON){
+                    if(Config.GUI_ON){
                         Platform.runLater(
                                 new Thread(board::launchGuiUpdate)
                         );
@@ -39,7 +45,7 @@ public class SearchAgent extends Player {
                 else{
 //                    if(!Board.GUI_ON) printBoard(board.getBoardModel(), board);
                     BoardUpdater.movePiece(board, move.getxFrom(), move.getyFrom(), move.getxTo(), move.getyTo());
-                    if(Board.GUI_ON){
+                    if(Config.GUI_ON){
                         Platform.runLater(
                                 new Thread(board::launchGuiUpdate)
                         );

@@ -1,9 +1,11 @@
 package model.player;
 
+import config.Config;
 import controller.Board;
 import controller.BoardUpdater;
 import controller.Dice;
 import controller.GameRunner;
+import gui.DebugWindow.DebugWindowStage;
 import javafx.application.Platform;
 import model.algorithm.Expectiminimax;
 import model.algorithm.TDTreeNode;
@@ -276,6 +278,12 @@ public class TDLearningAgent extends Player{
         System.gc();
         new Thread(() -> {
             try{
+
+                // Stop if game is on pause
+                if (DebugWindowStage.isOnPause) {
+                    pauseThread();
+                }
+
                 if(ply<3){
                     Thread.sleep(100);
                 }
@@ -284,7 +292,7 @@ public class TDLearningAgent extends Player{
                 if(move.isDoPromotion()){
                     board.storeMove();
                     BoardUpdater.runPromotion(board, move.getBoard(), move.getxFrom(), move.getyFrom(), move.getxTo(), move.getyTo());
-                    if(Board.GUI_ON){
+                    if(Config.GUI_ON){
                         Platform.runLater(
                                 new Thread(board::launchGuiUpdate)
                         );
@@ -293,7 +301,7 @@ public class TDLearningAgent extends Player{
                 else{
 //                    if(!Board.GUI_ON) printBoard(board.getBoardModel(), board);
                     BoardUpdater.movePiece(board, move.getxFrom(), move.getyFrom(), move.getxTo(), move.getyTo());
-                    if(Board.GUI_ON){
+                    if(Config.GUI_ON){
                         Platform.runLater(
                                 new Thread(board::launchGuiUpdate)
                         );

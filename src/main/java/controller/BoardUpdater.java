@@ -1,5 +1,7 @@
 package controller;
 
+import config.Config;
+import gui.DebugWindow.DebugWindowStage;
 import javafx.application.Platform;
 import model.pieces.*;
 import model.player.NNAgent;
@@ -8,7 +10,10 @@ import utils.GameGenerator;
 
 public class BoardUpdater {
 
-
+    /**
+     * Fills the board with the default start setup.
+     * @param board
+     */
     public static void fillGameStart(Board board) {
         // Black side
         addPiece(board, new RookPiece(false, 0, 0));
@@ -54,7 +59,7 @@ public class BoardUpdater {
         if(board.getPieceOffField(x,y)!=null) {
             if (board.getPieceOffField(x,y).getPieceChar() == 'K') {
                 board.getBoardModel()[x][y] = null;
-                if(Board.GUI_ON && board.isOriginal()){
+                if(Config.GUI_ON && board.isOriginal()){
                     Platform.runLater(
                         new Thread(()->{
                             board.getGraphicsConnector().setWin(false);
@@ -64,7 +69,7 @@ public class BoardUpdater {
                 board.setGameOver(true);
             } else if (board.getPieceOffField(x,y).getPieceChar() == 'k') {
                 board.getBoardModel()[x][y] = null;
-                if(Board.GUI_ON && board.isOriginal()){
+                if(Config.GUI_ON && board.isOriginal()){
                     Platform.runLater(
                             new Thread(()->{
                                 board.getGraphicsConnector().setWin(true);
@@ -112,6 +117,10 @@ public class BoardUpdater {
 
     public static void movePiece(Board board, int xFrom, int yFrom, int xTo, int yTo) {
 //        if(board.isOriginal()) System.out.println("did a move");
+        try {
+            if (Config.GUI_ON && !(board.getPlayer1() == 0) && !(board.getPlayer2() == 0))
+                Thread.sleep(DebugWindowStage.delayMS);
+        } catch (Exception e){};
         board.storeMove();
         ChessPiece pieceToMove = board.getPieceOffField(xFrom, yFrom);
         if(pieceToMove!= null){
@@ -147,7 +156,7 @@ public class BoardUpdater {
                     board.getGameRunner().reset();
                 }
             }
-            if(GameRunner.GENERATE_GAMES){
+            if(Config.GENERATE_GAMES){
                 System.out.println("generating new game");
                 GameGenerator.writeGame(board);
                 board.getGameRunner().reset();
