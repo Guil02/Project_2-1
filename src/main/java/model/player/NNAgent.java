@@ -5,6 +5,7 @@ import controller.Board;
 import controller.BoardUpdater;
 import controller.Dice;
 import controller.GameRunner;
+import gui.DebugWindow.DebugWindowStage;
 import javafx.application.Platform;
 import model.NeuralNetwork.NeuralNetwork;
 import model.algorithm.Expectiminimax;
@@ -166,7 +167,12 @@ public class NNAgent extends Player {
         System.gc();
         new Thread(() -> {
             if(!DO_RANDOM) {
-            try{
+            try {
+                // Stop if game is on pause
+                if (DebugWindowStage.isOnPause) {
+                    pauseThread();
+                }
+
                 if(ply<3){
 //                    Thread.sleep(100);
                 }

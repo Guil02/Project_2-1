@@ -14,8 +14,6 @@ import java.util.Random;
  */
 public class BaselineAgent extends Player{
 
-    Object pauseLock = DebugWindowStage.pauseLock;
-
     /**
      * Launches a single move of the baseline agent.
      * @param board
@@ -24,9 +22,7 @@ public class BaselineAgent extends Player{
         System.gc();
             new Thread(() -> {
                 try {
-                    Thread t = Thread.currentThread();
-                    t.setName("AI");
-
+                    // Stop if game is on pause
                     if (DebugWindowStage.isOnPause) {
                         pauseThread();
                     }
@@ -86,11 +82,5 @@ public class BaselineAgent extends Player{
                     e.printStackTrace();
                 }
             }).start();
-    }
-
-    private void pauseThread() throws InterruptedException {
-        synchronized (pauseLock) {
-            pauseLock.wait();
-        }
     }
 }

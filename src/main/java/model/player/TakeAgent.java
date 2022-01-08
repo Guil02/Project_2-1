@@ -3,6 +3,7 @@ package model.player;
 import config.Config;
 import controller.Board;
 import controller.BoardUpdater;
+import gui.DebugWindow.DebugWindowStage;
 import javafx.application.Platform;
 import model.pieces.ChessPiece;
 
@@ -34,8 +35,10 @@ public class TakeAgent extends Player{
         System.gc();
         new Thread(() -> {
             try{
-                Thread.sleep(250);
-                // Actual logic for the move starts here
+                // Stop if game is on pause
+                if (DebugWindowStage.isOnPause) {
+                    pauseThread();
+                }
 
                 ArrayList<int[]> allMoves = new ArrayList<int[]>();
                 ArrayList<ChessPiece> pieceList = new ArrayList<ChessPiece>();
@@ -60,9 +63,6 @@ public class TakeAgent extends Player{
                         }
                     }
                 }
-
-                // For debug: Print all moves:
-                // printMoves(allMoves);
 
                 // Scan all moves for a set of moves that take pieces
                 ArrayList<int[]> takeMoves = new ArrayList<int[]>();
