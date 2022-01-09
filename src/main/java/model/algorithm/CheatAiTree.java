@@ -53,7 +53,7 @@ public class CheatAiTree extends AiTree{
     }
 
     public void createMinChildren(ChessCheatAiTreeNode root, boolean doEvaluation, boolean maxIsWhite, boolean cheatIsWhite){
-        if(cheatIsWhite){
+        if(!cheatIsWhite){
             for (ChessPiece[] pieces: root.getBoard().getBoardModel()) {
                 for(ChessPiece piece: pieces){
                     if(piece != null && piece.isTurn(root.getBoard())){

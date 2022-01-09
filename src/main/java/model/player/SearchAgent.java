@@ -24,7 +24,7 @@ public class SearchAgent extends Player {
     public void launch(Board board){
         new Thread(() -> {
             try{
-//                Thread.sleep(50);
+                Thread.sleep(50);
                 ruleBasedAgent(board);
                 ChessTreeNode move = getMaxima();
                 if(move.isDoPromotion()){
