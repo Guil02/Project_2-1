@@ -46,14 +46,14 @@ public class PruningTests {
         // Execute the algorithms
         long start1 = System.currentTimeMillis();
         Expectiminimax expectiminimax = new Expectiminimax();
-        expectiminimax.expectiminimax(root, (ply * 2) - 1, (ply*2)-1);
+//        expectiminimax.expectiminimax(root, (ply * 2) - 1, (ply*2)-1);
         long end1 = System.currentTimeMillis();
 
         System.out.println("Time for normal Expectiminimax: " + (end1 - start1));
 
         long start2 = System.currentTimeMillis();
         ExpectiminimaxStar2 expectiminimaxStar2 = new ExpectiminimaxStar2(true);
-        expectiminimaxStar2.expectiminimaxWithStar2(root2, (ply * 2) - 1);
+        expectiminimaxStar2.expectiminimaxWithStar2(root2, (ply * 2) - 1, (ply*2)-1);
         long end2 = System.currentTimeMillis();
 
         System.out.println("Time for Expectiminimax with P: " + (end2 - start2));

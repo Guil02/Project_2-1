@@ -12,14 +12,14 @@ import model.algorithm.TDTreeNode;
 import model.algorithm.TreeNode;
 import model.pieces.ChessPiece;
 import utils.FenEvaluator;
-import utils.Matrix;
+import utils.Functions;
 
-import java.io.*;
 import java.util.ArrayList;
 import java.util.Random;
 
+
 public class TDLearningAgent extends Player{
-    public static final boolean LEARN = false;
+    public static final boolean LEARN = true;
     public static final boolean SIGMOID_ACTIVE = false;
     private ArrayList<Double> weights;
     private TDTreeNode maxima;
@@ -27,11 +27,12 @@ public class TDLearningAgent extends Player{
     private static final String fileName = "build/classes/java/main/model/player/weights.txt";
     private Expectiminimax expectiminimax = new Expectiminimax();
     private static final double lambda = 0.70;
-    private static double alpha = 1;
+    private static double alpha = 0.70;
+    private int sleep = 100;
     private static int amountOfGame = 0;
 
     public TDLearningAgent() {
-        weights = readInWeights();
+        weights = Functions.readInWeights(fileName);
     }
 
     public static ArrayList<Double> evaluateFactors(Board board, boolean whiteIsMax){
@@ -62,59 +63,192 @@ public class TDLearningAgent extends Player{
         return factors;
     }
 
+    public static ArrayList<Double> getPieces(Board board){
+        ArrayList<Double> factors = new ArrayList<>();
+        factors.add(0,Factor.piece_value(board, true,'p'));
+        factors.add(1,Factor.piece_value(board, true,'n'));
+        factors.add(2,Factor.piece_value(board, true,'b'));
+        factors.add(3,Factor.piece_value(board, true,'r'));
+        factors.add(4,Factor.piece_value(board, true,'q'));
+        return factors;
+    }
+
+    public static double evaluationPieces(Board board, ArrayList<Double> weights){
+        ArrayList<Double> factors = getPieces(board);
+        double val = 0;
+        if(!board.containsKing(true)){
+            return -1;
+        }
+        else if(!board.containsKing(false)){
+            return 1;
+        }
+
+        for(int i = 0; i<factors.size(); i++){
+            val += factors.get(i)*weights.get(i);
+        }
+        return  Functions.tanh(val);
+    }
 
     public static double evaluation(Board board, boolean whiteIsMax, ArrayList<Double> weights){
-        if((whiteIsMax&&!board.containsKing(!whiteIsMax))||(!whiteIsMax&&!board.containsKing(whiteIsMax))){
-            if(SIGMOID_ACTIVE){
-                return(sigmoid(1000));
-            }
-            else return normalize(1000);
-        }
-        else if((whiteIsMax&&!board.containsKing(whiteIsMax))||(!whiteIsMax&&!board.containsKing(!whiteIsMax))){
-            if(SIGMOID_ACTIVE){
-                return(sigmoid(-1000));
-            }
-            else return normalize(-1000);
-        }
         ArrayList<Double> factors = evaluateFactors(board, whiteIsMax);
         double eval = 0;
         for(int i = 0; i<factors.size(); i++){
             eval += factors.get(i)*weights.get(i);
         }
-        if(SIGMOID_ACTIVE){
-            return sigmoid(eval);
-        }
-        else return normalize(eval);
+        return Functions.tanh(eval);
     }
 
-    public static ArrayList<Double> readInWeights(){
-        String line;
-        ArrayList<Double> weights = new ArrayList<>();
-        try {
-            BufferedReader bufferreader = new BufferedReader(new FileReader(fileName));
-            while ((line = bufferreader.readLine()) != null) {
-                weights.add(Double.parseDouble(line));
+
+
+
+
+
+    public void runAgent(Board board){
+        Board copy = board.clone();
+        boolean maxIsWhite = board.getWhiteMove();
+        TDTreeNode root = new TDTreeNode(copy, 0, null, 1, 1, 0, 0, 0, 0, maxIsWhite, this);
+        expectiminimax.expectiminimax(root, (ply*2)-1, (ply*2)-1);
+        double maxValue = Double.NEGATIVE_INFINITY;
+        ArrayList<TDTreeNode> highestNodes = new ArrayList<>();
+        TDTreeNode maxNode;
+        try{
+            maxNode = (TDTreeNode) root.getChildren().get(0);
+        }
+        catch(Exception e){
+            maxNode = root;
+        }
+        highestNodes.add(maxNode);
+        for (TreeNode child : root.getChildren()) {
+            TDTreeNode subChild = (TDTreeNode) child;
+            if(maxIsWhite){
+                if (subChild.getValue() >= maxValue) {
+                    if (subChild.getValue() == maxValue) {
+                        highestNodes.add(subChild);
+                        continue;
+                    }
+                    highestNodes.clear();
+                    highestNodes.add(subChild);
+                    maxValue = subChild.getValue();
+                }
             }
-
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-//        System.out.println("------------------------------------------------------------------------------------");
-//        System.out.println("Read in weights: "+weights);
-        return weights;
-    }
-
-    public static void writeWeights(ArrayList<Double> weights){
-        try(FileWriter fileWriter = new FileWriter(fileName, false)) {
-            for (Double weight : weights) {
-                fileWriter.write(weight + "\n");
+            else{
+                maxValue = Double.POSITIVE_INFINITY;
+                if (subChild.getValue() <= maxValue) {
+                    if (subChild.getValue() == maxValue) {
+                        highestNodes.add(subChild);
+                        continue;
+                    }
+                    highestNodes.clear();
+                    highestNodes.add(subChild);
+                    maxValue = subChild.getValue();
+                }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        }
+        Random rand = new Random();
+        maxNode = highestNodes.get(rand.nextInt(highestNodes.size()));
+        maxima = maxNode;
+    }
+
+    public void launch(Board board){
+        System.gc();
+        new Thread(() -> {
+            try{
+                if(ply<3){
+                    Thread.sleep(sleep);
+                }
+                runAgent(board);
+                TDTreeNode move = getMaxima();
+                if(move.isDoPromotion()){
+                    board.storeMove();
+                    BoardUpdater.runPromotion(board, move.getBoard(), move.getxFrom(), move.getyFrom(), move.getxTo(), move.getyTo());
+                    if(Board.GUI_ON){
+                        Platform.runLater(
+                                new Thread(board::launchGuiUpdate)
+                        );
+                    }
+                }
+                else{
+//                    if(!Board.GUI_ON) printBoard(board.getBoardModel(), board);
+                    BoardUpdater.movePiece(board, move.getxFrom(), move.getyFrom(), move.getxTo(), move.getyTo());
+                    if(Board.GUI_ON){
+                        Platform.runLater(
+                                new Thread(board::launchGuiUpdate)
+                        );
+                    }
+                }
+            }
+            catch(Exception e){
+                System.err.println("Piece might already have been moved due to glitch in the threading");
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+    public TDTreeNode getMaxima() {
+        return maxima;
+    }
+
+
+
+    public static void printBoard(ChessPiece[][] boardModel, Board board) {
+        System.out.println("--- Board State ---\n");
+        for(int i = 0; i < boardModel[0].length; i++) {
+            for (int j = 0; j < boardModel.length; j++) {
+                System.out.print("[ " + board.getCharOffField(j,i) + " ] ");
+                // System.out.print("[ " + j + " " + i + " ] ");
+            }
+            System.out.println();
         }
     }
+
+    public static void learn(Board board){
+        ArrayList<String> states = board.getBoardStates();
+        ArrayList<Double> weights = Functions.readInWeights(fileName);
+        ArrayList<Double> evals = evaluateAllBoards(states, weights);
+
+        System.out.println("Started Learning");
+
+        ArrayList<Double> deltaW = new ArrayList<>();
+        for(int i = 0; i<5; i++){
+            deltaW.add(0.0);
+        }
+
+        for(int i = 0; i<states.size()-1; i++){
+            for(int j = 0; j<deltaW.size(); j++){
+                deltaW.set(j, alpha*(evals.get(i+1)-evals.get(i))*gradientSum(i,evals, j, board));
+            }
+            updateWeights(weights, deltaW);
+        }
+        Functions.writeWeights(weights, fileName);
+        System.out.println(evals);
+        System.out.println(weights);
+        System.out.println("Finished learning");
+        board.getGameRunner().reset();
+    }
+
+    public static void updateWeights(ArrayList<Double> weights, ArrayList<Double> deltaW){
+        for(int i = 0; i<deltaW.size(); i++){
+            weights.set(i, weights.get(i)+deltaW.get(i));
+        }
+    }
+
+    public static double gradientSum(int finalIndex, ArrayList<Double> evals, int weightIndex, Board board){
+        double val = 0;
+        ArrayList<Double> factors = evaluateFactors(board, true);
+        for(int i = 0; i<finalIndex; i++){
+            val+= Math.pow(lambda, finalIndex-i)*Functions.tanhDeriv(evals.get(i), factors.get(weightIndex));
+        }
+        return val;
+    }
+
+    public static ArrayList<Double> evaluateAllBoards(ArrayList<String> states, ArrayList<Double> weights){
+        ArrayList<Double> evals = new ArrayList<>();
+        for(int i = 0; i<states.size(); i++){
+            evals.add(evaluationPieces(FenEvaluator.read(states.get(i)), weights));
+        }
+        return evals;
+    }
+
 
     public void createChildren(TDTreeNode root, boolean doEvaluation, boolean maxIsWhite){
         if(root.getNodeType()== 1 || root.getNodeType() == 2){
@@ -163,7 +297,7 @@ public class TDLearningAgent extends Player{
         copy.setMovablePiece(movablePiece);
         double value = 0;
         if(doEvaluation){
-            value = evaluation(copy, maxIsWhite, weights);
+            value = evaluationPieces(copy, weights);
         }
         TDTreeNode child = new TDTreeNode(copy,value, parent, nodeType, probability, 0,0,0,0, parent.isMaxIsWhite(), parent.getTdLearning());
         parent.addChild(child);
@@ -187,7 +321,7 @@ public class TDLearningAgent extends Player{
 
                     double value = 0;
                     if(doEvaluation){
-                        value = evaluation(copy, maxIsWhite, weights);
+                        value = evaluationPieces(copy, weights);
                     }
 
                     TDTreeNode child = new TDTreeNode(copy, value,parent,nodeType,1,piece.getX(),piece.getY(),i,j, parent.isMaxIsWhite(), parent.getTdLearning());
@@ -205,7 +339,7 @@ public class TDLearningAgent extends Player{
 
         double value = 0;
         if(doEvaluation){
-            value = evaluation(copy, maxIsWhite, weights);
+            value = evaluationPieces(copy, weights);
         }
 
         TDTreeNode child = new TDTreeNode(copy, value,parent,nodeType,1,piece.getX(),piece.getY(),xTo,yTo, parent.isMaxIsWhite(), parent.getTdLearning());
@@ -434,4 +568,5 @@ public class TDLearningAgent extends Player{
             System.out.println(evaluation(board, maxIsWhite, weights));
         }
     }
+
 }

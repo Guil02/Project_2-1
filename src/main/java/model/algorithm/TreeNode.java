@@ -11,8 +11,8 @@ public class TreeNode {
     // 3 = chance
     private int nodeType;
     private double probability;
-    private double lowerBound = Double.MIN_VALUE; // default value
-    private double upperBound = Double.MAX_VALUE; // default value
+    private double lowerBound = Double.NEGATIVE_INFINITY; // default value
+    private double upperBound = Double.POSITIVE_INFINITY; // default value
 
     public TreeNode(double value, TreeNode parent, int nodeType, double probability) {
         this.value = value;

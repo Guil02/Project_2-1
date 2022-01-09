@@ -133,7 +133,7 @@ public class BoardUpdater {
             startPromotionDialog(board, pieceToMove, xTo, yTo);
         }
         board.changeTurn();
-        if(board.getAmountOfTurns()>200){
+        if(board.getAmountOfTurns()>500){
             board.setGameOver(true);
         }
         gameOver(board);
@@ -163,6 +163,7 @@ public class BoardUpdater {
             }
             else {
                 if (board.getPlayer1() == 3 && TDLearningAgent.LEARN && board.isOriginal()) {
+                    System.out.println("Game is over");
                     TDLearningAgent.learn(board);
                 }
                 if (board.getPlayer1() == 5 && NNAgent.LEARN && board.isOriginal()) {

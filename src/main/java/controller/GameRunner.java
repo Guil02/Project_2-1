@@ -71,7 +71,7 @@ public class GameRunner {
             5 = "NN Agent"
             6 = "Cheating Agent"
              */
-            init(1,1);
+            init(3,3);
         }
     }
 
