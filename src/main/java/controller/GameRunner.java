@@ -124,8 +124,11 @@ public class GameRunner {
         else if(playerType == 4){
             return new TakeAgent();
         }
-        else{
+        else if(playerType == 5){
             return new NNAgent();
+        }
+        else{
+            return new CheatAgent();
         }
     }
 

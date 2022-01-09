@@ -74,6 +74,9 @@ public class Board {
                 else if(player1 == 5){
                     ((NNAgent) playerOne).launch(this);
                 }
+                else if(player1 == 6){
+                    ((CheatAgent) playerOne).launch(this);
+                }
             }
         }
         else{
@@ -92,6 +95,9 @@ public class Board {
                 }
                 else if(player2==5){
                     ((NNAgent) playerTwo).launch(this);
+                }
+                else if(player2 == 6){
+                    ((CheatAgent) playerOne).launch(this);
                 }
             }
         }

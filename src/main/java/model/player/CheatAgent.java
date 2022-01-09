@@ -15,18 +15,20 @@ public class CheatAgent extends Player {
     private boolean cheatIsWhite;
     private ChessCheatAiTreeNode maxima;
     private Board board;
+    private boolean firstTurn = true;
     private static final int ply = 2;
 
-    public CheatAgent(Board board, boolean cheatIsWhite, CheatAiTree cheatAiTree) {
-        System.out.println("yes");
-        this.board = board;
-        this.cheatAiTree = cheatAiTree;
-        this.cheatIsWhite = cheatIsWhite;
+    public CheatAgent() {
     }
 
     public void launch(Board board) {
+        if(firstTurn){
+            cheatIsWhite = board.getWhiteMove();
+            firstTurn = false;
+        }
         new Thread(() -> {
             try {
+                Thread.sleep(50);
                 cheatAgent(board);
                 ChessCheatAiTreeNode move = getMaxima();
                 char movablePieceChar = board.getMovablePiece();
