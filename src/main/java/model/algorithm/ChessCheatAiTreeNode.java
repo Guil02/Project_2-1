@@ -2,18 +2,17 @@ package model.algorithm;
 
 import controller.Board;
 
-public class CheatAiTreeNode extends TreeNode {
-
+public class ChessCheatAiTreeNode extends TreeNode{
     private int xFrom;
     private int yFrom;
     private int xTo;
     private int yTo;
     private Board board;
     private boolean doPromotion = false;
-    private AiTree aiTree = new AiTree();
+    private CheatAiTree cheatAiTree = new CheatAiTree();
     private boolean maxIsWhite;
 
-    public CheatAiTreeNode(Board board, double value, TreeNode parent, int nodeType, double probability, int xFrom, int yFrom, int xTo, int yTo, boolean maxIsWhite) {
+    public ChessCheatAiTreeNode(Board board, double value, TreeNode parent, int nodeType, double probability, int xFrom, int yFrom, int xTo, int yTo, boolean maxIsWhite) {
         super(value, parent, nodeType, probability);
         this.xFrom = xFrom;
         this.yFrom = yFrom;
@@ -25,7 +24,7 @@ public class CheatAiTreeNode extends TreeNode {
 
     @Override
     public void createChildren() {
-        aiTree.createChildren(this, true, maxIsWhite);
+        cheatAiTree.createChildren(this, true, true, maxIsWhite);
     }
 
     public int getxFrom() {
@@ -62,9 +61,10 @@ public class CheatAiTreeNode extends TreeNode {
 
     @Override
     public boolean hasBestQuality() {
-        if (!board.containsKing(!board.getWhiteMove())) {
+        if(!board.containsKing(!board.getWhiteMove())){
             return true;
-        } else {
+        }
+        else{
             return false;
         }
     }
@@ -74,4 +74,3 @@ public class CheatAiTreeNode extends TreeNode {
         return super.hasGoodQuality();
     }
 }
-    

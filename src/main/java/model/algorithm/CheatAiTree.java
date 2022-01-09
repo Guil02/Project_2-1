@@ -12,52 +12,88 @@ public class CheatAiTree extends AiTree{
     public CheatAiTree(){
 
     }
-    public void createChildren(ChessTreeNode root,boolean cheatIsWhite , boolean doEvaluation, boolean maxIsWhite) {
+    public void createChildren(ChessCheatAiTreeNode root, boolean cheatIsWhite , boolean doEvaluation, boolean maxIsWhite) {
         if(cheatIsWhite) {
             if (root.getNodeType() == 1) {
-                createChanceChildren(root, doEvaluation, maxIsWhite);
+                createMinChildren(root, doEvaluation, maxIsWhite, cheatIsWhite);
             } else if (root.getNodeType() == 2) {
-                createMinChildren(root, doEvaluation, maxIsWhite);
+                createChanceChildren(root, doEvaluation, maxIsWhite);
             } else {
-                createMaxChildren(root, doEvaluation, maxIsWhite);
+                createMaxChildren(root, doEvaluation, maxIsWhite, cheatIsWhite);
             }
         }
         else {
             if (root.getNodeType() == 1) {
-                createMaxChildren(root, doEvaluation, maxIsWhite);
-            } else if (root.getNodeType() == 2) {
                 createChanceChildren(root, doEvaluation, maxIsWhite);
+            } else if (root.getNodeType() == 2) {
+                createMaxChildren(root, doEvaluation, maxIsWhite, cheatIsWhite);
             } else {
-                createMinChildren(root, doEvaluation, maxIsWhite);
+                createMinChildren(root, doEvaluation, maxIsWhite, cheatIsWhite);
             }
         }
     }
-    public void createMaxChildren(ChessTreeNode root, boolean doEvaluation, boolean maxIsWhite){
-        ArrayList<Character> movablePieces = Dice.getMovablePieces(root.getBoard());
-
-        for (Character movablePiece : movablePieces) {
-            createChanceChild(root, doEvaluation, movablePiece, 1, 1.0/movablePieces.size(), maxIsWhite);
+    public void createMaxChildren(ChessCheatAiTreeNode root, boolean doEvaluation, boolean maxIsWhite, boolean cheatIsWhite){
+        if(cheatIsWhite){
+            for (ChessPiece[] pieces: root.getBoard().getBoardModel()) {
+                for(ChessPiece piece: pieces){
+                    if(piece != null && piece.isTurn(root.getBoard())){
+                        boolean[][] validMoves = piece.validMoves(root.getBoard());
+                        createChild(root, validMoves, piece, 2, doEvaluation, maxIsWhite);
+                    }
+                }
+            }
         }
+        else{
+            ArrayList<Character> movablePieces = Dice.getMovablePieces(root.getBoard());
 
-    }
-    public void createMinChildren(ChessTreeNode root, boolean doEvaluation, boolean maxIsWhite){
-        ArrayList<Character> movablePieces = Dice.getMovablePieces(root.getBoard());
-
-        for (Character movablePiece : movablePieces) {
-            createChanceChild(root, doEvaluation, movablePiece, 2, 1.0/movablePieces.size(), maxIsWhite);
+            for (Character movablePiece : movablePieces) {
+                createChanceChild(root, doEvaluation, movablePiece, 2, 1.0/movablePieces.size(), maxIsWhite);
+            }
         }
     }
-    public void createChanceChild(ChessTreeNode parent, boolean doEvaluation, char movablePiece, int nodeType, double probability, boolean maxIsWhite ){
+
+    public void createMinChildren(ChessCheatAiTreeNode root, boolean doEvaluation, boolean maxIsWhite, boolean cheatIsWhite){
+        if(cheatIsWhite){
+            for (ChessPiece[] pieces: root.getBoard().getBoardModel()) {
+                for(ChessPiece piece: pieces){
+                    if(piece != null && piece.isTurn(root.getBoard())){
+                        boolean[][] validMoves = piece.validMoves(root.getBoard());
+                        createChild(root, validMoves, piece, 1, doEvaluation, maxIsWhite);
+                    }
+                }
+            }
+        }
+        else{
+            ArrayList<Character> movablePieces = Dice.getMovablePieces(root.getBoard());
+
+            for (Character movablePiece : movablePieces) {
+                createChanceChild(root, doEvaluation, movablePiece, 1, 1.0/movablePieces.size(), maxIsWhite);
+            }
+        }
+    }
+
+    private void createChanceChildren(ChessCheatAiTreeNode root, boolean doEvaluation, boolean maxIsWhite){
+        for (ChessPiece[] pieces: root.getBoard().getBoardModel()) {
+            for(ChessPiece piece: pieces){
+                if(piece != null && piece.isTurn(root.getBoard()) && root.getBoard().getMovablePiece()==piece.getPieceChar()){
+                    boolean[][] validMoves = piece.validMoves(root.getBoard());
+                    createChild(root, validMoves, piece, 3, doEvaluation, maxIsWhite);
+                }
+            }
+        }
+    }
+
+    public void createChanceChild(ChessCheatAiTreeNode parent, boolean doEvaluation, char movablePiece, int nodeType, double probability, boolean maxIsWhite ){
         Board copy = parent.getBoard().clone();
         copy.setMovablePiece(movablePiece);
         double value = 0;
         if(doEvaluation){
             value = staticBoardEvaluation(copy);
         }
-        ChessTreeNode child = new ChessTreeNode(copy,value, parent, nodeType, probability, 0,0,0,0, parent.isMaxIsWhite());
+        ChessCheatAiTreeNode child = new ChessCheatAiTreeNode(copy,value, parent, nodeType, probability, 0,0,0,0, parent.isMaxIsWhite());
         parent.addChild(child);
     }
-    private void createChild(ChessTreeNode parent, boolean[][] validMoves, ChessPiece piece, int nodeType, boolean doEvaluation, boolean maxIsWhite){
+    private void createChild(ChessCheatAiTreeNode parent, boolean[][] validMoves, ChessPiece piece, int nodeType, boolean doEvaluation, boolean maxIsWhite){
 
         for(int i = 0; i< validMoves.length; i++){
             for(int j = 0; j<validMoves[0].length; j++){
@@ -78,13 +114,13 @@ public class CheatAiTree extends AiTree{
                         value = staticBoardEvaluation(copy);
                     }
 
-                    ChessTreeNode child = new ChessTreeNode(copy, value,parent,nodeType,1,piece.getX(),piece.getY(),i,j, parent.isMaxIsWhite());
+                    ChessCheatAiTreeNode child = new ChessCheatAiTreeNode(copy, value,parent,nodeType,1,piece.getX(),piece.getY(),i,j, parent.isMaxIsWhite());
                     parent.addChild(child);
                 }
             }
         }
     }
-    private void createPromotionChild(ChessTreeNode parent, ChessPiece piece, int xTo, int yTo, int pieceType, boolean doEvaluation, boolean maxIsWhite, int nodeType){
+    private void createPromotionChild(ChessCheatAiTreeNode parent, ChessPiece piece, int xTo, int yTo, int pieceType, boolean doEvaluation, boolean maxIsWhite, int nodeType){
         Board copy = parent.getBoard().clone();
         BoardUpdater.removePiece(copy, piece.getX(), piece.getY());
         ChessPiece promoted = BoardUpdater.createPiece(piece.isWhite(), xTo, yTo, pieceType);
@@ -95,7 +131,7 @@ public class CheatAiTree extends AiTree{
             value = staticBoardEvaluation(copy);
         }
 
-        ChessTreeNode child = new ChessTreeNode(copy, value,parent,nodeType,1,piece.getX(),piece.getY(),xTo,yTo, parent.isMaxIsWhite());
+        ChessCheatAiTreeNode child = new ChessCheatAiTreeNode(copy, value,parent,nodeType,1,piece.getX(),piece.getY(),xTo,yTo, parent.isMaxIsWhite());
         child.setDoPromotion(true);
         parent.addChild(child);
     }
@@ -216,21 +252,4 @@ public class CheatAiTree extends AiTree{
     private double getRandomElement(){
         return Math.random()*10-5;
     }
-// we don't need this one probably it was meant to check if cheater is white
-    private boolean cheatIsWhite(Board board, ChessTreeNode root, boolean maxIsWhite){
-        ArrayList<Character> movablePieces = Dice.getMovablePieces(root.getBoard());
-        for (int i = 0; i < movablePieces.size(); i++) {
-            if (!maxIsWhite) {
-                movablePieces.remove(i);
-            }
-        }
-
-
-        if(maxIsWhite) {
-            return true;
-        }
-        return false;
-    }
-
-
 }

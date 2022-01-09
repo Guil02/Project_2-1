@@ -10,16 +10,17 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class CheatAgent extends Player {
-    private CheatAiTree cheatTree = new CheatAiTree();
+    private CheatAiTree cheatAiTree = new CheatAiTree();
     private Expectiminimax expectiminimax = new Expectiminimax();
     private boolean cheatIsWhite;
-    private ChessTreeNode maxima;
+    private ChessCheatAiTreeNode maxima;
     private Board board;
     private static final int ply = 2;
 
-    public CheatAgent(Board board, boolean cheatIsWhite, CheatAiTree cheatTree) {
+    public CheatAgent(Board board, boolean cheatIsWhite, CheatAiTree cheatAiTree) {
+        System.out.println("yes");
         this.board = board;
-        this.cheatTree = cheatTree;
+        this.cheatAiTree = cheatAiTree;
         this.cheatIsWhite = cheatIsWhite;
     }
 
@@ -27,7 +28,7 @@ public class CheatAgent extends Player {
         new Thread(() -> {
             try {
                 cheatAgent(board);
-                ChessTreeNode move = getMaxima();
+                ChessCheatAiTreeNode move = getMaxima();
                 char movablePieceChar = board.getMovablePiece();
                 if (move.isDoPromotion()) {
                     board.storeMove();
@@ -59,11 +60,11 @@ public class CheatAgent extends Player {
 //        System.out.println(board.getWhiteMove());
         Board copy = board.clone();
         boolean maxIsWhite = board.getWhiteMove();
-        ChessTreeNode root;
+        ChessCheatAiTreeNode root;
         if (maxIsWhite) {
-            root = new ChessTreeNode(copy, 0, null, 1, 1, 0, 0, 0, 0, maxIsWhite);
+            root = new ChessCheatAiTreeNode(copy, 0, null, 1, 1, 0, 0, 0, 0, maxIsWhite);
         } else {
-            root = new ChessTreeNode(copy, 0, null, 2, 1, 0, 0, 0, 0, maxIsWhite);
+            root = new ChessCheatAiTreeNode(copy, 0, null, 2, 1, 0, 0, 0, 0, maxIsWhite);
         }
         double res = expectiminimax.expectiminimax(root, (ply * 2) - 1, (ply * 2) - 1);
         double maxValue;
@@ -74,11 +75,11 @@ public class CheatAgent extends Player {
         else{
             maxValue = Double.POSITIVE_INFINITY;
         }
-        ArrayList<ChessTreeNode> highestNodes = new ArrayList<>();
-        ChessTreeNode maxNode = (ChessTreeNode) root.getChildren().get(0);
+        ArrayList<ChessCheatAiTreeNode> highestNodes = new ArrayList<>();
+        ChessCheatAiTreeNode maxNode = (ChessCheatAiTreeNode) root.getChildren().get(0);
         highestNodes.add(maxNode);
         for (TreeNode child : root.getChildren()) {
-            ChessTreeNode subChild = (ChessTreeNode) child;
+            ChessCheatAiTreeNode subChild = (ChessCheatAiTreeNode) child;
             if (maxIsWhite) {
 
                 if (subChild.getValue() >= maxValue) {
@@ -111,7 +112,7 @@ public class CheatAgent extends Player {
         maxima = maxNode;
     }
 
-    public ChessTreeNode getMaxima() {
+    public ChessCheatAiTreeNode getMaxima() {
         return maxima;
     }
 
