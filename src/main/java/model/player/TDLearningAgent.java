@@ -1,9 +1,11 @@
 package model.player;
 
+import config.Config;
 import controller.Board;
 import controller.BoardUpdater;
 import controller.Dice;
 import controller.GameRunner;
+import gui.DebugWindow.DebugWindowStage;
 import javafx.application.Platform;
 import model.algorithm.Expectiminimax;
 import model.algorithm.TDTreeNode;
@@ -361,4 +363,210 @@ public class TDLearningAgent extends Player{
             return false;
         }
     }
+
+    private double getPieceValue(int pieceType){
+        return switch (pieceType) {
+            case 1 -> 1;
+            case 2 -> 3;
+            case 3 -> 3;
+            case 4 -> 5;
+            case 5 -> 9;
+            case 6 -> 0;
+            default -> 0;
+        };
+    }
+
+    public void runAgent(Board board){
+        Board copy = board.clone();
+        boolean maxIsWhite = board.getWhiteMove();
+        TDTreeNode root = new TDTreeNode(copy, 0, null, 1, 1, 0, 0, 0, 0, maxIsWhite, this);
+        expectiminimax.expectiminimax(root, (ply*2)-1, (ply*2)-1);
+        double maxValue = Double.MIN_VALUE;
+        ArrayList<TDTreeNode> highestNodes = new ArrayList<>();
+        TDTreeNode maxNode;
+        try{
+            maxNode = (TDTreeNode) root.getChildren().get(0);
+        }
+        catch(Exception e){
+            maxNode = root;
+        }
+        highestNodes.add(maxNode);
+        for (TreeNode child : root.getChildren()) {
+            TDTreeNode subChild = (TDTreeNode) child;
+            if (subChild.getValue() >= maxValue) {
+                if (subChild.getValue() == maxValue) {
+                    highestNodes.add(subChild);
+                    continue;
+                }
+                highestNodes.clear();
+                highestNodes.add(subChild);
+                maxValue = subChild.getValue();
+            }
+        }
+        Random rand = new Random();
+        maxNode = highestNodes.get(rand.nextInt(highestNodes.size()));
+        maxima = maxNode;
+    }
+
+    public void launch(Board board){
+        System.gc();
+        new Thread(() -> {
+            try{
+
+                // Stop if game is on pause
+                if (DebugWindowStage.isOnPause) {
+                    pauseThread();
+                }
+
+                if(ply<3){
+                    Thread.sleep(100);
+                }
+                runAgent(board);
+                TDTreeNode move = getMaxima();
+                if(move.isDoPromotion()){
+                    board.storeMove();
+                    BoardUpdater.runPromotion(board, move.getBoard(), move.getxFrom(), move.getyFrom(), move.getxTo(), move.getyTo());
+                    if(Config.GUI_ON){
+                        Platform.runLater(
+                                new Thread(board::launchGuiUpdate)
+                        );
+                    }
+                }
+                else{
+//                    if(!Board.GUI_ON) printBoard(board.getBoardModel(), board);
+                    BoardUpdater.movePiece(board, move.getxFrom(), move.getyFrom(), move.getxTo(), move.getyTo());
+                    if(Config.GUI_ON){
+                        Platform.runLater(
+                                new Thread(board::launchGuiUpdate)
+                        );
+                    }
+                }
+            }
+            catch(Exception e){
+                System.err.println("Piece might already have been moved due to glitch in the threading");
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+    public TDTreeNode getMaxima() {
+        return maxima;
+    }
+
+    public int getPieceType(char pieceType){
+        switch(pieceType){
+            case 'n','N':
+                return 2;
+            case 'b','B':
+                return 3;
+            case 'r','R':
+                return 4;
+            case 'q','Q':
+                return 5;
+        }
+        return 0;
+    }
+
+    public static void printBoard(ChessPiece[][] boardModel, Board board) {
+        System.out.println("--- Board State ---\n");
+        for(int i = 0; i < boardModel[0].length; i++) {
+            for (int j = 0; j < boardModel.length; j++) {
+                System.out.print("[ " + board.getCharOffField(j,i) + " ] ");
+                // System.out.print("[ " + j + " " + i + " ] ");
+            }
+            System.out.println();
+        }
+    }
+
+    public static void learn(Board board){
+        System.out.println(java.lang.Thread.activeCount());
+        amountOfGame++;
+        if(amountOfGame<50) {
+            System.out.println("Started learning");
+            ArrayList<String> states = board.getBoardStates();
+            ArrayList<ArrayList<String>> subDividedStates = FenEvaluator.separateWhiteAndBlack(states);
+        ArrayList<String> white = subDividedStates.get(0);
+        states = white;
+//        ArrayList<String> black = subDividedStates.get(1);
+            ArrayList<Double> weights = readInWeights();
+            System.out.println("initial weights: " + weights);
+
+            ArrayList<Double> weightChange = new ArrayList<>();
+            for (int i = 0; i < weights.size(); i++) {
+                weightChange.add(0.0);
+            }
+
+        for(int i = 0; i< states.size()-1; i++){
+            ArrayList<Double> gradient = gradient(states.get(i), true, weights);
+            double mul = 0;
+            for(int j = i; j<states.size()-1; j++){
+                double pow = Math.pow(lambda, j - i);
+                double temporalDifference = getTemporalDifference(states.get(j), states.get(j + 1), true, weights);
+                double v = pow * temporalDifference;
+                mul = mul + v;
+            }
+            ArrayList<Double> arr2 = Matrix.varMultiplication(gradient, mul);
+            weightChange = Matrix.additionVector(weightChange, arr2);
+        }
+
+            weightChange = Matrix.varMultiplication(weightChange, alpha);
+
+            weights = Matrix.additionVector(weights, weightChange);
+            writeWeights(weights);
+            System.out.println("weights change: " + weightChange);
+            System.out.println("new weights: " + weights);
+            board.getGameRunner().reset();
+        }
+    }
+
+    public static ArrayList<Double> gradient(String fen, boolean whiteIsMax, ArrayList<Double> weights){
+        Board board = FenEvaluator.read(fen);
+        ArrayList<Double> val = evaluateFactors(board, whiteIsMax);
+        ArrayList<Double> deriv = new ArrayList<>();
+        if(SIGMOID_ACTIVE){
+            double evaluation = evaluation(board, whiteIsMax, weights);
+            for(int i = 0; i<val.size(); i++){
+                double x = evaluation *(1- evaluation)*val.get(i);
+                deriv.add(i, x);
+            }
+        }
+        else{
+            for(int i = 0; i<val.size(); i++){
+                double x = 1/(max-min)* val.get(i);
+                deriv.add(i, x);
+            }
+        }
+
+        return deriv;
+    }
+
+    private static final double max = 1000;
+    private static final double min = -1000;
+    public static double normalize(double x){
+        double res = (x-min)/(max-min);
+        return res;
+    }
+
+    public static double sigmoid(double x){
+        double res = 1.0/(1-Math.exp(-x));
+        return res;
+    }
+
+    public static double getTemporalDifference(String fen1, String fen2, boolean maxIsWhite, ArrayList<Double> weights){
+        Board xFirst = FenEvaluator.read(fen1);
+        Board xLast = FenEvaluator.read(fen2);
+
+        double eval1 = evaluation(xFirst, maxIsWhite, weights);
+        double eval2 = evaluation(xLast, maxIsWhite, weights);
+
+        return eval2-eval1;
+    }
+
+    public static void printEvaluations(ArrayList<String> fens, boolean maxIsWhite, ArrayList<Double> weights){
+        for(String s : fens){
+            Board board = FenEvaluator.read(s);
+            System.out.println(evaluation(board, maxIsWhite, weights));
+        }
+    }
+
 }

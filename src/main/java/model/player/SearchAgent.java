@@ -1,7 +1,9 @@
 package model.player;
 
+import config.Config;
 import controller.Board;
 import controller.BoardUpdater;
+import gui.DebugWindow.DebugWindowStage;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import model.algorithm.*;
@@ -24,7 +26,7 @@ public class SearchAgent extends Player {
     public void launch(Board board){
         new Thread(() -> {
             try{
-                Thread.sleep(50);
+//                Thread.sleep(50);
                 ruleBasedAgent(board);
                 ChessTreeNode move = getMaxima();
                 if(move.isDoPromotion()){

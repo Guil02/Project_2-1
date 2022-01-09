@@ -1,5 +1,6 @@
 package controller;
 
+import config.Config;
 import model.pieces.ChessPiece;
 import model.player.*;
 import utils.FenEvaluator;
@@ -15,7 +16,6 @@ public class Board {
     private boolean gameOver;
     private boolean whiteMove = true;
     private char movablePiece;
-    public static final boolean GUI_ON = GameRunner.GUI_ON;
     private int player1 = 0;
     private int player2 = 0;
     Player playerOne;
@@ -212,16 +212,18 @@ public class Board {
             }
         }
         Board board = new Board(copy,graphicsConnector, gameOver, whiteMove, movablePiece);
+        board.gameRunner = this.gameRunner;
         return board;
     }
 
     public void launchGuiUpdate(){
-        if(GUI_ON){
+        if(Config.GUI_ON){
 //            try {
 //                Thread.sleep(1000);
 //            } catch (InterruptedException e) {
 //                e.printStackTrace();
 //            }
+            getGameRunner().debugWindowStage.incrementPlyCount();
             graphicsConnector.updateImages();
             graphicsConnector.changeTurn();
         }
