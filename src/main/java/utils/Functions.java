@@ -35,6 +35,12 @@ public class Functions{
     }
 
     public static double tanh(double x){
+        if(x<100){
+
+        }
+        else if(x>100){
+            return 1;
+        }
         return (Math.exp(x)-Math.exp(-x))/(Math.exp(x)+Math.exp(-x));
     }
 
@@ -45,6 +51,43 @@ public class Functions{
     public static double sigmoid(double x){
         double res = 1.0/(1-Math.exp(-x));
         return res;
+    }
+
+    public static double relu(double value) {
+        if(value<0){
+            return 0;
+        }
+        else return value;
+    }
+
+    public static double leaky_relu(double value) {
+        if(value<0){
+            return c*value;
+        }
+        else{
+            return value;
+        }
+    }
+
+    public static double sigmoidDeriv(double value) {
+        return value*(1-value);
+    }
+
+    public static double reluDeriv(double value) {
+        if(value<0){
+            return 0;
+        }
+        if(value>0){
+            return 1;
+        }
+        throw new ArithmeticException("ReLuDeriv undefined for value: " + value);
+    }
+
+    public static double leaky_reluDeriv(double value) {
+        if(value>0){
+            return 1;
+        }
+        return c*value;
     }
 
     private boolean isPromotion(ChessPiece piece, int yTo){

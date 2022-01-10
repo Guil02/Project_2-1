@@ -112,7 +112,9 @@ public class BoardUpdater {
 
     public static void movePiece(Board board, int xFrom, int yFrom, int xTo, int yTo) {
 //        if(board.isOriginal()) System.out.println("did a move");
-        board.storeMove();
+        if(board.isOriginal()){
+            board.storeMove();
+        }
         ChessPiece pieceToMove = board.getPieceOffField(xFrom, yFrom);
         if(pieceToMove!= null){
             pieceToMove.move(board, xTo,yTo);
@@ -158,9 +160,7 @@ public class BoardUpdater {
                     TDLearningAgent.learn(board);
                 }
                 if (board.getPlayer1() == 5 && NNAgent.LEARN && board.isOriginal()) {
-                    double[] endEval = ((NNAgent) board.playerOne).computeEndEval(board);
-
-//                    ((NNAgent) board.playerOne).learn(board, board.getBoardStates(), endEval);
+                    ((NNAgent) board.playerOne).learn(board);
                 }
             }
         }

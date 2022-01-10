@@ -40,6 +40,24 @@ public class BoardEncoding {
         return list;
     }
 
+    public double[] boardToArray2(Board board){
+        int index = 0;
+        String fen = FenEvaluator.write(board);
+        double[] list = new double[13];
+
+        if (board.getWhiteMove()) {
+            list[index] = 1;
+        } else {
+            list[index] = 0;
+        }
+        index++;
+
+        amountOfPieces(list, board, index);
+        index += 12;
+
+        return list;
+    }
+
     private void setCastling(double[] features, String fen, int startIndex) {
         int index = 0;
         while (fen.charAt(index) != ' ') {

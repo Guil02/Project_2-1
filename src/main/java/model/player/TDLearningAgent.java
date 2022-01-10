@@ -26,7 +26,7 @@ public class TDLearningAgent extends Player{
     private Expectiminimax expectiminimax = new Expectiminimax();
     private static final double lambda = 0.70;
     private static double alpha = 0.70;
-    private int sleep = 100;
+    private static int sleep = 100;
     private static int amountOfGame = 0;
 
     public TDLearningAgent() {

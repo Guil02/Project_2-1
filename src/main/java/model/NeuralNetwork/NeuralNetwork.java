@@ -11,7 +11,7 @@ public class NeuralNetwork {
     private static final int CLASSES_COUNT = 2;
 
 
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
     private Layer[] layers;
 
     public NeuralNetwork(int amountOfLayers, int[] neuronsPerLayer, int min, int max) {
@@ -25,6 +25,7 @@ public class NeuralNetwork {
     public NeuralNetwork(int amountOfLayers, int[] neuronsPerLayer) {
         Neuron.setWeightRange(-1,1);
         layers = new Layer[amountOfLayers];
+        layers[0] = new Layer(new double[neuronsPerLayer[0]]);
         for(int i = 1; i<amountOfLayers; i++){
             layers[i]= new Layer(neuronsPerLayer[i-1], neuronsPerLayer[i]);
         }
@@ -44,7 +45,7 @@ public class NeuralNetwork {
                     System.out.println("val+bias: "+val);
                     System.out.println("val+bias+tanh: "+ Functions.tanh(val));
                 }
-                layers[i].getNeurons()[j].setValue(Functions.tanh(val));
+                layers[i].getNeurons()[j].setValue(doActivation(val, layers[i].getActivation()));
             }
         }
         double[] output = new double[layers[layers.length-1].getNeurons().length];
@@ -66,7 +67,7 @@ public class NeuralNetwork {
                 val += layers[i].getNeurons()[j].getBias();
 
                 for(int k = 0; k<layers[i-1].getNeurons().length; k++){
-                    current.setWeight_gradient(layers[i-1].getNeurons()[k].getValue()*Functions.tanhDeriv(val),k);
+                    current.setWeight_gradient(layers[i-1].getNeurons()[k].getValue()*doDerivativeActivation(val,layers[i].getActivation()),k);
                 }
             }
         }
@@ -104,6 +105,65 @@ public class NeuralNetwork {
                     layers[i].getNeurons()[j].getWeight()[k]=weights.get(index++);
                 }
             }
+        }
+    }
+
+    public double doActivation(double value, int activationNumber){
+        switch (activationNumber){
+            case 0:
+                return Functions.tanh(value);
+            case 1:
+                return Functions.sigmoid(value);
+            case 2:
+                return Functions.relu(value);
+            case 3:
+                return Functions.leaky_relu(value);
+            default:
+                return value;
+        }
+    }
+
+    public double doDerivativeActivation(double value, int activationNumber){
+        switch (activationNumber){
+            case 0:
+                return Functions.tanhDeriv(value);
+            case 1:
+                return Functions.sigmoidDeriv(value);
+            case 2:
+                return Functions.reluDeriv(value);
+            case 3:
+                return Functions.leaky_reluDeriv(value);
+            default:
+                return value;
+        }
+    }
+
+    public void setTAHN(int... layerNumber){
+        for(int i = 0; i< layerNumber.length; i++){
+            try{
+                layers[layerNumber[i]].setActivation(0);
+            }
+            catch (NullPointerException e){
+                System.err.println("The layer you have tried to access wasn't initialize yet");
+            }
+        }
+    }
+
+    public void setSIGMOID(int... layerNumber){
+        for(int i = 0; i< layerNumber.length; i++){
+            layers[layerNumber[i]].setActivation(1);
+        }
+    }
+
+    public void setRELU(int... layerNumber){
+        for(int i = 0; i< layerNumber.length; i++){
+            layers[layerNumber[i]].setActivation(2);
+        }
+    }
+
+    public void setLeakyRELU(int... layerNumber){
+        for(int i = 0; i< layerNumber.length; i++){
+            layers[layerNumber[i]].setActivation(3);
         }
     }
 

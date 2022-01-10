@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 public class Layer {
     private Neuron[] neurons;
+    private int activation = 0;
 
     /**
      * constructor for hidden and output layer
@@ -39,10 +40,34 @@ public class Layer {
         return neurons;
     }
 
+    public int getActivation() {
+        return activation;
+    }
+
+    public void setActivation(int activationNumber){
+        this.activation = activationNumber;
+    }
+
     @Override
     public String toString() {
         return "Layer{" +
-                "neurons=" + Arrays.toString(neurons) +
+                "\nactivation=" + getActivationName(getActivation()) +
+                "\nneurons=" + Arrays.toString(neurons) +
                 '}';
+    }
+
+    public static String getActivationName(int activation){
+        switch (activation){
+            case 0:
+                return "TANH";
+            case 1:
+                return "SIGMOID";
+            case 2:
+                return "RELU";
+            case 3:
+                return "LEAKY RELU";
+            default:
+                return "no activation specified";
+        }
     }
 }
