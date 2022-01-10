@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public class Functions{
 
+    private static final double c = 0.01;
     public static ArrayList<Double> readInWeights(String fileName){
         ArrayList<Double> weights = new ArrayList<>();
         String line;
