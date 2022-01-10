@@ -17,13 +17,14 @@ public class PruningTests {
      * Expectiminimax with and without pruning.
      */
     public void pruningTest() {
-        fenTest("8/5K1p/7B/Pb2k3/6P1/2p1Pp1P/2Rr2p1/Q4N2 w - - 0 1");
-        fenTest("8/5pP1/Q1K4b/P1P2pP1/1p4p1/2r1R1p1/8/1k3b2 w - - 0 1");
-        fenTest("Q1Nb2k1/P7/p7/2K4P/6nR/1P5P/6pp/B4r2 w - - 0 1");
-        fenTest("2b5/K5B1/8/Pp4N1/2pP4/n4P2/1qpPk3/6nQ w - - 0 1");
-        fenTest("N7/5p1p/p1b2k2/3P4/4n1P1/r1p2K2/1R1P4/B1R5 w - - 0 1");
-        fenTest("2r5/1p1Pp1Q1/6P1/P6p/p1N5/K2kr3/3B1n2/6R1 w - - 0 1");
-
+        for(int i=0;i<10;i++) {
+            fenTest("8/5K1p/7B/Pb2k3/6P1/2p1Pp1P/2Rr2p1/Q4N2 w - - 0 1");
+            fenTest("8/5pP1/Q1K4b/P1P2pP1/1p4p1/2r1R1p1/8/1k3b2 w - - 0 1");
+            fenTest("Q1Nb2k1/P7/p7/2K4P/6nR/1P5P/6pp/B4r2 w - - 0 1");
+            fenTest("2b5/K5B1/8/Pp4N1/2pP4/n4P2/1qpPk3/6nQ w - - 0 1");
+            fenTest("N7/5p1p/p1b2k2/3P4/4n1P1/r1p2K2/1R1P4/B1R5 w - - 0 1");
+            fenTest("2r5/1p1Pp1Q1/6P1/P6p/p1N5/K2kr3/3B1n2/6R1 w - - 0 1");
+        }
         //fenTest("r2r4/1R4p1/2p1P1pk/1Pp1P3/5R1n/8/1q5p/4K3 w - - 0 1");
     }
 
@@ -40,8 +41,9 @@ public class PruningTests {
         ChessTreeNode root2 = new ChessTreeNode(board, 0, null, 1, 1, 0, 0, 0, 0, maxIsWhite);
         AiTree aiTree = new AiTree();
         aiTree.createChildren(root, false, maxIsWhite);
+        aiTree.setRandomness(false);
 
-        int ply = 4;
+        int ply = 3;
 
         // Execute the algorithms
         long start1 = System.currentTimeMillis();
