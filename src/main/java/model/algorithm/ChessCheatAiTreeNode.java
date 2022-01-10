@@ -11,8 +11,9 @@ public class ChessCheatAiTreeNode extends TreeNode{
     private boolean doPromotion = false;
     private CheatAiTree cheatAiTree = new CheatAiTree();
     private boolean maxIsWhite;
+    private boolean cheatIsWhite;
 
-    public ChessCheatAiTreeNode(Board board, double value, TreeNode parent, int nodeType, double probability, int xFrom, int yFrom, int xTo, int yTo, boolean maxIsWhite) {
+    public ChessCheatAiTreeNode(Board board, double value, TreeNode parent, int nodeType, double probability, int xFrom, int yFrom, int xTo, int yTo, boolean maxIsWhite, boolean cheatIsWhite) {
         super(value, parent, nodeType, probability);
         this.xFrom = xFrom;
         this.yFrom = yFrom;
@@ -20,11 +21,13 @@ public class ChessCheatAiTreeNode extends TreeNode{
         this.yTo = yTo;
         this.board = board;
         this.maxIsWhite = maxIsWhite;
+        this.cheatIsWhite = cheatIsWhite;
     }
 
     @Override
     public void createChildren() {
-        cheatAiTree.createChildren(this, true, true, maxIsWhite);
+
+        cheatAiTree.createChildren(this, cheatIsWhite, true, maxIsWhite);
     }
 
     public int getxFrom() {
@@ -33,6 +36,14 @@ public class ChessCheatAiTreeNode extends TreeNode{
 
     public int getyFrom() {
         return yFrom;
+    }
+
+    public boolean isCheatIsWhite() {
+        return cheatIsWhite;
+    }
+
+    public void setCheatIsWhite(boolean cheatIsWhite) {
+        this.cheatIsWhite = cheatIsWhite;
     }
 
     public int getxTo() {

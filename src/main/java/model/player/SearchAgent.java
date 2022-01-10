@@ -74,7 +74,7 @@ public class SearchAgent extends Player {
 //        int color = maxIsWhite ? 1 : -1;
 //        double res = expectiminimax.star2(root, -100, 100,(ply*2)-1,color, (ply*2)-1);
 //        System.out.println(res);
-        double maxValue = Double.MIN_VALUE;
+        double maxValue = Double.NEGATIVE_INFINITY;
         ArrayList<ChessTreeNode> highestNodes = new ArrayList<>();
         ChessTreeNode maxNode = (ChessTreeNode) root.getChildren().get(0);
         highestNodes.add(maxNode);

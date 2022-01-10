@@ -381,7 +381,7 @@ public class TDLearningAgent extends Player{
         boolean maxIsWhite = board.getWhiteMove();
         TDTreeNode root = new TDTreeNode(copy, 0, null, 1, 1, 0, 0, 0, 0, maxIsWhite, this);
         expectiminimax.expectiminimax(root, (ply*2)-1, (ply*2)-1);
-        double maxValue = Double.MIN_VALUE;
+        double maxValue = Double.NEGATIVE_INFINITY;
         ArrayList<TDTreeNode> highestNodes = new ArrayList<>();
         TDTreeNode maxNode;
         try{

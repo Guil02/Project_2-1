@@ -155,7 +155,7 @@ public class AiTree {
         }
         if(maxIsWhite){
             if(!seenWhiteKing){
-                return Double.MIN_VALUE;
+                return Double.NEGATIVE_INFINITY;
             }
             else if(!seenBlackKing){
                 return Double.MAX_VALUE;
@@ -163,7 +163,7 @@ public class AiTree {
         }
         else {
             if(!seenBlackKing){
-                return Double.MIN_VALUE;
+                return Double.NEGATIVE_INFINITY;
             }
             else if(!seenWhiteKing){
                 return Double.MAX_VALUE;
