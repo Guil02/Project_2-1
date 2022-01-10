@@ -161,7 +161,7 @@ public class TDLearningAgent extends Player{
                 if(move.isDoPromotion()){
                     board.storeMove();
                     BoardUpdater.runPromotion(board, move.getBoard(), move.getxFrom(), move.getyFrom(), move.getxTo(), move.getyTo());
-                    if(Board.GUI_ON){
+                    if(Config.GUI_ON){
                         Platform.runLater(
                                 new Thread(board::launchGuiUpdate)
                         );
@@ -170,7 +170,7 @@ public class TDLearningAgent extends Player{
                 else{
 //                    if(!Board.GUI_ON) printBoard(board.getBoardModel(), board);
                     BoardUpdater.movePiece(board, move.getxFrom(), move.getyFrom(), move.getxTo(), move.getyTo());
-                    if(Board.GUI_ON){
+                    if(Config.GUI_ON){
                         Platform.runLater(
                                 new Thread(board::launchGuiUpdate)
                         );
@@ -376,7 +376,7 @@ public class TDLearningAgent extends Player{
         };
     }
 
-    public void runAgent(Board board){
+    /*public void runAgent(Board board){
         Board copy = board.clone();
         boolean maxIsWhite = board.getWhiteMove();
         TDTreeNode root = new TDTreeNode(copy, 0, null, 1, 1, 0, 0, 0, 0, maxIsWhite, this);
@@ -407,8 +407,8 @@ public class TDLearningAgent extends Player{
         maxNode = highestNodes.get(rand.nextInt(highestNodes.size()));
         maxima = maxNode;
     }
-
-    public void launch(Board board){
+    */
+    /*public void launch(Board board){
         System.gc();
         new Thread(() -> {
             try{
@@ -449,10 +449,12 @@ public class TDLearningAgent extends Player{
         }).start();
     }
 
+     */
+/*
     public TDTreeNode getMaxima() {
         return maxima;
     }
-
+*/
     public int getPieceType(char pieceType){
         switch(pieceType){
             case 'n','N':
@@ -466,7 +468,7 @@ public class TDLearningAgent extends Player{
         }
         return 0;
     }
-
+/*
     public static void printBoard(ChessPiece[][] boardModel, Board board) {
         System.out.println("--- Board State ---\n");
         for(int i = 0; i < boardModel[0].length; i++) {
@@ -479,46 +481,9 @@ public class TDLearningAgent extends Player{
     }
 
     public static void learn(Board board){
-        System.out.println(java.lang.Thread.activeCount());
-        amountOfGame++;
-        if(amountOfGame<50) {
-            System.out.println("Started learning");
-            ArrayList<String> states = board.getBoardStates();
-            ArrayList<ArrayList<String>> subDividedStates = FenEvaluator.separateWhiteAndBlack(states);
-        ArrayList<String> white = subDividedStates.get(0);
-        states = white;
-//        ArrayList<String> black = subDividedStates.get(1);
-            ArrayList<Double> weights = readInWeights();
-            System.out.println("initial weights: " + weights);
 
-            ArrayList<Double> weightChange = new ArrayList<>();
-            for (int i = 0; i < weights.size(); i++) {
-                weightChange.add(0.0);
-            }
-
-        for(int i = 0; i< states.size()-1; i++){
-            ArrayList<Double> gradient = gradient(states.get(i), true, weights);
-            double mul = 0;
-            for(int j = i; j<states.size()-1; j++){
-                double pow = Math.pow(lambda, j - i);
-                double temporalDifference = getTemporalDifference(states.get(j), states.get(j + 1), true, weights);
-                double v = pow * temporalDifference;
-                mul = mul + v;
-            }
-            ArrayList<Double> arr2 = Matrix.varMultiplication(gradient, mul);
-            weightChange = Matrix.additionVector(weightChange, arr2);
-        }
-
-            weightChange = Matrix.varMultiplication(weightChange, alpha);
-
-            weights = Matrix.additionVector(weights, weightChange);
-            writeWeights(weights);
-            System.out.println("weights change: " + weightChange);
-            System.out.println("new weights: " + weights);
-            board.getGameRunner().reset();
-        }
     }
-
+*/
     public static ArrayList<Double> gradient(String fen, boolean whiteIsMax, ArrayList<Double> weights){
         Board board = FenEvaluator.read(fen);
         ArrayList<Double> val = evaluateFactors(board, whiteIsMax);

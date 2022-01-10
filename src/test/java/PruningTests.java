@@ -46,7 +46,7 @@ public class PruningTests {
         // Execute the algorithms
         long start1 = System.currentTimeMillis();
         Expectiminimax expectiminimax = new Expectiminimax();
-//        expectiminimax.expectiminimax(root, (ply * 2) - 1, (ply*2)-1);
+        expectiminimax.expectiminimax(root, (ply * 2) - 1, (ply*2)-1);
         long end1 = System.currentTimeMillis();
 
         System.out.println("Time for normal Expectiminimax: " + (end1 - start1));
@@ -58,7 +58,7 @@ public class PruningTests {
 
         System.out.println("Time for Expectiminimax with P: " + (end2 - start2));
 
-        double maxValue = Double.MIN_VALUE;
+        double maxValue = Double.NEGATIVE_INFINITY;
         ArrayList<ChessTreeNode> highestNodes = new ArrayList<>();
         ChessTreeNode maxNode = (ChessTreeNode) root.getChildren().get(0);
         highestNodes.add(maxNode);
@@ -75,7 +75,7 @@ public class PruningTests {
             }
         }
 
-        double maxValue2 = Double.MIN_VALUE;
+        double maxValue2 = Double.NEGATIVE_INFINITY;
         ArrayList<ChessTreeNode> highestNodes2 = new ArrayList<>();
         ChessTreeNode maxNode2 = (ChessTreeNode) root.getChildren().get(0);
         highestNodes2.add(maxNode2);
