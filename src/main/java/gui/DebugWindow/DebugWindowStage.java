@@ -1,5 +1,6 @@
 package gui.DebugWindow;
 
+import controller.GameRunner;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
@@ -9,6 +10,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -28,15 +30,17 @@ public class DebugWindowStage extends Stage {
     public static boolean isOnPause;
     public static int delayMS = 1000;
     public static final Object pauseLock = new Object();
+    private GameRunner gameRunner;
 
     /**
      * Constructor
      */
-    public DebugWindowStage() {
+    public DebugWindowStage(GameRunner gr) {
+        this.gameRunner = gr;
 
         this.setTitle("Debug Info");
-        this.setHeight(400);
-        this.setWidth(400);
+        this.setHeight(300);
+        this.setWidth(500);
         isOnPause = false; // Not on pause for agents by default
         setOnCloseRequest(e -> {
             Platform.exit();
@@ -44,7 +48,7 @@ public class DebugWindowStage extends Stage {
         });
 
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-        this.setX((screenBounds.getWidth() / 2) - 800);
+        this.setX((screenBounds.getWidth() / 2) - 900);
         this.setY((screenBounds.getHeight() / 2) - 300);
 
         initComponents();
@@ -59,17 +63,41 @@ public class DebugWindowStage extends Stage {
         root = new BorderPane();
         gridPane = new GridPane();
         bottomRow = new HBox();
+        Font defaultFont = new Font("Verdana", 20);
 
         // Ply count
         plyCount = 0;
         plyCountText = new Text("0");
+        plyCountText.setFont(defaultFont);
+
+        // Player codes
+        int playerOneCode = this.gameRunner.getBoard().getPlayer1();
+        int playerTwoCode = this.gameRunner.getBoard().getPlayer2();
 
         // Center grid
         gridPane.setHgap(10);
         gridPane.setVgap(10);
         gridPane.setPadding(new Insets(0, 10, 0, 10));
-        gridPane.add(new Text("Ply count:"), 0, 0);
+
+        Text plyCountTextLeft = new Text("Ply count:");
+        plyCountTextLeft.setFont(defaultFont);
+        gridPane.add(plyCountTextLeft, 0, 0);
         gridPane.add(plyCountText, 1, 0);
+
+        Text playerOneText = new Text("Player 1 code:");
+        playerOneText.setFont(defaultFont);
+        gridPane.add(playerOneText, 0, 1);
+        Text playerOneCodeText = new Text(Integer.toString(playerOneCode));
+        playerOneCodeText.setFont(defaultFont);
+        gridPane.add(playerOneCodeText, 1, 1);
+
+        Text playerTwoText = new Text("Player 2 code:");
+        playerTwoText.setFont(defaultFont);
+        gridPane.add(playerTwoText, 0, 2);
+        Text playerTwoCodeText = new Text(Integer.toString(playerTwoCode));
+        playerTwoCodeText.setFont(defaultFont);
+        gridPane.add(playerTwoCodeText, 1, 2);
+
         root.setCenter(gridPane);
 
         // Bottom row
@@ -96,6 +124,8 @@ public class DebugWindowStage extends Stage {
         });
         stepButton.setDisable(true);
         speedSlider = new Slider();
+        speedSlider.setStyle("-fx-font: 12px 'Verdana';");
+        speedSlider.setPrefWidth(250);
         speedSlider.setMin(0);
         speedSlider.setMax(1000);
         speedSlider.setValue(1000);
@@ -105,7 +135,9 @@ public class DebugWindowStage extends Stage {
         speedSlider.valueProperty().addListener(e -> {
             delayMS = (int) speedSlider.getValue();
         });
-        bottomRow.getChildren().addAll(playPauseButton, stepButton, new Text("Delay:"), speedSlider);
+        Text delayText = new Text("Delay (ms)");
+        delayText.setFont(new Font("Verdana", 12));
+        bottomRow.getChildren().addAll(playPauseButton, stepButton, delayText, speedSlider);
         root.setBottom(bottomRow);
     }
 

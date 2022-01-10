@@ -79,11 +79,6 @@ public class GameRunner {
      * Initializes the game when it is started.
      */
     public void init(int playerOne, int playerTwo) {
-        // Opens debug window
-        if (Config.SHOW_DEBUG_WINDOW) {
-            debugWindowStage = new DebugWindowStage();
-            debugWindowStage.show();
-        }
         aiTree = new AiTree();
         expectiminimax = new Expectiminimax();
         board = new Board(this);
@@ -92,6 +87,11 @@ public class GameRunner {
         board.setPlayers(playerOne, playerTwo);
         board.setPlayerPlayers(player1, player2);
         BoardUpdater.fillGameStart(board);
+        // Opens debug window
+        if (Config.SHOW_DEBUG_WINDOW) {
+            debugWindowStage = new DebugWindowStage(this);
+            debugWindowStage.show();
+        }
         graphicsConnector.setBoard(board);
         Dice.firstMoveDiceRoll(board);
         board.checkAi();
@@ -149,5 +149,9 @@ public class GameRunner {
             }
             System.out.println();
         }
+    }
+
+    public Board getBoard() {
+        return board;
     }
 }

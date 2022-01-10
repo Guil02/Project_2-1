@@ -7,6 +7,9 @@ import utils.FenEvaluator;
 
 import java.util.ArrayList;
 
+/**
+ * Class representing a board state of the game.
+ */
 public class Board {
     private static final int BOARDSIZE = 8;
     public static boolean hasMoved = false;
@@ -26,17 +29,32 @@ public class Board {
     private boolean enPassantActive = false;
     private int enPassantColumn = 0;
 
+    /**
+     * Constructor
+     * @param gameRunner
+     */
     public Board(GameRunner gameRunner) {
         isOriginal = true;
         this.gameRunner = gameRunner;
         moves = new ArrayList<>();
     }
 
+    /**
+     * Default constructor
+     */
     public Board() {
         isOriginal = true;
         moves = new ArrayList<>();
     }
 
+    /**
+     * Private constructor
+     * @param boardModel
+     * @param graphicsConnector
+     * @param gameOver
+     * @param whiteMove
+     * @param movablePiece
+     */
     private Board(ChessPiece[][] boardModel, GraphicsConnector graphicsConnector, boolean gameOver, boolean whiteMove, char movablePiece){
         this.gameOver = gameOver;
         this.whiteMove = whiteMove;
@@ -46,6 +64,9 @@ public class Board {
         moves = new ArrayList<>();
     }
 
+    /**
+     * Switch turn from one player to the opponent
+     */
     public void changeTurn(){
         amountOfTurns++;
         whiteMove = !whiteMove;
@@ -56,13 +77,16 @@ public class Board {
         }
     }
 
+    /**
+     * Check which player got selected
+     */
     public void checkAi() {
         if(whiteMove){
-            if(player1>0){
-                if(player1==1){
+            if(player1 > 0){
+                if(player1 == 1){
                     ((SearchAgent) playerOne).launch(this);
                 }
-                else if(player1==2){
+                else if(player1 == 2){
                     ((BaselineAgent) playerOne).launch(this);
                 }
                 else if(player1 == 3){
@@ -78,25 +102,30 @@ public class Board {
         }
         else{
             if(player2 > 0){
-                if(player2==1){
+                if(player2 == 1){
                     ((SearchAgent) playerTwo).launch(this);
                 }
-                else if(player2==2){
+                else if(player2 == 2){
                     ((BaselineAgent) playerTwo).launch(this);
                 }
-                else if(player2==3){
+                else if(player2 == 3){
                     ((TDLearningAgent) playerTwo).launch(this);
                 }
-                else if(player2==4){
+                else if(player2 == 4){
                     ((TakeAgent) playerTwo).launch(this);
                 }
-                else if(player2==5){
+                else if(player2 == 5){
                     ((NNAgent) playerTwo).launch(this);
                 }
             }
         }
     }
 
+    /**
+     * Returns the amount of pieces on the board of a given piece-type.
+     * @param c Piece-type in the default notation
+     * @return
+     */
     public int getAmountOfPieces(char c){
         int count = 0;
         ChessPiece[][] model = getBoardModel();
@@ -212,11 +241,6 @@ public class Board {
 
     public void launchGuiUpdate(){
         if(Config.GUI_ON){
-//            try {
-//                Thread.sleep(1000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
             getGameRunner().debugWindowStage.incrementPlyCount();
             graphicsConnector.updateImages();
             graphicsConnector.changeTurn();
