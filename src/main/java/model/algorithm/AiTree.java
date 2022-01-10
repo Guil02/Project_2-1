@@ -8,7 +8,9 @@ import model.pieces.*;
 import java.util.ArrayList;
 
 public class AiTree {
+    private static final boolean RANDOMNESS=false;
     public AiTree() {
+
     }
 
     public void createChildren(ChessTreeNode root, boolean doEvaluation, boolean maxIsWhite){
@@ -207,8 +209,15 @@ public class AiTree {
         else if(!seenBlackKing){
             return 100;
         }
-        return value - enemyPiecesOnBoardValue + getRandomElement();
-    }
+        if(RANDOMNESS) {
+            System.out.println("Why am i doing this");
+            return value - enemyPiecesOnBoardValue + getRandomElement();
+        }
+        else {
+            return value - enemyPiecesOnBoardValue;
+        }
+        }
+
 
     private double getPieceValue(int pieceType){
         return switch (pieceType) {
@@ -224,4 +233,9 @@ public class AiTree {
     private double getRandomElement(){
         return Math.random()*10-5;
     }
+    public void setRandomness(boolean randomness) {
+
+
+    }
+
 }
