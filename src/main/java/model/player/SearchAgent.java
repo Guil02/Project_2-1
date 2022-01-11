@@ -17,7 +17,7 @@ public class SearchAgent extends Player {
     private Expectiminimax expectiminimax = new Expectiminimax();
     private ChessTreeNode maxima;
     private Board board;
-    private static final int ply = 2;
+    private static final int ply = 3;
 
     public SearchAgent(Board board) {
         this.board = board;
@@ -74,7 +74,13 @@ public class SearchAgent extends Player {
 //        int color = maxIsWhite ? 1 : -1;
 //        double res = expectiminimax.star2(root, -100, 100,(ply*2)-1,color, (ply*2)-1);
 //        System.out.println(res);
-        double maxValue = Double.MIN_VALUE;
+        double maxValue;
+        if(maxIsWhite){
+            maxValue = Double.NEGATIVE_INFINITY;
+        }
+        else{
+            maxValue = Double.POSITIVE_INFINITY;
+        }
         ArrayList<ChessTreeNode> highestNodes = new ArrayList<>();
         ChessTreeNode maxNode = (ChessTreeNode) root.getChildren().get(0);
         highestNodes.add(maxNode);

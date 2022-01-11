@@ -9,134 +9,147 @@ import gui.DebugWindow.DebugWindowStage;
 import javafx.application.Platform;
 import model.NeuralNetwork.NeuralNetwork;
 import model.algorithm.Expectiminimax;
+import model.algorithm.ExpectiminimaxStar2;
 import model.algorithm.NNTreeNode;
 import model.algorithm.TreeNode;
 import model.pieces.ChessPiece;
-import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
-import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
-import org.deeplearning4j.nn.conf.layers.DenseLayer;
-import org.deeplearning4j.nn.conf.layers.OutputLayer;
-import org.deeplearning4j.nn.gradient.Gradient;
-import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
-import org.deeplearning4j.nn.weights.WeightInit;
-import org.nd4j.linalg.activations.Activation;
-import org.nd4j.linalg.api.ndarray.INDArray;
-import org.nd4j.linalg.dataset.DataSet;
-import org.nd4j.linalg.factory.Nd4j;
-import org.nd4j.linalg.learning.config.AdaDelta;
-import org.nd4j.linalg.lossfunctions.LossFunctions;
+
+import utils.BoardEncoding;
 import utils.FenEvaluator;
+import utils.Functions;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 public class NNAgent extends Player {
     private static final int FEATURES_COUNT = 315;
     private static final int CLASSES_COUNT = 1;
-    private MultiLayerConfiguration configuration;
-    private MultiLayerNetwork model;
-    private NeuralNetwork neuralNetwork;
+    private static final int AMOUNT_OF_LAYERS = 3;
+    private static final int[] NEURONS_PER_LAYER = {13,10,1};
+    public static final int SLEEP = 100;
+    private NeuralNetwork network;
     public static final boolean LEARN = true;
-    private Expectiminimax expectiminimax;
-    private final int ply = 1;
+    private ExpectiminimaxStar2 expectiminimaxStar2;
+    private BoardEncoding encoding;
+    private final int ply = 2;
     private NNTreeNode maxima;
-    private BaselineAgent baselineAgent;
     private static final boolean DEBUG = GameRunner.DEBUG;
-    private static final boolean DO_RANDOM = false;
+    private static final String fileName = "build/classes/java/main/model/player/NNWeights2.txt";
+    private static final double lambda = 0.70;
+    private static final double alpha = 0.70;
 
     public NNAgent() {
-        configuration = new NeuralNetConfiguration.Builder()
-                .activation(Activation.RELU)
-                .weightInit(WeightInit.XAVIER)
-                .updater(new AdaDelta())
-                .l2(0.0001).list().layer(0, new DenseLayer.Builder()
-                        .nIn(FEATURES_COUNT).nOut(20).build()).
-                layer(1, new DenseLayer.Builder()
-                        .nIn(20).nOut(20).build())
-                .layer(2, new OutputLayer.Builder(
-                        LossFunctions.LossFunction.L1)
-                        .activation(Activation.TANH)
-                        .nIn(20).nOut(CLASSES_COUNT).build())
-                .build();
+        expectiminimaxStar2 = new ExpectiminimaxStar2(true);
+        encoding = new BoardEncoding();
+        network = new NeuralNetwork(AMOUNT_OF_LAYERS, NEURONS_PER_LAYER);
+        network.setRELU(0,1);
+        network.setTAHN(2);
+        network.setWeights(Functions.readInWeights(fileName));
+//        Functions.writeWeights(network.getWeights(), fileName);
 
-        model = new MultiLayerNetwork(configuration);
-        model.init();
-        neuralNetwork = new NeuralNetwork();
-        expectiminimax = new Expectiminimax();
-        baselineAgent = new BaselineAgent();
     }
 
-    public void learn(ArrayList<Board> errorBoards, ArrayList<Double> errors){
-        double[][] err = new double[1][CLASSES_COUNT];
-        err[0][0]=errors.get(0);
-        INDArray err2 = Nd4j.create(err);
-        model.setLabels(err2);
-        model.computeGradientAndScore();
-        Gradient gradient = model.gradient();
-        INDArray gradientArray = gradient.gradient();
-        System.out.println(gradientArray);
+    public void learn(Board board){
+        ArrayList<String> states = board.getBoardStates();
+        ArrayList<Double> weights = network.getWeights();
+        ArrayList<Double> evals = evaluateAllBoards(states);
+        ArrayList<ArrayList<Double>> gradients = getAllGradients(states);
+//        for(int i = 0; i<gradients.size(); i++){
+//            for(int j = 0; j<gradients.get(i).size(); j++){
+//                gradients.get(i).set(j, gradients.get(i).get(j)/100);
+//            }
+//        }
+        System.out.println("Started Learning");
+        ArrayList<Double> deltaW = new ArrayList<>();
+        for(int i = 0; i<weights.size(); i++){
+            deltaW.add(0.0);
+        }
+        System.out.println(deltaW.size());
+        System.out.println(weights.size());
+        System.out.println(gradients.get(0).size());
+
+        for(int i = 0; i<states.size()-1; i++){
+            for(int j = 0; j<deltaW.size(); j++){
+                double element = alpha * (evals.get(i + 1) - evals.get(i)) * gradientSum(gradients, i, j);
+                if(Double.isNaN(element)){
+                    System.err.println("Found an NaN deltaW at i = "+i+" and j = "+j);
+                }
+                deltaW.set(j, element);
+            }
+            updateWeights(weights, deltaW);
+        }
+        network.setWeights(weights);
+        Functions.writeWeights(weights, fileName);
+        System.out.println(evals);
+        System.out.println(weights);
+        System.out.println("Finished learning");
+        board.getGameRunner().reset();
     }
 
-    public double[] evaluation(Board board) {
-        double[] val = neuralNetwork.boardToArray(board);
-        double[][] temp = {val};
-        INDArray input = Nd4j.create(temp);
-        INDArray res = model.output(input);
-        double[][] output = res.toDoubleMatrix(); //TODO REMOVE USAGE TO IMPROVE SPEED, DOCUMENTATION MENTIONS THAT IT IS SLOW
+    public double gradientSum(ArrayList<ArrayList<Double>> gradients, int finalIndex, int weightIndex){
+        double val = 0;
+        for(int i = 0; i<finalIndex; i++){
+            val+=gradients.get(i).get(weightIndex);
+        }
+        return val;
+    }
+
+    public ArrayList<ArrayList<Double>> getAllGradients(ArrayList<String> states){
+        ArrayList<ArrayList<Double>> gradients = new ArrayList<>();
+        for(int i = 0; i<states.size(); i++){
+            network.computeTDGradient(encoding.boardToArray2(FenEvaluator.read(states.get(i))));
+            gradients.add(network.getGradient());
+        }
+        return gradients;
+    }
+
+    public ArrayList<Double> evaluateAllBoards(ArrayList<String> states){
+        ArrayList<Double> evals = new ArrayList<>();
+        for(int i = 0; i<states.size(); i++){
+            evals.add(evaluation(FenEvaluator.read(states.get(i))));
+        }
+        return evals;
+    }
+
+    private void updateWeights(ArrayList<Double> weights, ArrayList<Double> deltaW){
+        for(int i = 0; i<deltaW.size(); i++){
+            weights.set(i, weights.get(i)+deltaW.get(i));
+        }
+    }
+
+    public double evaluation(Board board) {
+        if(!board.containsKing(true)){
+            return -1;
+        }
+        else if(!board.containsKing(false)){
+            return 1;
+        }
+        double[] input = encoding.boardToArray2(board);
+        double[] output = network.forwardPropagate(input);
         return output[0];
-    }
-
-    public void learn(Board endBoard,ArrayList<String> fens, double[] endEval){
-        System.out.println("learning");
-        ArrayList<Board> boards = new ArrayList<>();
-        double[][] evals = new double[fens.size()][2];
-        for(int i = 0; i<fens.size(); i++){
-            Board temp = FenEvaluator.read(fens.get(i));
-            boards.add(temp);
-            evals[i] = endEval;
-        }
-        learn(boards, evals);
-        System.out.println("done");
-        Board defaultBoard = new Board();
-        BoardUpdater.fillGameStart(defaultBoard);
-        double[][] data = {neuralNetwork.boardToArray(defaultBoard)};
-        System.out.println(model.output(Nd4j.create(data)));
-        endBoard.getGameRunner().reset();
-    }
-
-    public void learn(ArrayList<Board> boards, double[][] endEval){
-        double[][] trainSet = new double[boards.size()][FEATURES_COUNT];
-        for(int i = 0; i<boards.size(); i++){
-            trainSet[i] = neuralNetwork.boardToArray(boards.get(i));
-        }
-        INDArray input = Nd4j.create(trainSet);
-        INDArray labels = Nd4j.create(endEval);
-        DataSet data = new DataSet(input, labels);
-        model.fit(data);
-        try {
-            model.save(new File("model"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void learn(DataSet data){
-        model.fit(data);
-        try {
-            model.save(new File("model"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public void runAgent(Board board){
         Board copy = board.clone();
         boolean maxIsWhite = board.getWhiteMove();
-        NNTreeNode root = new NNTreeNode(copy, 0, null, 1, 1, 0, 0, 0, 0, maxIsWhite, this);
-        expectiminimax.expectiminimax(root, (ply*2)-1, (ply*2)-1);
-        double maxValue = Double.MIN_VALUE;
+        NNTreeNode root;
+        if(maxIsWhite){
+            root = new NNTreeNode(copy, 0, null, 1, 1, 0, 0, 0, 0, maxIsWhite, this);
+        }
+        else{
+            root = new NNTreeNode(copy, 0, null, 2, 1, 0, 0, 0, 0, maxIsWhite, this);
+        }
+        expectiminimaxStar2.expectiminimax(root, (ply*2)-1, (ply*2)-1);
+        double maxValue;
+        if(maxIsWhite){
+            maxValue = Double.NEGATIVE_INFINITY;
+        }
+        else{
+            maxValue = Double.POSITIVE_INFINITY;
+        }
         ArrayList<NNTreeNode> highestNodes = new ArrayList<>();
         NNTreeNode maxNode;
         try{
@@ -148,14 +161,27 @@ public class NNAgent extends Player {
         highestNodes.add(maxNode);
         for (TreeNode child : root.getChildren()) {
             NNTreeNode subChild = (NNTreeNode) child;
-            if (subChild.getValue() >= maxValue) {
-                if (subChild.getValue() == maxValue) {
+            if(maxIsWhite){
+                if (subChild.getValue() >= maxValue) {
+                    if (subChild.getValue() == maxValue) {
+                        highestNodes.add(subChild);
+                        continue;
+                    }
+                    highestNodes.clear();
                     highestNodes.add(subChild);
-                    continue;
+                    maxValue = subChild.getValue();
                 }
-                highestNodes.clear();
-                highestNodes.add(subChild);
-                maxValue = subChild.getValue();
+            }
+            else{
+                if (subChild.getValue() <= maxValue) {
+                    if (subChild.getValue() == maxValue) {
+                        highestNodes.add(subChild);
+                        continue;
+                    }
+                    highestNodes.clear();
+                    highestNodes.add(subChild);
+                    maxValue = subChild.getValue();
+                }
             }
         }
         Random rand = new Random();
@@ -164,9 +190,7 @@ public class NNAgent extends Player {
     }
 
     public void launch(Board board){
-        System.gc();
         new Thread(() -> {
-            if(!DO_RANDOM) {
             try {
                 // Stop if game is on pause
                 if (DebugWindowStage.isOnPause) {
@@ -201,36 +225,11 @@ public class NNAgent extends Player {
                 System.err.println("Piece might already have been moved due to glitch in the threading");
                 e.printStackTrace();
             }
-            }
-            else{
-                baselineAgent.launch(board);
-            }
         }).start();
     }
 
     public NNTreeNode getMaxima() {
         return maxima;
-    }
-
-    public double[] computeEndEval(Board board){
-        double[] endEval = new double[2];
-        endEval[0]=0.5;
-        endEval[1]=0.5;
-        if(BoardUpdater.containsKing(board, true)) {
-            endEval[0] = 1;
-            endEval[1] = 0;
-            if(DEBUG){
-                System.out.println("White has won");
-            }
-        }
-        else{
-            endEval[0] = 0;
-            endEval[1] = 1;
-            if(DEBUG){
-                System.out.println("Black has won");
-            }
-        }
-        return endEval;
     }
 
     public int getPieceType(char pieceType){
@@ -293,13 +292,7 @@ public class NNAgent extends Player {
         copy.setMovablePiece(movablePiece);
         double value = 0;
         if(doEvaluation){
-            double[] temp = evaluation(copy);
-            if(maxIsWhite){
-                value = temp[0];
-            }
-            else{
-                value = temp[0];
-            }
+            value = evaluation(copy);
         }
         NNTreeNode child = new NNTreeNode(copy,value, parent, nodeType, probability, 0,0,0,0, parent.isMaxIsWhite(), parent.getMctsAgent());
         parent.addChild(child);
@@ -323,13 +316,7 @@ public class NNAgent extends Player {
 
                     double value = 0;
                     if(doEvaluation){
-                        double[] temp = evaluation(copy);
-                        if(maxIsWhite){
-                            value = temp[0];
-                        }
-                        else{
-                            value = temp[0];
-                        }
+                        value = evaluation(copy);
                     }
 
                     NNTreeNode child = new NNTreeNode(copy, value,parent,nodeType,1,piece.getX(),piece.getY(),i,j, parent.isMaxIsWhite(), parent.getMctsAgent());
@@ -347,13 +334,7 @@ public class NNAgent extends Player {
 
         double value = 0;
         if(doEvaluation){
-            double[] temp = evaluation(copy);
-            if(maxIsWhite){
-                value = temp[0];
-            }
-            else{
-                value = temp[0];
-            }
+            value = evaluation(copy);
         }
 
         NNTreeNode child = new NNTreeNode(copy, value,parent,nodeType,1,piece.getX(),piece.getY(),xTo,yTo, parent.isMaxIsWhite(), parent.getMctsAgent());
@@ -377,24 +358,4 @@ public class NNAgent extends Player {
             return false;
         }
     }
-
-    public Board doMove(Board board){
-        runAgent(board);
-        NNTreeNode move = maxima;
-        Board clone = board.clone();
-        if(move.isDoPromotion()){
-            boolean isWhite = clone.getPieceOffField(move.getxFrom(), move.getyFrom()).isWhite();
-            int pieceType = getPieceType(move.getBoard().getCharOffField(move.getxTo(), move.getyTo()));
-            ChessPiece promoted = BoardUpdater.createPiece(isWhite, move.getxTo(), move.getyTo(), pieceType);
-            BoardUpdater.removePiece(clone, move.getxFrom(), move.getyFrom());
-            BoardUpdater.addPiece(clone, promoted);
-            if(!BoardUpdater.containsKing(clone, !isWhite)){
-                board.setGameOver(true);
-            }
-        }
-        else BoardUpdater.movePiece(clone, move.getxFrom(), move.getyFrom(), move.getxTo(), move.getyTo());
-        return clone;
-    }
-
-
 }
