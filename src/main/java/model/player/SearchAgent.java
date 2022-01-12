@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class SearchAgent extends Player {
-    private AiTree aiTree = new AiTree();
     private Expectiminimax expectiminimax = new Expectiminimax();
     private ChessTreeNode maxima;
     private Board board;
@@ -22,7 +21,6 @@ public class SearchAgent extends Player {
     }
 
     public void runAgent(Board board) {
-//        System.out.println(board.getWhiteMove());
         Board copy = board.clone();
         boolean maxIsWhite = board.getWhiteMove();
         ChessTreeNode root;
@@ -33,12 +31,6 @@ public class SearchAgent extends Player {
             root = new ChessTreeNode(copy, 0, null, 2, 1, 0, 0, 0, 0);
         }
         double res = expectiminimax.expectiminimax(root, (ply*2)-1, (ply*2)-1);
-//        NegaMax negaMax = new NegaMax(-100,100);
-//        int color = board.getWhiteMove() ? 1:-1;
-//        double res = negaMax.star2(root, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, (ply*2)-1, color, (ply*2)-1);
-//        int color = maxIsWhite ? 1 : -1;
-//        double res = expectiminimax.star2(root, -100, 100,(ply*2)-1,color, (ply*2)-1);
-//        System.out.println(res);
         double maxValue;
         if(maxIsWhite){
             maxValue = Double.NEGATIVE_INFINITY;
@@ -76,11 +68,8 @@ public class SearchAgent extends Player {
             }
         }
         Random rand = new Random();
-//        System.out.println(highestNodes.size());
         maxNode = highestNodes.get(rand.nextInt(highestNodes.size()));
 
-//        System.out.println("move from: x=" + maxNode.getxFrom() + " y=" + maxNode.getyFrom() + " to: x=" + maxNode.getxTo() + " y=" + maxNode.getyTo());
-//        printBoard(board.getBoardModel(), board);
         maxima = maxNode;
     }
 
