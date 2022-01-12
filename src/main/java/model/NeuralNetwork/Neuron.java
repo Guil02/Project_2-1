@@ -9,7 +9,7 @@ public class Neuron {
     private double weight[];
     private double bias;
     private double[] weight_gradient;
-    private double temp_grad = 1;
+    private double temp_grad = 0;
     private double value  = 0;
 
     /**
@@ -83,7 +83,8 @@ public class Neuron {
                 "\nweight=" + Arrays.toString(weight) +
                 ",\n bias=" + bias +
                 ",\n weight_gradient=" + Arrays.toString(weight_gradient) +
-                ",\n value=" + value + "\n" +
+                ",\n value=" + value +
+                ",\n temp_grad=" + getTemp_grad() + "\n" +
                 '}';
     }
 

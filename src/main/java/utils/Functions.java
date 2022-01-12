@@ -35,6 +35,18 @@ public class Functions{
         }
     }
 
+    public static void appendWeights(ArrayList<Double> weights, String fileName){
+        try(FileWriter fileWriter = new FileWriter(fileName, true)) {
+            fileWriter.write("NEW ITERATION: \n");
+            for (Double weight : weights) {
+                fileWriter.write(weight + ", ");
+            }
+            fileWriter.write("\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static double tanh(double x){
         if(x<100){
 

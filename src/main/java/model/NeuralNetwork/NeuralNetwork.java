@@ -87,7 +87,14 @@ public class NeuralNetwork {
                     double temp_grad = current.getWeight()[k]*derivativeActivation*current.getTemp_grad();
                     temp_grad = temp_grad + layers[i-1].getNeurons()[k].getTemp_grad();
                     layers[i-1].getNeurons()[k].setTemp_grad(temp_grad);
-                    double gradient = layers[i-1].getNeurons()[k].getValue()*derivativeActivation*current.getTemp_grad();
+                    double gradient;
+                    if( i == layers.length-1){
+                        gradient = layers[i-1].getNeurons()[k].getValue()*derivativeActivation;
+                    }
+                    else{
+                        gradient = layers[i-1].getNeurons()[k].getValue()*derivativeActivation*current.getTemp_grad();
+                    }
+
                     current.setWeight_gradient(gradient, k);
                 }
             }
@@ -112,9 +119,18 @@ public class NeuralNetwork {
 
                     double previousValue = previousNeuron.getValue();
                     double derivative = doDerivativeActivation(val, layers[i].getActivation());
-                    double gradient = previousValue * derivative * current.getTemp_grad();
 
                     double temp_grad = previousNeuron.getTemp_grad() + current.getWeight()[k]*derivative;
+
+                    double gradient;
+                    if(i==layers.length-1){
+                        gradient = previousValue * derivative;
+                    }
+                    else {
+                        gradient = previousValue * derivative * current.getTemp_grad();
+                    }
+
+
                     previousNeuron.setTemp_grad(temp_grad);
                     current.setWeight_gradient(gradient, k);
 
@@ -126,7 +142,7 @@ public class NeuralNetwork {
     private void resetTempGrad() {
         for(int i = 0; i<layers.length; i++){
             for(int j = 0; j<layers[i].getNeurons().length; j++){
-                layers[i].getNeurons()[j].setTemp_grad(1);
+                layers[i].getNeurons()[j].setTemp_grad(0);
             }
         }
     }

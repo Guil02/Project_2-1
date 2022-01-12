@@ -31,8 +31,9 @@ public class NNAgent extends Player {
     private NNTreeNode maxima;
     private static final boolean DEBUG = Config.DEBUG;
     private static final String fileName = "build/classes/java/main/model/player/NNWeights2.txt";
+    private static final String allWeights = "build/classes/java/main/model/player/trainingData.txt";
     private static final double lambda = 0.70;
-    private static final double alpha = 0.10;
+    private static final double alpha = 0.70;
     private static final double gamma = 0.70;
     private static boolean initialized = false;
 
@@ -54,11 +55,12 @@ public class NNAgent extends Player {
 
 
     public void learn(Board board){
+
+        ArrayList<String> states = board.getBoardStates();
         if(DEBUG) {
             System.out.println("Started learning");
+            printEvaluations(states);
         }
-        ArrayList<String> states = board.getBoardStates();
-        printEvaluations(states);
         ArrayList<Double> weights = network.getWeights();
         ArrayList<Double> z = initializeZ(weights);
 
@@ -80,22 +82,26 @@ public class NNAgent extends Player {
         }
         network.setWeights(weights);
         Functions.writeWeights(weights, fileName);
+        Functions.appendWeights(weights, allWeights);
         if(DEBUG) {
             System.out.println("new weights: " + weights);
         }
-//        board.getGameRunner().reset();
+        board.getGameRunner().reset();
     }
 
     private void printEvaluations(ArrayList<String> states) {
+        ArrayList<Double> evals = new ArrayList<>();
         for(int i = 0; i<states.size(); i++){
-            System.out.println(evaluation(FenEvaluator.read(states.get(i))));
+            evals.add(evaluation(FenEvaluator.read(states.get(i))));
         }
+            System.out.println(evals);
     }
 
     private void updateWeights(ArrayList<Double> weights, ArrayList<Double> z, double delta){
         int amountOfWeights = weights.size();
         for(int i = 0; i<amountOfWeights; i++){
             double newValue = weights.get(i) + alpha*delta*z.get(i);
+
             weights.set(i, newValue);
         }
     }
@@ -111,7 +117,7 @@ public class NNAgent extends Player {
         int amountOfWeights = z.size();
 
         double[] input = encoding.boardToArray2(state);
-        network.computeTDGradient(input);
+        network.computeGradient(input);
         ArrayList<Double> gradient = network.getGradient();
 //        System.out.println("Gradient: "+gradient);
         for(int i = 0; i<amountOfWeights; i++){
@@ -188,7 +194,7 @@ public class NNAgent extends Player {
     public ArrayList<ArrayList<Double>> getAllGradients(ArrayList<String> states){
         ArrayList<ArrayList<Double>> gradients = new ArrayList<>();
         for(int i = 0; i<states.size(); i++){
-            network.computeTDGradient(encoding.boardToArray2(FenEvaluator.read(states.get(i))));
+            network.computeGradient(encoding.boardToArray2(FenEvaluator.read(states.get(i))));
             gradients.add(network.getGradient());
         }
         return gradients;
