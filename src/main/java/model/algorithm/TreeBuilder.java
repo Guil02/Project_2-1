@@ -112,7 +112,8 @@ public class TreeBuilder {
 
 
         double value = 0;
-        TreeNode child = new ChessTreeNode(copy, value,parent,nodeType,1,piece.getX(),piece.getY(),xTo,yTo);
+        double probability = 1;
+        TreeNode child = childCreate(copy, value, parent, nodeType, probability, piece.getX(), piece.getY(), xTo, yTo);
         if(doEvaluation){
             child.evaluate();
         }

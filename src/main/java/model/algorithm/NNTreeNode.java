@@ -22,6 +22,7 @@ public class NNTreeNode extends TreeNode{
         this.board = board;
         this.nnAgent = nnAgent;
         treeBuilder = new TreeBuilder();
+        setObjectType(1);
     }
 
     @Override

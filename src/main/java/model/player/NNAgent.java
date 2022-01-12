@@ -67,9 +67,9 @@ public class NNAgent extends Player {
         for(int i = 0; i<weights.size(); i++){
             deltaW.add(0.0);
         }
-        System.out.println(deltaW.size());
-        System.out.println(weights.size());
-        System.out.println(gradients.get(0).size());
+//        System.out.println(deltaW.size());
+//        System.out.println(weights.size());
+//        System.out.println(gradients.get(0).size());
 
         for(int i = 0; i<states.size()-1; i++){
             for(int j = 0; j<deltaW.size(); j++){
