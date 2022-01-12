@@ -14,7 +14,7 @@ public class NeuralNetwork {
     public static final boolean DEBUG = false;
     private Layer[] layers;
 
-    public NeuralNetwork(int amountOfLayers, int[] neuronsPerLayer, int min, int max) {
+    public NeuralNetwork(int amountOfLayers, int[] neuronsPerLayer, double min, double max) {
         Neuron.setWeightRange(min,max);
         layers = new Layer[amountOfLayers];
         for(int i = 1; i<amountOfLayers; i++){
@@ -35,11 +35,7 @@ public class NeuralNetwork {
         layers[0] = new Layer(input);
         for(int i = 1; i<layers.length; i++){
             for(int j = 0; j<layers[i].getNeurons().length; j++){
-                double val = 0;
-                for(int k = 0; k<layers[i-1].getNeurons().length; k++){
-                    val += layers[i-1].getNeurons()[k].getValue()*layers[i].getNeurons()[j].getWeight()[k];
-                }
-                val += layers[i].getNeurons()[j].getBias();
+                double val = calculateNeuronValue(i, j);
                 if(DEBUG){
                     System.out.println("val: "+(val-layers[i].getNeurons()[j].getBias()));
                     System.out.println("val+bias: "+val);
@@ -55,19 +51,69 @@ public class NeuralNetwork {
         return output;
     }
 
+    private double calculateNeuronValue(int i, int j) {
+        double val = 0;
+        for(int k = 0; k<layers[i -1].getNeurons().length; k++){
+            val += layers[i -1].getNeurons()[k].getValue()*layers[i].getNeurons()[j].getWeight()[k];
+        }
+        val += layers[i].getNeurons()[j].getBias();
+        return val;
+    }
+
+//    public void computeTDGradient(double[] input){
+//        forwardPropagate(input);
+//        for(int i = layers.length-1; i>0; i--){
+//            for(int j = 0; j<layers[i].getNeurons().length; j++){
+//                Neuron current = layers[i].getNeurons()[j];
+//                double val = calculation(i, j);
+//
+//                for(int k = 0; k<layers[i-1].getNeurons().length; k++){
+//                    double gradient = layers[i - 1].getNeurons()[k].getValue() * doDerivativeActivation(val, layers[i].getActivation());
+//                    current.setWeight_gradient(gradient,k);
+//                }
+//            }
+//        }
+//    }
+
     public void computeTDGradient(double[] input){
         forwardPropagate(input);
         for(int i = layers.length-1; i>0; i--){
             for(int j = 0; j<layers[i].getNeurons().length; j++){
                 Neuron current = layers[i].getNeurons()[j];
-                double val = 0;
-                for(int k = 0; k<layers[i-1].getNeurons().length; k++){
-                    val += layers[i-1].getNeurons()[k].getValue()*layers[i].getNeurons()[j].getWeight()[k];
-                }
-                val += layers[i].getNeurons()[j].getBias();
+                double val = calculateNeuronValue(i,j);
 
                 for(int k = 0; k<layers[i-1].getNeurons().length; k++){
-                    current.setWeight_gradient(layers[i-1].getNeurons()[k].getValue()*doDerivativeActivation(val,layers[i].getActivation()),k);
+                    double derivativeActivation = doDerivativeActivation(val, layers[i].getActivation());
+                    double temp_grad = current.getWeight()[k]*derivativeActivation*current.getTemp_grad();
+                    temp_grad = temp_grad + layers[i-1].getNeurons()[k].getTemp_grad();
+                    layers[i-1].getNeurons()[k].setTemp_grad(temp_grad);
+                    double gradient = layers[i-1].getNeurons()[k].getValue()*derivativeActivation*current.getTemp_grad();
+                    current.setWeight_gradient(gradient, k);
+                }
+            }
+        }
+    }
+
+
+    public void computeGradient(double[] input){
+        forwardPropagate(input);
+        resetTempGrad();
+        for(int i = layers.length-1; i>0; i--){
+
+            int amountOfNeurons = layers[i].getNeurons().length;
+            for(int j = 0; j< amountOfNeurons; j++){
+
+                Neuron current = layers[i].getNeurons()[j];
+                double val = calculateNeuronValue(i,j);
+                for(int k = 0; k<layers[i-1].getNeurons().length; k++){
+                    Neuron previousNeuron = layers[i - 1].getNeurons()[k];
+
+                    double previousValue = previousNeuron.getValue();
+                    double derivative = doDerivativeActivation(val, layers[i].getActivation());
+                    double gradient = previousValue * derivative * current.getTemp_grad();
+
+                    double temp_grad = previousNeuron.getTemp_grad() + current.getWeight()[k]*derivative;
+                    previousNeuron.setTemp_grad(temp_grad);
                 }
             }
         }
@@ -138,10 +184,10 @@ public class NeuralNetwork {
         }
     }
 
-    public void setTAHN(int... layerNumber){
+    public void setTANH(int... layerNumber){
         for(int i = 0; i< layerNumber.length; i++){
             try{
-                layers[layerNumber[i]].setActivation(0);
+                layers[layerNumber[i]].setActivation(ActivationEnum.TANH.getId());
             }
             catch (NullPointerException e){
                 System.err.println("The layer you have tried to access wasn't initialize yet");
@@ -151,13 +197,23 @@ public class NeuralNetwork {
 
     public void setSIGMOID(int... layerNumber){
         for(int i = 0; i< layerNumber.length; i++){
-            layers[layerNumber[i]].setActivation(1);
+            try{
+                layers[layerNumber[i]].setActivation(ActivationEnum.SIGMOID.getId());
+            }
+            catch (NullPointerException e){
+                System.err.println("The layer you have tried to access wasn't initialize yet");
+            }
         }
     }
 
     public void setRELU(int... layerNumber){
         for(int i = 0; i< layerNumber.length; i++){
-            layers[layerNumber[i]].setActivation(2);
+            try{
+                layers[layerNumber[i]].setActivation(ActivationEnum.RELU.getId());
+            }
+            catch (NullPointerException e){
+                System.err.println("The layer you have tried to access wasn't initialize yet");
+            }
         }
     }
 
@@ -172,5 +228,13 @@ public class NeuralNetwork {
         return "NeuralNetwork{" +
                 "layers=" + Arrays.toString(layers) +
                 '}';
+    }
+
+    public void setBias(int a) {
+        for(int i = 0; i<layers.length; i++){
+            for(int j = 0; j<layers[i].getNeurons().length; j++){
+                layers[i].getNeurons()[j].setBias(a);
+            }
+        }
     }
 }

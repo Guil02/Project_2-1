@@ -9,6 +9,7 @@ public class Neuron {
     private double weight[];
     private double bias;
     private double[] weight_gradient;
+    private double temp_grad = 1;
     private double value  = 0;
 
     /**
@@ -66,6 +67,16 @@ public class Neuron {
         this.weight_gradient = weight_gradient;
     }
 
+    public double getTemp_grad() {
+        return temp_grad;
+    }
+
+    public void setTemp_grad(double temp_grad) {
+        this.temp_grad = temp_grad;
+    }
+
+
+
     @Override
     public String toString() {
         return "\nNeuron{" +
@@ -74,5 +85,9 @@ public class Neuron {
                 ",\n weight_gradient=" + Arrays.toString(weight_gradient) +
                 ",\n value=" + value + "\n" +
                 '}';
+    }
+
+    public void setBias(int a) {
+        this.bias = a;
     }
 }

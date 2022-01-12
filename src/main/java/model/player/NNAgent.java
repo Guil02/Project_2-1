@@ -2,24 +2,17 @@ package model.player;
 
 import config.Config;
 import controller.Board;
-import controller.BoardUpdater;
-import controller.Dice;
 import controller.GameRunner;
-import gui.DebugWindow.DebugWindowStage;
-import javafx.application.Platform;
 import model.NeuralNetwork.NeuralNetwork;
-import model.algorithm.Expectiminimax;
 import model.algorithm.ExpectiminimaxStar2;
 import model.algorithm.NNTreeNode;
 import model.algorithm.TreeNode;
-import model.pieces.ChessPiece;
 
 import utils.BoardEncoding;
 import utils.FenEvaluator;
 import utils.Functions;
+import utils.NodeEnum;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -30,7 +23,7 @@ public class NNAgent extends Player {
     private static final int AMOUNT_OF_LAYERS = 3;
     private static final int[] NEURONS_PER_LAYER = {13,10,1};
     public static final int SLEEP = 100;
-    private NeuralNetwork network;
+    private static NeuralNetwork network;
     public static final boolean LEARN = true;
     private ExpectiminimaxStar2 expectiminimaxStar2;
     private BoardEncoding encoding;
@@ -39,20 +32,115 @@ public class NNAgent extends Player {
     private static final boolean DEBUG = GameRunner.DEBUG;
     private static final String fileName = "build/classes/java/main/model/player/NNWeights2.txt";
     private static final double lambda = 0.70;
-    private static final double alpha = 0.70;
+    private static final double alpha = 0.10;
+    private static final double gamma = 0.70;
+    private static boolean initialized = false;
 
     public NNAgent() {
         expectiminimaxStar2 = new ExpectiminimaxStar2(true);
         encoding = new BoardEncoding();
-        network = new NeuralNetwork(AMOUNT_OF_LAYERS, NEURONS_PER_LAYER);
-        network.setRELU(0,1);
-        network.setTAHN(2);
-        network.setWeights(Functions.readInWeights(fileName));
+        if(!initialized){
+            network = new NeuralNetwork(AMOUNT_OF_LAYERS, NEURONS_PER_LAYER);
+            network.setRELU(0,1);
+            network.setTANH(2);
+            network.setWeights(Functions.readInWeights(fileName));
+            System.out.println(Functions.readInWeights(fileName));
+            initialized = true;
+        }
 //        Functions.writeWeights(network.getWeights(), fileName);
 
     }
 
+
+
     public void learn(Board board){
+        if(DEBUG) {
+            System.out.println("Started learning");
+        }
+        ArrayList<String> states = board.getBoardStates();
+        printEvaluations(states);
+        ArrayList<Double> weights = network.getWeights();
+        ArrayList<Double> z = initializeZ(weights);
+
+        int amountOfTurns = states.size();
+        int finalIteration = amountOfTurns-1;
+        Board S = FenEvaluator.read(states.get(0));
+
+        for(int i = 1; i<amountOfTurns; i++){
+            double R = giveReward(board, i, finalIteration);
+            Board newS = FenEvaluator.read(states.get(i));
+
+            evaluateZ(z, S);
+
+            double delta = evaluateDelta(R, S, newS);
+
+            updateWeights(weights, z, delta);
+
+            S = newS;
+        }
+        network.setWeights(weights);
+        Functions.writeWeights(weights, fileName);
+        if(DEBUG) {
+            System.out.println("new weights: " + weights);
+        }
+//        board.getGameRunner().reset();
+    }
+
+    private void printEvaluations(ArrayList<String> states) {
+        for(int i = 0; i<states.size(); i++){
+            System.out.println(evaluation(FenEvaluator.read(states.get(i))));
+        }
+    }
+
+    private void updateWeights(ArrayList<Double> weights, ArrayList<Double> z, double delta){
+        int amountOfWeights = weights.size();
+        for(int i = 0; i<amountOfWeights; i++){
+            double newValue = weights.get(i) + alpha*delta*z.get(i);
+            weights.set(i, newValue);
+        }
+    }
+
+    private double evaluateDelta(double r, Board s, Board newS) {
+        double outputState = evaluation(s);
+        double outputNewState = evaluation(newS);
+        double delta = r + gamma*outputNewState - outputState;
+        return delta;
+    }
+
+    private void evaluateZ(ArrayList<Double> z, Board state){
+        int amountOfWeights = z.size();
+
+        double[] input = encoding.boardToArray2(state);
+        network.computeTDGradient(input);
+        ArrayList<Double> gradient = network.getGradient();
+//        System.out.println("Gradient: "+gradient);
+        for(int i = 0; i<amountOfWeights; i++){
+            double newValue = gamma*lambda*z.get(i) + gradient.get(i);
+            z.set(i, newValue);
+        }
+
+    }
+
+
+
+    private int giveReward(Board board, int index, int finalIteration) {
+        if(index==finalIteration){
+            if(whiteWinGame(board)) {
+                return 1;
+            }
+            else return -1;
+        }
+        else return 0;
+    }
+
+
+    public boolean whiteWinGame(Board board){
+        return board.containsKing(true);
+    }
+
+
+
+    public void learnt(Board board){
         ArrayList<String> states = board.getBoardStates();
         ArrayList<Double> weights = network.getWeights();
         ArrayList<Double> evals = evaluateAllBoards(states);
@@ -75,7 +163,7 @@ public class NNAgent extends Player {
             for(int j = 0; j<deltaW.size(); j++){
                 double element = alpha * (evals.get(i + 1) - evals.get(i)) * gradientSum(gradients, i, j);
                 if(Double.isNaN(element)){
-                    System.err.println("Found an NaN deltaW at i = "+i+" and j = "+j);
+                    throw new RuntimeException("Found an NaN deltaW at i = "+i+" and j = "+j);
                 }
                 deltaW.set(j, element);
             }
@@ -91,8 +179,8 @@ public class NNAgent extends Player {
 
     public double gradientSum(ArrayList<ArrayList<Double>> gradients, int finalIndex, int weightIndex){
         double val = 0;
-        for(int i = 0; i<finalIndex; i++){
-            val+=gradients.get(i).get(weightIndex);
+        for(int i = 0; i<finalIndex+1; i++){
+            val+=Math.pow(lambda, finalIndex-i)*gradients.get(i).get(weightIndex);
         }
         return val;
     }
@@ -137,10 +225,10 @@ public class NNAgent extends Player {
         boolean maxIsWhite = board.getWhiteMove();
         NNTreeNode root;
         if(maxIsWhite){
-            root = new NNTreeNode(copy, 0, null, 1, 1, 0, 0, 0, 0, this);
+            root = new NNTreeNode(copy, 0, null, NodeEnum.MAX_NODE.getId(), 1, 0, 0, 0, 0, this);
         }
         else{
-            root = new NNTreeNode(copy, 0, null, 2, 1, 0, 0, 0, 0, this);
+            root = new NNTreeNode(copy, 0, null, NodeEnum.MIN_NODE.getId(), 1, 0, 0, 0, 0, this);
         }
         expectiminimaxStar2.expectiminimax(root, (ply*2)-1, (ply*2)-1);
         double maxValue;
