@@ -29,7 +29,7 @@ public class NNAgent extends Player {
     private BoardEncoding encoding;
     private final int ply = 2;
     private NNTreeNode maxima;
-    private static final boolean DEBUG = GameRunner.DEBUG;
+    private static final boolean DEBUG = Config.DEBUG;
     private static final String fileName = "build/classes/java/main/model/player/NNWeights2.txt";
     private static final double lambda = 0.70;
     private static final double alpha = 0.10;
@@ -293,5 +293,13 @@ public class NNAgent extends Player {
                 return 5;
         }
         return 0;
+    }
+
+    private ArrayList<Double> initializeZ(ArrayList<Double> weights) {
+        ArrayList<Double> z = new ArrayList<>();
+        for(int i = 0; i< weights.size(); i++){
+            z.add(0.0);
+        }
+        return z;
     }
 }

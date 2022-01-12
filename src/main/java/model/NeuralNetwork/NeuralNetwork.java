@@ -119,6 +119,15 @@ public class NeuralNetwork {
         }
     }
 
+    private void resetTempGrad() {
+        for(int i = 0; i<layers.length; i++){
+            for(int j = 0; j<layers[i].getNeurons().length; j++){
+                layers[i].getNeurons()[j].setTemp_grad(0);
+            }
+        }
+    }
+
+
     public ArrayList<Double> getGradient(){
         ArrayList<Double> gradient = new ArrayList<>();
         for(int i = 1; i<layers.length; i++){
@@ -219,7 +228,12 @@ public class NeuralNetwork {
 
     public void setLeakyRELU(int... layerNumber){
         for(int i = 0; i< layerNumber.length; i++){
-            layers[layerNumber[i]].setActivation(3);
+            try{
+                layers[layerNumber[i]].setActivation(ActivationEnum.LEAKY_RELU.getId());
+            }
+            catch (NullPointerException e){
+                System.err.println("The layer you have tried to access wasn't initialize yet");
+            }
         }
     }
 
