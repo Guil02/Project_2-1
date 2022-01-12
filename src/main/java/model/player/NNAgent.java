@@ -21,16 +21,15 @@ public class NNAgent extends Player {
     private static final int FEATURES_COUNT = 315;
     private static final int CLASSES_COUNT = 1;
     private static final int AMOUNT_OF_LAYERS = 3;
-    private static final int[] NEURONS_PER_LAYER = {13,10,1};
-    public static final int SLEEP = 100;
+    private static final int[] NEURONS_PER_LAYER = {46,10,1};
     private static NeuralNetwork network;
     public static final boolean LEARN = true;
     private ExpectiminimaxStar2 expectiminimaxStar2;
     private BoardEncoding encoding;
-    private final int ply = 2;
+    private final int ply = 3;
     private NNTreeNode maxima;
     private static final boolean DEBUG = Config.DEBUG;
-    private static final String fileName = "build/classes/java/main/model/player/NNWeights2.txt";
+    private static final String fileName = "build/classes/java/main/model/player/NNWeights3.txt";
     private static final String allWeights = "build/classes/java/main/model/player/trainingData.txt";
     private static final double lambda = 0.70;
     private static final double alpha = 0.70;
@@ -48,7 +47,7 @@ public class NNAgent extends Player {
             System.out.println(Functions.readInWeights(fileName));
             initialized = true;
         }
-//        Functions.writeWeights(network.getWeights(), fileName);
+//            Functions.writeWeights(network.getWeights(), fileName);
 
     }
 
@@ -116,7 +115,7 @@ public class NNAgent extends Player {
     private void evaluateZ(ArrayList<Double> z, Board state){
         int amountOfWeights = z.size();
 
-        double[] input = encoding.boardToArray2(state);
+        double[] input = encoding.boardToArray3(state);
         network.computeGradient(input);
         ArrayList<Double> gradient = network.getGradient();
 //        System.out.println("Gradient: "+gradient);
@@ -194,7 +193,7 @@ public class NNAgent extends Player {
     public ArrayList<ArrayList<Double>> getAllGradients(ArrayList<String> states){
         ArrayList<ArrayList<Double>> gradients = new ArrayList<>();
         for(int i = 0; i<states.size(); i++){
-            network.computeGradient(encoding.boardToArray2(FenEvaluator.read(states.get(i))));
+            network.computeGradient(encoding.boardToArray3(FenEvaluator.read(states.get(i))));
             gradients.add(network.getGradient());
         }
         return gradients;
@@ -221,7 +220,7 @@ public class NNAgent extends Player {
         else if(!board.containsKing(false)){
             return 1;
         }
-        double[] input = encoding.boardToArray2(board);
+        double[] input = encoding.boardToArray3(board);
         double[] output = network.forwardPropagate(input);
         return output[0];
     }
@@ -236,7 +235,7 @@ public class NNAgent extends Player {
         else{
             root = new NNTreeNode(copy, 0, null, NodeEnum.MIN_NODE.getId(), 1, 0, 0, 0, 0, this);
         }
-        expectiminimaxStar2.expectiminimax(root, (ply*2)-1, (ply*2)-1);
+        expectiminimaxStar2.expectiminimaxWithStar2(root, (ply*2)-1, (ply*2)-1);
         double maxValue;
         if(maxIsWhite){
             maxValue = Double.NEGATIVE_INFINITY;

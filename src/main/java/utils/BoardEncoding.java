@@ -4,6 +4,8 @@ import controller.Board;
 import controller.BoardUpdater;
 import model.pieces.ChessPiece;
 
+import java.util.Arrays;
+
 public class BoardEncoding {
     public BoardEncoding() {
     }
@@ -38,6 +40,7 @@ public class BoardEncoding {
 //        System.out.println(index-1);
 
         return list;
+
     }
 
     public double[] boardToArray2(Board board){
@@ -54,6 +57,39 @@ public class BoardEncoding {
 
         amountOfPieces(list, board, index);
         index += 12;
+
+        return list;
+    }
+
+    public double[] boardToArray3(Board board) {
+        int index = 0;
+        String fen = FenEvaluator.write(board);
+        double[] list = new double[46];
+
+        if (board.getWhiteMove()) {
+            list[index] = 1;
+        } else {
+            list[index] = 0;
+        }
+        index++;
+
+//        setCastling(list, fen, index);
+//        index += 4;
+
+        amountOfPieces(list, board, index);
+        index += 12;
+
+//        evaluatePieces(list, board, index);
+        evaluatePieceMobility(list, board, index);
+        index += 32;
+
+
+//        attackDefendMap(list, board, index);
+//        index += 128;
+
+
+//        System.out.println(Arrays.toString(list));
+//        System.out.println(index-1);
 
         return list;
     }
@@ -128,6 +164,35 @@ public class BoardEncoding {
 //        BoardUpdater.printBoard(board.getBoardModel(), board);
     }
 
+    private void evaluatePieceMobility(double[] features, Board board, int startIndex){
+        int amountToFind;
+        for (char c : pieceTypes) {
+            switch (c) {
+                case 'K', 'k', 'Q', 'q' -> {
+                    for (int i = startIndex; i < startIndex + 1; i++) {
+                        features[i] = 0;
+                    }
+                    amountToFind = 1;
+                    startIndex = getSlidingMobilityOfField(features, board, startIndex, c, amountToFind);
+                }
+                case 'R', 'r', 'B', 'b', 'N', 'n' -> {
+                    for (int i = startIndex; i < startIndex + 2; i++) {
+                        features[i] = 0;
+                    }
+                    amountToFind = 2;
+                    startIndex = getSlidingMobilityOfField(features, board, startIndex, c, amountToFind);
+                }
+                case 'P', 'p' -> {
+                    for (int i = startIndex; i < startIndex + 8; i++) {
+                        features[i] = 0;
+                    }
+                    amountToFind = 8;
+                    startIndex = getSlidingMobilityOfField(features, board, startIndex, c, amountToFind);
+                }
+            }
+        }
+    }
+
     private void evaluatePieces(double[] features, Board board, int startIndex) {
         int amountToFind;
         for (char c : pieceTypes) {
@@ -180,6 +245,28 @@ public class BoardEncoding {
             if(isSlidingPiece(c)){
                 startIndex++;
             }
+            amountFound++;
+        }
+        return startIndex;
+    }
+
+    private int getSlidingMobilityOfField(double[] features, Board board, int startIndex, char c, int amountToFind) {
+        int amountFound = 0;
+        for (int i = 0; i < Board.getBoardSize(); i++) {
+            for (int j = 0; j < Board.getBoardSize(); j++) {
+                if (board.getCharOffField(i, j) == c) {
+                    if(amountFound<amountToFind){
+                        slidingPieceMobility(features, board, startIndex++, board.getPieceOffField(i,j));
+                        amountFound++;
+                    }
+                }
+            }
+        }
+        while (amountFound < amountToFind) {
+            startIndex += 1;
+//            if(isSlidingPiece(c)){
+//                startIndex++;
+//            }
             amountFound++;
         }
         return startIndex;
