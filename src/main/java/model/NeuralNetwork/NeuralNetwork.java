@@ -97,7 +97,9 @@ public class NeuralNetwork {
 
     public void computeGradient(double[] input){
         forwardPropagate(input);
+
         resetTempGrad();
+
         for(int i = layers.length-1; i>0; i--){
 
             int amountOfNeurons = layers[i].getNeurons().length;
@@ -114,6 +116,8 @@ public class NeuralNetwork {
 
                     double temp_grad = previousNeuron.getTemp_grad() + current.getWeight()[k]*derivative;
                     previousNeuron.setTemp_grad(temp_grad);
+                    current.setWeight_gradient(gradient, k);
+
                 }
             }
         }
@@ -122,7 +126,7 @@ public class NeuralNetwork {
     private void resetTempGrad() {
         for(int i = 0; i<layers.length; i++){
             for(int j = 0; j<layers[i].getNeurons().length; j++){
-                layers[i].getNeurons()[j].setTemp_grad(0);
+                layers[i].getNeurons()[j].setTemp_grad(1);
             }
         }
     }

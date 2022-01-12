@@ -58,7 +58,7 @@ class NeuralNetworkTest {
         network.setTANH(0,1);
 
         double[] input = {2, 1};
-        network.computeTDGradient(input);
+        network.computeGradient(input);
 
         ArrayList<Double> expected = new ArrayList<>();
         double val1 = 2*Functions.tanhDeriv(4);
@@ -85,7 +85,7 @@ class NeuralNetworkTest {
         network.setTANH(0,1,2);
 
         double[] input = {2, 1};
-        network.computeTDGradient(input);
+        network.computeGradient(input);
 
         ArrayList<Double> expected = new ArrayList<>();
         double v3 = Functions.tanhDeriv(Functions.tanh(4) * 5 + Functions.tanh(10) * 6);
