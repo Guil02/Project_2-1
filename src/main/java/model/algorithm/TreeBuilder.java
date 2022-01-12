@@ -4,8 +4,6 @@ import controller.Board;
 import controller.BoardUpdater;
 import controller.Dice;
 import model.pieces.ChessPiece;
-import model.player.NNAgent;
-import org.w3c.dom.Node;
 import utils.NodeEnum;
 
 import java.util.ArrayList;
