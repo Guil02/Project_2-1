@@ -2,31 +2,31 @@ package model.algorithm;
 
 import controller.Board;
 import model.player.TDLearningAgent;
+import utils.Functions;
 
 public class TDTreeNode extends TreeNode{
-    private TDLearningAgent tdLearningAgent;
     private int xFrom;
     private int yFrom;
     private int xTo;
     private int yTo;
     private Board board;
     private boolean doPromotion = false;
-    private boolean maxIsWhite;
+    TreeBuilder treeBuilder;
 
-    public TDTreeNode(Board board, double value, TreeNode parent, int nodeType, double probability, int xFrom, int yFrom, int xTo, int yTo, boolean maxIsWhite, TDLearningAgent tdLearningAgent) {
+    public TDTreeNode(Board board, double value, TreeNode parent, int nodeType, double probability, int xFrom, int yFrom, int xTo, int yTo) {
         super(value, parent, nodeType, probability);
         this.xFrom = xFrom;
         this.yFrom = yFrom;
         this.xTo = xTo;
         this.yTo = yTo;
         this.board = board;
-        this.maxIsWhite = maxIsWhite;
-        this.tdLearningAgent = tdLearningAgent;
+        treeBuilder = new TreeBuilder();
+        setObjectType(2);
     }
 
     @Override
     public void createChildren() {
-        tdLearningAgent.createChildren(this, true, this.getBoard().getWhiteMove());
+        treeBuilder.createChildren(this, true);
     }
 
     public int getxFrom() {
@@ -49,19 +49,16 @@ public class TDTreeNode extends TreeNode{
         this.doPromotion = doPromotion;
     }
 
+    @Override
+    public void evaluate() {
+        TDLearningAgent.evaluationPieces(board, Functions.readInWeights(TDLearningAgent.fileName));
+    }
+
     public boolean isDoPromotion() {
         return doPromotion;
     }
 
     public Board getBoard() {
         return board;
-    }
-
-    public TDLearningAgent getTdLearning() {
-        return tdLearningAgent;
-    }
-
-    public boolean isMaxIsWhite() {
-        return maxIsWhite;
     }
 }

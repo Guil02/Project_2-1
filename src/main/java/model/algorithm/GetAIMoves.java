@@ -82,7 +82,7 @@ public class GetAIMoves {
                     if(doEvaluation){
                         value = staticBoardEvaluation(copy);
                     }
-                    ChessTreeNode child = new ChessTreeNode(copy, value,parent,nodeType,1,piece.getX(),piece.getY(),i,j, parent.isMaxIsWhite());
+                    ChessTreeNode child = new ChessTreeNode(copy, value,parent,nodeType,1,piece.getX(),piece.getY(),i,j);
                     parent.addChild(child);
                 }
             }

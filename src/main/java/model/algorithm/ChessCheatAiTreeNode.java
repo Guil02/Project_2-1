@@ -47,6 +47,11 @@ public class ChessCheatAiTreeNode extends TreeNode{
         this.doPromotion = doPromotion;
     }
 
+    @Override
+    public void evaluate() {
+        //TODO: IMPLEMENT EVALUATION
+    }
+
     public boolean isDoPromotion() {
         return doPromotion;
     }

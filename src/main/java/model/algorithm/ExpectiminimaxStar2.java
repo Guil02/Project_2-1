@@ -86,7 +86,7 @@ public class ExpectiminimaxStar2 extends Expectiminimax {
             return node.getValue();
 
         }
-        else if(node.getNodeType() == 2){
+        else if(node.getNodeType() == NodeEnum.MIN_NODE.getId()){
             a = Double.POSITIVE_INFINITY;
 
             for(TreeNode children : node.getChildren()){

@@ -4,7 +4,6 @@ import controller.Board;
 import model.player.NNAgent;
 
 public class NNTreeNode extends TreeNode{
-    private NNAgent NNAgent;
     private int xFrom;
     private int yFrom;
     private int xTo;
@@ -12,21 +11,22 @@ public class NNTreeNode extends TreeNode{
     private Board board;
     private boolean doPromotion = false;
     private boolean maxIsWhite;
-
-    public NNTreeNode(Board board, double value, TreeNode parent, int nodeType, double probability, int xFrom, int yFrom, int xTo, int yTo, boolean maxIsWhite, NNAgent NNAgent) {
+    private NNAgent nnAgent;
+    private TreeBuilder treeBuilder;
+    public NNTreeNode(Board board, double value, TreeNode parent, int nodeType, double probability, int xFrom, int yFrom, int xTo, int yTo, NNAgent nnAgent) {
         super(value, parent, nodeType, probability);
         this.xFrom = xFrom;
         this.yFrom = yFrom;
         this.xTo = xTo;
         this.yTo = yTo;
         this.board = board;
-        this.maxIsWhite = maxIsWhite;
-        this.NNAgent = NNAgent;
+        this.nnAgent = nnAgent;
+        treeBuilder = new TreeBuilder();
     }
 
     @Override
     public void createChildren() {
-        NNAgent.createChildren(this, true, this.getBoard().getWhiteMove());
+        treeBuilder.createChildren(this, true);
     }
 
     public int getxFrom() {
@@ -49,6 +49,11 @@ public class NNTreeNode extends TreeNode{
         this.doPromotion = doPromotion;
     }
 
+    @Override
+    public void evaluate() {
+        nnAgent.evaluation(board);
+    }
+
     public boolean isDoPromotion() {
         return doPromotion;
     }
@@ -57,11 +62,11 @@ public class NNTreeNode extends TreeNode{
         return board;
     }
 
-    public NNAgent getMctsAgent() {
-        return NNAgent;
-    }
-
     public boolean isMaxIsWhite() {
         return maxIsWhite;
+    }
+
+    public NNAgent getNnAgent(){
+        return nnAgent;
     }
 }

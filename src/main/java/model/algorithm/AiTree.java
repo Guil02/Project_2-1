@@ -60,7 +60,7 @@ public class AiTree {
         if(doEvaluation){
             value = staticBoardEvaluation(copy);
         }
-        ChessTreeNode child = new ChessTreeNode(copy,value, parent, nodeType, probability, 0,0,0,0, parent.isMaxIsWhite());
+        ChessTreeNode child = new ChessTreeNode(copy,value, parent, nodeType, probability, 0,0,0,0);
         parent.addChild(child);
     }
 
@@ -85,7 +85,7 @@ public class AiTree {
                         value = staticBoardEvaluation(copy);
                     }
 
-                    ChessTreeNode child = new ChessTreeNode(copy, value,parent,nodeType,1,piece.getX(),piece.getY(),i,j, parent.isMaxIsWhite());
+                    ChessTreeNode child = new ChessTreeNode(copy, value,parent,nodeType,1,piece.getX(),piece.getY(),i,j);
                     parent.addChild(child);
                 }
             }
@@ -103,7 +103,7 @@ public class AiTree {
             value = staticBoardEvaluation(copy);
         }
 
-        ChessTreeNode child = new ChessTreeNode(copy, value,parent,nodeType,1,piece.getX(),piece.getY(),xTo,yTo, parent.isMaxIsWhite());
+        ChessTreeNode child = new ChessTreeNode(copy, value,parent,nodeType,1,piece.getX(),piece.getY(),xTo,yTo);
         child.setDoPromotion(true);
         parent.addChild(child);
     }

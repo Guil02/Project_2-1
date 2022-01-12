@@ -3,9 +3,7 @@ package model.player;
 import config.Config;
 import controller.Board;
 import controller.BoardUpdater;
-import gui.DebugWindow.DebugWindowStage;
 import javafx.application.Platform;
-import javafx.concurrent.Task;
 import model.algorithm.*;
 import model.pieces.ChessPiece;
 
@@ -23,49 +21,16 @@ public class SearchAgent extends Player {
         this.board = board;
     }
 
-    public void launch(Board board){
-        new Thread(() -> {
-            try{
-//                Thread.sleep(50);
-                ruleBasedAgent(board);
-                ChessTreeNode move = getMaxima();
-                if(move.isDoPromotion()){
-                    board.storeMove();
-                    BoardUpdater.runPromotion(board, move.getBoard(), move.getxFrom(), move.getyFrom(), move.getxTo(), move.getyTo());
-                    if(Config.GUI_ON){
-                        Platform.runLater(
-                                new Thread(board::launchGuiUpdate)
-                        );
-                    }
-                }
-                else{
-//                    if(!Board.GUI_ON) printBoard(board.getBoardModel(), board);
-                    BoardUpdater.movePiece(board, move.getxFrom(), move.getyFrom(), move.getxTo(), move.getyTo());
-                    if(Config.GUI_ON){
-                        Platform.runLater(
-                                new Thread(board::launchGuiUpdate)
-                        );
-                    }
-                }
-            }//TODO: IMPLEMENT CHEATING AI, WITH MINIMAX AND PREROLL DICE SO IT CAN CHEAT BETTER
-            catch(Exception e){
-                System.err.println("Piece might already have been moved due to glitch in the threading");
-                e.printStackTrace();
-            }
-        }).start();
-
-    }
-
-    public void ruleBasedAgent(Board board) {
+    public void runAgent(Board board) {
 //        System.out.println(board.getWhiteMove());
         Board copy = board.clone();
         boolean maxIsWhite = board.getWhiteMove();
         ChessTreeNode root;
         if(maxIsWhite){
-            root = new ChessTreeNode(copy, 0, null, 1, 1, 0, 0, 0, 0, maxIsWhite);
+            root = new ChessTreeNode(copy, 0, null, 1, 1, 0, 0, 0, 0);
         }
         else{
-            root = new ChessTreeNode(copy, 0, null, 2, 1, 0, 0, 0, 0, maxIsWhite);
+            root = new ChessTreeNode(copy, 0, null, 2, 1, 0, 0, 0, 0);
         }
         double res = expectiminimax.expectiminimax(root, (ply*2)-1, (ply*2)-1);
 //        NegaMax negaMax = new NegaMax(-100,100);
@@ -146,5 +111,58 @@ public class SearchAgent extends Player {
             }
             System.out.println();
         }
+    }
+
+    public static double evaluation(Board board){
+        double value = 0;
+        double enemyPiecesOnBoardValue = 0;
+        boolean seenWhiteKing = false;
+        boolean seenBlackKing = false;
+//        int distanceWhiteKingFromBackRow = 0;
+//        int distanceBlackKingFromBackRow = 0;
+
+        for(ChessPiece[] pieces: board.getBoardModel()){
+            for(ChessPiece piece: pieces){
+                if(piece != null){
+                    if(piece.isWhite()){
+                        value += getPieceValue(piece.getPieceType());
+                    }
+                    else{
+                        enemyPiecesOnBoardValue += getPieceValue(piece.getPieceType());
+                    }
+
+                    if(piece.getPieceChar() == 'K'){
+//                        distanceWhiteKingFromBackRow = 7-piece.getY();
+                        seenWhiteKing = true;
+                    }
+                    if(piece.getPieceChar() == 'k'){
+//                        distanceBlackKingFromBackRow = piece.getY();
+                        seenBlackKing = true;
+                    }
+                }
+            }
+        }
+        if(!seenWhiteKing){
+            return -100;
+        }
+        else if(!seenBlackKing){
+            return 100;
+        }
+        return value - enemyPiecesOnBoardValue + getRandomElement();
+    }
+
+    private static double getPieceValue(int pieceType){
+        return switch (pieceType) {
+            case 1 -> 1;
+            case 2 -> 3;
+            case 3 -> 3;
+            case 4 -> 5;
+            case 5 -> 9;
+            case 6 -> 0;
+            default -> 0;
+        };
+    }
+    private static double getRandomElement(){
+        return Math.random()*10-5;
     }
 }

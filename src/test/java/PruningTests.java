@@ -36,8 +36,8 @@ public class PruningTests {
         printBoard(board.getBoardModel(), board);
         boolean maxIsWhite = board.getWhiteMove();
         assertEquals(1, 1);
-        ChessTreeNode root = new ChessTreeNode(board, 0, null, 1, 1, 0, 0, 0, 0, maxIsWhite);
-        ChessTreeNode root2 = new ChessTreeNode(board, 0, null, 1, 1, 0, 0, 0, 0, maxIsWhite);
+        ChessTreeNode root = new ChessTreeNode(board, 0, null, 1, 1, 0, 0, 0, 0);
+        ChessTreeNode root2 = new ChessTreeNode(board, 0, null, 1, 1, 0, 0, 0, 0);
         AiTree aiTree = new AiTree();
         aiTree.createChildren(root, false, maxIsWhite);
 

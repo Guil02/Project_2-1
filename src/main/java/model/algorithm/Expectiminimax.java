@@ -17,7 +17,7 @@ public class Expectiminimax {
                 a = Math.min(a, expectiminimax(children, depth-1, maxDepth));
             }
         }
-        else if(node.getNodeType()==1){
+        else if(node.getNodeType()==NodeEnum.MAX_NODE.getId()){
             a = Double.NEGATIVE_INFINITY;
             for(TreeNode children: node.getChildren()){
                 a = Math.max(a, expectiminimax(children, depth-1, maxDepth));
