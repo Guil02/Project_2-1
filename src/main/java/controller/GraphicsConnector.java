@@ -1,8 +1,6 @@
 package controller;
 
-import config.Config;
 import gui.ChessGUI;
-import gui.DebugWindow.DebugWindowStage;
 import model.pieces.*;
 import utils.Transform;
 import model.pieces.ChessPiece;
@@ -17,9 +15,13 @@ public class GraphicsConnector {
     private Board board;
     private GameRunner gamerunner;
     private ChessGUI chessGUI;
+    private boolean isWhite;
+    private Board boardModel;
+    private int x;
+    private int y;
 
     /**
-     * constructor
+     * Constructor
      * @param gameRunner
      */
     public GraphicsConnector(GameRunner gameRunner) {
@@ -27,24 +29,23 @@ public class GraphicsConnector {
     }
 
     /**
-     * I want this method to return me an arraylist (can be another data structure)
-     * of the 1 dimensional coordinates of all the fields to which the piece that is
+     * Returns an array of the 1 dimensional coordinates of all the fields to which the piece that is
      * located on the provided x and y coordinate can move to.
      *
      * @param x x coordinate of a piece
      * @param y y coordinate of a piece
-     * @return an arraylist that contains all the 1 dimensional coordinates of the spots a piece can move to.
+     * @return an array that contains all the 1 dimensional coordinates of the spots a piece can move to
      */
     public boolean[] getMoveAbleSpots(int x, int y){
         ChessPiece[][] piecesArray = board.getBoardModel();
         ChessPiece piece = piecesArray[x][y];
         boolean[][] validMoves = piece.validMoves(board);
 
-        boolean[] temp = new boolean[64];
+        boolean[] canMoveToField = new boolean[64];
         int tempInt = 0;
         for (int i = 0; i < validMoves[0].length; i++) {
             for (int j = 0; j < validMoves.length; j++) {
-                temp[tempInt++] = validMoves[j][i];
+                canMoveToField[tempInt++] = validMoves[j][i];
             }
         }
         char movablePiece = board.getMovablePiece();
@@ -52,12 +53,11 @@ public class GraphicsConnector {
         if(!movable){
             return new boolean[64];
         }
-        return temp;
-//        return Transform.transformBooleanToOneDimension(validMoves);
+        return canMoveToField;
     }
 
     /**
-     * I want this to be a method that receives an int for the players where:
+     * Method that receives an int for the players where:
      * 0 = human
      * 1 = AI #1
      * etc.
@@ -69,6 +69,9 @@ public class GraphicsConnector {
         board.setPlayers(player1, player2);
     }
 
+    /**
+     * @return true if the player that has to move is a human player
+     */
     public boolean isHumanPlayer() {
         if(board.getWhiteMove()){
             return board.getPlayer1() == 0;
@@ -79,7 +82,7 @@ public class GraphicsConnector {
     }
 
     /**
-     * I want this to be a method that receives the initial and target position of a piece so that
+     * Method that receives the initial and target position of a piece so that
      * it can be moved like that in the back end of the game this way the front end does not have
      * to deal with the actual moving of the pieces and only the displaying.
      *
@@ -94,7 +97,7 @@ public class GraphicsConnector {
     }
 
     /**
-     * I want this method to return the url of the image of the piece located at that spot
+     * Method to return the url of the image of the piece located at that spot
      * so say it is a white king, you return "gui/white_king.png".
      * this String can easily automatically be build by using string concatenation.
      * e.g.: String URL = "gui/"+color+"_"+pieceName+".png";
@@ -125,7 +128,7 @@ public class GraphicsConnector {
     }
 
     /**
-     * I want this method to check for me if the move attempted is legal.
+     * Method to check for me if the move attempted is legal.
      * the piece will start in the position (initialX, initialY) with this the piece
      * can be identified. Then it tries to move to (finalX, finalY).
      *
@@ -139,8 +142,6 @@ public class GraphicsConnector {
         ChessPiece[][] piecesArray = board.getBoardModel();
         ChessPiece piece = piecesArray[initialX][initialY];
         boolean[][] validMoves = piece.validMoves(board);
-
-
         char movablePiece = board.getMovablePiece();
         boolean movable = board.getCharOffField(initialX, initialY)==movablePiece;
         if(!movable){
@@ -158,8 +159,7 @@ public class GraphicsConnector {
      */
     public boolean hasPiece(int x, int y){
         char field = board.getCharOffField(x,y);
-
-        return Character.compare(field, '-') != 0;
+        return field != '-';
     }
 
     /**
@@ -173,15 +173,23 @@ public class GraphicsConnector {
                 arrayOfPositions[i][j] = board.getCharOffField(i, j);
             }
         }
-
         return Transform.transformCharToOneDimension(arrayOfPositions);
     }
 
+    /**
+     * Setter of a board.
+     * @param board desired board
+     */
     public void setBoard(Board board) {
         this.board = board;
         board.setGraphicsConnector(this);
     }
 
+    /**
+     * Initializes both players.
+     * @param playerOne player one
+     * @param playerTwo player two
+     */
     public void init(int playerOne, int playerTwo){
         gamerunner.init(playerOne, playerTwo);
    }
@@ -272,7 +280,9 @@ public class GraphicsConnector {
     public void setChessGUI(ChessGUI chessGUI) {
         this.chessGUI = chessGUI;
     }
+
     /**
+     * Gets the path to the image file for a promotion in the game.
      * @param type of piece
      * @return url of piece - used for promotion
      */
@@ -310,14 +320,9 @@ public class GraphicsConnector {
                 return "gui/error_cross.png";
         }
     }
-    private boolean isWhite;
-    private Board boardModel;
-    private int x;
-
-    private int y;
 
     /**
-     * starts the dialog for a promotion choice
+     * Starts the dialog for a promotion choice.
      * @param isWhite - turn boolean
      * @param boardModel - boardMoodel
      * @param x
@@ -332,7 +337,7 @@ public class GraphicsConnector {
     }
 
     /**
-     * carries out the promotion - makes the new piece
+     * Carries out the promotion - makes the new piece.
      * @param type of piece
      */
     public void doPromotion(int type) {
@@ -353,20 +358,26 @@ public class GraphicsConnector {
     }
 
     /**
-     * update images
+     * Update images
      */
     public void updateImages() {
         chessGUI.updateImages();
     }
 
+    /**
+     * Changes turn to the other player.
+     */
     public void changeTurn(){
         chessGUI.updateDisplaySize(chessGUI.getHeight());
     }
 
+    /**
+     * Defines a winning player.
+     * @param white true if white won, false if black won
+     */
     public void setWin(boolean white){
         chessGUI.setWin(white);
     }
-
 
     @Override
     protected GraphicsConnector clone(){
@@ -379,6 +390,9 @@ public class GraphicsConnector {
         return new GraphicsConnector(new GameRunner());
     }
 
+    /**
+     * Launches a possible agent player.
+     */
     public void launchAI() {
         board.checkAi();
     }
