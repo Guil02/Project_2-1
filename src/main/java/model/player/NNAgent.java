@@ -2,22 +2,25 @@ package model.player;
 
 import config.Config;
 import controller.Board;
-import controller.GameRunner;
 import model.NeuralNetwork.NeuralNetwork;
 import model.algorithm.ExpectiminimaxStar2;
 import model.algorithm.NNTreeNode;
 import model.algorithm.TreeNode;
-
 import utils.BoardEncoding;
 import utils.FenEvaluator;
 import utils.Functions;
 import utils.NodeEnum;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
+/**
+ * Agent which uses a Neural Network to evaluate the board states at leaf nodes
+ * of the search tree and is capable of learning.
+ */
 public class NNAgent extends Player {
+
+    // Variables
+    private static boolean NN_DEBUG = true;
     private static final int FEATURES_COUNT = 315;
     private static final int CLASSES_COUNT = 1;
     private static final int AMOUNT_OF_LAYERS = 3;
@@ -36,6 +39,9 @@ public class NNAgent extends Player {
     private static final double gamma = 0.70;
     private static boolean initialized = false;
 
+    /**
+     * Constructor
+     */
     public NNAgent() {
         expectiminimaxStar2 = new ExpectiminimaxStar2(true);
         encoding = new BoardEncoding();
@@ -51,13 +57,15 @@ public class NNAgent extends Player {
 
     }
 
-
-
+    /**
+     * Main function to learn after a game is finished.
+     * @param board
+     */
     public void learn(Board board){
 
         ArrayList<String> states = board.getBoardStates();
         if(DEBUG) {
-            System.out.println("Started learning");
+            if (NN_DEBUG) System.out.println("Started learning");
             printEvaluations(states);
         }
         ArrayList<Double> weights = network.getWeights();
@@ -71,10 +79,13 @@ public class NNAgent extends Player {
             double R = giveReward(board, i, finalIteration);
             Board newS = FenEvaluator.read(states.get(i));
 
+            // Evaluate z value
             evaluateZ(z, S);
 
+            // Evaluate new delta
             double delta = evaluateDelta(R, S, newS);
 
+            // Update weights of the NN
             updateWeights(weights, z, delta);
 
             S = newS;
@@ -83,28 +94,44 @@ public class NNAgent extends Player {
         Functions.writeWeights(weights, fileName);
         Functions.appendWeights(weights, allWeights);
         if(DEBUG) {
-            System.out.println("new weights: " + weights);
+            if (NN_DEBUG) System.out.println("new weights: " + weights);
         }
         board.getGameRunner().reset();
     }
 
+    /**
+     * Prints evaluations
+     * @param states evaluations of each state in the previous game
+     */
     private void printEvaluations(ArrayList<String> states) {
         ArrayList<Double> evals = new ArrayList<>();
         for(int i = 0; i<states.size(); i++){
             evals.add(evaluation(FenEvaluator.read(states.get(i))));
         }
-            System.out.println(evals);
+            if (NN_DEBUG) System.out.println("Evals: " + evals);
     }
 
+    /**
+     * Updates weights of the NN.
+     * @param weights old weights
+     * @param z z values
+     * @param delta delta (pre-calculated)
+     */
     private void updateWeights(ArrayList<Double> weights, ArrayList<Double> z, double delta){
         int amountOfWeights = weights.size();
         for(int i = 0; i<amountOfWeights; i++){
             double newValue = weights.get(i) + alpha*delta*z.get(i);
-
             weights.set(i, newValue);
         }
     }
 
+    /**
+     * Evaluates a single delta value.
+     * @param r r value
+     * @param s board
+     * @param newS new board (next step)
+     * @return calculated delta value between two steps
+     */
     private double evaluateDelta(double r, Board s, Board newS) {
         double outputState = evaluation(s);
         double outputNewState = evaluation(newS);
@@ -112,22 +139,30 @@ public class NNAgent extends Player {
         return delta;
     }
 
+    /**
+     * Evaluates z-values.
+     * @param z old z-values
+     * @param state current board
+     */
     private void evaluateZ(ArrayList<Double> z, Board state){
         int amountOfWeights = z.size();
-
         double[] input = encoding.boardToArray3(state);
         network.computeGradient(input);
         ArrayList<Double> gradient = network.getGradient();
-//        System.out.println("Gradient: "+gradient);
+        // System.out.println("Gradient: "+gradient);
         for(int i = 0; i<amountOfWeights; i++){
             double newValue = gamma*lambda*z.get(i) + gradient.get(i);
             z.set(i, newValue);
         }
-
     }
 
-
-
+    /**
+     * Gives reward based on the state of the board.
+     * @param board board to evaluate reward
+     * @param index index of iteration (step)
+     * @param finalIteration index of the last iteration in the game
+     * @return reward
+     */
     private int giveReward(Board board, int index, int finalIteration) {
         if(index==finalIteration){
             if(whiteWinGame(board)) {
@@ -138,13 +173,19 @@ public class NNAgent extends Player {
         else return 0;
     }
 
-
+    /**
+     * Checks whether white has won
+     * @param board board state
+     * @return true if white has won
+     */
     public boolean whiteWinGame(Board board){
         return board.containsKing(true);
     }
 
-
-
+    /**
+     * Not used at the moment
+     * @param board
+     */
     public void learnt(Board board){
         ArrayList<String> states = board.getBoardStates();
         ArrayList<Double> weights = network.getWeights();
@@ -182,6 +223,13 @@ public class NNAgent extends Player {
         board.getGameRunner().reset();
     }
 
+    /**
+     * Computes the gradient sum.
+     * @param gradients
+     * @param finalIndex
+     * @param weightIndex
+     * @return
+     */
     public double gradientSum(ArrayList<ArrayList<Double>> gradients, int finalIndex, int weightIndex){
         double val = 0;
         for(int i = 0; i<finalIndex+1; i++){
@@ -190,6 +238,11 @@ public class NNAgent extends Player {
         return val;
     }
 
+    /**
+     * Gets all the gradients based on the states.
+     * @param states
+     * @return
+     */
     public ArrayList<ArrayList<Double>> getAllGradients(ArrayList<String> states){
         ArrayList<ArrayList<Double>> gradients = new ArrayList<>();
         for(int i = 0; i<states.size(); i++){
@@ -199,6 +252,11 @@ public class NNAgent extends Player {
         return gradients;
     }
 
+    /**
+     * Evaluates all boards.
+     * @param states
+     * @return
+     */
     public ArrayList<Double> evaluateAllBoards(ArrayList<String> states){
         ArrayList<Double> evals = new ArrayList<>();
         for(int i = 0; i<states.size(); i++){
@@ -207,12 +265,22 @@ public class NNAgent extends Player {
         return evals;
     }
 
+    /**
+     * Updates weights
+     * @param weights
+     * @param deltaW
+     */
     private void updateWeights(ArrayList<Double> weights, ArrayList<Double> deltaW){
         for(int i = 0; i<deltaW.size(); i++){
             weights.set(i, weights.get(i)+deltaW.get(i));
         }
     }
 
+    /**
+     * Evaluates a board
+     * @param board
+     * @return
+     */
     public double evaluation(Board board) {
         if(!board.containsKing(true)){
             return -1;
@@ -225,6 +293,10 @@ public class NNAgent extends Player {
         return output[0];
     }
 
+    /**
+     * Run the agent.
+     * @param board
+     */
     public void runAgent(Board board){
         Board copy = board.clone();
         boolean maxIsWhite = board.getWhiteMove();
