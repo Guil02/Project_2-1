@@ -1,9 +1,7 @@
 package controller;
 
 import model.pieces.ChessPiece;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * This class represents a die for the chess game, which determines the kind of piece that needs to be moved.
@@ -41,6 +39,11 @@ public class Dice {
         board.setMovablePiece(Dice.choosePiece(movablePieces));
     }
 
+    /**
+     * Gets all the movable pieces on a given board.
+     * @param board input board
+     * @return ArrayList with all pieces (char) that can be moved
+     */
     public static ArrayList<Character> getMovablePieces(Board board){
         runValidMoves(board);
         ArrayList<Character> movablePieces = new ArrayList<>();
@@ -53,29 +56,6 @@ public class Dice {
             }
         }
         return movablePieces;
-    }
-
-    public static ArrayList<Character> getAllMovablePieces(Board board){
-        if(board.getWhiteMove()){
-            ArrayList<Character> movablePieces = new ArrayList<>();
-            movablePieces.add('K');
-            movablePieces.add('Q');
-            movablePieces.add('R');
-            movablePieces.add('B');
-            movablePieces.add('N');
-            movablePieces.add('P');
-            return movablePieces;
-        }
-        else{
-            ArrayList<Character> movablePieces = new ArrayList<>();
-            movablePieces.add('k');
-            movablePieces.add('q');
-            movablePieces.add('r');
-            movablePieces.add('b');
-            movablePieces.add('n');
-            movablePieces.add('p');
-            return movablePieces;
-        }
     }
 
     /**

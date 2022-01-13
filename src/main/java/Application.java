@@ -6,7 +6,7 @@ import controller.GameRunner;
 public class Application {
     /**
      * Main method which gets executed upon start.
-     * @param args
+     * @param args none
      */
     public static void main(String[] args) {
         GameRunner gameRunner = new GameRunner();

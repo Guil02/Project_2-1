@@ -28,7 +28,7 @@ public class AgentInfoStage extends Stage {
         this.setHeight(389);
 
         infoList = new VBox();
-        infoList.setStyle("-fx-font: 10px \"Verdana\";"); //TODO improve font
+        infoList.setStyle("-fx-font: 14px \"Verdana\";");
 
         infoList.getChildren().add(new InfoHBox("Human", "Human input, no agent", false));
         infoList.getChildren().add(new InfoHBox("Search Agent", "Expectiminimax search", true));
