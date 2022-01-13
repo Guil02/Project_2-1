@@ -105,7 +105,7 @@ public class DebugWindowStage extends Stage {
         bottomRow.setSpacing(10);
         bottomRow.setStyle("-fx-background-color: #7799aa;");
         playPauseButton = new Button("Pause");
-        playPauseButton.setFont(defaultFont); //TODO change font
+        playPauseButton.setFont(new Font("Verdana", 11)); //TODO change font
         playPauseButton.setOnAction(e -> {
             if (!isOnPause) { // When "Pause" is clicked
                 playPauseButton.setText("Play");
@@ -120,7 +120,7 @@ public class DebugWindowStage extends Stage {
             }
         });
         stepButton = new Button("Step");
-        stepButton.setFont(defaultFont); //TODO change font
+        stepButton.setFont(new Font("Verdana", 11)); //TODO change font
         stepButton.setOnAction(e -> {
             interruptSleep();
         });
