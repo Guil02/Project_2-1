@@ -10,6 +10,8 @@ import config.Config;
  * Central controller class to run the game.
  */
 public class GameRunner {
+
+    //Variables
     private Board board;
     ChessGUI chessGUI;
     GraphicsConnector graphicsConnector;
@@ -20,28 +22,6 @@ public class GameRunner {
     private int blackWin = 0;
     private int games = 0;
     private static final int maxGames = 100;
-
-    public void incrementWhiteWin(){
-        whiteWin++;
-    }
-    public void incrementBlackWin(){
-        blackWin++;
-    }
-    public void incrementGames(){
-        games++;
-    }
-    public int getWhiteWin() {
-        return whiteWin;
-    }
-    public int getBlackWin() {
-        return blackWin;
-    }
-    public int getGames(){
-        return games;
-    }
-    public boolean continuePlaying(){
-        return games<maxGames;
-    }
 
     /**
      * Constructor
@@ -58,15 +38,6 @@ public class GameRunner {
             }
         }
         else{
-            /*
-            0 = "Human"
-            1 = "Search Agent"
-            2 = "Random Agent"
-            3 = "TD learning Agent"
-            4 = "Take Agent"
-            5 = "NN Agent"
-            6 = "Cheating Agent"
-             */
             init(3,3);
         }
     }
@@ -91,6 +62,9 @@ public class GameRunner {
         board.checkAi();
     }
 
+    /**
+     * Resets the whole game to a new one.
+     */
     public void reset(){
         board.movesClear();
         BoardUpdater.clearBoard(board);
@@ -102,6 +76,11 @@ public class GameRunner {
         board.checkAi();
     }
 
+    /**
+     * Creates a player of a certain type.
+     * @param playerType type of the player
+     * @return Player instance
+     */
     public Player createPlayer(int playerType){
         if(playerType == 0){
             return new HumanPlayer();
@@ -137,18 +116,59 @@ public class GameRunner {
         return new GameRunner();
     }
 
-    public static void printBoard(ChessPiece[][] boardModel, Board board) {
-        System.out.println("--- Board State ---\n");
-        for(int i = 0; i < boardModel[0].length; i++) {
-            for (int j = 0; j < boardModel.length; j++) {
-                System.out.print("[ " + board.getCharOffField(j,i) + " ] ");
-                // System.out.print("[ " + j + " " + i + " ] ");
-            }
-            System.out.println();
-        }
-    }
-
+    /**
+     * @return current board
+     */
     public Board getBoard() {
         return board;
+    }
+
+    /**
+     * Increment win-counter for white player.
+     */
+    public void incrementWhiteWin(){
+        whiteWin++;
+    }
+
+    /**
+     * Increment win-counter for black player.
+     */
+    public void incrementBlackWin(){
+        blackWin++;
+    }
+
+    /**
+     * Increment game counter.
+     */
+    public void incrementGames(){
+        games++;
+    }
+
+    /**
+     * @return amount of how often white player won
+     */
+    public int getWhiteWin() {
+        return whiteWin;
+    }
+
+    /**
+     * @return amount of how often black player won
+     */
+    public int getBlackWin() {
+        return blackWin;
+    }
+
+    /**
+     * @return number of games
+     */
+    public int getGames(){
+        return games;
+    }
+
+    /**
+     * @return whether the automated process is going to continue to a next game
+     */
+    public boolean continuePlaying(){
+        return games<maxGames;
     }
 }
