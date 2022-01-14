@@ -132,16 +132,7 @@ public class Board {
      * @return number of pieces with the specified char
      */
     public int getAmountOfPieces(char c){
-        int count = 0;
-        ChessPiece[][] model = getBoardModel();
-        for(int i=0; i<getBoardSize(); i++){
-            for(int j=0; j<getBoardSize(); j++){
-                if(model[i][j] != null &&model[i][j].getPieceChar()==c){
-                    count++;
-                }
-            }
-        }
-        return count;
+        return getPieces(c).size();
     }
 
     /**

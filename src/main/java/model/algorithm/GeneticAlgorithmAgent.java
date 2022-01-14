@@ -99,7 +99,7 @@ public class GeneticAlgorithmAgent extends Player {
         int amountOfWeights = 25;
         weights = new ArrayList<>(amountOfWeights);
         for(int i=0; i<amountOfWeights; i++){
-            weights.set(i, Functions.randomNumber(-1,1));
+            weights.add(Functions.randomNumber(-1,1));
         }
     }
 
