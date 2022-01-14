@@ -12,11 +12,15 @@ import java.util.Random;
 
 public class GeneticAlgorithmAgent extends Player {
     private static final String fileName = "build/classes/java/main/model/player/GAWeights.txt";
+    private static final int ply = 3;
+    private static final int amountOfWeights = 25;
+    private static final double percentageChange = 0.05;
+
     private GABoardEncoding encoder;
     private ArrayList<Double> weights;
     private GeneticAlgorithmTreeNode maxima;
     private ExpectiminimaxStar2 expectiminimaxStar2;
-    private static final int ply = 3;
+
 
     public GeneticAlgorithmAgent() {
         this.encoder = new GABoardEncoding();
@@ -81,21 +85,31 @@ public class GeneticAlgorithmAgent extends Player {
     public GeneticAlgorithmTreeNode getMaxima() {
         return maxima;
     }
-
     public double evaluation(Board board){
         int[] encoding = encoder.evaluate(board);
         double value = 0;
         for(int i=0; i<encoding.length; i++){
             value += encoding[i]*weights.get(i);
         }
-        return value; //TODO add random factor
+        value = value * Functions.randomNumber(1 - percentageChange, 1 + percentageChange);
+        return value;
     }
 
-    private void initializeWeights(){
+    public void initializeWeights(){
         int amountOfWeights = 25;
         weights = new ArrayList<>(amountOfWeights);
         for(int i=0; i<amountOfWeights; i++){
             weights.set(i, Functions.randomNumber(-1,1));
         }
+    }
+
+    public ArrayList<Double> getWeights(){return weights;}
+
+    public void setWeights(ArrayList<Double> weights) {
+        this.weights = weights;
+    }
+
+    public static int getAmountOfWeights(){
+        return amountOfWeights;
     }
 }

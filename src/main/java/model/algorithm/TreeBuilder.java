@@ -96,9 +96,6 @@ public class TreeBuilder {
                 return new NNTreeNode(board, value, parent, nodeType, probability, xFrom, yFrom, xTo, yTo, ((NNTreeNode) parent).getNnAgent());
             case TD_NODE:
                 return new TDTreeNode(board, value, parent, nodeType, probability, xFrom, yFrom, xTo, yTo);
-            case CHEAT_NODE:
-                //TODO: REMOVE THE MAXISWHITE PART AFTER CHEAT AI IS DONE.
-                return new ChessCheatAiTreeNode(board, value, parent, nodeType, probability, xFrom, yFrom, xTo, yTo, true);
             default:
                 return null;
         }

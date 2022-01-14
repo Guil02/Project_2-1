@@ -2,7 +2,7 @@ package controller;
 
 import gui.ChessGUI;
 import gui.DebugWindow.DebugWindowStage;
-import model.pieces.ChessPiece;
+import model.GeneticAlgorithm.GA;
 import model.player.*;
 import config.Config;
 
@@ -27,18 +27,23 @@ public class GameRunner {
      * Constructor
      */
     public GameRunner() {
-        chessGUI = new ChessGUI();
-        graphicsConnector = new GraphicsConnector(this);
-        if(Config.GUI_ON){
-            try{
-                chessGUI.launchGUI(graphicsConnector);
-            }
-            catch (IllegalStateException e){
-                init(board.getPlayer1(), board.getPlayer2());
-            }
+        if(Config.GA){
+            new GA();
         }
         else{
-            init(3,3);
+            chessGUI = new ChessGUI();
+            graphicsConnector = new GraphicsConnector(this);
+            if(Config.GUI_ON){
+                try{
+                    chessGUI.launchGUI(graphicsConnector);
+                }
+                catch (IllegalStateException e){
+                    init(board.getPlayer1(), board.getPlayer2());
+                }
+            }
+            else{
+                init(3,3);
+            }
         }
     }
 
