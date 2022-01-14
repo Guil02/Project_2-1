@@ -31,6 +31,7 @@ public class SearchAgent extends Player {
             root = new ChessTreeNode(copy, 0, null, 2, 1, 0, 0, 0, 0);
         }
         double res = expectiminimax.expectiminimax(root, (ply*2)-1, (ply*2)-1);
+
         double maxValue;
         if(maxIsWhite){
             maxValue = Double.NEGATIVE_INFINITY;

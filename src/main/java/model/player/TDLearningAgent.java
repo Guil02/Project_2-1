@@ -206,6 +206,7 @@ public class TDLearningAgent extends Player{
         return evals;
     }
 
+
 //    public void launch(Board board){
 //        new Thread(() -> {
 //            try{
@@ -242,10 +243,12 @@ public class TDLearningAgent extends Player{
 //        }).start();
 //    }
 
+     */
+/*
     public TDTreeNode getMaxima() {
         return maxima;
     }
-
+*/
     public int getPieceType(char pieceType){
         switch(pieceType){
             case 'n','N':
@@ -259,7 +262,7 @@ public class TDLearningAgent extends Player{
         }
         return 0;
     }
-
+/*
     public static void printBoard(ChessPiece[][] boardModel, Board board) {
         System.out.println("--- Board State ---\n");
         for(int i = 0; i < boardModel[0].length; i++) {
@@ -270,5 +273,6 @@ public class TDLearningAgent extends Player{
             System.out.println();
         }
     }
+
 
 }

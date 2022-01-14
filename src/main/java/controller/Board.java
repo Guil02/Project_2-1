@@ -120,7 +120,7 @@ public class Board {
                     ((NNAgent) playerTwo).launch(this);
                 }
                 else if(player2 == 6){
-                    ((CheatAgent) playerOne).launch(this);
+                    ((CheatAgent) playerTwo).launch(this);
                 }
             }
         }

@@ -21,7 +21,7 @@ public class GameRunner {
     private int whiteWin = 0;
     private int blackWin = 0;
     private int games = 0;
-    private static final int maxGames = 100;
+    private static final int maxGames = 500;
 
     /**
      * Constructor
@@ -38,7 +38,17 @@ public class GameRunner {
             }
         }
         else{
-            init(3,3);
+            /*
+            0 = "Human"
+            1 = "Search Agent"
+            2 = "Random Agent"
+            3 = "TD learning Agent"
+            4 = "Take Agent"
+            5 = "NN Agent"
+            6 = "Cheating Agent"
+             */
+            init(1,2);
+
         }
     }
 
@@ -74,6 +84,7 @@ public class GameRunner {
         board.setWhiteMove(true);
         Dice.firstMoveDiceRoll(board);
         board.checkAi();
+        games++;
     }
 
     /**

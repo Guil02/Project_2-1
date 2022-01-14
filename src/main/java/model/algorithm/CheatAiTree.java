@@ -13,24 +13,15 @@ public class CheatAiTree extends AiTree{
 
     }
     public void createChildren(ChessCheatAiTreeNode root, boolean cheatIsWhite , boolean doEvaluation, boolean maxIsWhite) {
-        if(cheatIsWhite) {
-            if (root.getNodeType() == 1) {
-                createMinChildren(root, doEvaluation, maxIsWhite, cheatIsWhite);
-            } else if (root.getNodeType() == 2) {
-                createChanceChildren(root, doEvaluation, maxIsWhite);
-            } else {
-                createMaxChildren(root, doEvaluation, maxIsWhite, cheatIsWhite);
-            }
+
+        if (root.getNodeType() == 1) {
+            createMaxChildren(root, doEvaluation, maxIsWhite, cheatIsWhite);
+        } else if (root.getNodeType() == 2) {
+            createMinChildren(root, doEvaluation, maxIsWhite, cheatIsWhite);
+        } else {
+            createChanceChildren(root, doEvaluation, maxIsWhite);
         }
-        else {
-            if (root.getNodeType() == 1) {
-                createChanceChildren(root, doEvaluation, maxIsWhite);
-            } else if (root.getNodeType() == 2) {
-                createMaxChildren(root, doEvaluation, maxIsWhite, cheatIsWhite);
-            } else {
-                createMinChildren(root, doEvaluation, maxIsWhite, cheatIsWhite);
-            }
-        }
+
     }
     public void createMaxChildren(ChessCheatAiTreeNode root, boolean doEvaluation, boolean maxIsWhite, boolean cheatIsWhite){
         if(cheatIsWhite){
@@ -90,7 +81,7 @@ public class CheatAiTree extends AiTree{
         if(doEvaluation){
             value = staticBoardEvaluation(copy);
         }
-        ChessCheatAiTreeNode child = new ChessCheatAiTreeNode(copy,value, parent, nodeType, probability, 0,0,0,0, parent.isMaxIsWhite());
+        ChessCheatAiTreeNode child = new ChessCheatAiTreeNode(copy,value, parent, nodeType, probability, 0,0,0,0, parent.isMaxIsWhite(), parent.isCheatIsWhite());
         parent.addChild(child);
     }
     private void createChild(ChessCheatAiTreeNode parent, boolean[][] validMoves, ChessPiece piece, int nodeType, boolean doEvaluation, boolean maxIsWhite){
@@ -114,7 +105,7 @@ public class CheatAiTree extends AiTree{
                         value = staticBoardEvaluation(copy);
                     }
 
-                    ChessCheatAiTreeNode child = new ChessCheatAiTreeNode(copy, value,parent,nodeType,1,piece.getX(),piece.getY(),i,j, parent.isMaxIsWhite());
+                    ChessCheatAiTreeNode child = new ChessCheatAiTreeNode(copy, value,parent,nodeType,1,piece.getX(),piece.getY(),i,j, parent.isMaxIsWhite(), parent.isCheatIsWhite());
                     parent.addChild(child);
                 }
             }
@@ -131,7 +122,7 @@ public class CheatAiTree extends AiTree{
             value = staticBoardEvaluation(copy);
         }
 
-        ChessCheatAiTreeNode child = new ChessCheatAiTreeNode(copy, value,parent,nodeType,1,piece.getX(),piece.getY(),xTo,yTo, parent.isMaxIsWhite());
+        ChessCheatAiTreeNode child = new ChessCheatAiTreeNode(copy, value,parent,nodeType,1,piece.getX(),piece.getY(),xTo,yTo, parent.isMaxIsWhite(), parent.isCheatIsWhite());
         child.setDoPromotion(true);
         parent.addChild(child);
     }
@@ -183,7 +174,7 @@ public class CheatAiTree extends AiTree{
         }
         if(maxIsWhite){
             if(!seenWhiteKing){
-                return Double.MIN_VALUE;
+                return Double.NEGATIVE_INFINITY;
             }
             else if(!seenBlackKing){
                 return Double.MAX_VALUE;
@@ -191,7 +182,7 @@ public class CheatAiTree extends AiTree{
         }
         else {
             if(!seenBlackKing){
-                return Double.MIN_VALUE;
+                return Double.NEGATIVE_INFINITY;
             }
             else if(!seenWhiteKing){
                 return Double.MAX_VALUE;

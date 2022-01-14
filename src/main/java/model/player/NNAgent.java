@@ -308,6 +308,7 @@ public class NNAgent extends Player {
     public void runAgent(Board board){
         Board copy = board.clone();
         boolean maxIsWhite = board.getWhiteMove();
+
         NNTreeNode root;
         if(maxIsWhite){
             root = new NNTreeNode(copy, 0, null, NodeEnum.MAX_NODE.getId(), 1, 0, 0, 0, 0, this);
