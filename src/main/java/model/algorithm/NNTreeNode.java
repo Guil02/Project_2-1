@@ -52,7 +52,7 @@ public class NNTreeNode extends TreeNode{
 
     @Override
     public void evaluate() {
-        nnAgent.evaluation(board);
+        setValue(nnAgent.evaluation(board));
     }
 
     public boolean isDoPromotion() {

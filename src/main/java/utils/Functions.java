@@ -143,4 +143,10 @@ public class Functions{
             values.set(i,normalized);
         }
     }
+
+    public static char convertChar(char c, boolean whiteIsMax){
+        if(whiteIsMax)
+            return Character.toUpperCase(c);
+        return Character.toLowerCase(c);
+    }
 }

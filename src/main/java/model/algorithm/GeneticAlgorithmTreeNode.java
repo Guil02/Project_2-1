@@ -11,8 +11,9 @@ public class GeneticAlgorithmTreeNode extends TreeNode{
     private Board board;
     private boolean doPromotion = false;
     private TreeBuilder treeBuilder;
+    private GeneticAlgorithmAgent agent;
 
-    public GeneticAlgorithmTreeNode(Board board, double value, TreeNode parent, int nodeType, double probability, int xFrom, int yFrom, int xTo, int yTo) {
+    public GeneticAlgorithmTreeNode(Board board, double value, TreeNode parent, int nodeType, double probability, int xFrom, int yFrom, int xTo, int yTo, GeneticAlgorithmAgent agent) {
         super(value, parent, nodeType, probability);
         this.xFrom = xFrom;
         this.yFrom = yFrom;
@@ -20,6 +21,7 @@ public class GeneticAlgorithmTreeNode extends TreeNode{
         this.yTo = yTo;
         this.board = board;
         treeBuilder = new TreeBuilder();
+        this.agent = agent;
         setObjectType(4);
     }
 
@@ -48,9 +50,13 @@ public class GeneticAlgorithmTreeNode extends TreeNode{
         this.doPromotion = doPromotion;
     }
 
+    public GeneticAlgorithmAgent getAgent() {
+        return agent;
+    }
+
     @Override
     public void evaluate() {
-        //TODO: IMPLEMENT CORRECT EVALUATION
+        setValue(agent.evaluation(this.board));
     }
 
     public boolean isDoPromotion() {
