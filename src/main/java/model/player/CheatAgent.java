@@ -59,6 +59,10 @@ public class CheatAgent extends Player {
 
     }
 
+    public void runAgent(Board board){
+
+    }
+
     public void cheatAgent(Board board) {
 //        System.out.println(board.getWhiteMove());
         Board copy = board.clone();

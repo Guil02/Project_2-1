@@ -83,4 +83,8 @@ public class BaselineAgent extends Player{
                 }
             }).start();
     }
+
+    public void runAgent(Board board){
+
+    }
 }

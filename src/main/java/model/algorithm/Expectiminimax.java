@@ -1,5 +1,7 @@
 package model.algorithm;
 
+import utils.NodeEnum;
+
 public class Expectiminimax {
 
     public Expectiminimax() {
@@ -11,13 +13,13 @@ public class Expectiminimax {
         if(depth==0 || !node.hasChildren()){
             return node.getValue();
         }
-        else if(node.getNodeType()==2){
+        else if(node.getNodeType()== NodeEnum.MIN_NODE.getId()){
             a = Double.POSITIVE_INFINITY;
             for(TreeNode children: node.getChildren()){
                 a = Math.min(a, expectiminimax(children, depth-1, maxDepth));
             }
         }
-        else if(node.getNodeType()==1){
+        else if(node.getNodeType()==NodeEnum.MAX_NODE.getId()){
             a = Double.NEGATIVE_INFINITY;
             for(TreeNode children: node.getChildren()){
                 a = Math.max(a, expectiminimax(children, depth-1, maxDepth));

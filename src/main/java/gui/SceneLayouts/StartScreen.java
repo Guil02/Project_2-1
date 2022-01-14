@@ -46,6 +46,7 @@ public class StartScreen extends BorderPane {
         HBox bottomRow = new HBox();
         bottomRow.setPadding(new Insets(10, 10, 10, 10));
         Button descriptionButton = new Button("Agent info");
+        descriptionButton.setFont(new Font("Verdana", 30)); //TODO improve font
         descriptionButton.setPadding(new Insets(10, 10, 10, 10));
         descriptionButton.setOnAction(e -> {
             AgentInfoStage agentInfoStage = new AgentInfoStage();

@@ -17,24 +17,6 @@ repositories {
 dependencies {
     implementation 'org.testng:testng:7.1.0'
     testImplementation('org.junit.jupiter:junit-jupiter:5.6.0')
-
-    implementation(group: 'org.apache.logging.log4j', name: 'log4j-1.2-api', version: '2.14.1')
-
-    // https://mvnrepository.com/artifact/org.deeplearning4j/deeplearning4j-core
-    implementation group: 'org.deeplearning4j', name: 'deeplearning4j-core', version: '1.0.0-M1.1'
-
-    // https://mvnrepository.com/artifact/org.nd4j/nd4j-native-platform
-    implementation group: 'org.nd4j', name: 'nd4j-native-platform', version: '1.0.0-M1.1'
-
-    // https://mvnrepository.com/artifact/org.datavec/datavec-api
-    implementation group: 'org.datavec', name: 'datavec-api', version: '1.0.0-M1.1'
-
-    // https://mvnrepository.com/artifact/org.slf4j/slf4j-simple
-    testImplementation group: 'org.slf4j', name: 'slf4j-simple', version: '2.0.0-alpha5'
-
-    // https://mvnrepository.com/artifact/org.deeplearning4j/deeplearning4j-ui
-    implementation group: 'org.deeplearning4j', name: 'deeplearning4j-ui', version: '1.0.0-M1.1'
-
 }
 
 test {

@@ -2,8 +2,6 @@ package controller;
 
 import gui.ChessGUI;
 import gui.DebugWindow.DebugWindowStage;
-import model.algorithm.AiTree;
-import model.algorithm.Expectiminimax;
 import model.pieces.ChessPiece;
 import model.player.*;
 import config.Config;
@@ -12,40 +10,18 @@ import config.Config;
  * Central controller class to run the game.
  */
 public class GameRunner {
+
+    //Variables
     private Board board;
     ChessGUI chessGUI;
     GraphicsConnector graphicsConnector;
     DebugWindowStage debugWindowStage;
-    private AiTree aiTree;
-    private Expectiminimax expectiminimax;
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = Config.DEBUG;
     public static final boolean EXPERIMENT1 =false;
     private int whiteWin = 0;
     private int blackWin = 0;
     private int games = 0;
     private static final int maxGames = 500;
-
-    public void incrementWhiteWin(){
-        whiteWin++;
-    }
-    public void incrementBlackWin(){
-        blackWin++;
-    }
-    public void incrementGames(){
-        games++;
-    }
-    public int getWhiteWin() {
-        return whiteWin;
-    }
-    public int getBlackWin() {
-        return blackWin;
-    }
-    public int getGames(){
-        return games;
-    }
-    public boolean continuePlaying(){
-        return games<maxGames;
-    }
 
     /**
      * Constructor
@@ -72,6 +48,7 @@ public class GameRunner {
             6 = "Cheating Agent"
              */
             init(1,2);
+
         }
     }
 
@@ -79,24 +56,25 @@ public class GameRunner {
      * Initializes the game when it is started.
      */
     public void init(int playerOne, int playerTwo) {
-        // Opens debug window
-        if (Config.SHOW_DEBUG_WINDOW) {
-            debugWindowStage = new DebugWindowStage();
-            debugWindowStage.show();
-        }
-        aiTree = new AiTree();
-        expectiminimax = new Expectiminimax();
         board = new Board(this);
         Player player1 = createPlayer(playerOne);
         Player player2 = createPlayer(playerTwo);
         board.setPlayers(playerOne, playerTwo);
         board.setPlayerPlayers(player1, player2);
         BoardUpdater.fillGameStart(board);
+        // Opens debug window
+        if (Config.SHOW_DEBUG_WINDOW) {
+            debugWindowStage = new DebugWindowStage(this);
+            debugWindowStage.show();
+        }
         graphicsConnector.setBoard(board);
         Dice.firstMoveDiceRoll(board);
         board.checkAi();
     }
 
+    /**
+     * Resets the whole game to a new one.
+     */
     public void reset(){
         board.movesClear();
         BoardUpdater.clearBoard(board);
@@ -109,6 +87,11 @@ public class GameRunner {
         games++;
     }
 
+    /**
+     * Creates a player of a certain type.
+     * @param playerType type of the player
+     * @return Player instance
+     */
     public Player createPlayer(int playerType){
         if(playerType == 0){
             return new HumanPlayer();
@@ -144,14 +127,59 @@ public class GameRunner {
         return new GameRunner();
     }
 
-    public static void printBoard(ChessPiece[][] boardModel, Board board) {
-        System.out.println("--- Board State ---\n");
-        for(int i = 0; i < boardModel[0].length; i++) {
-            for (int j = 0; j < boardModel.length; j++) {
-                System.out.print("[ " + board.getCharOffField(j,i) + " ] ");
-                // System.out.print("[ " + j + " " + i + " ] ");
-            }
-            System.out.println();
-        }
+    /**
+     * @return current board
+     */
+    public Board getBoard() {
+        return board;
+    }
+
+    /**
+     * Increment win-counter for white player.
+     */
+    public void incrementWhiteWin(){
+        whiteWin++;
+    }
+
+    /**
+     * Increment win-counter for black player.
+     */
+    public void incrementBlackWin(){
+        blackWin++;
+    }
+
+    /**
+     * Increment game counter.
+     */
+    public void incrementGames(){
+        games++;
+    }
+
+    /**
+     * @return amount of how often white player won
+     */
+    public int getWhiteWin() {
+        return whiteWin;
+    }
+
+    /**
+     * @return amount of how often black player won
+     */
+    public int getBlackWin() {
+        return blackWin;
+    }
+
+    /**
+     * @return number of games
+     */
+    public int getGames(){
+        return games;
+    }
+
+    /**
+     * @return whether the automated process is going to continue to a next game
+     */
+    public boolean continuePlaying(){
+        return games<maxGames;
     }
 }

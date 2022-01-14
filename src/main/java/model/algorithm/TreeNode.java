@@ -1,8 +1,12 @@
 package model.algorithm;
 
+import controller.Board;
+import utils.NodeEnum;
+
 import java.util.ArrayList;
 
-public class TreeNode {
+
+public abstract class TreeNode {
     private TreeNode parent;
     private ArrayList<TreeNode> children = new ArrayList<>();
     private double value;
@@ -11,6 +15,7 @@ public class TreeNode {
     // 3 = chance
     private int nodeType;
     private double probability;
+    private NodeEnum objectType;
     private double lowerBound = Double.NEGATIVE_INFINITY; // default value
     private double upperBound = Double.POSITIVE_INFINITY; // default value
 
@@ -116,5 +121,44 @@ public class TreeNode {
                 ", nodeType=" + nodeTypeString(nodeType) +
                 ", probability=" + probability +
                 '}';
+    }
+
+    public abstract boolean isDoPromotion();
+
+    public abstract Board getBoard();
+
+    public abstract int getxFrom();
+
+    public abstract int getyFrom();
+
+    public abstract int getxTo();
+
+    public abstract int getyTo();
+
+    public abstract void setDoPromotion(boolean b);
+
+    public abstract void evaluate();
+
+    public void setObjectType(int x){
+        switch(x){
+            case 0:
+                this.objectType = NodeEnum.SEARCH_NODE;
+                break;
+            case 1:
+                this.objectType = NodeEnum.NN_NODE;
+                break;
+            case 2:
+                this.objectType = NodeEnum.TD_NODE;
+                break;
+            case 3:
+                this.objectType = NodeEnum.CHEAT_NODE;
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value for Node Type: " + x);
+        }
+        }
+
+    public NodeEnum getObjectType() {
+        return objectType;
     }
 }

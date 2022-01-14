@@ -123,4 +123,8 @@ public class TakeAgent extends Player{
             System.out.println(Arrays.toString(entry));
         }
     }
+
+    public void runAgent(Board board){
+
+    }
 }

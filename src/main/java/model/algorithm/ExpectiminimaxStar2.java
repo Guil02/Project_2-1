@@ -1,5 +1,7 @@
 package model.algorithm;
 
+import utils.NodeEnum;
+
 public class ExpectiminimaxStar2 extends Expectiminimax {
 
     public ExpectiminimaxStar2(boolean withPruning){
@@ -43,7 +45,7 @@ public class ExpectiminimaxStar2 extends Expectiminimax {
                 for (int i = 0; i < number_of_children; i++) {
                     double leaf_value = expectiminimaxWithStar2(node.getChildren().get(i).getChildren().get(j), depth-2, depth);
 
-                    if (node.getChildren().get(i).getNodeType() == 1) { //max
+                    if (node.getChildren().get(i).getNodeType() == NodeEnum.MAX_NODE.getId()) { //max
                         node.getChildren().get(i).updateLowerAndUpperBounds(leaf_value, node.getChildren().get(i).getUpperBound());
                         double new_lowerBound = 0;
 
@@ -52,7 +54,7 @@ public class ExpectiminimaxStar2 extends Expectiminimax {
                             node.updateLowerAndUpperBounds(new_lowerBound, node.getUpperBound());
                         }
 
-                    } else if (node.getChildren().get(i).getNodeType() == 2) { //min
+                    } else if (node.getChildren().get(i).getNodeType() == NodeEnum.MIN_NODE.getId()) { //min
                         node.getChildren().get(i).updateLowerAndUpperBounds(node.getChildren().get(i).getLowerBound(), leaf_value);
                         double new_upperBound = 0;
 
@@ -86,14 +88,14 @@ public class ExpectiminimaxStar2 extends Expectiminimax {
             return node.getValue();
 
         }
-        else if(node.getNodeType() == 2){
+        else if(node.getNodeType() == NodeEnum.MIN_NODE.getId()){
             a = Double.POSITIVE_INFINITY;
 
             for(TreeNode children : node.getChildren()){
                 a = Math.min(a, expectiminimaxWithStar2(children, depth - 1, maxDepth));
             }
         }
-        else if(node.getNodeType() == 1){
+        else if(node.getNodeType() == NodeEnum.MAX_NODE.getId()){
             a = Double.NEGATIVE_INFINITY;
 
             for(TreeNode children : node.getChildren()){

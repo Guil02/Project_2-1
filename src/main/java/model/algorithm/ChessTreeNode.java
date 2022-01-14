@@ -1,6 +1,7 @@
 package model.algorithm;
 
 import controller.Board;
+import model.player.SearchAgent;
 
 public class ChessTreeNode extends TreeNode{
     private int xFrom;
@@ -9,22 +10,22 @@ public class ChessTreeNode extends TreeNode{
     private int yTo;
     private Board board;
     private boolean doPromotion = false;
-    private AiTree aiTree = new AiTree();
-    private boolean maxIsWhite;
+    private TreeBuilder treeBuilder;
 
-    public ChessTreeNode(Board board, double value, TreeNode parent, int nodeType, double probability, int xFrom, int yFrom, int xTo, int yTo, boolean maxIsWhite) {
+    public ChessTreeNode(Board board, double value, TreeNode parent, int nodeType, double probability, int xFrom, int yFrom, int xTo, int yTo) {
         super(value, parent, nodeType, probability);
         this.xFrom = xFrom;
         this.yFrom = yFrom;
         this.xTo = xTo;
         this.yTo = yTo;
         this.board = board;
-        this.maxIsWhite = maxIsWhite;
+        treeBuilder = new TreeBuilder();
+        setObjectType(0);
     }
 
     @Override
     public void createChildren() {
-        aiTree.createChildren(this, true, maxIsWhite);
+        treeBuilder.createChildren(this, true);
     }
 
     public int getxFrom() {
@@ -47,6 +48,11 @@ public class ChessTreeNode extends TreeNode{
         this.doPromotion = doPromotion;
     }
 
+    @Override
+    public void evaluate() {
+        SearchAgent.evaluation(this.board);
+    }
+
     public boolean isDoPromotion() {
         return doPromotion;
     }
@@ -55,9 +61,6 @@ public class ChessTreeNode extends TreeNode{
         return board;
     }
 
-    public boolean isMaxIsWhite() {
-        return maxIsWhite;
-    }
 
     @Override
     public boolean hasBestQuality() {
