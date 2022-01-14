@@ -119,10 +119,18 @@ public class NNAgent extends Player {
      */
     private void updateWeights(ArrayList<Double> weights, ArrayList<Double> z, double delta){
         int amountOfWeights = weights.size();
+        double max = Double.NEGATIVE_INFINITY;
+
         for(int i = 0; i<amountOfWeights; i++){
             double newValue = weights.get(i) + alpha*delta*z.get(i);
             weights.set(i, newValue);
+
+            if(max<Math.abs(newValue)){
+                max = newValue;
+            }
+
         }
+        Functions.normalize(weights, max);
     }
 
     /**

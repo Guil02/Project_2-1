@@ -16,7 +16,7 @@ public class GameRunner {
     ChessGUI chessGUI;
     GraphicsConnector graphicsConnector;
     DebugWindowStage debugWindowStage;
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = Config.DEBUG;
     public static final boolean EXPERIMENT1 =false;
     private int whiteWin = 0;
     private int blackWin = 0;
