@@ -3,6 +3,7 @@ package controller;
 import config.Config;
 import gui.DebugWindow.DebugWindowStage;
 import javafx.application.Platform;
+import model.GeneticAlgorithm.GA;
 import model.pieces.*;
 import model.player.NNAgent;
 import model.player.TDLearningAgent;
@@ -146,6 +147,12 @@ public class BoardUpdater {
         if(board.getGameOver()&& board.isOriginal()){
             board.storeMove();
 
+
+            if(Config.GA){
+
+                GA.training = false;
+
+            }
             if(GameRunner.EXPERIMENT1){
                 if(!board.containsKing(false)){
                     board.getGameRunner().incrementWhiteWin();

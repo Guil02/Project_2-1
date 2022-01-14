@@ -96,6 +96,8 @@ public class TreeBuilder {
                 return new NNTreeNode(board, value, parent, nodeType, probability, xFrom, yFrom, xTo, yTo, ((NNTreeNode) parent).getNnAgent());
             case TD_NODE:
                 return new TDTreeNode(board, value, parent, nodeType, probability, xFrom, yFrom, xTo, yTo);
+            case GA_NODE:
+                return new GeneticAlgorithmTreeNode(board, value, parent, nodeType, probability, xFrom, yFrom, xTo, yTo, ((GeneticAlgorithmTreeNode)parent).getAgent());
             default:
                 return null;
         }

@@ -4,6 +4,7 @@ import model.pieces.ChessPiece;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Functions{
 
@@ -41,6 +42,16 @@ public class Functions{
             for (Double weight : weights) {
                 fileWriter.write(weight + ", ");
             }
+            fileWriter.write("\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void appendString(String x, String fileName){
+        try(FileWriter fileWriter = new FileWriter(fileName, true)) {
+            fileWriter.write("NEW ITERATION: \n");
+            fileWriter.write(x);
             fileWriter.write("\n");
         } catch (IOException e) {
             e.printStackTrace();

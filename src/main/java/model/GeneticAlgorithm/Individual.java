@@ -35,9 +35,9 @@ public class Individual {
         this.fitness = fitness;
     }
 
-    public double calculateFitness() {
+    public void setFitness() {
         double fitness = ((double) gamesWon) / ((double) gamesPlayed);
-        return fitness;
+        this.fitness = fitness;
     }
 
     public void incrementGamesWon() {
@@ -46,6 +46,11 @@ public class Individual {
 
     public void incrementGamesPlayed() {
         gamesPlayed++;
+    }
+
+    public void resetStatistics(){
+        gamesPlayed = 0;
+        gamesWon = 0;
     }
 
     public void mutateGene(){
@@ -58,7 +63,7 @@ public class Individual {
 
     private double mutateChromosome(double weight) {
         double r = Math.random();
-        if(r<Population.getMutationRate()){
+        if(r<GA.getMutationRate()){
             return weight * Functions.randomNumber(0.95,1.05);
         }
         return weight;
@@ -66,5 +71,25 @@ public class Individual {
 
     public int getGeneLength(){
         return geneLength;
+    }
+
+    public ArrayList<Double> getGene() {
+        return agent.getWeights();
+    }
+
+    public void setGene(ArrayList<Double> weights){
+        agent.setWeights(weights);
+    }
+
+    public GeneticAlgorithmAgent getAgent() {
+        return agent;
+    }
+
+    public int getGamesPlayed() {
+        return gamesPlayed;
+    }
+
+    public int getGamesWon() {
+        return gamesWon;
     }
 }

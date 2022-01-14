@@ -3,6 +3,7 @@ package controller;
 import gui.ChessGUI;
 import gui.DebugWindow.DebugWindowStage;
 import model.GeneticAlgorithm.GA;
+import model.algorithm.GeneticAlgorithmAgent;
 import model.player.*;
 import config.Config;
 
@@ -45,6 +46,27 @@ public class GameRunner {
                 init(3,3);
             }
         }
+    }
+
+    public GameRunner(Board board){
+        this.board = board;
+        BoardUpdater.fillGameStart(board);
+    }
+
+    public void GATraining(GeneticAlgorithmAgent agent1, GeneticAlgorithmAgent agent2){
+        board.setPlayers(7,7);
+        board.setPlayerPlayers(agent1,agent2);
+        Dice.firstMoveDiceRoll(board);
+        board.checkAi();
+    }
+
+    public void GAReset(){
+        board.movesClear();
+        BoardUpdater.clearBoard(board);
+        BoardUpdater.fillGameStart(board);
+        board.setGameOver(false);
+        board.setAmountOfTurns(1);
+        board.setWhiteMove(true);
     }
 
     /**
@@ -105,8 +127,11 @@ public class GameRunner {
         else if(playerType == 5){
             return new NNAgent();
         }
-        else{
+        else if(playerType == 6){
             return new CheatAgent();
+        }
+        else{
+            return new GeneticAlgorithmAgent();
         }
     }
 
