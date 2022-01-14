@@ -136,4 +136,11 @@ public class Functions{
         double interval = max-min;
         return Math.random()*interval+min;
     }
+
+    public static void normalize(ArrayList<Double> values, double max){
+        for(int i = 0; i<values.size(); i++){
+            double normalized = values.get(i)/max;
+            values.set(i,normalized);
+        }
+    }
 }
