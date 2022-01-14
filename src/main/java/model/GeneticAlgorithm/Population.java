@@ -126,6 +126,18 @@ public class Population {
         }
     }
 
+    private void updateFitness(){
+        for(int i=0; i<populationsize; i++){
+            individuals.get(i).setFitness();
+        }
+        isSorted = false;
+    }
+    public void updateGeneration(){
+        updateFitness();
+        steadyStateSelection();
+        mutatePopulation();
+    }
+
     private static final String log = "build/classes/java/main/model/GeneticAlgorithm/log";
     public void print() {
         for(int i = 0; i<individuals.size(); i++){
