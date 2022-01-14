@@ -17,7 +17,7 @@ public class SearchAgent extends Player {
     private Expectiminimax expectiminimax = new Expectiminimax();
     private ChessTreeNode maxima;
     private Board board;
-    private static final int ply = 2;
+    private static final int ply = 3;
 
     public SearchAgent(Board board) {
         this.board = board;

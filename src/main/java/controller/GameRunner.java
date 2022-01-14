@@ -19,11 +19,11 @@ public class GameRunner {
     private AiTree aiTree;
     private Expectiminimax expectiminimax;
     public static final boolean DEBUG = false;
-    public static final boolean EXPERIMENT1 =false;
+    public static final boolean EXPERIMENT1 =true;
     private int whiteWin = 0;
     private int blackWin = 0;
     private int games = 0;
-    private static final int maxGames = 100;
+    private static final int maxGames = 500;
 
     public void incrementWhiteWin(){
         whiteWin++;
@@ -71,7 +71,7 @@ public class GameRunner {
             5 = "NN Agent"
             6 = "Cheating Agent"
              */
-            init(3,3);
+            init(1,2);
         }
     }
 
@@ -106,6 +106,7 @@ public class GameRunner {
         board.setWhiteMove(true);
         Dice.firstMoveDiceRoll(board);
         board.checkAi();
+        games++;
     }
 
     public Player createPlayer(int playerType){
