@@ -114,6 +114,17 @@ public class NeuralNetwork {
 
                 Neuron current = layers[i].getNeurons()[j];
                 double val = calculateNeuronValue(i,j);
+
+                double bias_gradient;
+                if(i==layers.length-1){
+                    bias_gradient = doDerivativeActivation(val, layers[i].getActivation());
+                }
+                else {
+                    bias_gradient = doDerivativeActivation(val, layers[i].getActivation())*current.getTemp_grad();
+                }
+                current.setBias_gradient(bias_gradient);
+
+
                 for(int k = 0; k<layers[i-1].getNeurons().length; k++){
                     Neuron previousNeuron = layers[i - 1].getNeurons()[k];
 
@@ -152,6 +163,7 @@ public class NeuralNetwork {
         ArrayList<Double> gradient = new ArrayList<>();
         for(int i = 1; i<layers.length; i++){
             for(int j = 0; j<layers[i].getNeurons().length; j++){
+                gradient.add(layers[i].getNeurons()[j].getBias_gradient());
                 for(int k = 0; k<layers[i].getNeurons()[j].getGradient().length; k++){
                     gradient.add(layers[i].getNeurons()[j].getGradient()[k]);
                 }
@@ -164,6 +176,7 @@ public class NeuralNetwork {
         ArrayList<Double> weights = new ArrayList<>();
         for(int i = 1; i<layers.length; i++){
             for(int j = 0; j<layers[i].getNeurons().length; j++){
+                weights.add(layers[i].getNeurons()[j].getBias());
                 for(int k = 0; k<layers[i].getNeurons()[j].getWeight().length; k++){
                     weights.add(layers[i].getNeurons()[j].getWeight()[k]);
                 }
@@ -176,6 +189,7 @@ public class NeuralNetwork {
         int index = 0;
         for(int i = 1; i<layers.length; i++){
             for(int j = 0; j<layers[i].getNeurons().length; j++){
+                layers[i].getNeurons()[j].setBias(weights.get(index++));
                 for(int k = 0; k<layers[i].getNeurons()[j].getWeight().length; k++){
                     layers[i].getNeurons()[j].getWeight()[k]=weights.get(index++);
                 }

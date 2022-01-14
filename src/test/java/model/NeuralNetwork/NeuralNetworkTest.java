@@ -111,5 +111,4 @@ class NeuralNetworkTest {
 
         assertEquals(expected, actual);
     }
-
 }

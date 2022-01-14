@@ -11,6 +11,7 @@ public class Neuron {
     private double[] weight_gradient;
     private double temp_grad = 0;
     private double value  = 0;
+    private double bias_gradient;
 
     /**
      * constructor for hidden/output neurons
@@ -47,6 +48,10 @@ public class Neuron {
         return bias;
     }
 
+    public void setBias(double bias) {
+        this.bias = bias;
+    }
+
     public double[] getGradient() {
         return weight_gradient;
     }
@@ -65,6 +70,14 @@ public class Neuron {
 
     public void setWeight_gradient(double[] weight_gradient) {
         this.weight_gradient = weight_gradient;
+    }
+
+    public double getBias_gradient() {
+        return bias_gradient;
+    }
+
+    public void setBias_gradient(double bias_gradient) {
+        this.bias_gradient = bias_gradient;
     }
 
     public double getTemp_grad() {
