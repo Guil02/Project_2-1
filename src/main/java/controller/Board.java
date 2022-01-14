@@ -309,7 +309,9 @@ public class Board {
      */
     public void launchGuiUpdate(){
         if(Config.GUI_ON){
-            getGameRunner().debugWindowStage.incrementPlyCount();
+            if(Config.SHOW_DEBUG_WINDOW){
+                getGameRunner().debugWindowStage.incrementPlyCount();
+            }
             graphicsConnector.updateImages();
             graphicsConnector.changeTurn();
         }

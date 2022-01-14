@@ -22,56 +22,15 @@ public class CheatAgent extends Player {
     public CheatAgent() {
     }
 
-    public void launch(Board board) {
-        if(firstTurn){
-            cheatIsWhite = board.getWhiteMove();
-            firstTurn = false;
-        }
-        new Thread(() -> {
-            try {
-                Thread.sleep(50);
-                cheatAgent(board);
-                ChessCheatAiTreeNode move = getMaxima();
-                char movablePieceChar = board.getMovablePiece();
-                if (move.isDoPromotion()) {
-                    board.storeMove();
-                    BoardUpdater.runPromotion(board, move.getBoard(), move.getxFrom(), move.getyFrom(), move.getxTo(), move.getyTo());
-                    if (Config.GUI_ON) {
-                        Platform.runLater(
-                                new Thread(board::launchGuiUpdate)
-                        );
-                    }
-                } else {
-//                    if(!Board.GUI_ON) printBoard(board.getBoardModel(), board);
-                    BoardUpdater.movePiece(board, move.getxFrom(), move.getyFrom(), move.getxTo(), move.getyTo());
-                    if (Config.GUI_ON) {
-                        Platform.runLater(
-                                new Thread(board::launchGuiUpdate)
-                        );
-                    }
-                }
-            }
-            catch (Exception e) {
-                System.err.println("Piece might already have been moved due to glitch in the threading");
-                e.printStackTrace();
-            }
-        }).start();
-
-    }
-
     public void runAgent(Board board){
-
-    }
-
-    public void cheatAgent(Board board) {
-//        System.out.println(board.getWhiteMove());
+        //        System.out.println(board.getWhiteMove());
         Board copy = board.clone();
         boolean maxIsWhite = board.getWhiteMove();
         ChessCheatAiTreeNode root;
         if (maxIsWhite) {
-            root = new ChessCheatAiTreeNode(copy, 0, null, 1, 1, 0, 0, 0, 0, maxIsWhite, cheatIsWhite);
+            root = new ChessCheatAiTreeNode(copy, 0, null, 1, 1, 0, 0, 0, 0, cheatIsWhite);
         } else {
-            root = new ChessCheatAiTreeNode(copy, 0, null, 2, 1, 0, 0, 0, 0, maxIsWhite, cheatIsWhite);
+            root = new ChessCheatAiTreeNode(copy, 0, null, 2, 1, 0, 0, 0, 0, cheatIsWhite);
         }
         double res = expectiminimax.expectiminimax(root, (ply * 2) - 1, (ply * 2) - 1);
         double maxValue;

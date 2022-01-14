@@ -1,5 +1,6 @@
 package model.algorithm;
 
+import com.sun.source.tree.Tree;
 import controller.Board;
 
 public class ChessCheatAiTreeNode extends TreeNode{
@@ -10,24 +11,22 @@ public class ChessCheatAiTreeNode extends TreeNode{
     private Board board;
     private boolean doPromotion = false;
     private CheatAiTree cheatAiTree = new CheatAiTree();
-    private boolean maxIsWhite;
     private boolean cheatIsWhite;
 
-    public ChessCheatAiTreeNode(Board board, double value, TreeNode parent, int nodeType, double probability, int xFrom, int yFrom, int xTo, int yTo, boolean maxIsWhite, boolean cheatIsWhite) {
+    public ChessCheatAiTreeNode(Board board, double value, TreeNode parent, int nodeType, double probability, int xFrom, int yFrom, int xTo, int yTo, boolean cheatIsWhite) {
         super(value, parent, nodeType, probability);
         this.xFrom = xFrom;
         this.yFrom = yFrom;
         this.xTo = xTo;
         this.yTo = yTo;
         this.board = board;
-        this.maxIsWhite = maxIsWhite;
         this.cheatIsWhite = cheatIsWhite;
+        setObjectType(3);
     }
 
     @Override
     public void createChildren() {
-
-        cheatAiTree.createChildren(this, cheatIsWhite, true, maxIsWhite);
+        cheatAiTree.createChildren(this, cheatIsWhite, true);
     }
 
     public int getxFrom() {
@@ -60,7 +59,7 @@ public class ChessCheatAiTreeNode extends TreeNode{
 
     @Override
     public void evaluate() {
-        //TODO: IMPLEMENT EVALUATION
+
     }
 
     public boolean isDoPromotion() {
@@ -69,10 +68,6 @@ public class ChessCheatAiTreeNode extends TreeNode{
 
     public Board getBoard() {
         return board;
-    }
-
-    public boolean isMaxIsWhite() {
-        return maxIsWhite;
     }
 
     @Override

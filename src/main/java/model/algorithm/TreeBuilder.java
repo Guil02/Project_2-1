@@ -42,7 +42,7 @@ public class TreeBuilder {
         copy.setMovablePiece(movablePiece);
         double value = 0;
         TreeNode child = childCreate(copy, value, parent, nodeType, probability, 0,0,0,0);
-        if(doEvaluation){
+        if(doEvaluation && child!=null){
             child.evaluate();
         }
         parent.addChild(child);
@@ -97,8 +97,7 @@ public class TreeBuilder {
             case TD_NODE:
                 return new TDTreeNode(board, value, parent, nodeType, probability, xFrom, yFrom, xTo, yTo);
             case CHEAT_NODE:
-                //TODO: REMOVE THE MAXISWHITE PART AFTER CHEAT AI IS DONE.
-                return new ChessCheatAiTreeNode(board, value, parent, nodeType, probability, xFrom, yFrom, xTo, yTo, true);
+                return new ChessCheatAiTreeNode(board, value, parent, nodeType, probability, xFrom, yFrom, xTo, yTo, ((ChessCheatAiTreeNode) parent).isCheatIsWhite());
             default:
                 return null;
         }

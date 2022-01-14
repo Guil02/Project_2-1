@@ -242,8 +242,6 @@ public class TDLearningAgent extends Player{
 //            }
 //        }).start();
 //    }
-
-     */
 /*
     public TDTreeNode getMaxima() {
         return maxima;
@@ -262,6 +260,7 @@ public class TDLearningAgent extends Player{
         }
         return 0;
     }
+
 /*
     public static void printBoard(ChessPiece[][] boardModel, Board board) {
         System.out.println("--- Board State ---\n");
@@ -274,5 +273,5 @@ public class TDLearningAgent extends Player{
         }
     }
 
-
+*/
 }
