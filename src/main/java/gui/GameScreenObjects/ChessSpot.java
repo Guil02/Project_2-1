@@ -7,11 +7,10 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
-
 import java.util.ArrayList;
 
 /**
- * the class that represents every single square on the chess board.
+ * The class that represents every single square on the chess board.
  */
 public class ChessSpot extends Label {
     private static final double DIVIDER = 8.0;
@@ -28,7 +27,6 @@ public class ChessSpot extends Label {
     private static final String color2 = "-fx-background-color: #90a1ab; -fx-border-color: rgba(0,0,0,0.09);";
     private static final String attackColor = "-fx-background-color: #99af6f; -fx-border-color: rgba(0,0,0,0.09);";
     private static final String moveColor = "-fx-background-color: #c6d590; -fx-border-color: rgba(0,0,0,0.09);";
-
 
     /**
      * @param board the board that represents the chessboard on which this spot is located
@@ -67,26 +65,42 @@ public class ChessSpot extends Label {
         }
     }
 
+    /**
+     * Sets attack colour.
+     */
     public void setAttackColor(){
         if(ChessGUI.COLOR){
             setStyle(attackColor);
         }
     }
 
+    /**
+     * Sets move colour.
+     */
     public void setMoveColor(){
         if(ChessGUI.COLOR){
             setStyle(moveColor);
         }
     }
 
+    /**
+     * @return x-pos
+     */
     public int getX() {
         return x;
     }
 
+    /**
+     * @return y-pos
+     */
     public int getY() {
         return y;
     }
 
+    /**
+     * Setter of a piece on this spot.
+     * @param piece desired piece
+     */
     public void setPiece(Piece piece) {
         this.piece = piece;
         if (piece == null) {
@@ -98,7 +112,7 @@ public class ChessSpot extends Label {
     }
 
     /**
-     * updates the size of everything when the display size has changed
+     * Updates the size of everything when the display size has changed.
      */
     public void updateGraphic(){
         width = board.getWidthFromChessGUI()* PERCENTAGE_FILLED;
@@ -113,6 +127,9 @@ public class ChessSpot extends Label {
         }
     }
 
+    /**
+     * @return piece on this spot
+     */
     public Piece getPiece() {
         return piece;
     }
@@ -121,7 +138,6 @@ public class ChessSpot extends Label {
      * the method that dictates what happens when a click and drag behaviour is detected
      * will color all the spots the piece can move to either an attacking color or a simple
      * moveable color.
-     *
      * @param e a mouse event
      */
     public void onDragDetected(MouseEvent e){
@@ -129,7 +145,6 @@ public class ChessSpot extends Label {
             Dragboard dragboard = startDragAndDrop(TransferMode.MOVE);
             Image image = new Image(graphicsConnector.getImage(piece.getX(), piece.getY()), width /DIVIDER, height /DIVIDER, false, false);
             dragboard.setDragView(image);
-
             ClipboardContent clipboardContent = new ClipboardContent();
             clipboardContent.put(Piece.getDataFormat(), piece);
             dragboard.setContent(clipboardContent);
@@ -146,9 +161,8 @@ public class ChessSpot extends Label {
     }
 
     /**
-     * a method that dictates what happens when a piece is dragged over a chessSpot,
+     * A method that dictates what happens when a piece is dragged over a chessSpot,
      * specifically it says that it is possible to drag a piece over it.
-     *
      * @param e a mouse event
      */
     public void onDragOver(DragEvent e){
@@ -161,21 +175,16 @@ public class ChessSpot extends Label {
     /**
      * a method that dictates what happens when a drag is released above a chessSpot,
      * and then decides how everything should be handled.
-     *
      * @param e a mouse event
      */
     public void onDragDropped(DragEvent e) {
         Dragboard dragboard = e.getDragboard();
-
         // check if the drag board was actually dragging a piece
         if (dragboard.hasContent(Piece.getDataFormat())) {
-
             Piece piece = (Piece) dragboard.getContent(Piece.getDataFormat());
             ChessSpot originalSpot = board.getChessSpot(piece.getX(), piece.getY());
             Piece actualPiece = originalSpot.getPiece();
-
             if (graphicsConnector.canMove(piece.getX(), piece.getY(), x, y)) {
-
                 originalSpot.setPiece(null);
                 actualPiece.setXY(x, y);
                 graphicsConnector.doMove(piece.getX(), piece.getY(), x, y);
@@ -185,7 +194,6 @@ public class ChessSpot extends Label {
                 board.updateDice();
                 board.initializeBoard();
             }
-
             e.consume();
         }
     }
@@ -206,7 +214,6 @@ public class ChessSpot extends Label {
         }
     }
 
-
     /**
      * @return returns an arraylist of all the possible moves for the piece that is located
      * on the spot represented by this object.
@@ -222,7 +229,11 @@ public class ChessSpot extends Label {
         return spots;
     }
 
-    public static void setPromotionLock(boolean bool) {
-        promotionLock = bool;
+    /**
+     * Sets a promotion lock on the
+     * @param lock
+     */
+    public static void setPromotionLock(boolean lock) {
+        promotionLock = lock;
     }
 }
