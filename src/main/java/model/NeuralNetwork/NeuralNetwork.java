@@ -41,6 +41,7 @@ public class NeuralNetwork {
                     System.out.println("val+bias: "+val);
                     System.out.println("val+bias+tanh: "+ Functions.tanh(val));
                 }
+
                 layers[i].getNeurons()[j].setValue(doActivation(val, layers[i].getActivation()));
             }
         }
@@ -110,7 +111,7 @@ public class NeuralNetwork {
         for(int i = layers.length-1; i>0; i--){
 
             int amountOfNeurons = layers[i].getNeurons().length;
-            for(int j = 0; j< amountOfNeurons; j++){
+            for(int j = 0; j<amountOfNeurons; j++){
 
                 Neuron current = layers[i].getNeurons()[j];
                 double val = calculateNeuronValue(i,j);

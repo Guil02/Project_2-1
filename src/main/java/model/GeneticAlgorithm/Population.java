@@ -12,7 +12,7 @@ public class Population {
     private GAFunctions gaFunctions = new GAFunctions();
     private boolean isSorted = false;
     private final int numberOfStrongest = 8;
-    private final int numberOfSurvivors = 40;
+    private final int numberOfSurvivors = 16;
     private int geneLength;
     private int AmountOfWeightsStored = 3;
 

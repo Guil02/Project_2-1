@@ -59,8 +59,8 @@ public class Functions{
     }
 
     public static double tanh(double x){
-        if(x<100){
-
+        if(x<-100){
+            return -1;
         }
         else if(x>100){
             return 1;
