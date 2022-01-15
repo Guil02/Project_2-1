@@ -2,9 +2,11 @@ package model.GeneticAlgorithm;
 
 import model.algorithm.GeneticAlgorithmAgent;
 import utils.Functions;
-
 import java.util.ArrayList;
 
+/**
+ * Class representing a single individual of a population in a GA.
+ */
 public class Individual {
     private static final double min = -1;
     private static final double max = 1;
