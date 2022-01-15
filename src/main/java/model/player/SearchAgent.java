@@ -11,10 +11,10 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class SearchAgent extends Player {
-    private Expectiminimax expectiminimax = new Expectiminimax();
+    private ExpectiminimaxStar2 expectiminimax = new ExpectiminimaxStar2(true);
     private ChessTreeNode maxima;
     private Board board;
-    private static final int ply = 3;
+    private static final int ply = 4;
 
     public SearchAgent(Board board) {
         this.board = board;
@@ -30,7 +30,7 @@ public class SearchAgent extends Player {
         else{
             root = new ChessTreeNode(copy, 0, null, 2, 1, 0, 0, 0, 0);
         }
-        double res = expectiminimax.expectiminimax(root, (ply*2)-1, (ply*2)-1);
+        double res = expectiminimax.expectiminimaxWithStar2(root, (ply*2)-1, (ply*2)-1);
 
         double maxValue;
         if(maxIsWhite){

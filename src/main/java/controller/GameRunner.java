@@ -17,7 +17,7 @@ public class GameRunner {
     GraphicsConnector graphicsConnector;
     DebugWindowStage debugWindowStage;
     public static final boolean DEBUG = Config.DEBUG;
-    public static final boolean EXPERIMENT1 =false;
+    public static final boolean EXPERIMENT1 = true;
     private int whiteWin = 0;
     private int blackWin = 0;
     private int games = 0;
@@ -47,7 +47,7 @@ public class GameRunner {
             5 = "NN Agent"
             6 = "Cheating Agent"
              */
-            init(1,2);
+            init(1,4);
 
         }
     }
