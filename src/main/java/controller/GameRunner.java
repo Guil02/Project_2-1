@@ -119,6 +119,7 @@ public class GameRunner {
         board.setWhiteMove(true);
         Dice.firstMoveDiceRoll(board);
         board.checkAi();
+        games++;
     }
 
     /**
