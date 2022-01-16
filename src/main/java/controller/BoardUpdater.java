@@ -1,7 +1,7 @@
 package controller;
 
 import config.Config;
-import gui.DebugWindow.DebugWindowStage;
+import gui.debugWindow.DebugWindowStage;
 import javafx.application.Platform;
 import model.pieces.*;
 import model.player.NNAgent;

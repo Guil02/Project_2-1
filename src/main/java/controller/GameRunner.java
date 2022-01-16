@@ -1,8 +1,7 @@
 package controller;
 
 import gui.ChessGUI;
-import gui.DebugWindow.DebugWindowStage;
-import model.pieces.ChessPiece;
+import gui.debugWindow.DebugWindowStage;
 import model.player.*;
 import config.Config;
 

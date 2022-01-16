@@ -2,20 +2,34 @@ package model.player;
 
 import controller.Board;
 import model.pieces.ChessPiece;
-import model.pieces.PawnPiece;
-
 import java.util.ArrayList;
 
+/**
+ * This class represents the factors to evaluate a board at a certain state.
+ */
 public class Factor {
+
+    /**
+     * Piece-value evaluation
+     * @param board
+     * @param whiteIsMax
+     * @param c
+     * @return
+     */
     public static double piece_value(Board board, boolean whiteIsMax, char c){
         c = convertChar(c, whiteIsMax);
         char adverse = convertChar(c, !whiteIsMax);
         return board.getAmountOfPieces(c)-board.getAmountOfPieces(adverse);
     }
 
+    /**
+     * Pawn-doubled-penalty evaluation
+     * @param board
+     * @param whiteIsMax
+     * @return
+     */
     public static double pawn_doubled_penalty_value(Board board, boolean whiteIsMax){
         char c = convertChar('P', whiteIsMax);
-
         ArrayList<ChessPiece> list = board.getPieces(c);
         double res = 0;
         for(int x = 0; x<Board.getBoardSize(); x++){
@@ -32,13 +46,17 @@ public class Factor {
         return res;
     }
 
+    /**
+     * Pawn-isolated-penalty evaluation
+     * @param board
+     * @param whiteIsMax
+     * @return
+     */
     public static double pawn_isolated_penalty_value(Board board, boolean whiteIsMax){
         char c = convertChar('P', whiteIsMax);
-
         ArrayList<ChessPiece> list = board.getPieces(c);
         double result = 0;
         for(int i=0; i<list.size(); i++){
-
             boolean isIsolated = true;
             int coordinate = list.get(i).getX();
             for(int j=0; j<list.size(); j++){
@@ -53,20 +71,31 @@ public class Factor {
         return result;
     }
 
+    /**
+     * Pawn-central evaluation
+     * @param board
+     * @param whiteIsMax
+     * @return
+     */
     public static double pawn_central(Board board, boolean whiteIsMax){
         char c = convertChar('P', whiteIsMax);
         ArrayList<ChessPiece> list = board.getPieces(c);
-
         double res = 0;
         for(ChessPiece chessPiece: list){
             if(isCentral(chessPiece.getX(), chessPiece.getY())){
                 res++;
             }
         }
-
         return res;
     }
 
+    /**
+     * Piece-mobility evaluation
+     * @param board
+     * @param whiteIsMax
+     * @param c
+     * @return
+     */
     public static double piece_mobility(Board board, boolean whiteIsMax, char c){
         c = convertChar('P', whiteIsMax);
         ArrayList<ChessPiece> list = board.getPieces(c);
@@ -86,20 +115,25 @@ public class Factor {
         return res;
     }
 
-    public static double passedPawn(Board board, boolean whiteisMax){
-        char c = convertChar('P', whiteisMax);
+    /**
+     * Passed-pawn evaluation
+     * @param board
+     * @param whiteIsMax
+     * @return
+     */
+    public static double passedPawn(Board board, boolean whiteIsMax){
+        char c = convertChar('P', whiteIsMax);
         double amountPassed = 0;
         ArrayList<ChessPiece> pawns = board.getPieces(c);
         ArrayList<ChessPiece> opponentPawns = board.getPieces(Character.toLowerCase(c));
-
-        if(!whiteisMax){
+        if(!whiteIsMax){
             pawns = board.getPieces(c);
             opponentPawns = board.getPieces(Character.toUpperCase(c));
         }
         for(ChessPiece pawn : pawns){
                 boolean passed = true;
                 for(ChessPiece opponentPawn : pawns){
-                    if(whiteisMax) {
+                    if(whiteIsMax) {
                         if (pawn.getY() > opponentPawn.getY() && (pawn.getX() - 1 == opponentPawn.getX() || pawn.getX() + 1 == opponentPawn.getX())) {
                             passed = false;
                         }
@@ -108,7 +142,6 @@ public class Factor {
                         if(pawn.getY()<opponentPawn.getY() && (pawn.getX()-1== opponentPawn.getX() || pawn.getX()+1== opponentPawn.getX())){
                             passed = false;
                         }
-
                     }
                 }
                 if(passed)
@@ -117,7 +150,12 @@ public class Factor {
             return amountPassed;
         }
 
-
+    /**
+     * Rook-on-seventh-rank evaluation
+     * @param board
+     * @param whiteIsMax
+     * @return
+     */
     public static double rooks_on_seventh_rank(Board board, boolean whiteIsMax){
         char c = convertChar('R', whiteIsMax);
         ArrayList<ChessPiece> rooks = board.getPieces(c);
@@ -135,6 +173,12 @@ public class Factor {
         return result;
     }
 
+    /**
+     * Knight-periphery-0 evaluation
+     * @param board
+     * @param whiteIsMax
+     * @return
+     */
     public static double knight_periphery_0(Board board, boolean whiteIsMax){
         char c = convertChar('N', whiteIsMax);
         ArrayList<ChessPiece> list = board.getPieces(c);
@@ -147,10 +191,15 @@ public class Factor {
         return res;
     }
 
+    /**
+     * Knight-periphery-1 evaluation
+      * @param board
+     * @param whiteIsMax
+     * @return
+     */
     public static double knight_periphery_1(Board board, boolean whiteIsMax){
         char c = convertChar('N', whiteIsMax);
         ArrayList<ChessPiece> list = board.getPieces(c);
-
         double res = 0;
         for(ChessPiece piece: list){
             if((piece.getX() == 1 || piece.getX()==6)&&(piece.getY()>1 && piece.getY()<6)){
@@ -163,10 +212,15 @@ public class Factor {
         return res;
     }
 
+    /**
+     * Knight-periphery-2 evaluation
+     * @param board
+     * @param whiteIsMax
+     * @return
+     */
     public static double knight_periphery_2(Board board, boolean whiteIsMax){
         char c = convertChar('N', whiteIsMax);
         ArrayList<ChessPiece> list = board.getPieces(c);
-
         double res = 0;
         for(ChessPiece piece: list){
             if((piece.getX() == 2 || piece.getX()==5)&&(piece.getY()>2 && piece.getY()<5)){
@@ -179,6 +233,12 @@ public class Factor {
         return res;
     }
 
+    /***
+     * Knight-periphery-3 evaluation
+     * @param board
+     * @param whiteIsMax
+     * @return
+     */
     public static double knight_periphery_3(Board board, boolean whiteIsMax){
         char c = convertChar('N', whiteIsMax);
         ArrayList<ChessPiece> list = board.getPieces(c);
@@ -195,8 +255,13 @@ public class Factor {
         return res;
     }
 
+    /**
+     * Attacking-king evaluation
+     * @param board
+     * @param whiteIsMax
+     * @return
+     */
     public static double attacking_king(Board board, boolean whiteIsMax){
-
         ArrayList<ChessPiece> k = board.getPieces(convertChar('k', whiteIsMax));
         if(k.size()==0){
             return 0;
@@ -217,6 +282,12 @@ public class Factor {
         return result;
     }
 
+    /**
+     * Is-central evaluation
+     * @param x
+     * @param y
+     * @return
+     */
     public static boolean isCentral(int x, int y){
         if(x>1&&x<6&&y>3&&y<6){
             return true;
@@ -226,6 +297,12 @@ public class Factor {
         }
     }
 
+    /**
+     * Convert a char to the proper side.
+     * @param c
+     * @param whiteIsMax
+     * @return
+     */
     public static char convertChar(char c, boolean whiteIsMax){
         if(whiteIsMax)
             return Character.toUpperCase(c);

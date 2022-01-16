@@ -2,7 +2,7 @@ package model.player;
 
 import config.Config;
 import controller.Board;
-import model.NeuralNetwork.NeuralNetwork;
+import model.neuralNetwork.NeuralNetwork;
 import model.algorithm.ExpectiminimaxStar2;
 import model.algorithm.NNTreeNode;
 import model.algorithm.TreeNode;
@@ -53,8 +53,6 @@ public class NNAgent extends Player {
             System.out.println(Functions.readInWeights(fileName));
             initialized = true;
         }
-//            Functions.writeWeights(network.getWeights(), fileName);
-
     }
 
     /**
@@ -70,24 +68,18 @@ public class NNAgent extends Player {
         }
         ArrayList<Double> weights = network.getWeights();
         ArrayList<Double> z = initializeZ(weights);
-
         int amountOfTurns = states.size();
         int finalIteration = amountOfTurns-1;
         Board S = FenEvaluator.read(states.get(0));
-
         for(int i = 1; i<amountOfTurns; i++){
             double R = giveReward(board, i, finalIteration);
             Board newS = FenEvaluator.read(states.get(i));
-
             // Evaluate z value
             evaluateZ(z, S);
-
             // Evaluate new delta
             double delta = evaluateDelta(R, S, newS);
-
             // Update weights of the NN
             updateWeights(weights, z, delta);
-
             S = newS;
         }
         network.setWeights(weights);
@@ -120,15 +112,12 @@ public class NNAgent extends Player {
     private void updateWeights(ArrayList<Double> weights, ArrayList<Double> z, double delta){
         int amountOfWeights = weights.size();
         double max = Double.NEGATIVE_INFINITY;
-
         for(int i = 0; i<amountOfWeights; i++){
             double newValue = weights.get(i) + alpha*delta*z.get(i);
             weights.set(i, newValue);
-
             if(max<Math.abs(newValue)){
                 max = newValue;
             }
-
         }
         Functions.normalize(weights, max);
     }
@@ -157,7 +146,6 @@ public class NNAgent extends Player {
         double[] input = encoding.boardToArray2(state);
         network.computeGradient(input);
         ArrayList<Double> gradient = network.getGradient();
-        // System.out.println("Gradient: "+gradient);
         for(int i = 0; i<amountOfWeights; i++){
             double newValue = gamma*lambda*z.get(i) + gradient.get(i);
             z.set(i, newValue);
@@ -199,20 +187,11 @@ public class NNAgent extends Player {
         ArrayList<Double> weights = network.getWeights();
         ArrayList<Double> evals = evaluateAllBoards(states);
         ArrayList<ArrayList<Double>> gradients = getAllGradients(states);
-//        for(int i = 0; i<gradients.size(); i++){
-//            for(int j = 0; j<gradients.get(i).size(); j++){
-//                gradients.get(i).set(j, gradients.get(i).get(j)/100);
-//            }
-//        }
         System.out.println("Started Learning");
         ArrayList<Double> deltaW = new ArrayList<>();
         for(int i = 0; i<weights.size(); i++){
             deltaW.add(0.0);
         }
-//        System.out.println(deltaW.size());
-//        System.out.println(weights.size());
-//        System.out.println(gradients.get(0).size());
-
         for(int i = 0; i<states.size()-1; i++){
             for(int j = 0; j<deltaW.size(); j++){
                 double element = alpha * (evals.get(i + 1) - evals.get(i)) * gradientSum(gradients, i, j);
@@ -290,12 +269,6 @@ public class NNAgent extends Player {
      * @return
      */
     public double evaluation(Board board) {
-//        if(!board.containsKing(true)){
-//            return -1;
-//        }
-//        else if(!board.containsKing(false)){
-//            return 1;
-//        }
         double[] input = encoding.boardToArray2(board);
         double[] output = network.forwardPropagate(input);
         return output[0];
@@ -363,10 +336,19 @@ public class NNAgent extends Player {
         maxima = maxNode;
     }
 
+    /**
+     * Get maximum tree node.
+     * @return
+     */
     public NNTreeNode getMaxima() {
         return maxima;
     }
 
+    /**
+     * Gets piece type based on the char.
+     * @param pieceType
+     * @return
+     */
     public int getPieceType(char pieceType){
         switch(pieceType){
             case 'n','N':
@@ -381,6 +363,11 @@ public class NNAgent extends Player {
         return 0;
     }
 
+    /**
+     * Initializes z-value.
+     * @param weights
+     * @return
+     */
     private ArrayList<Double> initializeZ(ArrayList<Double> weights) {
         ArrayList<Double> z = new ArrayList<>();
         for(int i = 0; i< weights.size(); i++){
@@ -389,8 +376,12 @@ public class NNAgent extends Player {
         return z;
     }
 
+    /**
+     * Temporal Difference learning at leaf.
+     * @param board
+     */
     public void learnTDLeaf(Board board){
-        ArrayList<String> states =board.getBoardStates();
+        ArrayList<String> states = board.getBoardStates();
 
     }
 }

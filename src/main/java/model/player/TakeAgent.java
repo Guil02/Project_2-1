@@ -3,13 +3,12 @@ package model.player;
 import config.Config;
 import controller.Board;
 import controller.BoardUpdater;
-import gui.DebugWindow.DebugWindowStage;
+import gui.debugWindow.DebugWindowStage;
 import javafx.application.Platform;
 import model.pieces.ChessPiece;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.Random;
 
 /**

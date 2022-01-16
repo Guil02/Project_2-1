@@ -1,15 +1,16 @@
 package model.player;
 
-import config.Config;
 import controller.Board;
-import controller.BoardUpdater;
-import javafx.application.Platform;
 import model.algorithm.*;
 import model.pieces.ChessPiece;
-
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * Class that represents an agent that can "cheat".
+ * It has the capability of performing any move and is
+ * not dependent on the dice roll.
+ */
 public class CheatAgent extends Player {
     private CheatAiTree cheatAiTree = new CheatAiTree();
     private Expectiminimax expectiminimax = new Expectiminimax();
@@ -19,26 +20,25 @@ public class CheatAgent extends Player {
     private boolean firstTurn = true;
     private static final int ply = 2;
 
-    public CheatAgent() {
-    }
-
+    /**
+     * Runs the agent.
+     * @param board
+     */
     public void runAgent(Board board){
-        //        System.out.println(board.getWhiteMove());
         Board copy = board.clone();
         boolean maxIsWhite = board.getWhiteMove();
         ChessCheatAiTreeNode root;
         if (maxIsWhite) {
             root = new ChessCheatAiTreeNode(copy, 0, null, 1, 1, 0, 0, 0, 0, cheatIsWhite);
-        } else {
+        }
+        else {
             root = new ChessCheatAiTreeNode(copy, 0, null, 2, 1, 0, 0, 0, 0, cheatIsWhite);
         }
-        double res = expectiminimax.expectiminimax(root, (ply * 2) - 1, (ply * 2) - 1);
         double maxValue;
-
         if(maxIsWhite){
             maxValue = Double.NEGATIVE_INFINITY;
         }
-        else{
+        else {
             maxValue = Double.POSITIVE_INFINITY;
         }
         ArrayList<ChessCheatAiTreeNode> highestNodes = new ArrayList<>();
@@ -70,18 +70,23 @@ public class CheatAgent extends Player {
             }
         }
         Random rand = new Random();
-//        System.out.println(highestNodes.size());
         maxNode = highestNodes.get(rand.nextInt(highestNodes.size()));
-
-//        System.out.println("move from: x=" + maxNode.getxFrom() + " y=" + maxNode.getyFrom() + " to: x=" + maxNode.getxTo() + " y=" + maxNode.getyTo());
-//        printBoard(board.getBoardModel(), board);
         maxima = maxNode;
     }
 
+    /**
+     * Get maxima from the search tree.
+     * @return
+     */
     public ChessCheatAiTreeNode getMaxima() {
         return maxima;
     }
 
+    /**
+     * Gets the numerical value of a piece type.
+     * @param pieceType
+     * @return
+     */
     public int getPieceType(char pieceType) {
         switch (pieceType) {
             case 'n', 'N':
@@ -95,18 +100,4 @@ public class CheatAgent extends Player {
         }
         return 0;
     }
-
-
-
-    public static void printBoard(ChessPiece[][] boardModel, Board board) {
-        System.out.println("--- Board State ---\n");
-        for(int i = 0; i < boardModel[0].length; i++) {
-            for (int j = 0; j < boardModel.length; j++) {
-                System.out.print("[ " + board.getCharOffField(j,i) + " ] ");
-                // System.out.print("[ " + j + " " + i + " ] ");
-            }
-            System.out.println();
-        }
-    }
-
 }

@@ -3,7 +3,7 @@ package model.player;
 import config.Config;
 import controller.Board;
 import controller.BoardUpdater;
-import gui.DebugWindow.DebugWindowStage;
+import gui.debugWindow.DebugWindowStage;
 import javafx.application.Platform;
 import model.pieces.ChessPiece;
 import java.util.LinkedList;
@@ -26,7 +26,6 @@ public class BaselineAgent extends Player{
                     if (DebugWindowStage.isOnPause) {
                         pauseThread();
                     }
-
                     Thread.sleep(50);
                     char movablePieceChar = board.getMovablePiece();
                     // Select random piece if multiple pieces are movable
@@ -48,7 +47,6 @@ public class BaselineAgent extends Player{
                         randomPiece = pieceList.get(rand.nextInt(pieceList.size()));
                         pieceX = randomPiece.getX();
                         pieceY = randomPiece.getY();
-
                         // Select random target position of the selected piece
                         boolean[][] validMoves = randomPiece.validMoves(board);
                         if (targetPositions.size() != 0)
@@ -69,7 +67,6 @@ public class BaselineAgent extends Player{
                     int[] destination = targetPositions.get(rand.nextInt(targetPositions.size()));
                     int destinationX = destination[0];
                     int destinationY = destination[1];
-
                     // Execute move
                     BoardUpdater.movePiece(board, pieceX, pieceY, destinationX, destinationY);
                     if (Config.GUI_ON) {
@@ -84,7 +81,5 @@ public class BaselineAgent extends Player{
             }).start();
     }
 
-    public void runAgent(Board board){
-
-    }
+    public void runAgent(Board board){}
 }

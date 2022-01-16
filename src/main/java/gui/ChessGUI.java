@@ -1,11 +1,9 @@
 package gui;
 
-import config.Config;
 import controller.GraphicsConnector;
-import gui.DebugWindow.DebugWindowStage;
-import gui.GameScreenObjects.ChessBoard;
-import gui.SceneLayouts.GameScreen;
-import gui.SceneLayouts.StartScreen;
+import gui.gameScreenObjects.ChessBoard;
+import gui.sceneLayouts.GameScreen;
+import gui.sceneLayouts.StartScreen;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
