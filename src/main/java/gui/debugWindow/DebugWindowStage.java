@@ -37,7 +37,6 @@ public class DebugWindowStage extends Stage {
      */
     public DebugWindowStage(GameRunner gr) {
         this.gameRunner = gr;
-
         this.setTitle("Debug Info");
         this.setHeight(300);
         this.setWidth(500);
@@ -46,11 +45,9 @@ public class DebugWindowStage extends Stage {
             Platform.exit();
             System.exit(0);
         });
-
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
         this.setX((screenBounds.getWidth() / 2) - 900);
         this.setY((screenBounds.getHeight() / 2) - 300);
-
         initComponents();
         this.setScene(new Scene(root));
     }
