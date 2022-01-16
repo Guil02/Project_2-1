@@ -27,7 +27,6 @@ public abstract class Player {
     }
 
     public void launch(Board board){
-//        if(Config.GUI_ON) {
             new Thread(() -> {
                 try {
                     // Stop if game is on pause
@@ -58,17 +57,6 @@ public abstract class Player {
                     e.printStackTrace();
                 }
             }).start();
-//        }
-//        else{
-//            runAgent(board);
-//            TreeNode move = getMaxima();
-//            if (move.isDoPromotion()) {
-//                board.storeMove();
-//                BoardUpdater.runPromotion(board, move.getBoard(), move.getxFrom(), move.getyFrom(), move.getxTo(), move.getyTo());
-//            } else {
-//                BoardUpdater.movePiece(board, move.getxFrom(), move.getyFrom(), move.getxTo(), move.getyTo());
-//            }
-//        }
     }
 
     public abstract void runAgent(Board board);

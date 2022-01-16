@@ -18,11 +18,11 @@ public class GameRunner {
     GraphicsConnector graphicsConnector;
     DebugWindowStage debugWindowStage;
     public static final boolean DEBUG = Config.DEBUG;
-    public static final boolean EXPERIMENT1 =false;
+    public static final boolean EXPERIMENT1 =true;
     private int whiteWin = 0;
     private int blackWin = 0;
     private int games = 0;
-    private static final int maxGames = 100;
+    private static final int maxGames = 500;
 
     /**
      * Constructor
@@ -43,7 +43,17 @@ public class GameRunner {
                 }
             }
             else{
-                init(3,3);
+                /*
+                0 = "Human"
+                1 = "Search Agent"
+                2 = "Random Agent"
+                3 = "TD learning Agent"
+                4 = "Take Agent"
+                5 = "NN Agent"
+                6 = "Cheating Agent"
+                7 = "GA Agent"
+                */
+                init(5,4);
             }
         }
     }
@@ -80,7 +90,7 @@ public class GameRunner {
         board.setPlayerPlayers(player1, player2);
         BoardUpdater.fillGameStart(board);
         // Opens debug window
-        if (Config.SHOW_DEBUG_WINDOW) {
+        if (Config.SHOW_DEBUG_WINDOW && Config.GUI_ON) {
             debugWindowStage = new DebugWindowStage(this);
             debugWindowStage.show();
         }
