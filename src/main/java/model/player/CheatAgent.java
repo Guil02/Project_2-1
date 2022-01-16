@@ -17,7 +17,7 @@ public class CheatAgent extends Player {
     private ChessCheatAiTreeNode maxima;
     private Board board;
     private boolean firstTurn = true;
-    private static final int ply = 2;
+    private static final int ply = 1;
 
     public CheatAgent() {
     }

@@ -18,8 +18,7 @@ public class GameRunner {
     GraphicsConnector graphicsConnector;
     DebugWindowStage debugWindowStage;
     public static final boolean DEBUG = Config.DEBUG;
-    public static final boolean EXPERIMENT1 = true;
-
+    public static final boolean EXPERIMENT1 =true;
     private int whiteWin = 0;
     private int blackWin = 0;
     private int games = 0;
@@ -44,7 +43,7 @@ public class GameRunner {
                 }
             }
             else{
-                init(1,7);
+                init(1,6);
                 /*
                 0 = "Human"
                 1 = "Search Agent"
@@ -55,7 +54,7 @@ public class GameRunner {
                 6 = "Cheating Agent"
                 7 = "GA Agent"
                 */
-                init(5,4);
+                //init(1,6);
             }
         }
     }
@@ -120,6 +119,7 @@ public class GameRunner {
         board.setWhiteMove(true);
         Dice.firstMoveDiceRoll(board);
         board.checkAi();
+        games++;
     }
 
     /**
