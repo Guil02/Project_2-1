@@ -160,4 +160,52 @@ public class Functions{
             return Character.toUpperCase(c);
         return Character.toLowerCase(c);
     }
+
+    private static ArrayList<Double> makeList(String s) {
+        ArrayList<Double> weights = new ArrayList<>();
+        StringBuilder stringBuilder = new StringBuilder(s);
+        StringBuilder st = new StringBuilder();//TODO ADD TO LIST
+
+
+        for(int i = 16; i<stringBuilder.length(); i++){
+            char nextChar = stringBuilder.charAt(i);
+            switch (nextChar){
+                case '[',' ',':':
+                    break;
+                case ',',']':
+                    weights.add(Double.parseDouble(st.toString()));
+                    st = new StringBuilder();
+                    System.out.println();
+                    break;
+                default:
+                    st.append(nextChar);
+                    System.out.print(nextChar);
+            }
+        }
+
+
+        return weights;
+    }
+
+    public static ArrayList<ArrayList<Double>> readGAWeights(String fileName) {
+        ArrayList<ArrayList<Double>> weights = new ArrayList<>();
+        String line;
+        try {
+            BufferedReader bufferreader = new BufferedReader(new FileReader(fileName));
+            while ((line = bufferreader.readLine()) != null) {
+                if(line.charAt(0)=='W'){
+                    weights.add(makeList(line));
+                }
+            }
+
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        return weights;
+    }
+
+
 }

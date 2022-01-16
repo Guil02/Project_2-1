@@ -7,12 +7,14 @@ import utils.Functions;
 import utils.GABoardEncoding;
 import utils.NodeEnum;
 
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 public class GeneticAlgorithmAgent extends Player {
     private static final String fileName = "build/classes/java/main/model/player/GAWeights.txt";
-    private static final int ply = 3;
+    private static final int ply = 2;
     private static final int amountOfWeights = 25;
     private static final double percentageChange = 0.05;
 
@@ -23,9 +25,13 @@ public class GeneticAlgorithmAgent extends Player {
 
 
     public GeneticAlgorithmAgent() {
+
         this.encoder = new GABoardEncoding();
         this.expectiminimaxStar2 = new ExpectiminimaxStar2(true);
         initializeWeights();
+        ArrayList<Double> list = new ArrayList<>(Arrays.asList(0.5816964543869012, 0.29985506418720764, -0.7754863280313109, 0.7652046482261382, -0.08174013270198195, 0.9686098058092883, -0.39048348336643657, 0.8757113996491488, -0.6354598370631677, 0.34340780347023636, -0.7369067962848918, 0.5590110331645366, -0.6555757559499904, 0.046757850067840875, -0.7189454104638863, 0.03713018141564955, -0.3217208396190523, 0.9575906668344256, -0.3021225764672464, 0.03511293148418518, -0.16525911470042975, 0.18930925941731636, -0.10961655557042516, 0.5101322564782641, -0.4278780417634781));
+        setWeights(list);
+        System.out.println("GA: " + weights);
     }
 
     @Override
@@ -107,6 +113,10 @@ public class GeneticAlgorithmAgent extends Player {
 
     public void setWeights(ArrayList<Double> weights) {
         this.weights = weights;
+    }
+
+    public void setWeight(int i, double weight) {
+        this.weights.set(i, weight);
     }
 
     public static int getAmountOfWeights(){

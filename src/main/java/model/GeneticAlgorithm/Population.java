@@ -4,6 +4,7 @@ import utils.Functions;
 import utils.GAFunctions;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 public class Population {
@@ -11,20 +12,27 @@ public class Population {
     private ArrayList<Individual> individuals;
     private GAFunctions gaFunctions = new GAFunctions();
     private boolean isSorted = false;
-    private final int numberOfStrongest = 8;
-    private final int numberOfSurvivors = 16;
+    private final int numberOfStrongest = 20;
+    private final int numberOfSurvivors = 36;
     private int geneLength;
     private int AmountOfWeightsStored = 3;
+    private final String fileName = "build/classes/java/main/model/player/generation.txt";
 
 
-    public Population(int populationSize) {
+    public Population(int populationSize, boolean randomWeights) {
+
         individuals = new ArrayList<>();
         this.populationsize = populationSize;
         for (int i = 0; i < populationSize; i++) {
             individuals.add(new Individual());
         }
+        if(!randomWeights){
+            initializeWeights();
+        }
         geneLength = individuals.get(0).getGeneLength();
     }
+
+
 
     public ArrayList<Individual> getIndividuals() {
         return individuals;
@@ -170,5 +178,16 @@ public class Population {
         for (Individual individual : individuals) {
             individual.resetStatistics();
         }
+    }
+    private void readInWeights(){
+
+        ArrayList<ArrayList<Double>> list = Functions.readGAWeights(fileName);
+        for(int i=0; i<populationsize; i++){
+            ArrayList<Double> gene = list.get(i);
+            getIndividual(i).setGene(gene);
+        }
+    }
+    private void initializeWeights() {
+        readInWeights();
     }
 }

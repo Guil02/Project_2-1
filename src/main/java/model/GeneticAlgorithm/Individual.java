@@ -22,7 +22,15 @@ public class Individual {
     private void initializeWeights() {
         ArrayList<Double> weights = new ArrayList<>();
         for (int i = 0; i < geneLength; i++) {
-            weights.add(Functions.randomNumber(min, max));
+
+            if(i==0 || i%2!=0) {
+                weights.add(Functions.randomNumber(0, max));
+            }
+            else{
+                weights.add(Functions.randomNumber(min, 0));
+            }
+
+
         }
         agent.setWeights(weights);
     }
@@ -32,6 +40,9 @@ public class Individual {
     }
 
     public void setFitness(double fitness) {
+        if(fitness>=0.999){
+            GA.setNoIndividualWithOneFitness(false);
+        }
         this.fitness = fitness;
     }
 
@@ -64,7 +75,10 @@ public class Individual {
     private double mutateChromosome(double weight) {
         double r = Math.random();
         if(r<GA.getMutationRate()){
-            return weight * Functions.randomNumber(0.95,1.05);
+            if(Math.random()<0.5){
+                return weight + weight*Functions.randomNumber(-0.1,0.1);
+            }
+            else return weight - weight*Functions.randomNumber(-0.1,0.1);
         }
         return weight;
     }

@@ -18,11 +18,11 @@ public class GameRunner {
     GraphicsConnector graphicsConnector;
     DebugWindowStage debugWindowStage;
     public static final boolean DEBUG = Config.DEBUG;
-    public static final boolean EXPERIMENT1 =false;
+    public static final boolean EXPERIMENT1 = true;
     private int whiteWin = 0;
     private int blackWin = 0;
     private int games = 0;
-    private static final int maxGames = 100;
+    private static final int maxGames = 500;
 
     /**
      * Constructor
@@ -43,7 +43,7 @@ public class GameRunner {
                 }
             }
             else{
-                init(3,3);
+                init(1,7);
             }
         }
     }
@@ -55,6 +55,13 @@ public class GameRunner {
 
     public void GATraining(GeneticAlgorithmAgent agent1, GeneticAlgorithmAgent agent2){
         board.setPlayers(7,7);
+        board.setPlayerPlayers(agent1,agent2);
+        Dice.firstMoveDiceRoll(board);
+        board.checkAi();
+    }
+
+    public void GATraining(GeneticAlgorithmAgent agent1, SearchAgent agent2){
+        board.setPlayers(7,1);
         board.setPlayerPlayers(agent1,agent2);
         Dice.firstMoveDiceRoll(board);
         board.checkAi();
