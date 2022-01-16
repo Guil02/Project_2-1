@@ -44,7 +44,6 @@ public class GameRunner {
                 }
             }
             else{
-                init(1,7);
                 /*
                 0 = "Human"
                 1 = "Search Agent"
