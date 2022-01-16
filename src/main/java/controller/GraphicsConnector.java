@@ -2,7 +2,6 @@ package controller;
 
 import gui.ChessGUI;
 import model.pieces.*;
-import utils.Transform;
 import model.pieces.ChessPiece;
 
 /**
@@ -16,7 +15,6 @@ public class GraphicsConnector {
     private GameRunner gamerunner;
     private ChessGUI chessGUI;
     private boolean isWhite;
-    private Board boardModel;
     private int x;
     private int y;
 
@@ -163,20 +161,6 @@ public class GraphicsConnector {
     }
 
     /**
-     * Gets the starting positions of all pieces on the board.
-     * @return  1-dimensional char array with corresponding pieces
-     */
-    public char[] getStartingPositions(){
-        char[][] arrayOfPositions = new char[8][8];
-        for (int i = 0; i < arrayOfPositions.length; i++) {
-            for (int j = 0; j < arrayOfPositions.length; j++) {
-                arrayOfPositions[i][j] = board.getCharOffField(i, j);
-            }
-        }
-        return Transform.transformCharToOneDimension(arrayOfPositions);
-    }
-
-    /**
      * Setter of a board.
      * @param board desired board
      */
@@ -217,7 +201,7 @@ public class GraphicsConnector {
     /**
      * Returns the image file of a certain dice roll.
      * @param type  input condition
-     * @return
+     * @return file name of the dice image
      */
     public String getDiceImage(int type){
         if(type == 1) {
@@ -324,14 +308,13 @@ public class GraphicsConnector {
     /**
      * Starts the dialog for a promotion choice.
      * @param isWhite - turn boolean
-     * @param boardModel - boardMoodel
-     * @param x
-     * @param y
+     * @param boardModel - board moodel
+     * @param x x-pos
+     * @param y y-pos
      */
     public void startPromotionDialog(boolean isWhite, Board boardModel, int x, int y){
         chessGUI.launchPromotionDialog();
         this.isWhite = isWhite;
-        this.boardModel = boardModel;
         this.x = x;
         this.y = y;
     }

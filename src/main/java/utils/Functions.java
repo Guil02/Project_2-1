@@ -1,5 +1,6 @@
 package utils;
 
+import controller.Board;
 import model.pieces.ChessPiece;
 
 import java.io.*;
@@ -59,8 +60,8 @@ public class Functions{
     }
 
     public static double tanh(double x){
-        if(x<100){
-
+        if(x<-100){
+            return -1;
         }
         else if(x>100){
             return 1;
@@ -159,5 +160,15 @@ public class Functions{
         if(whiteIsMax)
             return Character.toUpperCase(c);
         return Character.toLowerCase(c);
+    }
+
+    public static void printBoard(ChessPiece[][] boardModel, Board board) {
+        System.out.println("--- Board State ---\n");
+        for(int i = 0; i < boardModel[0].length; i++) {
+            for (int j = 0; j < boardModel.length; j++) {
+                System.out.print("[ " + board.getCharOffField(j,i) + " ] ");
+            }
+            System.out.println();
+        }
     }
 }

@@ -35,8 +35,8 @@ public class NNAgent extends Player {
     private static final String fileName = "build/classes/java/main/model/player/NNWeights3.txt";
     private static final String allWeights = "build/classes/java/main/model/player/trainingData.txt";
     private static final double lambda = 0.70;
-    private static final double alpha = 0.70;
-    private static final double gamma = 0.70;
+    private static final double alpha = 0.10;
+    private static final double gamma = 0.50;
     private static boolean initialized = false;
 
     /**
@@ -157,7 +157,7 @@ public class NNAgent extends Player {
         double[] input = encoding.boardToArray3(state);
         network.computeGradient(input);
         ArrayList<Double> gradient = network.getGradient();
-        // System.out.println("Gradient: "+gradient);
+        //System.out.println("Gradient: "+gradient);
         for(int i = 0; i<amountOfWeights; i++){
             double newValue = gamma*lambda*z.get(i) + gradient.get(i);
             z.set(i, newValue);
