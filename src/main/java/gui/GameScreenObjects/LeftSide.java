@@ -1,17 +1,12 @@
 package gui.GameScreenObjects;
 
-
 import gui.SceneLayouts.GameScreen;
-import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Pos;
-import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.util.Duration;
 
-
+/**
+ * Left side of the GUI.
+ */
 public class LeftSide extends VBox {
     private GoodLabel labelOne;
     private GoodLabel labelTwo;
@@ -24,80 +19,54 @@ public class LeftSide extends VBox {
     private boolean isWhiteTurn = true;
     private GameScreen gameScreen;
 
+    /**
+     * Constructor
+     * @param gameScreen
+     */
     public LeftSide(GameScreen gameScreen) {
         this.gameScreen = gameScreen;
         labelOne = new GoodLabel(this);
-//        labelOne.setText(timeClean(blackTime));
         labelTwo = new GoodLabel(this);
-//        labelTwo.setText(timeClean(whiteTime));
         labelFirst = new GoodLabel(this);
         labelSecond = new GoodLabel(this);
         labelThird = new GoodLabel(this);
-
-//        time = new Timeline();
-//        time.setCycleCount(Timeline.INDEFINITE);
-//        KeyFrame frame = new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent event) {
-//                doTimeMagic();
-//            }
-//        });
-//        time.getKeyFrames().add(frame);
-//        time.playFromStart();
         getChildren().addAll(labelOne, labelFirst, labelSecond, labelThird, labelTwo);
     }
 
-    public void doTimeMagic() {
-        if(whiteTime==1){
-//            gameScreen.endGame(false);
-        }
-        if(blackTime==1){
-//            gameScreen.endGame(true);
-        }
-        if (isWhiteTurn) {
-//            whiteTime--;
-//            labelTwo.setText(timeClean(whiteTime));
-//            labelFirst.setText("");
-//            labelThird.setText("White's turn!");
-        } else {
-//            blackTime--;
-//            labelOne.setText(timeClean(blackTime));
-//            labelThird.setText("");
-//            labelFirst.setText("Black's turn!");
-        }
-    }
-    public String timeClean(int a){
-        StringBuilder string = new StringBuilder();
-        int minutes = (a/60);
-        int seconds = a%60;
-        string.append(minutes);
-        string.append(":");
-        if(seconds<10){
-            string.append("0");
-        }
-        string.append(seconds);
-        return string.toString();
-    }
-
+    /**
+     * Gets the width from the whole GUI.
+     * @return GUI width
+     */
     public double getWidthFromChessGUI() {
         return gameScreen.getWidthFromChessGUI();
     }
 
-
-    public void changeTimer() {
-        isWhiteTurn = !isWhiteTurn;
-    }
-
+    /**
+     * Gets the height from the whole GUI.
+     * @return GUI height
+     */
     public double getHeightFromChessGUI() {
         return gameScreen.getHeightFromChessGUI();
     }
 
+    /**
+     * Changes timer.
+     */
+    public void changeTimer() {
+        isWhiteTurn = !isWhiteTurn;
+    }
+
+    /**
+     * Stops the time.
+     */
     public void stopTime(){
-//        time.stop();
         labelFirst.setText("");
         labelThird.setText("");
     }
 
+    /**
+     * Updates the graphics.
+     */
     public void updateGraphics(){
         setMinSize(getWidthFromChessGUI() * 0.15, getHeightFromChessGUI() * 0.7);
         setMaxSize(getWidthFromChessGUI() * 0.15, getHeightFromChessGUI() * 0.7);
@@ -106,6 +75,5 @@ public class LeftSide extends VBox {
         labelThird.updateGraphics();
         labelOne.updateGraphics();
         labelTwo.updateGraphics();
-        doTimeMagic();
     }
 }

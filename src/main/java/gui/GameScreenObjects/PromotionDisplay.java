@@ -5,7 +5,12 @@ import gui.SceneLayouts.GameScreen;
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
 
+/**
+ * Display that shows up during promotion.
+ */
 public class PromotionDisplay extends HBox {
+
+    // Variables
     private GraphicsConnector graphicsConnector;
     private GameScreen gameScreen;
     public static final double DIVIDER_HEIGHT = 0.15;
@@ -14,6 +19,12 @@ public class PromotionDisplay extends HBox {
     PromotionButton p2;
     PromotionButton p3;
     PromotionButton p4;
+
+    /**
+     * Constructor
+     * @param graphicsConnector attached GraphicsConnector
+     * @param gameScreen current GameScreen instance
+     */
     public PromotionDisplay(GraphicsConnector graphicsConnector, GameScreen gameScreen) {
         this.graphicsConnector = graphicsConnector;
         this.gameScreen = gameScreen;
@@ -28,14 +39,25 @@ public class PromotionDisplay extends HBox {
         setInvisible();
     }
 
+    /**
+     * Gets with from ChessGUI.
+     * @return width
+     */
     public double getWidthFromTop(){
         return gameScreen.getWidthFromChessGUI();
     }
 
+    /**
+     * Gets height from ChessGUI.
+     * @return height
+     */
     public double getHeightFromTop() {
         return gameScreen.getHeightFromChessGUI();
     }
 
+    /**
+     * Updates the graphics.
+     */
     public void updateGraphics(){
         setMinSize(getWidthFromTop()* DIVIDER_WIDTH, getHeightFromTop()* DIVIDER_HEIGHT);
         setMaxSize(getWidthFromTop()* DIVIDER_WIDTH, getHeightFromTop()* DIVIDER_HEIGHT);
@@ -45,6 +67,9 @@ public class PromotionDisplay extends HBox {
         p4.updateGraphics();
     }
 
+    /**
+     * Shows the promotion dialog.
+     */
     public void showPromotionDialog() {
         p1.setVisible(true);
         p2.setVisible(true);
@@ -56,6 +81,9 @@ public class PromotionDisplay extends HBox {
         p4.updateGraphics();
     }
 
+    /**
+     * Sets the dialog invisible.
+     */
     public void setInvisible(){
         p1.setVisible(false);
         p2.setVisible(false);

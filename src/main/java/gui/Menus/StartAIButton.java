@@ -6,6 +6,9 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 
+/**
+ * This class represents the Start AI button.
+ */
 public class StartAIButton extends Menu {
     public StartAIButton(ChessGUI chessGUI) {
         MenuItem m1 = new MenuItem("Start");

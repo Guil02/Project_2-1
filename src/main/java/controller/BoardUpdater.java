@@ -9,6 +9,9 @@ import model.player.NNAgent;
 import model.player.TDLearningAgent;
 import utils.GameGenerator;
 
+/**
+ * Class with a set of methods to mutate the board.
+ */
 public class BoardUpdater {
 
     /**
@@ -27,7 +30,6 @@ public class BoardUpdater {
         addPiece(board, new RookPiece(false, 7, 0));
         for (int i = 0; i < 8; i++)
             addPiece(board, new PawnPiece(false, i, 1));
-
         // White side
         addPiece(board, new RookPiece(true, 0, 7));
         addPiece(board, new KnightPiece(true, 1, 7));
@@ -43,7 +45,8 @@ public class BoardUpdater {
 
     /**
      * Adds a piece to a board.
-     * @param piece
+     * @param board target board
+     * @param piece new piece
      */
     public static void addPiece(Board board, ChessPiece piece) {
         board.getBoardModel()[piece.getX()][piece.getY()]=piece;
@@ -56,6 +59,12 @@ public class BoardUpdater {
         board.getBoardModel()[x][y]=null;
     }
 
+    /**
+     * Captures an opponents piece.
+     * @param board target board
+     * @param x target x-pos
+     * @param y target y-pos
+     */
     public static void capturePiece(Board board, int x, int y){
         if(board.getPieceOffField(x,y)!=null) {
             if (board.getPieceOffField(x,y).getPieceChar() == 'K') {
@@ -82,12 +91,27 @@ public class BoardUpdater {
         }
     }
 
+    /**
+     * Special case of an en passant capture
+     * @param board target board
+     * @param x target x-pos
+     * @param y target y-pos
+     */
     public static void captureEnPassantField(Board board, int x, int y){
         if(board.getPieceOffField(x,y)!=null){
             board.getBoardModel()[x][y]=null;
         }
     }
 
+    /**
+     * Executes promotion (when opponents pawn reaches other side)
+     * @param board current board
+     * @param target target board
+     * @param xFrom source x-pos
+     * @param yFrom source y-pos
+     * @param xTo target x-pos
+     * @param yTo target y-pos
+     */
     public static void runPromotion(Board board, Board target, int xFrom, int yFrom, int xTo, int yTo){
         boolean isWhite = board.getPieceOffField(xFrom, yFrom).isWhite();
         int pieceType = getPieceType(target.getCharOffField(xTo, yTo));
@@ -102,6 +126,11 @@ public class BoardUpdater {
         gameOver(board);
     }
 
+    /**
+     * Gets the numerical value of a piece type based on the letter (char).
+     * @param pieceType input char
+     * @return numeric value of the piece type
+     */
     public static int getPieceType(char pieceType){
         switch(pieceType){
             case 'n','N':
@@ -116,8 +145,15 @@ public class BoardUpdater {
         return 0;
     }
 
+    /**
+     * Moves a piece from a source to a target location.
+     * @param board board to perform the move on
+     * @param xFrom source x-pos
+     * @param yFrom source y-pos
+     * @param xTo target x-pos
+     * @param yTo target y-pos
+     */
     public static void movePiece(Board board, int xFrom, int yFrom, int xTo, int yTo) {
-//        if(board.isOriginal()) System.out.println("did a move");
         if(board.isOriginal()){
             board.storeMove();
         }
@@ -125,7 +161,6 @@ public class BoardUpdater {
             if (Config.GUI_ON && !(board.getPlayer1() == 0) && !(board.getPlayer2() == 0))
                 Thread.sleep(DebugWindowStage.delayMS);
         } catch (Exception e){};
-
         ChessPiece pieceToMove = board.getPieceOffField(xFrom, yFrom);
         if(pieceToMove!= null){
             pieceToMove.move(board, xTo,yTo);
@@ -143,15 +178,15 @@ public class BoardUpdater {
         gameOver(board);
     }
 
+    /**
+     * Sets a board to a state of "game over".
+     * @param board target board
+     */
     private static void gameOver(Board board) {
         if(board.getGameOver()&& board.isOriginal()){
             board.storeMove();
-
-
             if(Config.GA){
-
                 GA.training = false;
-
             }
             if(GameRunner.EXPERIMENT1){
                 if(!board.containsKing(false)){
@@ -183,17 +218,38 @@ public class BoardUpdater {
         }
     }
 
+    /**
+     * Starts a dialog when promotion is happening.
+     * @param board target board
+     * @param targetPiece target piece
+     * @param xTo target x-pos
+     * @param yTo target y-pos
+     */
     public static void startPromotionDialog(Board board, ChessPiece targetPiece, int xTo, int yTo) {
         if(targetPiece.isOnOppositeRow(yTo) && (targetPiece.getPieceChar()=='p' || targetPiece.getPieceChar()=='P')){
             board.getGraphicsConnector().startPromotionDialog(targetPiece.isWhite(), board, xTo, yTo);
         }
     }
+
+    /**
+     * Does promotion on the board.
+     * @param board target board
+     * @param piece target piece
+     */
     public static void doPromotion(Board board, ChessPiece piece){
         removePiece(board, piece.getX(),piece.getY());
         addPiece(board, piece);
         board.getGraphicsConnector().updateImages();
     }
 
+    /**
+     * Creates a new piece.
+     * @param isWhite true if it is white, false if it is black
+     * @param x x-pos
+     * @param y y-pos
+     * @param pieceType type of the piece in numerical form
+     * @return new ChessPiece
+     */
     public static ChessPiece createPiece(boolean isWhite, int x, int y, int pieceType){
         return switch (pieceType) {
             case 2 -> new KnightPiece(isWhite, x, y);
@@ -204,32 +260,10 @@ public class BoardUpdater {
         };
     }
 
-    public static boolean containsKing(Board board, boolean white){
-        if(white){
-            for(int i = 0; i<Board.getBoardSize(); i++){
-                for(int j = 0; j<Board.getBoardSize(); j++){
-                    if(board.getPieceOffField(i,j)!=null){
-                        if(board.getCharOffField(i,j)=='K'){
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-        else{
-            for(int i = 0; i<Board.getBoardSize(); i++){
-                for(int j = 0; j<Board.getBoardSize(); j++){
-                    if(board.getPieceOffField(i,j)!=null){
-                        if(board.getCharOffField(i,j)=='k'){
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
+    /**
+     * Removes all pieces from the board.
+     * @param board target board
+     */
     public static void clearBoard(Board board){
         for(int i = 0; i<Board.getBoardSize(); i++){
             for(int j = 0; j<Board.getBoardSize(); j++){
@@ -237,16 +271,4 @@ public class BoardUpdater {
             }
         }
     }
-
-    public static void printBoard(ChessPiece[][] boardModel, Board board) {
-        System.out.println("--- Board State ---\n");
-        for(int i = 0; i < boardModel[0].length; i++) {
-            for (int j = 0; j < boardModel.length; j++) {
-                System.out.print("[ " + board.getCharOffField(j,i) + " ] ");
-                // System.out.print("[ " + j + " " + i + " ] ");
-            }
-            System.out.println();
-        }
-    }
-
 }

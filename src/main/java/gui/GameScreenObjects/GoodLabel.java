@@ -2,19 +2,22 @@ package gui.GameScreenObjects;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.text.Font;
 
+/**
+ * GoodLabel
+ */
 public class GoodLabel extends Label {
     private LeftSide leftSide;
     public GoodLabel(LeftSide leftSide){
         this.leftSide = leftSide;
         updateGraphics();
         setAlignment(Pos.CENTER);
-
     }
 
+    /**
+     * Updates graphics.
+     */
     public void updateGraphics(){
-
         setMinSize(leftSide.getWidthFromChessGUI() * 0.15, leftSide.getHeightFromChessGUI() * 0.7 / 5);
         setMaxSize(leftSide.getWidthFromChessGUI() * 0.15, leftSide.getHeightFromChessGUI() * 0.7 / 5);
         switch((int)leftSide.getWidthFromChessGUI()){
