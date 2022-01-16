@@ -19,7 +19,7 @@ public class GameRunner {
     DebugWindowStage debugWindowStage;
     public static final boolean DEBUG = Config.DEBUG;
     public static final boolean EXPERIMENT1 = true;
-    public static final boolean EXPERIMENT1 =true;
+
     private int whiteWin = 0;
     private int blackWin = 0;
     private int games = 0;

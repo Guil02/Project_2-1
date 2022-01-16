@@ -15,7 +15,7 @@ import java.util.Arrays;
  * Works mostly in a static context.
  */
 public class GA {
-    private static final int populationSize = 50;
+
 
     // Variables
     private static final int populationSize = 20;
@@ -36,8 +36,7 @@ public class GA {
     }
 
     public GA() {
-        //in log copy the last 20 weights to these here in the specific order that they are printed in
-        //it was going pretty well then i accidentaly quit my pc like 3 hours in and then it would multithread like 1 generation in every single time
+
         population = new Population(populationSize, false);
 
 
@@ -82,7 +81,7 @@ public class GA {
             runMatchupVersusSearch(board, gameRunner);
 
             int[][] matchups = createRandomMatching();
-            runMatchup(board, gameRunner, index, matchups);
+            runMatchup(board, gameRunner, matchups);
             index++;
         }
     }

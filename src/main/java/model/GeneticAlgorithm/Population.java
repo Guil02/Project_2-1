@@ -24,13 +24,13 @@ public class Population {
     private static final String log = "build/classes/java/main/model/GeneticAlgorithm/log";
 
 
-    public Population(int populationSize, boolean randomWeights) {
+
 
     /**
      * Constructor
      * @param populationSize number of individuals in this population
      */
-    public Population(int populationSize) {
+    public Population(int populationSize, boolean randomWeights) {
         individuals = new ArrayList<>();
         this.populationsize = populationSize;
         for (int i = 0; i < populationSize; i++) {
@@ -59,7 +59,7 @@ public class Population {
         return individuals.get(index);
     }
 
-    public void sortIndividuals() {
+    public void sortIndividuals(){
         if(!isSorted){
             gaFunctions.quickSort(individuals, 0, individuals.size() - 1);
             Collections.reverse(individuals);
