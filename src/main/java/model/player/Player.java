@@ -3,18 +3,18 @@ package model.player;
 import config.Config;
 import controller.Board;
 import controller.BoardUpdater;
-import gui.DebugWindow.DebugWindowStage;
+import gui.debugWindow.DebugWindowStage;
 import javafx.application.Platform;
-import model.algorithm.NNTreeNode;
 import model.algorithm.TreeNode;
 
+/**
+ * Abstract class that represents any player of a chess match.
+ */
 public abstract class Player {
 
+    // Variables
     Object pauseLock = DebugWindowStage.pauseLock;
     TreeNode maxima;
-
-    public Player() {
-    }
 
     public void run(){
         while(!Board.hasMoved){

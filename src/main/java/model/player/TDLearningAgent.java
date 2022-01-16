@@ -1,15 +1,9 @@
 package model.player;
 
-import config.Config;
 import controller.Board;
-import controller.BoardUpdater;
-import controller.Dice;
-import gui.DebugWindow.DebugWindowStage;
-import javafx.application.Platform;
 import model.algorithm.Expectiminimax;
 import model.algorithm.TDTreeNode;
 import model.algorithm.TreeNode;
-import model.pieces.ChessPiece;
 import utils.FenEvaluator;
 import utils.Functions;
 
