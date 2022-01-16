@@ -50,7 +50,7 @@ public class ChessTreeNode extends TreeNode{
 
     @Override
     public void evaluate() {
-        SearchAgent.evaluation(this.board);
+        setValue(SearchAgent.evaluation(this.board));
     }
 
     public boolean isDoPromotion() {

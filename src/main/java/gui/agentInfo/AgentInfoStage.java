@@ -26,10 +26,9 @@ public class AgentInfoStage extends Stage {
         this.setTitle("Agent Info");
         this.setWidth(800);
         this.setHeight(389);
-
+        // Main content
         infoList = new VBox();
         infoList.setStyle("-fx-font: 14px \"Verdana\";");
-
         infoList.getChildren().add(new InfoHBox("Human", "Human input, no agent", false));
         infoList.getChildren().add(new InfoHBox("Search Agent", "Expectiminimax search", true));
         infoList.getChildren().add(new InfoHBox("Random Agent", "Performs random move", false));
@@ -37,7 +36,7 @@ public class AgentInfoStage extends Stage {
         infoList.getChildren().add(new InfoHBox("Take Agent", "Tries to take the most valuable piece in each round, \n performs random move if no piece can be taken.", false));
         infoList.getChildren().add(new InfoHBox("NN Agent", "Neural Network", true));
         infoList.getChildren().add(new InfoHBox("Cheating Agent", "Knows outcomes of the dice", false));
-
+        // Set content
         root = new BorderPane();
         root.setCenter(infoList);
         this.setScene(new Scene(root));
@@ -64,15 +63,14 @@ class InfoHBox extends HBox {
     public InfoHBox(String name, String description, boolean alternateColour) {
         StackPane leftStack = new StackPane();
         StackPane rightStack = new StackPane();
-
+        // Left side (name)
         Rectangle rectLeft = new Rectangle();
         rectLeft.setWidth(150);
         rectLeft.setHeight(50);
-
+        // Right side (description)
         Rectangle rectRight = new Rectangle();
         rectRight.setWidth(650);
         rectRight.setHeight(50);
-
         // Colour of rectangles
         if (!alternateColour) {
             rectLeft.setFill(left1);
@@ -82,13 +80,8 @@ class InfoHBox extends HBox {
             rectLeft.setFill(left2);
             rectRight.setFill(right2);
         }
-
         leftStack.getChildren().addAll(rectLeft, new Text(name));
         rightStack.getChildren().addAll(rectRight, new Text(description));
-
-        // Text nameText = new Text(name);
-        // Text descriptionText = new Text(description);
-        // descriptionText.setTextAlignment(Pos.CENTER_RIGHT);
         this.getChildren().addAll(leftStack, rightStack);
     }
 }

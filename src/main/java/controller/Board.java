@@ -80,48 +80,12 @@ public class Board {
      * Check which player got selected
      */
     public void checkAi() {
-        if(whiteMove){
-            if(player1 > 0){
-                if(player1 == 1){
-                    ((SearchAgent) playerOne).launch(this);
-                }
-                else if(player1 == 2){
-                    ((BaselineAgent) playerOne).launch(this);
-                }
-                else if(player1 == 3){
-                    ((TDLearningAgent) playerOne).launch(this);
-                }
-                else if(player1 == 4){
-                    ((TakeAgent) playerOne).launch(this);
-                }
-                else if(player1 == 5){
-                    ((NNAgent) playerOne).launch(this);
-                }
-                else if(player1 == 6){
-                    ((CheatAgent) playerOne).launch(this);
-                }
+        if(player1!=0){
+            if(whiteMove){
+                playerOne.launch(this);
             }
-        }
-        else{
-            if(player2 > 0){
-                if(player2 == 1){
-                    ((SearchAgent) playerTwo).launch(this);
-                }
-                else if(player2 == 2){
-                    ((BaselineAgent) playerTwo).launch(this);
-                }
-                else if(player2 == 3){
-                    ((TDLearningAgent) playerTwo).launch(this);
-                }
-                else if(player2 == 4){
-                    ((TakeAgent) playerTwo).launch(this);
-                }
-                else if(player2 == 5){
-                    ((NNAgent) playerTwo).launch(this);
-                }
-                else if(player2 == 6){
-                    ((CheatAgent) playerTwo).launch(this);
-                }
+            else{
+                playerTwo.launch(this);
             }
         }
     }
@@ -132,16 +96,7 @@ public class Board {
      * @return number of pieces with the specified char
      */
     public int getAmountOfPieces(char c){
-        int count = 0;
-        ChessPiece[][] model = getBoardModel();
-        for(int i=0; i<getBoardSize(); i++){
-            for(int j=0; j<getBoardSize(); j++){
-                if(model[i][j] != null &&model[i][j].getPieceChar()==c){
-                    count++;
-                }
-            }
-        }
-        return count;
+        return getPieces(c).size();
     }
 
     /**

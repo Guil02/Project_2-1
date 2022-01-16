@@ -51,7 +51,7 @@ public class TDTreeNode extends TreeNode{
 
     @Override
     public void evaluate() {
-        TDLearningAgent.evaluationPieces(board, Functions.readInWeights(TDLearningAgent.fileName));
+        setValue(TDLearningAgent.evaluationPieces(board, Functions.readInWeights(TDLearningAgent.fileName)));
     }
 
     public boolean isDoPromotion() {

@@ -1,9 +1,11 @@
 package utils;
 
+import controller.Board;
 import model.pieces.ChessPiece;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Functions{
 
@@ -47,9 +49,19 @@ public class Functions{
         }
     }
 
-    public static double tanh(double x){
-        if(x<100){
+    public static void appendString(String x, String fileName){
+        try(FileWriter fileWriter = new FileWriter(fileName, true)) {
+            fileWriter.write("NEW ITERATION: \n");
+            fileWriter.write(x);
+            fileWriter.write("\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    public static double tanh(double x){
+        if(x<-100){
+            return -1;
         }
         else if(x>100){
             return 1;
@@ -141,6 +153,70 @@ public class Functions{
         for(int i = 0; i<values.size(); i++){
             double normalized = values.get(i)/max;
             values.set(i,normalized);
+        }
+    }
+
+    public static char convertChar(char c, boolean whiteIsMax){
+        if(whiteIsMax)
+            return Character.toUpperCase(c);
+        return Character.toLowerCase(c);
+    }
+
+    private static ArrayList<Double> makeList(String s) {
+        ArrayList<Double> weights = new ArrayList<>();
+        StringBuilder stringBuilder = new StringBuilder(s);
+        StringBuilder st = new StringBuilder();//TODO ADD TO LIST
+
+
+        for(int i = 16; i<stringBuilder.length(); i++){
+            char nextChar = stringBuilder.charAt(i);
+            switch (nextChar){
+                case '[',' ',':':
+                    break;
+                case ',',']':
+                    weights.add(Double.parseDouble(st.toString()));
+                    st = new StringBuilder();
+                    System.out.println();
+                    break;
+                default:
+                    st.append(nextChar);
+                    System.out.print(nextChar);
+            }
+        }
+
+
+        return weights;
+    }
+
+    public static ArrayList<ArrayList<Double>> readGAWeights(String fileName) {
+        ArrayList<ArrayList<Double>> weights = new ArrayList<>();
+        String line;
+        try {
+            BufferedReader bufferreader = new BufferedReader(new FileReader(fileName));
+            while ((line = bufferreader.readLine()) != null) {
+                if(line.charAt(0)=='W'){
+                    weights.add(makeList(line));
+                }
+            }
+
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        return weights;
+    }
+
+
+
+    public static void printBoard(ChessPiece[][] boardModel, Board board) {
+        System.out.println("--- Board State ---\n");
+        for(int i = 0; i < boardModel[0].length; i++) {
+            for (int j = 0; j < boardModel.length; j++) {
+                System.out.print("[ " + board.getCharOffField(j,i) + " ] ");
+            }
+            System.out.println();
         }
     }
 }

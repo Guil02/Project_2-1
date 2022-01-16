@@ -1,6 +1,8 @@
 package controller;
 
 import gui.ChessGUI;
+import model.GeneticAlgorithm.GA;
+import model.algorithm.GeneticAlgorithmAgent;
 import gui.debugWindow.DebugWindowStage;
 import model.player.*;
 import config.Config;
@@ -26,29 +28,62 @@ public class GameRunner {
      * Constructor
      */
     public GameRunner() {
-        chessGUI = new ChessGUI();
-        graphicsConnector = new GraphicsConnector(this);
-        if(Config.GUI_ON){
-            try{
-                chessGUI.launchGUI(graphicsConnector);
-            }
-            catch (IllegalStateException e){
-                init(board.getPlayer1(), board.getPlayer2());
-            }
+        if(Config.GA){
+            new GA();
         }
         else{
-            /*
-            0 = "Human"
-            1 = "Search Agent"
-            2 = "Random Agent"
-            3 = "TD learning Agent"
-            4 = "Take Agent"
-            5 = "NN Agent"
-            6 = "Cheating Agent"
-             */
-            init(1,2);
-
+            chessGUI = new ChessGUI();
+            graphicsConnector = new GraphicsConnector(this);
+            if(Config.GUI_ON){
+                try{
+                    chessGUI.launchGUI(graphicsConnector);
+                }
+                catch (IllegalStateException e){
+                    init(board.getPlayer1(), board.getPlayer2());
+                }
+            }
+            else{
+                /*
+                0 = "Human"
+                1 = "Search Agent"
+                2 = "Random Agent"
+                3 = "TD learning Agent"
+                4 = "Take Agent"
+                5 = "NN Agent"
+                6 = "Cheating Agent"
+                7 = "GA Agent"
+                */
+                init(5,4);
+            }
         }
+    }
+
+    public GameRunner(Board board){
+        this.board = board;
+        BoardUpdater.fillGameStart(board);
+    }
+
+    public void GATraining(GeneticAlgorithmAgent agent1, GeneticAlgorithmAgent agent2){
+        board.setPlayers(7,7);
+        board.setPlayerPlayers(agent1,agent2);
+        Dice.firstMoveDiceRoll(board);
+        board.checkAi();
+    }
+
+    public void GATraining(GeneticAlgorithmAgent agent1, SearchAgent agent2){
+        board.setPlayers(7,1);
+        board.setPlayerPlayers(agent1,agent2);
+        Dice.firstMoveDiceRoll(board);
+        board.checkAi();
+    }
+
+    public void GAReset(){
+        board.movesClear();
+        BoardUpdater.clearBoard(board);
+        BoardUpdater.fillGameStart(board);
+        board.setGameOver(false);
+        board.setAmountOfTurns(1);
+        board.setWhiteMove(true);
     }
 
     /**
@@ -62,7 +97,7 @@ public class GameRunner {
         board.setPlayerPlayers(player1, player2);
         BoardUpdater.fillGameStart(board);
         // Opens debug window
-        if (Config.SHOW_DEBUG_WINDOW) {
+        if (Config.SHOW_DEBUG_WINDOW && Config.GUI_ON) {
             debugWindowStage = new DebugWindowStage(this);
             debugWindowStage.show();
         }
@@ -110,8 +145,11 @@ public class GameRunner {
         else if(playerType == 5){
             return new NNAgent();
         }
-        else{
+        else if(playerType == 6){
             return new CheatAgent();
+        }
+        else{
+            return new GeneticAlgorithmAgent();
         }
     }
 

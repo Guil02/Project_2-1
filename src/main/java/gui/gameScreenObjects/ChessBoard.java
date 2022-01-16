@@ -30,7 +30,6 @@ public class ChessBoard extends GridPane {
             add(spot,x,y);
             board[i]=spot;
         }
-
     }
 
     /**
@@ -112,7 +111,6 @@ public class ChessBoard extends GridPane {
      */
     public void turnBoard() {
         if (ChessGUI.TURN) {
-
             getChildren().clear();
             ChessSpot[] temp = new ChessSpot[64];
             for (int i = 0; i < board.length; i++) {
@@ -148,7 +146,11 @@ public class ChessBoard extends GridPane {
         gameScreen.updateDice();
     }
 
-    public void setPromotionLock(boolean bool){
-        ChessSpot.setPromotionLock(bool);
+    /**
+     * Sets a lock that disables promotion
+     * @param lockEngaged true if player cannot do a promotion
+     */
+    public void setPromotionLock(boolean lockEngaged){
+        ChessSpot.setPromotionLock(lockEngaged);
     }
 }

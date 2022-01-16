@@ -1,6 +1,9 @@
 package model.player;
 
+import config.Config;
 import controller.Board;
+import controller.BoardUpdater;
+import javafx.application.Platform;
 import model.algorithm.*;
 import model.pieces.ChessPiece;
 import java.util.ArrayList;
@@ -13,7 +16,7 @@ import java.util.Random;
  */
 public class CheatAgent extends Player {
     private CheatAiTree cheatAiTree = new CheatAiTree();
-    private Expectiminimax expectiminimax = new Expectiminimax();
+    private ExpectiminimaxStar2 expectiminimaxStar2 = new ExpectiminimaxStar2(true);
     private boolean cheatIsWhite;
     private ChessCheatAiTreeNode maxima;
     private Board board;
@@ -30,11 +33,12 @@ public class CheatAgent extends Player {
         ChessCheatAiTreeNode root;
         if (maxIsWhite) {
             root = new ChessCheatAiTreeNode(copy, 0, null, 1, 1, 0, 0, 0, 0, cheatIsWhite);
-        }
-        else {
+        } else {
             root = new ChessCheatAiTreeNode(copy, 0, null, 2, 1, 0, 0, 0, 0, cheatIsWhite);
         }
+        double res = expectiminimaxStar2.expectiminimaxWithStar2(root, (ply * 2) - 1, (ply * 2) - 1);
         double maxValue;
+
         if(maxIsWhite){
             maxValue = Double.NEGATIVE_INFINITY;
         }

@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ValidMovesTest {
 //
-//    //TODO: fails, pawn method isn't correct and I think i know why: you say if index_v = 1, but that does not hold when you have a black pawn;
+//    // fails, pawn method isn't correct and I think i know why: you say if index_v = 1, but that does not hold when you have a black pawn;
 //    @Test
 //    public void validMovesBlackPawnStartingPos(){
 //        Board board = new Board();

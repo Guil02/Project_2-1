@@ -153,6 +153,9 @@ public abstract class TreeNode {
             case 3:
                 this.objectType = NodeEnum.CHEAT_NODE;
                 break;
+            case 4:
+                this.objectType = NodeEnum.GA_NODE;
+                break;
             default:
                 throw new IllegalStateException("Unexpected value for Node Type: " + x);
         }

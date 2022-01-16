@@ -1,6 +1,5 @@
 package model.algorithm;
 
-import com.sun.source.tree.Tree;
 import controller.Board;
 
 public class ChessCheatAiTreeNode extends TreeNode{

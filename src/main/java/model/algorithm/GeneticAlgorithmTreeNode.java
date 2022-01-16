@@ -1,28 +1,28 @@
 package model.algorithm;
 
 import controller.Board;
-import model.player.NNAgent;
+import model.player.SearchAgent;
 
-public class NNTreeNode extends TreeNode{
+public class GeneticAlgorithmTreeNode extends TreeNode{
     private int xFrom;
     private int yFrom;
     private int xTo;
     private int yTo;
     private Board board;
     private boolean doPromotion = false;
-    private boolean maxIsWhite;
-    private NNAgent nnAgent;
     private TreeBuilder treeBuilder;
-    public NNTreeNode(Board board, double value, TreeNode parent, int nodeType, double probability, int xFrom, int yFrom, int xTo, int yTo, NNAgent nnAgent) {
+    private GeneticAlgorithmAgent agent;
+
+    public GeneticAlgorithmTreeNode(Board board, double value, TreeNode parent, int nodeType, double probability, int xFrom, int yFrom, int xTo, int yTo, GeneticAlgorithmAgent agent) {
         super(value, parent, nodeType, probability);
         this.xFrom = xFrom;
         this.yFrom = yFrom;
         this.xTo = xTo;
         this.yTo = yTo;
         this.board = board;
-        this.nnAgent = nnAgent;
         treeBuilder = new TreeBuilder();
-        setObjectType(1);
+        this.agent = agent;
+        setObjectType(4);
     }
 
     @Override
@@ -50,9 +50,13 @@ public class NNTreeNode extends TreeNode{
         this.doPromotion = doPromotion;
     }
 
+    public GeneticAlgorithmAgent getAgent() {
+        return agent;
+    }
+
     @Override
     public void evaluate() {
-        setValue(nnAgent.evaluation(board));
+        setValue(agent.evaluation(this.board));
     }
 
     public boolean isDoPromotion() {
@@ -61,13 +65,5 @@ public class NNTreeNode extends TreeNode{
 
     public Board getBoard() {
         return board;
-    }
-
-    public boolean isMaxIsWhite() {
-        return maxIsWhite;
-    }
-
-    public NNAgent getNnAgent(){
-        return nnAgent;
     }
 }
