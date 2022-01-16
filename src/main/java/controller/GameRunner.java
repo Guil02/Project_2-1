@@ -21,7 +21,7 @@ public class GameRunner {
     private int whiteWin = 0;
     private int blackWin = 0;
     private int games = 0;
-    private static final int maxGames = 500;
+    private static final int maxGames = 50;
 
     /**
      * Constructor

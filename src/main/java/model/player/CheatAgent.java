@@ -12,12 +12,12 @@ import java.util.Random;
 
 public class CheatAgent extends Player {
     private CheatAiTree cheatAiTree = new CheatAiTree();
-    private Expectiminimax expectiminimax = new Expectiminimax();
+    private ExpectiminimaxStar2 expectiminimax = new ExpectiminimaxStar2(true);
     private boolean cheatIsWhite;
     private ChessCheatAiTreeNode maxima;
     private Board board;
     private boolean firstTurn = true;
-    private static final int ply = 2;
+    private static final int ply = 3;
 
     public CheatAgent() {
     }
@@ -32,7 +32,7 @@ public class CheatAgent extends Player {
         } else {
             root = new ChessCheatAiTreeNode(copy, 0, null, 2, 1, 0, 0, 0, 0, cheatIsWhite);
         }
-        double res = expectiminimax.expectiminimax(root, (ply * 2) - 1, (ply * 2) - 1);
+        double res = expectiminimax.expectiminimaxWithStar2(root, (ply * 2) - 1, (ply * 2) - 1);
         double maxValue;
 
         if(maxIsWhite){
