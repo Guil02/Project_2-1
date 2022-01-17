@@ -6,16 +6,16 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 
 /**
- * label for the playet selection
+ * Label for the player selection.
  */
 public class PlayerSelectionLabel extends HBox {
     public static final int DEFAULT_WIDTH = 188;
     public static final int DEFAULT_HEIGHT = 58;
     private Label labelPlayerOne;
-        private Label labelPlayerTwo;
+    private Label labelPlayerTwo;
 
     /**
-     * the constructor
+     * Constructor
      */
     public PlayerSelectionLabel() {
         this.labelPlayerOne = new Label("Player 1");

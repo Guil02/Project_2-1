@@ -1,5 +1,6 @@
 package gui.agentInfo;
 
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -7,6 +8,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -32,10 +35,10 @@ public class AgentInfoStage extends Stage {
         infoList.getChildren().add(new InfoHBox("Human", "Human input, no agent!", false));
         infoList.getChildren().add(new InfoHBox("Simple Search Agent", "Uses an expectiminimax-search-tree of a certain depth to select a move.", true));
         infoList.getChildren().add(new InfoHBox("Random Agent", "Simply performs a random move, without any strategy.", false));
-        infoList.getChildren().add(new InfoHBox("Greedy Agent", "Tries to take the most valuable piece in each round, performs random move if no piece can be taken.", true));
-        infoList.getChildren().add(new InfoHBox("NN Agent", "Based on the expectiminimax-search-tree, it uses a neural network to adapt weights of the board evaluation.", false));
-        infoList.getChildren().add(new InfoHBox("Cheating Agent", "It is basically a simple search agent but is not dependent on the roll of a dice and can move any piece each round.", true));
-        infoList.getChildren().add(new InfoHBox("GA Agent", "Based on the expectiminimax-search-tree, it uses a genetic algorithm to improve the weights of the board evaluation.", false));
+        infoList.getChildren().add(new InfoHBox("Greedy Agent", "Tries to take the most valuable piece in each round, performs random move\nif no piece can be taken.", true));
+        infoList.getChildren().add(new InfoHBox("NN Agent", "Based on the expectiminimax-search-tree, it uses a neural network to adapt weights\nof the board evaluation.", false));
+        infoList.getChildren().add(new InfoHBox("Cheating Agent", "It is basically a simple search agent but is not dependent on the roll of a dice\nand can move any piece each round.", true));
+        infoList.getChildren().add(new InfoHBox("GA Agent", "Based on the expectiminimax-search-tree, it uses a genetic algorithm\nto improve the weights of the board evaluation.", false));
         // Set content
         root = new BorderPane();
         root.setCenter(infoList);
@@ -80,8 +83,16 @@ class InfoHBox extends HBox {
             rectLeft.setFill(left2);
             rectRight.setFill(right2);
         }
-        leftStack.getChildren().addAll(rectLeft, new Text(name));
-        rightStack.getChildren().addAll(rectRight, new Text(description));
+        Text leftText = new Text(name);
+        leftText.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+        Text rightText = new Text(description);
+        rightText.setFont(Font.font("Verdana", 12));
+        HBox marginBox = new HBox();
+        marginBox.setAlignment(Pos.CENTER_LEFT);
+        marginBox.getChildren().addAll(new Text("  \n"), rightText);
+        leftStack.getChildren().addAll(rectLeft, leftText);
+        rightStack.getChildren().addAll(rectRight, marginBox);
+        rightStack.setAlignment(Pos.CENTER_LEFT);
         this.getChildren().addAll(leftStack, rightStack);
     }
 }
