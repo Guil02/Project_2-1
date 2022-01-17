@@ -33,11 +33,13 @@ you the game.
 
 ## Agents
 
-* Baseline Agent: this agent plays random moves at each turn.
-* Take Agent: this agent also plays randomly but always prioritises taking a piece.
-* Search Agent: this agent uses a minimax tree to choose the best move. To find the value of a leaf node it uses a rule to evaluate it.
-* TD learning Agent: this agent is the same as search agent, however it tries to improve it's parameters using Temporal Difference learning.
-* NN Agent: this agent is the same a search Agent however instead of a rule, it uses a neural network to evaluate the value of a leaf node.
+* Random Agent: this agent plays random moves at each turn.
+* Greedy Agent: this agent also plays randomly but always prioritises taking a piece.
+* Search Agent: this agent uses an expectiminimax tree to choose the best move. To find the value of a leaf node it uses a rule to evaluate it.
+* Cheat Agent: this agent works the same as a search except for the fact that it is allowed to cheat, i.e. It ignores the dice roles to choose its move.
+* NN Agent: this agent is the same a search agent. However instead of a rule, it uses a neural network to evaluate the value of a leaf node.
+* GA agent: this agent is the same a search agent. It also uses a function to evaluate nodes however instead of just summing some factors, it 
+multiplies each factor by a weight. The weights were learned through a genetic algorithm.
 
 ## Authors
 
@@ -50,7 +52,5 @@ you the game.
 
 ## Known Issues
 
-* The pruning is not as efficient as it should be. 
-* TD learning agent works but does not learn and can thus be considered random.
-* The neural network agent works but does not learn yet. So it currently plays like a random agent.
+* The neural network agent works has been partially trained, however it does not play super strong because there is a problem in the training implementation.
 * The GUI might not work if you change the display size.
