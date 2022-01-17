@@ -29,14 +29,17 @@ public class PruningTests {
             fenTest("N7/5p1p/p1b2k2/3P4/4n1P1/r1p2K2/1R1P4/B1R5 w - - 0 1");
             fenTest("2r5/1p1Pp1Q1/6P1/P6p/p1N5/K2kr3/3B1n2/6R1 w - - 0 1");
         }
-        //fenTest("r2r4/1R4p1/2p1P1pk/1Pp1P3/5R1n/8/1q5p/4K3 w - - 0 1");
     }
 
     @Test
+    /**
+     * Executes a speed comparison of normal expectiminimax and Star2 pruning with a set
+     * of board-states and moves. It checks whether there is a positive time-saving
+     * and calculates the percentage of this saving.
+     */
     public void runSpeedComparison() {
-        int ply = 4;
-        int testAmount = 100;
-
+        int ply = 3;            // Change as desired (min. 2, max. 4)
+        int testAmount = 100;   // Change as desired (max. 6147)
         File inputData = new File("src/main/resources/utils/games.txt");
         ArrayList<long[]> results = new ArrayList<>();
         // Collect the data
@@ -55,22 +58,18 @@ public class PruningTests {
         // Do the maths
         double sumNoPruning = 0;
         double sumWithPruning = 0;
-
         if (results.size() > 0) {
             for (long[] element : results) {
                 sumNoPruning += element[0];
                 sumWithPruning += element[1];
             }
-
             // Checks if pruning is actually faster than normal expectiminimax
             assertTrue(sumNoPruning > sumWithPruning);
-
             double percentage = 100 - ((sumWithPruning/sumNoPruning)*100);
             // Print results
             System.out.println("Total sum without pruning: \t" + sumNoPruning);
             System.out.println("Total sum with pruning \t" + sumWithPruning);
             System.out.println("Time saving: " + percentage + " % at ply " + ply);
-
         }
         else {
             System.out.println("No results!");
