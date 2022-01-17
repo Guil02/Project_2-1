@@ -148,12 +148,6 @@ public abstract class TreeNode {
                 this.objectType = NodeEnum.NN_NODE;
                 break;
             case 2:
-                this.objectType = NodeEnum.TD_NODE;
-                break;
-            case 3:
-                this.objectType = NodeEnum.CHEAT_NODE;
-                break;
-            case 4:
                 this.objectType = NodeEnum.GA_NODE;
                 break;
             default:

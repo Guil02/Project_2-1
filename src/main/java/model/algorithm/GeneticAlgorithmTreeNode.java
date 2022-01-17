@@ -22,7 +22,7 @@ public class GeneticAlgorithmTreeNode extends TreeNode{
         this.board = board;
         treeBuilder = new TreeBuilder();
         this.agent = agent;
-        setObjectType(4);
+        setObjectType(2);
     }
 
     @Override

@@ -32,9 +32,9 @@ public class CheatAgent extends Player {
         boolean maxIsWhite = board.getWhiteMove();
         ChessCheatAiTreeNode root;
         if (maxIsWhite) {
-            root = new ChessCheatAiTreeNode(copy, 0, null, 1, 1, 0, 0, 0, 0, cheatIsWhite);
+            root = new ChessCheatAiTreeNode(copy, 0, null, 1, 1, 0, 0, 0, 0, maxIsWhite);
         } else {
-            root = new ChessCheatAiTreeNode(copy, 0, null, 2, 1, 0, 0, 0, 0, cheatIsWhite);
+            root = new ChessCheatAiTreeNode(copy, 0, null, 2, 1, 0, 0, 0, 0, maxIsWhite);
         }
         double res = expectiminimaxStar2.expectiminimaxWithStar2(root, (ply * 2) - 1, (ply * 2) - 1);
         double maxValue;

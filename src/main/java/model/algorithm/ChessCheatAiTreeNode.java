@@ -20,7 +20,6 @@ public class ChessCheatAiTreeNode extends TreeNode{
         this.yTo = yTo;
         this.board = board;
         this.cheatIsWhite = cheatIsWhite;
-        setObjectType(3);
     }
 
     @Override
