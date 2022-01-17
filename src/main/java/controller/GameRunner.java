@@ -134,18 +134,15 @@ public class GameRunner {
             return new SearchAgent(board);
         }
         else if(playerType == 2){
-            return new BaselineAgent();
+            return new RandomAgent();
         }
-        else if (playerType == 3){
-            return new TDLearningAgent();
+        else if(playerType == 3){
+            return new GreedyAgent();
         }
         else if(playerType == 4){
-            return new TakeAgent();
-        }
-        else if(playerType == 5){
             return new NNAgent();
         }
-        else if(playerType == 6){
+        else if(playerType == 5){
             return new CheatAgent();
         }
         else{
@@ -185,12 +182,6 @@ public class GameRunner {
         blackWin++;
     }
 
-    /**
-     * Increment game counter.
-     */
-    public void incrementGames(){
-        games++;
-    }
 
     /**
      * @return amount of how often white player won
@@ -204,13 +195,6 @@ public class GameRunner {
      */
     public int getBlackWin() {
         return blackWin;
-    }
-
-    /**
-     * @return number of games
-     */
-    public int getGames(){
-        return games;
     }
 
     /**

@@ -12,7 +12,7 @@ import java.util.Random;
 /**
  * This agent has no strategy. It just picks random moves based on the roll of the dice.
  */
-public class BaselineAgent extends Player{
+public class RandomAgent extends Player{
 
     /**
      * Launches a single move of the baseline agent.

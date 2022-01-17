@@ -6,7 +6,6 @@ import javafx.application.Platform;
 import model.GeneticAlgorithm.GA;
 import model.pieces.*;
 import model.player.NNAgent;
-import model.player.TDLearningAgent;
 import utils.GameGenerator;
 
 /**
@@ -207,10 +206,6 @@ public class BoardUpdater {
                 board.getGameRunner().reset();
             }
             else {
-                if (board.getPlayer1() == 3 && TDLearningAgent.LEARN && board.isOriginal()) {
-                    System.out.println("Game is over");
-                    TDLearningAgent.learn(board);
-                }
                 if (board.getPlayer1() == 5 && NNAgent.LEARN && board.isOriginal()) {
                     ((NNAgent) board.playerOne).learn(board);
                 }

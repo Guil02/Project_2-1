@@ -17,7 +17,7 @@ import java.util.Random;
  * If there are multiple pieces to take, it will take the most "valuable".
  * If there is a draw between two equally maximum valuable pieces, it will decide randomly (e.g. two knights).
  */
-public class TakeAgent extends Player{
+public class GreedyAgent extends Player{
 
     private int kingScore = 1000;
     private int queenScore = 100;
