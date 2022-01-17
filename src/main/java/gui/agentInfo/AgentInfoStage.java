@@ -29,13 +29,13 @@ public class AgentInfoStage extends Stage {
         // Main content
         infoList = new VBox();
         infoList.setStyle("-fx-font: 14px \"Verdana\";");
-        infoList.getChildren().add(new InfoHBox("Human", "Human input, no agent", false));
-        infoList.getChildren().add(new InfoHBox("Search Agent", "Expectiminimax search", true));
-        infoList.getChildren().add(new InfoHBox("Random Agent", "Performs random move", false));
-        infoList.getChildren().add(new InfoHBox("TD Learning Agent", "TODO", true));
-        infoList.getChildren().add(new InfoHBox("Take Agent", "Tries to take the most valuable piece in each round, \n performs random move if no piece can be taken.", false));
-        infoList.getChildren().add(new InfoHBox("NN Agent", "Neural Network", true));
-        infoList.getChildren().add(new InfoHBox("Cheating Agent", "Knows outcomes of the dice", false));
+        infoList.getChildren().add(new InfoHBox("Human", "Human input, no agent!", false));
+        infoList.getChildren().add(new InfoHBox("Simple Search Agent", "Uses an expectiminimax-search-tree of a certain depth to select a move.", true));
+        infoList.getChildren().add(new InfoHBox("Random Agent", "Simply performs a random move, without any strategy.", false));
+        infoList.getChildren().add(new InfoHBox("Greedy Agent", "Tries to take the most valuable piece in each round, performs random move if no piece can be taken.", true));
+        infoList.getChildren().add(new InfoHBox("NN Agent", "Based on the expectiminimax-search-tree, it uses a neural network to adapt weights of the board evaluation.", false));
+        infoList.getChildren().add(new InfoHBox("Cheating Agent", "It is basically a simple search agent but is not dependent on the roll of a dice and can move any piece each round.", true));
+        infoList.getChildren().add(new InfoHBox("GA Agent", "Based on the expectiminimax-search-tree, it uses a genetic algorithm to improve the weights of the board evaluation.", false));
         // Set content
         root = new BorderPane();
         root.setCenter(infoList);
