@@ -2,7 +2,7 @@ package controller;
 
 import gui.ChessGUI;
 import model.GeneticAlgorithm.GA;
-import model.algorithm.GeneticAlgorithmAgent;
+import model.player.GeneticAlgorithmAgent;
 import gui.debugWindow.DebugWindowStage;
 import model.player.*;
 import config.Config;

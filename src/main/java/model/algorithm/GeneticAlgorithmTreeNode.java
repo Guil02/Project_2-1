@@ -1,7 +1,7 @@
 package model.algorithm;
 
 import controller.Board;
-import model.player.SearchAgent;
+import model.player.GeneticAlgorithmAgent;
 
 public class GeneticAlgorithmTreeNode extends TreeNode{
     private int xFrom;

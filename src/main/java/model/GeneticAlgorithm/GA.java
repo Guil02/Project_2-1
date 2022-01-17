@@ -3,12 +3,10 @@ package model.GeneticAlgorithm;
 import config.Config;
 import controller.Board;
 import controller.GameRunner;
-import model.algorithm.GeneticAlgorithmAgent;
+import model.player.GeneticAlgorithmAgent;
 import model.player.SearchAgent;
-import utils.FenEvaluator;
 import utils.Functions;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Class representing a Genetic Algorithm.

@@ -1,6 +1,9 @@
-package model.algorithm;
+package model.player;
 
 import controller.Board;
+import model.algorithm.ExpectiminimaxStar2;
+import model.algorithm.GeneticAlgorithmTreeNode;
+import model.algorithm.TreeNode;
 import model.player.Player;
 import utils.BoardEncoding;
 import utils.Functions;

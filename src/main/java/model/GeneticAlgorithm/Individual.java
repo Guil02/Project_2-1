@@ -1,6 +1,6 @@
 package model.GeneticAlgorithm;
 
-import model.algorithm.GeneticAlgorithmAgent;
+import model.player.GeneticAlgorithmAgent;
 import utils.Functions;
 import java.util.ArrayList;
 
