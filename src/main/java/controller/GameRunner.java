@@ -47,22 +47,30 @@ public class GameRunner {
                 0 = "Human"
                 1 = "Search Agent"
                 2 = "Random Agent"
-                3 = "TD learning Agent"
-                4 = "Take Agent"
-                5 = "NN Agent"
-                6 = "Cheating Agent"
-                7 = "GA Agent"
+                3 = "Take Agent"
+                4 = "NN Agent"
+                5 = "Cheating Agent"
+                6 = "GA Agent"
                 */
-                init(5,4);
+                init(1,1);
             }
         }
     }
 
+    /**
+     * Constructor
+     * @param board
+     */
     public GameRunner(Board board){
         this.board = board;
         BoardUpdater.fillGameStart(board);
     }
 
+    /**
+     * GA training against another GA-Agent
+     * @param agent1
+     * @param agent2
+     */
     public void GATraining(GeneticAlgorithmAgent agent1, GeneticAlgorithmAgent agent2){
         board.setPlayers(7,7);
         board.setPlayerPlayers(agent1,agent2);
@@ -70,6 +78,11 @@ public class GameRunner {
         board.checkAi();
     }
 
+    /**
+     * GA training against a Search-Agent
+     * @param agent1
+     * @param agent2
+     */
     public void GATraining(GeneticAlgorithmAgent agent1, SearchAgent agent2){
         board.setPlayers(7,1);
         board.setPlayerPlayers(agent1,agent2);
@@ -77,6 +90,9 @@ public class GameRunner {
         board.checkAi();
     }
 
+    /**
+     * Resets the GA-Agent
+     */
     public void GAReset(){
         board.movesClear();
         BoardUpdater.clearBoard(board);
