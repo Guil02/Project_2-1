@@ -3,12 +3,12 @@ package model.pieces;
 import controller.Board;
 
 /**
- * class that determines every valid moves for a queen
+ * Class that determines every valid moves for a queen.
  */
 public class QueenPiece extends ChessPiece {
 
     /**
-     * constructor that creates a queen chess piece
+     * Constructor that creates a queen chess piece.
      */
     public QueenPiece(boolean isWhite, int x, int y) {
         super(isWhite, x, y,5);
@@ -32,17 +32,14 @@ public class QueenPiece extends ChessPiece {
             return 'q';
     }
 
-    /*
-     * method that returns all possible positions for a queen to move to
+    /**
+     * Method that returns all possible positions for a queen to move to.
      */
     public boolean[][] validMoves(Board board) {
-
         boolean[][] validMoves = new boolean[Board.getBoardSize()][Board.getBoardSize()];
-
         if(!isTurn(board)){
             return validMoves;
         }
-
 
         int[] directions = {-9,-8,-7,-1,1,7,8,9};
         for(int i = 0; i<directions.length; i++){

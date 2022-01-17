@@ -3,7 +3,7 @@ package model.pieces;
 import controller.Board;
 
 /**
- * Abstract class representing a chess piece
+ * Abstract class representing a chess piece.
  */
 public abstract class ChessPiece {
 
@@ -33,7 +33,7 @@ public abstract class ChessPiece {
     }
 
     /**
-     * method that checks if no valid move exists
+     * Method that checks if no valid move exists.
      * @param validMoves
      * @return true when no valid moves exist
      */
@@ -80,7 +80,7 @@ public abstract class ChessPiece {
     }
 
     /**
-     * method that checks if another piece on a different field has the same colour (own team)
+     * Method that checks if another piece on a different field has the same colour (own team).
      * @param x
      * @param y
      */

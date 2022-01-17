@@ -1,25 +1,34 @@
 package model.player;
 
-import config.Config;
 import controller.Board;
-import controller.BoardUpdater;
-import javafx.application.Platform;
 import model.algorithm.*;
 import model.pieces.ChessPiece;
-
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * This class represents a simple search agent using expectiminimax and Star2 pruning.
+ */
 public class SearchAgent extends Player {
+
+    // Variables
     private ExpectiminimaxStar2 expectiminimaxStar2 = new ExpectiminimaxStar2(true);
     private ChessTreeNode maxima;
     private Board board;
     private static final int ply = 3;
 
+    /**
+     * Constructor
+     * @param board starting board
+     */
     public SearchAgent(Board board) {
         this.board = board;
     }
 
+    /**
+     * Runs the agent for one move.
+     * @param board
+     */
     public void runAgent(Board board) {
         Board copy = board.clone();
         boolean maxIsWhite = board.getWhiteMove();
@@ -69,7 +78,6 @@ public class SearchAgent extends Player {
         }
         Random rand = new Random();
         maxNode = highestNodes.get(rand.nextInt(highestNodes.size()));
-
         maxima = maxNode;
     }
 
@@ -121,11 +129,9 @@ public class SearchAgent extends Player {
                     }
 
                     if(piece.getPieceChar() == 'K'){
-//                        distanceWhiteKingFromBackRow = 7-piece.getY();
                         seenWhiteKing = true;
                     }
                     if(piece.getPieceChar() == 'k'){
-//                        distanceBlackKingFromBackRow = piece.getY();
                         seenBlackKing = true;
                     }
                 }
@@ -140,6 +146,11 @@ public class SearchAgent extends Player {
         return value - enemyPiecesOnBoardValue + getRandomElement();
     }
 
+    /**
+     * Gets the value of a piece.
+     * @param pieceType input piece type
+     * @return piece value
+     */
     private static double getPieceValue(int pieceType){
         return switch (pieceType) {
             case 1 -> 1;
@@ -151,6 +162,10 @@ public class SearchAgent extends Player {
             default -> 0;
         };
     }
+
+    /**
+     * @return random double between -5 and 5
+     */
     private static double getRandomElement(){
         return Math.random()*10-5;
     }

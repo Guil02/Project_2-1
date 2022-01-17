@@ -50,11 +50,8 @@ public class NNAgent extends Player {
             network.setRELU(0,1);
             network.setTANH(2);
             network.setWeights(Functions.readInWeights(fileName));
-//            System.out.println(Functions.readInWeights(fileName));
             initialized = true;
         }
-//            Functions.writeWeights(network.getWeights(), fileName);
-
     }
 
     /**
@@ -62,7 +59,6 @@ public class NNAgent extends Player {
      * @param board
      */
     public void learn(Board board){
-
         ArrayList<String> states = board.getBoardStates();
         if(DEBUG) {
             if (NN_DEBUG) System.out.println("Started learning");
@@ -70,24 +66,18 @@ public class NNAgent extends Player {
         }
         ArrayList<Double> weights = network.getWeights();
         ArrayList<Double> z = initializeZ(weights);
-
         int amountOfTurns = states.size();
         int finalIteration = amountOfTurns-1;
         Board S = FenEvaluator.read(states.get(0));
-
         for(int i = 1; i<amountOfTurns; i++){
             double R = giveReward(board, i, finalIteration);
             Board newS = FenEvaluator.read(states.get(i));
-
             // Evaluate z value
             evaluateZ(z, S);
-
             // Evaluate new delta
             double delta = evaluateDelta(R, S, newS);
-
             // Update weights of the NN
             updateWeights(weights, z, delta);
-
             S = newS;
         }
         network.setWeights(weights);
@@ -108,7 +98,7 @@ public class NNAgent extends Player {
         for(int i = 0; i<states.size(); i++){
             evals.add(evaluation(FenEvaluator.read(states.get(i))));
         }
-            if (NN_DEBUG) System.out.println("Evals: " + evals);
+        if (NN_DEBUG) System.out.println("Evals: " + evals);
     }
 
     /**
@@ -120,7 +110,6 @@ public class NNAgent extends Player {
     private void updateWeights(ArrayList<Double> weights, ArrayList<Double> z, double delta){
         int amountOfWeights = weights.size();
         double max = Double.NEGATIVE_INFINITY;
-
         for(int i = 0; i<amountOfWeights; i++){
             double newValue = weights.get(i) + alpha*delta*z.get(i);
             weights.set(i, newValue);

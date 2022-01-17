@@ -1,20 +1,21 @@
 package model.pieces;
 
-
 import controller.Board;
 import controller.BoardUpdater;
 
 /**
- * class that determines every valid moves for a pawn
+ * Class that determines every valid moves for a pawn.
  */
 public class PawnPiece extends ChessPiece {
     public static int getEnPassantColumn(Board board) {
         return board.getEnPassantColumn();
     }
 
+    // Variables
+    public boolean firstMove = true;
 
     /**
-     * constructor that creates a pawn chess piece
+     * Constructor
      */
     public PawnPiece(boolean white, int x, int y) {
         super(white, x, y,1);
@@ -25,8 +26,6 @@ public class PawnPiece extends ChessPiece {
             firstMove = false;
         }
     }
-
-    public boolean firstMove = true;
 
     /**
      * @param xTo next x position after doing the move
@@ -42,9 +41,7 @@ public class PawnPiece extends ChessPiece {
                 BoardUpdater.captureEnPassantField(board, xTo, yTo-1);
             }
         }
-
         board.setEnPassantActive(false);
-
         if(isWhite()){
             if(y == 6 && yTo == 4){
                 board.setEnPassantActive(true);
@@ -72,17 +69,14 @@ public class PawnPiece extends ChessPiece {
             return 'p';
     }
 
-    /*
-     * method that returns all possible positions for a pawn to move to
+    /**
+     * Method that returns all possible positions for a pawn to move to.
      */
     public boolean[][] validMoves(Board board) {
-
         boolean[][] validMoves = new boolean[Board.getBoardSize()][Board.getBoardSize()];
-
         if(!isTurn(board)) {
             return validMoves;
         }
-
         if(isWhite) {
             if (withinBoundsOneVariable(y-1)&&board.getPieceOffField(x, y - 1)==null){
                 validMoves[x][y-1] = true;
@@ -93,7 +87,6 @@ public class PawnPiece extends ChessPiece {
             }
 
         }
-
         if(!isWhite){
             if (withinBoundsOneVariable(y+1)&&board.getPieceOffField(x, y + 1)==null){
                 validMoves[x][y+1] = true;
@@ -104,11 +97,8 @@ public class PawnPiece extends ChessPiece {
             }
 
         }
-
         validCaptures(board, validMoves);
-
         enPassant(board, validMoves);
-
         setHasValidMove(true);
         if(checkAllFalse(validMoves)){
             setHasValidMove(false);

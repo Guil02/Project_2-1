@@ -3,12 +3,12 @@ package model.pieces;
 import controller.Board;
 
 /**
- * class that determines every valid moves for a bishop
+ * Class that determines every valid moves for a bishop.
  */
 public class BishopPiece extends ChessPiece {
 
     /**
-     * constructor that creates a bishop chess piece
+     * Constructor that creates a bishop chess piece.
      */
     public BishopPiece(boolean isWhite, int x, int y) {
         super(isWhite, x, y, 3);
@@ -25,8 +25,8 @@ public class BishopPiece extends ChessPiece {
         super.move(board, xTo, yTo);
     }
 
-    /*
-     * method that returns all possible positions for a bishop to move to
+    /**
+     * Method that returns all possible positions for a bishop to move to.
      */
     public boolean[][] validMoves(Board board) {
 

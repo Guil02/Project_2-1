@@ -3,12 +3,12 @@ package model.pieces;
 import controller.Board;
 
 /**
- * class that determines every valid moves for a knight
+ * Class that determines every valid moves for a knight.
  */
 public class KnightPiece extends ChessPiece {
 
     /**
-     * constructor that creates a knight chess piece
+     * Constructor that creates a knight chess piece.
      */
     public KnightPiece(boolean white, int x, int y) {
         super(white, x, y,2);
@@ -25,6 +25,10 @@ public class KnightPiece extends ChessPiece {
         super.move(board, xTo, yTo);
     }
 
+    /**
+     * Gets the char of a certain piece
+     * @return piece char (standard notation)
+     */
     public char getPieceChar() {
         if (this.isWhite)
             return 'N';
@@ -32,8 +36,8 @@ public class KnightPiece extends ChessPiece {
             return 'n';
     }
 
-    /*
-     * method that returns all possible positions for a knight to move to
+    /**
+     * Method that returns all possible positions for a knight to move to.
      */
     public boolean[][] validMoves(Board board) {
 
@@ -41,7 +45,6 @@ public class KnightPiece extends ChessPiece {
         if (!isTurn(board)) {
             return validMoves;
         }
-
         if (withinBounds(x, 2) && withinBounds(y, 1) && (isOpenSpot(board,x + 2, y + 1)||checkForEnemyPiece(board,x + 2, y + 1))) {
             validMoves[x + 2][y + 1] = true;
             setHasValidMove(true);
@@ -69,7 +72,6 @@ public class KnightPiece extends ChessPiece {
         if (withinBounds(x, -1) && withinBounds(y, -2) && (isOpenSpot(board,x - 1, y - 2)||checkForEnemyPiece(board,x - 1, y - 2))) {
             validMoves[x - 1][y - 2] = true;
         }
-
         setHasValidMove(true);
         if (checkAllFalse(validMoves)) {
             setHasValidMove(false);

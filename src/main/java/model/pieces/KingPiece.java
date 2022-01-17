@@ -3,20 +3,26 @@ package model.pieces;
 import controller.Board;
 import controller.BoardUpdater;
 
-import java.util.*;
-
 /**
- * class that determines every valid moves for a king
+ * Class that determines every valid moves for a king.
  */
 public class KingPiece extends ChessPiece {
+
+    // Variables
     private boolean hasNotMoved = true;
+
+    /**
+     * Constructor
+     * @param white
+     * @param x
+     * @param y
+     */
+    public KingPiece(boolean white, int x, int y) {
+        super(white, x, y, 6);
+    }
 
     public boolean getHasNotMoved() {
         return hasNotMoved;
-    }
-
-    public KingPiece(boolean white, int x, int y) {
-        super(white, x, y, 6);
     }
 
     public char getPieceChar() {

@@ -19,12 +19,13 @@ import java.util.Random;
  */
 public class GreedyAgent extends Player{
 
-    private int kingScore = 1000;
-    private int queenScore = 100;
-    private int rookScore = 50;
-    private int bishopScore = 40;
-    private int knightScore = 30;
-    private int pawnScore = 10;
+    // Variables
+    private int kingScore = 6;
+    private int queenScore = 5;
+    private int rookScore = 4;
+    private int bishopScore = 3;
+    private int knightScore = 2;
+    private int pawnScore = 1;
 
     /**
      * Launches a single move of the Take-AI.
@@ -38,11 +39,9 @@ public class GreedyAgent extends Player{
                 if (DebugWindowStage.isOnPause) {
                     pauseThread();
                 }
-
                 ArrayList<int[]> allMoves = new ArrayList<int[]>();
                 ArrayList<ChessPiece> pieceList = new ArrayList<ChessPiece>();
                 char movablePieceChar = board.getMovablePiece(); // All movable pieces
-
                 for (int i = 0; i < 8; i++) {
                     for (int j = 0; j < 8; j++) {
                         if (movablePieceChar == board.getCharOffField(i, j)) {
@@ -51,7 +50,6 @@ public class GreedyAgent extends Player{
                     }
                 }
                 // Get all the moves for each piece
-
                 for (ChessPiece piece : pieceList) {
                     boolean[][] validMoves = piece.validMoves(board);
                     for (int i = 0; i < 8; i++) {
@@ -62,7 +60,6 @@ public class GreedyAgent extends Player{
                         }
                     }
                 }
-
                 // Scan all moves for a set of moves that take pieces
                 ArrayList<int[]> takeMoves = new ArrayList<int[]>();
                 for (int[] entry : allMoves) {
@@ -70,7 +67,6 @@ public class GreedyAgent extends Player{
                         takeMoves.add(entry);
                     }
                 }
-
                 // Execute move
                 if (takeMoves.size() == 0) { // If AI can't take a piece right now, do a random move
                     Random rand = new Random();
@@ -102,7 +98,6 @@ public class GreedyAgent extends Player{
                     int[] move = takeMoves.get(maxScoreIndex);
                     BoardUpdater.movePiece(board, move[0], move[1], move[2], move[3]);
                 }
-
                 if(Config.GUI_ON){
                     Platform.runLater(
                             new Thread(board::launchGuiUpdate)
@@ -116,14 +111,5 @@ public class GreedyAgent extends Player{
         }).start();
     }
 
-    void printMoves(ArrayList<int[]> allMoves) {
-        System.out.println("--- All Moves: ---");
-        for (int[] entry : allMoves) {
-            System.out.println(Arrays.toString(entry));
-        }
-    }
-
-    public void runAgent(Board board){
-
-    }
+    public void runAgent(Board board){}
 }

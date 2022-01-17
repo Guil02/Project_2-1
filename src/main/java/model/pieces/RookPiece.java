@@ -3,13 +3,13 @@ package model.pieces;
 import controller.Board;
 
 /**
- * class that determines every valid moves for a rook
+ * Class that determines every valid moves for a rook.
  */
 public class RookPiece extends ChessPiece {
     private boolean hasNotMoved = true;
 
     /**
-     * constructor that creates a rook chess piece
+     * Constructor
      */
     public RookPiece(boolean white, int x, int y) {
         super(white, x, y,4);
@@ -36,8 +36,8 @@ public class RookPiece extends ChessPiece {
         return hasNotMoved;
     }
 
-    /*
-     * method that returns all possible positions for a rook to move to
+    /**
+     * Method that returns all possible positions for a rook to move to.
      */
     public boolean[][] validMoves(Board board) {
 
