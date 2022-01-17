@@ -1,11 +1,7 @@
 package model.player;
 
-import config.Config;
 import controller.Board;
-import controller.BoardUpdater;
-import javafx.application.Platform;
 import model.algorithm.*;
-import model.pieces.ChessPiece;
 import java.util.ArrayList;
 import java.util.Random;
 

@@ -4,31 +4,30 @@ import controller.Board;
 import model.algorithm.ExpectiminimaxStar2;
 import model.algorithm.GeneticAlgorithmTreeNode;
 import model.algorithm.TreeNode;
-import model.player.Player;
-import utils.BoardEncoding;
 import utils.Functions;
 import utils.GABoardEncoding;
 import utils.NodeEnum;
-
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+/**
+ * Agent that uses a Genetic Algorithm to evaluate leaf nodes.
+ */
 public class GeneticAlgorithmAgent extends Player {
     private static final String fileName = "build/classes/java/main/model/player/GAWeights.txt";
     private static final int ply = 2;
     private static final int amountOfWeights = 25;
     private static final double percentageChange = 0.05;
-
     private GABoardEncoding encoder;
     private ArrayList<Double> weights;
     private GeneticAlgorithmTreeNode maxima;
     private ExpectiminimaxStar2 expectiminimaxStar2;
 
-
+    /**
+     * Constructor
+     */
     public GeneticAlgorithmAgent() {
-
         this.encoder = new GABoardEncoding();
         this.expectiminimaxStar2 = new ExpectiminimaxStar2(true);
         initializeWeights();
@@ -118,16 +117,33 @@ public class GeneticAlgorithmAgent extends Player {
         }
     }
 
+    /**
+     * Returns the current weights.
+     * @return
+     */
     public ArrayList<Double> getWeights(){return weights;}
 
+    /**
+     * Sets the weights to a desired value.
+     * @param weights new weights
+     */
     public void setWeights(ArrayList<Double> weights) {
         this.weights = weights;
     }
 
+    /**
+     * Sets a specific weight to a new value.
+     * @param i index
+     * @param weight new weight
+     */
     public void setWeight(int i, double weight) {
         this.weights.set(i, weight);
     }
 
+    /**
+     * Gets the total number of weights for the board evaluation.
+     * @return
+     */
     public static int getAmountOfWeights(){
         return amountOfWeights;
     }
