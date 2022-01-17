@@ -28,7 +28,7 @@ public class DebugWindowStage extends Stage {
     private HBox bottomRow;
     private Slider speedSlider; // Slider to set delay in ms for an agent move
     public static boolean isOnPause;
-    public static int delayMS = 100;
+    public static int delayMS = 300;
     public static final Object pauseLock = new Object();
     private GameRunner gameRunner;
 
@@ -130,7 +130,7 @@ public class DebugWindowStage extends Stage {
         speedSlider.setPrefWidth(250);
         speedSlider.setMin(0);
         speedSlider.setMax(1000);
-        speedSlider.setValue(100);
+        speedSlider.setValue(300);
         speedSlider.setShowTickMarks(true);
         speedSlider.setShowTickLabels(true);
         speedSlider.setMajorTickUnit(200);
