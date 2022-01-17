@@ -80,7 +80,8 @@ public class Board {
      * Check which player got selected
      */
     public void checkAi() {
-        if(player1!=0){
+
+        if((player1!=0&&getWhiteMove())||(player2!=0&&!getWhiteMove())){
             if(whiteMove){
                 playerOne.launch(this);
             }
