@@ -5,10 +5,14 @@ import model.pieces.ChessPiece;
 import org.junit.jupiter.api.Test;
 import utils.FenEvaluator;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PruningTests {
     @Test
@@ -26,6 +30,79 @@ public class PruningTests {
             fenTest("2r5/1p1Pp1Q1/6P1/P6p/p1N5/K2kr3/3B1n2/6R1 w - - 0 1");
         }
         //fenTest("r2r4/1R4p1/2p1P1pk/1Pp1P3/5R1n/8/1q5p/4K3 w - - 0 1");
+    }
+
+    @Test
+    public void runSpeedComparison() {
+        int ply = 4;
+        int testAmount = 100;
+
+        File inputData = new File("src/main/resources/utils/games.txt");
+        ArrayList<long[]> results = new ArrayList<>();
+        // Collect the data
+        try {
+            Scanner scanner = new Scanner(inputData);
+            for (int i = 0; i < testAmount; i++) {
+                String currentFen = scanner.nextLine();
+                results.add(speedComparison(currentFen, ply));
+                System.out.println("State " + (i+1) + " of " + testAmount + " passed. - " + results.get(i)[0] + "\t" + results.get(i)[1]);
+            }
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("File not found!");
+            e.printStackTrace();
+        }
+        // Do the maths
+        double sumNoPruning = 0;
+        double sumWithPruning = 0;
+
+        if (results.size() > 0) {
+            for (long[] element : results) {
+                sumNoPruning += element[0];
+                sumWithPruning += element[1];
+            }
+
+            // Checks if pruning is actually faster than normal expectiminimax
+            assertTrue(sumNoPruning > sumWithPruning);
+
+            double percentage = 100 - ((sumWithPruning/sumNoPruning)*100);
+            // Print results
+            System.out.println("Total sum without pruning: \t" + sumNoPruning);
+            System.out.println("Total sum with pruning \t" + sumWithPruning);
+            System.out.println("Time saving: " + percentage + " % at ply " + ply);
+
+        }
+        else {
+            System.out.println("No results!");
+        }
+    }
+
+    /**
+     * Performs the speed comparison for one move on a specified board
+     * @return array of time durations for [0] without pruning and [1] with pruning
+     */
+    public long[] speedComparison(String fen, int ply) {
+        FenEvaluator fenEvaluator = new FenEvaluator();
+        Board board = fenEvaluator.read(fen);
+        board.setWhiteMove(true);
+        Dice.rollTheDice(board);
+
+        // Measure time without pruning
+        ChessTreeNode rootNoPruning = new ChessTreeNode(board, 0, null, 1, 1, 0, 0, 0, 0);
+        Expectiminimax expectiminimax = new Expectiminimax();
+        long startTimeNoPruning = System.currentTimeMillis();
+        expectiminimax.expectiminimax(rootNoPruning, (ply * 2) - 1, (ply*2)-1);
+        long endTimeNoPruning = System.currentTimeMillis();
+        long totalTimeNoPruning = endTimeNoPruning - startTimeNoPruning;
+        // Measure time with pruning
+        ExpectiminimaxStar2 expectiminimaxStar2 = new ExpectiminimaxStar2(true);
+        ChessTreeNode rootWithPruning = new ChessTreeNode(board, 0, null, 1, 1, 0, 0, 0, 0);
+        long startTimeWithPruning = System.currentTimeMillis();
+        expectiminimaxStar2.expectiminimaxWithStar2(rootWithPruning, (ply * 2) - 1, (ply*2)-1);
+        long endTimeWithPruning = System.currentTimeMillis();
+        long totalTimeWithPruning = endTimeWithPruning - startTimeWithPruning;
+        // Return results
+        return new long[]{totalTimeNoPruning, totalTimeWithPruning};
     }
 
     public void fenTest(String fen) {
